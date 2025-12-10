@@ -1,0 +1,30 @@
+[gd_scene load_steps=7 format=3 uid="uid://dtx5n23ng2cpc"]
+
+[ext_resource type="Script" uid="uid://d7c8hg0qgv2b" path="res://Enemies/Scripts/meteor_movement.gd" id="1_xtgxe"]
+[ext_resource type="Texture2D" uid="uid://c48t25sg1mpjx" path="res://Enemies/Sprites/meteor.png" id="2_87xaf"]
+[ext_resource type="Script" uid="uid://d0j60kjeiqg5n" path="res://Enemies/Scripts/health.gd" id="3_vgorg"]
+[ext_resource type="Script" uid="uid://dqihe208dt14r" path="res://Enemies/Scripts/hitbox.gd" id="4_g7ndn"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_qhs2c"]
+radius = 6.0827627
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vgorg"]
+radius = 6.0
+
+[node name="Meteor" type="CharacterBody2D"]
+script = ExtResource("1_xtgxe")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_87xaf")
+
+[node name="HealthComponent" type="Node2D" parent="."]
+script = ExtResource("3_vgorg")
+
+[node name="Area2D" type="Area2D" parent="."]
+script = ExtResource("4_g7ndn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_qhs2c")
+
+[node name="CollisionHitbox" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_vgorg")
