@@ -16,6 +16,14 @@ func Exit() -> void:
 func Process(_delta : float) -> State:
 	if player.direction == Vector2.ZERO:
 		return idle
+	if player.position.y <= 10 and player.direction.y < 0:
+		player.direction.y = 0
+	if player.position.y >= 125 and player.direction.y > 0:
+		player.direction.y = 0
+	if player.position.x <= 12 and player.direction.x < 0:
+		player.direction.x = 0
+	if player.position.x >= 230 and player.direction.x > 0:
+		player.direction.x = 0
 	player.velocity = player.direction * move_speed
 	return null 
 
