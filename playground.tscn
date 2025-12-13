@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://ctolyotyjbqwg"]
+[gd_scene load_steps=5 format=3 uid="uid://ctolyotyjbqwg"]
 
 [ext_resource type="PackedScene" uid="uid://b5gn1svcnnf7a" path="res://Player/player.tscn" id="1_rupst"]
 [ext_resource type="PackedScene" uid="uid://dtx5n23ng2cpc" path="res://Enemies/meteor.tscn" id="2_wt17y"]
+[ext_resource type="Script" uid="uid://dm1jlaqpgu05" path="res://game_manager.gd" id="3_m8u5f"]
+[ext_resource type="FontFile" uid="uid://bvlhnv4ultuef" path="res://Fonts/Pixeled.ttf" id="4_is3ju"]
 
 [node name="Playground" type="Node2D"]
 
@@ -9,10 +11,26 @@
 position = Vector2(13, 31)
 
 [node name="Meteor" parent="." instance=ExtResource("2_wt17y")]
-position = Vector2(184, 39)
+position = Vector2(221, 34)
 
 [node name="Meteor2" parent="." instance=ExtResource("2_wt17y")]
-position = Vector2(197, 63)
+position = Vector2(223, 57)
 
 [node name="Meteor3" parent="." instance=ExtResource("2_wt17y")]
-position = Vector2(188, 87)
+position = Vector2(222, 79)
+
+[node name="Meteor4" parent="." instance=ExtResource("2_wt17y")]
+position = Vector2(215, 103)
+
+[node name="GameManager" type="Node2D" parent="."]
+position = Vector2(1, -1)
+script = ExtResource("3_m8u5f")
+
+[node name="ScoreLabel" type="RichTextLabel" parent="GameManager"]
+offset_left = 167.0
+offset_top = 119.0
+offset_right = 222.0
+offset_bottom = 135.0
+theme_override_fonts/normal_font = ExtResource("4_is3ju")
+theme_override_font_sizes/normal_font_size = 5
+text = "Score: 0"

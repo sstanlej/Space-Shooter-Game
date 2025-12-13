@@ -1,4 +1,4 @@
-extends Node2D
+class_name Health extends Node2D
 @export var MAX_HEALTH : float = 4
 var health : float
 
@@ -9,4 +9,7 @@ func take_damage(attack : float) -> void:
 	health -= attack
 	
 	if health <= 0:
-		get_parent().queue_free()
+		die()
+
+func die() -> void:
+	get_parent().queue_free()

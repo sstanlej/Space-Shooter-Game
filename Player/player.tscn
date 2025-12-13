@@ -1,14 +1,19 @@
-[gd_scene load_steps=8 format=3 uid="uid://b5gn1svcnnf7a"]
+[gd_scene load_steps=11 format=3 uid="uid://b5gn1svcnnf7a"]
 
 [ext_resource type="Script" uid="uid://dmeq4l4ygdf52" path="res://Player/Scripts/player.gd" id="1_4ntmi"]
 [ext_resource type="Texture2D" uid="uid://c6krctq5xg7w6" path="res://Player/Sprites/rocket.png" id="2_fhl08"]
 [ext_resource type="Script" uid="uid://dp7p1gm25paid" path="res://Player/Scripts/player_state_machine.gd" id="3_btcbx"]
+[ext_resource type="Script" uid="uid://d0j60kjeiqg5n" path="res://Enemies/Scripts/health.gd" id="3_od3ui"]
 [ext_resource type="Script" uid="uid://b47q42sws0vwe" path="res://Player/Scripts/state_idle.gd" id="4_gwnis"]
 [ext_resource type="Script" uid="uid://d2tyhxaj6xq0n" path="res://Player/Scripts/state_walk.gd" id="5_k53q1"]
 [ext_resource type="Script" uid="uid://bwfse1k7q36pc" path="res://Player/Scripts/attack_controler.gd" id="6_fhl08"]
+[ext_resource type="Script" uid="uid://dqihe208dt14r" path="res://Enemies/Scripts/hitbox.gd" id="8_00tjw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fhl08"]
 size = Vector2(14, 6)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_x3vf3"]
+size = Vector2(20, 12)
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_4ntmi")
@@ -19,6 +24,9 @@ shape = SubResource("RectangleShape2D_fhl08")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_fhl08")
+
+[node name="HealthComponent" type="Node2D" parent="."]
+script = ExtResource("3_od3ui")
 
 [node name="StateMachine" type="Node" parent="."]
 script = ExtResource("3_btcbx")
@@ -35,5 +43,12 @@ script = ExtResource("6_fhl08")
 [node name="CooldownTimer" type="Timer" parent="AttackControler"]
 wait_time = 0.33
 one_shot = true
+
+[node name="Area2D" type="Area2D" parent="."]
+script = ExtResource("8_00tjw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(-1, 0)
+shape = SubResource("RectangleShape2D_x3vf3")
 
 [connection signal="timeout" from="AttackControler/CooldownTimer" to="AttackControler" method="_on_cooldown_timer_timeout"]
