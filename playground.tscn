@@ -1,27 +1,15 @@
 [gd_scene load_steps=6 format=3 uid="uid://ctolyotyjbqwg"]
 
 [ext_resource type="PackedScene" uid="uid://b5gn1svcnnf7a" path="res://Player/player.tscn" id="1_rupst"]
-[ext_resource type="PackedScene" uid="uid://dtx5n23ng2cpc" path="res://Enemies/meteor.tscn" id="2_wt17y"]
-[ext_resource type="Script" uid="uid://dm1jlaqpgu05" path="res://game_manager.gd" id="3_m8u5f"]
+[ext_resource type="Script" uid="uid://dm1jlaqpgu05" path="res://Game/Scripts/game_manager.gd" id="3_m8u5f"]
 [ext_resource type="FontFile" uid="uid://bvlhnv4ultuef" path="res://Fonts/Pixeled.ttf" id="4_is3ju"]
-[ext_resource type="Texture2D" uid="uid://ckw6lj5ovgsqm" path="res://UI/Sprites/background.png" id="5_o00ia"]
+[ext_resource type="Script" uid="uid://cb5atvjak52cv" path="res://Game/Scripts/spawner.gd" id="5_4bqqs"]
+[ext_resource type="Texture2D" uid="uid://ckw6lj5ovgsqm" path="res://Game/Sprites/background.png" id="5_o00ia"]
 
 [node name="Playground" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource("1_rupst")]
 position = Vector2(13, 31)
-
-[node name="Meteor" parent="." instance=ExtResource("2_wt17y")]
-position = Vector2(221, 34)
-
-[node name="Meteor2" parent="." instance=ExtResource("2_wt17y")]
-position = Vector2(223, 57)
-
-[node name="Meteor3" parent="." instance=ExtResource("2_wt17y")]
-position = Vector2(222, 79)
-
-[node name="Meteor4" parent="." instance=ExtResource("2_wt17y")]
-position = Vector2(215, 103)
 
 [node name="GameManager" type="Node2D" parent="."]
 position = Vector2(1, -1)
@@ -45,7 +33,16 @@ theme_override_fonts/normal_font = ExtResource("4_is3ju")
 theme_override_font_sizes/normal_font_size = 5
 text = "Health: 0"
 
+[node name="Spawner" type="Node2D" parent="GameManager"]
+position = Vector2(-1, 0)
+script = ExtResource("5_4bqqs")
+
+[node name="SpawnTimer" type="Timer" parent="GameManager/Spawner"]
+wait_time = 2.0
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = -1
 position = Vector2(134, 72)
 texture = ExtResource("5_o00ia")
+
+[connection signal="timeout" from="GameManager/Spawner/SpawnTimer" to="GameManager/Spawner" method="_on_spawn_timer_timeout"]
