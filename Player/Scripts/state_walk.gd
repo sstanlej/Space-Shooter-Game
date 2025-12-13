@@ -16,9 +16,7 @@ func Exit() -> void:
 func Process(_delta : float) -> State:
 	if player.direction == Vector2.ZERO:
 		return idle
-	
 	player.velocity = player.direction * move_speed
-	
 	return null 
 
 # What happens during _physics_process update in this state

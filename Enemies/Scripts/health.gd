@@ -5,6 +5,9 @@ var health : float
 func _ready() -> void:
 	health = MAX_HEALTH
 	
+func get_health() -> float:
+	return health
+
 func take_damage(attack : float) -> void:
 	health -= attack
 	

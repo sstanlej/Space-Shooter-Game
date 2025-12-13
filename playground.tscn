@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://ctolyotyjbqwg"]
+[gd_scene load_steps=6 format=3 uid="uid://ctolyotyjbqwg"]
 
 [ext_resource type="PackedScene" uid="uid://b5gn1svcnnf7a" path="res://Player/player.tscn" id="1_rupst"]
 [ext_resource type="PackedScene" uid="uid://dtx5n23ng2cpc" path="res://Enemies/meteor.tscn" id="2_wt17y"]
 [ext_resource type="Script" uid="uid://dm1jlaqpgu05" path="res://game_manager.gd" id="3_m8u5f"]
 [ext_resource type="FontFile" uid="uid://bvlhnv4ultuef" path="res://Fonts/Pixeled.ttf" id="4_is3ju"]
+[ext_resource type="Texture2D" uid="uid://ckw6lj5ovgsqm" path="res://UI/Sprites/background.png" id="5_o00ia"]
 
 [node name="Playground" type="Node2D"]
 
@@ -34,3 +35,17 @@ offset_bottom = 135.0
 theme_override_fonts/normal_font = ExtResource("4_is3ju")
 theme_override_font_sizes/normal_font_size = 5
 text = "Score: 0"
+
+[node name="HealthLabel" type="RichTextLabel" parent="GameManager"]
+offset_left = 3.0
+offset_top = 119.0
+offset_right = 58.0
+offset_bottom = 135.0
+theme_override_fonts/normal_font = ExtResource("4_is3ju")
+theme_override_font_sizes/normal_font_size = 5
+text = "Health: 0"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(134, 72)
+texture = ExtResource("5_o00ia")
