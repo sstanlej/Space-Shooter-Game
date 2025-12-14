@@ -22,7 +22,6 @@ func _process(_delta: float) -> void:
 		# add_child(meteor_instance)
 		meteor_instance.position.x = pos_x
 		meteor_instance.position.y = rng.randf_range(min_y, max_y)
-		print("spawn")
 		spawn_timer.start()
 
 
