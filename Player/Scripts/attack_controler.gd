@@ -15,6 +15,7 @@ func _process(_delta: float) -> void:
 		var bullet_instance = bullet.instantiate()
 		add_child(bullet_instance)
 		bullet_instance.position = player.position
+		GlobalAudio.play_laser()
 		is_ready = false
 		$CooldownTimer.start()
 

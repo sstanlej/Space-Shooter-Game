@@ -15,6 +15,10 @@ run/main_scene="res://playground.tscn"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+GlobalAudio="*res://Game/game_audio.tscn"
+
 [display]
 
 window/size/viewport_width=240
