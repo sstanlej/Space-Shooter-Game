@@ -6,8 +6,12 @@ const bullet = preload("res://Bullet/bullet.tscn")
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	player = $".."
-	
 
+func get_cooldown() -> float:
+	return $CooldownTimer.wait_time
+
+func set_cooldown(cooldown: float) -> void:
+	$CooldownTimer.wait_time = cooldown
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:

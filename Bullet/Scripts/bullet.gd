@@ -14,6 +14,8 @@ func _process(_delta: float) -> void:
 
 func _physics_process(delta: float) -> void:
 	position += move_speed * direction * delta
+	if position.x > 250:
+		queue_free()
 
 
 func _on_area_entered(area: Area2D) -> void:

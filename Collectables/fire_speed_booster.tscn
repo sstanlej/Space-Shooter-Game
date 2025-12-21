@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://bpug2u1mj061u"]
+
+[ext_resource type="Script" uid="uid://bvk86nadt3yxy" path="res://Collectables/Scripts/collectable.gd" id="1_iri2y"]
+[ext_resource type="Texture2D" uid="uid://eswg6d7i37gd" path="res://Collectables/Sprites/fire_speed_booster.png" id="2_yqx8p"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_yqx8p"]
+radius = 7.0
+
+[node name="FireSpeedBooster" type="Area2D"]
+script = ExtResource("1_iri2y")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_yqx8p")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_yqx8p")
+
+[node name="DurationTime" type="Timer" parent="."]
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="timeout" from="DurationTime" to="." method="_on_duration_time_timeout"]

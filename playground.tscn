@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://ctolyotyjbqwg"]
+[gd_scene load_steps=7 format=3 uid="uid://ctolyotyjbqwg"]
 
 [ext_resource type="PackedScene" uid="uid://b5gn1svcnnf7a" path="res://Player/player.tscn" id="1_rupst"]
 [ext_resource type="Script" uid="uid://dm1jlaqpgu05" path="res://Game/Scripts/game_manager.gd" id="3_m8u5f"]
 [ext_resource type="FontFile" uid="uid://bvlhnv4ultuef" path="res://Fonts/Pixeled.ttf" id="4_is3ju"]
 [ext_resource type="PackedScene" uid="uid://cn7m0yjbprdtk" path="res://Game/spawner.tscn" id="4_o00ia"]
 [ext_resource type="Texture2D" uid="uid://ckw6lj5ovgsqm" path="res://Game/Sprites/background.png" id="5_o00ia"]
+[ext_resource type="PackedScene" uid="uid://bpug2u1mj061u" path="res://Collectables/fire_speed_booster.tscn" id="6_4bqqs"]
 
 [node name="Playground" type="Node2D"]
 
@@ -40,3 +41,6 @@ position = Vector2(-1, 0)
 z_index = -1
 position = Vector2(134, 72)
 texture = ExtResource("5_o00ia")
+
+[node name="FireSpeedBooster" parent="." instance=ExtResource("6_4bqqs")]
+position = Vector2(100, 40)
