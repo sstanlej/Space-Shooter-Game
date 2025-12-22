@@ -56,4 +56,5 @@ shape = SubResource("RectangleShape2D_x3vf3")
 [node name="LaserSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("9_00tjw")
 
+[connection signal="tree_exiting" from="." to="." method="_on_tree_exiting"]
 [connection signal="timeout" from="AttackControler/CooldownTimer" to="AttackControler" method="_on_cooldown_timer_timeout"]

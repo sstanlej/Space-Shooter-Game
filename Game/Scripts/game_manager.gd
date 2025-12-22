@@ -21,3 +21,7 @@ func update_score(points: float):
 
 func update_health(health: float):
 	health_label.text = "Health: " + str(roundi(health))
+
+
+func _on_player_player_died() ->  void:
+	print(score)
