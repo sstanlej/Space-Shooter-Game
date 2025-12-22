@@ -1,0 +1,43 @@
+extends Collectable
+
+@export var duration_time: float = 2
+@export var level: float = 3
+var current_cooldown: float
+var original_cooldown: float
+var attack_controler: AttackControler
+
+func _ready() -> void:
+	$DurationTime.wait_time = duration_time
+
+func get_attack_controler() -> AttackControler:
+	if !player:
+		return
+	for child in player.get_children():
+		if child is AttackControler:
+			attack_controler = child
+			return attack_controler
+	return null
+
+func affect_player() -> void:
+	if !player:
+		return
+	attack_controler = get_attack_controler()
+	if(!attack_controler):
+		return
+			
+	current_cooldown = attack_controler.get_cooldown()
+	original_cooldown = attack_controler.get_original_cooldown()
+	attack_controler.set_cooldown(current_cooldown/level)
+	$DurationTime.start()
+	hide()
+	set_deferred("monitoring", false)
+
+func revert_changes() -> void:
+	if !attack_controler:
+		return
+	attack_controler.set_cooldown(original_cooldown)
+	queue_free()
+
+
+func _on_duration_time_timeout() -> void:
+	revert_changes()

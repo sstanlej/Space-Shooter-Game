@@ -21,16 +21,19 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
 	if is_ready:
-		var n: int = rng.randi_range(4, 12)
-		var amp: int = rng.randi_range(40, 50)
-		var gap: int = rng.randi_range(10, 50)
-		var offset: int = rng.randi_range(0, 50)
-		is_ready = false
-		var spawn_points = pattern_gen.get_sinusoid(n, amp, gap, offset)
-		wave_count += 1
-		print("Wave %s" % wave_count)
-		spawn_list(spawn_points)
-		spawn_timer.start()
+		spawn_random_wave()
+
+func spawn_random_wave() -> void:
+	var n: int = rng.randi_range(4, 12)
+	var amp: int = rng.randi_range(40, 50)
+	var gap: int = rng.randi_range(10, 50)
+	var offset: int = rng.randi_range(0, 50)
+	is_ready = false
+	var spawn_points = pattern_gen.get_sinusoid(n, amp, gap, offset)
+	wave_count += 1
+	print("Wave %s" % wave_count)
+	spawn_list(spawn_points)
+	spawn_timer.start()
 
 func spawn_list(points: Array) -> void:
 	for point in points:

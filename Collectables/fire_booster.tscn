@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://docu126x23rrj"]
 
-[ext_resource type="Script" uid="uid://bvk86nadt3yxy" path="res://Collectables/Scripts/collectable.gd" id="1_52cpe"]
+[ext_resource type="Script" uid="uid://chcvfcq5enxj3" path="res://Collectables/Scripts/firebooster.gd" id="1_52cpe"]
 [ext_resource type="Texture2D" uid="uid://eswg6d7i37gd" path="res://Collectables/Sprites/fire_speed_booster.png" id="2_73psb"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3pl6k"]

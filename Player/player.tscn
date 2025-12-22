@@ -24,6 +24,7 @@ position = Vector2(1, 0)
 shape = SubResource("RectangleShape2D_fhl08")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 5
 texture = ExtResource("2_fhl08")
 
 [node name="HealthComponent" type="Node2D" parent="."]
