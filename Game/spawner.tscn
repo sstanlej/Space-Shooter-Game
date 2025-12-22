@@ -7,7 +7,7 @@
 script = ExtResource("1_pvmun")
 
 [node name="SpawnTimer" type="Timer" parent="."]
-wait_time = 2.0
+wait_time = 10.0
 
 [node name="PatternGenerator" type="Node2D" parent="."]
 script = ExtResource("2_smwj3")
