@@ -32,5 +32,7 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 	if !player:
 		return
 	hide()
-	set_deferred("monitoring", false)
+	for child in get_children():
+		if child is Area2D:
+			child.set_deferred("monitoring", false)
 	affect_player()
