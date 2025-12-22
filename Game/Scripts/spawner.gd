@@ -9,7 +9,13 @@ class_name Spawner extends Node2D
 var is_ready : bool = true
 var wave_count: int = 0
 const meteor = preload("res://Enemies/meteor.tscn")
+const fire_boost = preload("res://Collectables/fire_booster.tscn")
 var rng = RandomNumberGenerator.new()
+
+func get_random_spawn_point() -> Array:
+	var x: float = pos_x
+	var y: float = rng.randf_range(min_y, max_y)
+	return [x, y]
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -18,17 +24,25 @@ func _ready() -> void:
 	# spawn_list(spawn_points)
 	pass
 
+func spawn_fire_boost(point: Array, speed: float) -> void:
+	var boost_instance: Collectable = fire_boost.instantiate()
+	get_node("/root/Playground").add_child(boost_instance)
+	boost_instance.position.x = point[0]
+	boost_instance.position.y = point[1]
+	boost_instance.set_speed(speed)
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
 	if is_ready:
+		is_ready = false
 		spawn_random_wave()
+		spawn_fire_boost(get_random_spawn_point(), 50)
 
 func spawn_random_wave() -> void:
 	var n: int = rng.randi_range(4, 12)
 	var amp: int = rng.randi_range(40, 50)
 	var gap: int = rng.randi_range(10, 50)
 	var offset: int = rng.randi_range(0, 50)
-	is_ready = false
 	var spawn_points = pattern_gen.get_sinusoid(n, amp, gap, offset)
 	wave_count += 1
 	print("Wave %s" % wave_count)
@@ -45,17 +59,12 @@ func spawn_list(points: Array) -> void:
 		meteor_instance.position.y = y
 
 func spawn_at_random() -> void:
-	if is_ready:
-		is_ready = false
-		var meteor_instance = meteor.instantiate()
-		get_node("/root/Playground").add_child(meteor_instance)
-		# add_child(meteor_instance)
-		var x: float = pos_x
-		var y: float = rng.randf_range(min_y, max_y)
-		meteor_instance.position.x = x
-		meteor_instance.position.y = y
-		print([x, y])
-		spawn_timer.start()
+	var meteor_instance = meteor.instantiate()
+	get_node("/root/Playground").add_child(meteor_instance)		# add_child(meteor_instance)
+	var point = get_random_spawn_point()
+	meteor_instance.position.x = point[0]
+	meteor_instance.position.y = point[1]
+	spawn_timer.start()
 
 func _on_spawn_timer_timeout() -> void:
 	is_ready = true

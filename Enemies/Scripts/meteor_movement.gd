@@ -9,6 +9,12 @@ func _ready() -> void:
 	# move_speed = randf_range(move_speed/2, move_speed)
 	pass # Replace with function body.
 
+func set_move_speed(new_speed: float) -> void:
+	move_speed = new_speed
+
+func get_move_speed() -> float:
+	return move_speed
+
 func _physics_process(_delta: float) -> void:
 	if self.position.x < -5:
 		queue_free()

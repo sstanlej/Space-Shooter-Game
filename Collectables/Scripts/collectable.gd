@@ -7,6 +7,9 @@ var player: Player
 func _ready() -> void:
 	pass
 
+func set_speed(new_speed: float) -> void:
+	speed = new_speed
+
 func _physics_process(_delta: float) -> void:
 	move_left()
 
@@ -26,4 +29,8 @@ func get_player(area: Area2D) -> Player:
 
 func _on_area_2d_area_entered(area: Area2D) -> void:
 	player = get_player(area)
+	if !player:
+		return
+	hide()
+	set_deferred("monitoring", false)
 	affect_player()
