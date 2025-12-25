@@ -33,10 +33,20 @@ func spawn_fire_boost(point: Array, speed: float) -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-	if is_ready:
+	var is_running = get_parent().get_running()
+	if is_ready and is_running:
 		is_ready = false
 		spawn_random_wave()
 		spawn_fire_boost(get_random_spawn_point(), 50)
+	#if !is_running:
+		#kill_everything()
+
+func kill_everything() -> void:
+	var scene = get_parent().get_parent()
+	for child in scene.get_children():
+		if child is EnemyMovement:
+			child.queue_free()
+	pass
 
 func spawn_random_wave() -> void:
 	var n: int = rng.randi_range(4, 12)
@@ -57,6 +67,12 @@ func spawn_list(points: Array) -> void:
 		get_node("/root/Playground").add_child(meteor_instance)
 		meteor_instance.position.x = x
 		meteor_instance.position.y = y
+		
+		var score: float = get_parent().get_score()
+		var speed_mult: float = 1 + score / 400
+		var new_speed = meteor_instance.get_move_speed() * speed_mult
+		meteor_instance.set_move_speed(new_speed)
+		print(meteor_instance.get_move_speed())
 
 func spawn_at_random() -> void:
 	var meteor_instance = meteor.instantiate()

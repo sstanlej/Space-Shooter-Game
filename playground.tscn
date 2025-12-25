@@ -4,6 +4,22 @@
 [ext_resource type="PackedScene" uid="uid://5w2ev07haq3d" path="res://Game/game_manager.tscn" id="2_is3ju"]
 [ext_resource type="Texture2D" uid="uid://bhbwyd8jh0yey" path="res://Game/Sprites/bckg_animation.png" id="3_m8u5f"]
 
+[sub_resource type="Animation" id="Animation_is3ju"]
+length = 10.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 10),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(360, 68), Vector2(-120, 68)]
+}
+
 [sub_resource type="Animation" id="Animation_m8u5f"]
 resource_name = "move"
 length = 10.0
@@ -21,21 +37,6 @@ tracks/0/keys = {
 "values": [Vector2(360, 66), Vector2(-120, 66)]
 }
 
-[sub_resource type="Animation" id="Animation_is3ju"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(360, 68)]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_o00ia"]
 _data = {
 &"RESET": SubResource("Animation_is3ju"),
@@ -50,15 +51,15 @@ position = Vector2(13, 31)
 [node name="GameManager" parent="." instance=ExtResource("2_is3ju")]
 position = Vector2(1, -1)
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Background" type="Sprite2D" parent="."]
 z_index = -1
 position = Vector2(360, 68)
 texture = ExtResource("3_m8u5f")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Background"]
 libraries = {
 &"": SubResource("AnimationLibrary_o00ia")
 }
-autoplay = "move"
+autoplay = "RESET"
 
 [connection signal="player_died" from="Player" to="GameManager" method="_on_player_player_died"]
