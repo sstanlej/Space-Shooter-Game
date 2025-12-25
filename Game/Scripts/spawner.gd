@@ -17,7 +17,6 @@ func get_random_spawn_point() -> Array:
 	var y: float = rng.randf_range(min_y, max_y)
 	return [x, y]
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	await get_tree().process_frame
 	# var spawn_points = pattern_gen.get_sinusoid(30, 50, 30)
@@ -31,7 +30,6 @@ func spawn_fire_boost(point: Array, speed: float) -> void:
 	boost_instance.position.y = point[1]
 	boost_instance.set_speed(speed)
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
 	var is_running = get_parent().get_running()
 	if is_ready and is_running:
@@ -72,7 +70,6 @@ func spawn_list(points: Array) -> void:
 		var speed_mult: float = 1 + score / 400
 		var new_speed = meteor_instance.get_move_speed() * speed_mult
 		meteor_instance.set_move_speed(new_speed)
-		print(meteor_instance.get_move_speed())
 
 func spawn_at_random() -> void:
 	var meteor_instance = meteor.instantiate()

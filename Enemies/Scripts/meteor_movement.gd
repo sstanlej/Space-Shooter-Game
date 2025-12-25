@@ -17,12 +17,18 @@ func get_move_speed() -> float:
 
 func _physics_process(_delta: float) -> void:
 	if self.position.x < -5:
+		inc_escaped()
 		queue_free()
-		print("escaped")
 	velocity = direction * move_speed
 	move_and_slide()
 	rotate(0.05)
 	pass
+
+func inc_escaped() -> void:
+	var scene = get_parent()
+	for child in scene.get_children():
+		if child is GameManager:
+			child.inc_esaped()
 
 func _on_area_2d_area_entered(area: Area2D) -> void:
 	if area.has_method("damage"):

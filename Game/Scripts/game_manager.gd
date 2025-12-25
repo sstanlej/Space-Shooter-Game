@@ -3,18 +3,32 @@ class_name GameManager extends Node2D
 @onready var score_label: RichTextLabel = $ScoreLabel
 @onready var health_label: RichTextLabel = $HealthLabel
 @onready var player_health: Health = $"../Player/HealthComponent"
-var is_running: bool = true
+@onready var game_over_label: RichTextLabel = $GameOverLabel
+@onready var final_score_label: RichTextLabel = $FinalScoreLabel
+@onready var play_again_label: RichTextLabel = $PlayAgainLabel
+@onready var escaped_label: RichTextLabel = $EscapedLabel
 
+var is_running: bool = true
 var score : float
-# Called when the node enters the scene tree for the first time.
+var escaped: int
+
 func _ready() -> void:
 	score = 0
+	game_over_label.visible = false
+	final_score_label.visible = false
+	play_again_label.visible = false
+	escaped_label.visible = false
 
 func _process(_delta: float):
 	if player_health:
 		update_health(player_health.get_health())
 	else:
 		update_health(0)
+	if !is_running and Input.is_action_just_pressed("reset"):
+		reload_scene()
+
+func inc_esaped() -> void:
+	escaped += 1
 
 func update_score(points: float):
 	score += points
@@ -31,4 +45,15 @@ func update_health(health: float):
 
 func _on_player_player_died() ->  void:
 	is_running = false
-	print(score)
+	game_over_label.visible = true
+	final_score_label.text = "[center]Score: " + str(roundi(score))
+	final_score_label.visible = true
+	escaped_label.text = "[center]Enemies escaped: " + str(escaped)
+	escaped_label.visible = true
+	play_again_label.visible = true
+	health_label.visible = false
+	score_label.visible = false
+
+func reload_scene() -> void:
+	if get_tree():
+		get_tree().reload_current_scene()
