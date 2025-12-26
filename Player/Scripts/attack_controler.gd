@@ -6,6 +6,7 @@ var cooldown: float = 0.33
 var original_damage: float = 1
 var damage: float
 var bullet_speed: float = 200
+var boosted: bool = false
 
 func _ready() -> void:
 	player = $".."
@@ -33,7 +34,7 @@ func set_cooldown(new_cooldown: float) -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
 	if player.is_attacking and is_ready:
-		var bullet_instance = Bullet.spawn_bullet(damage, bullet_speed)
+		var bullet_instance = Bullet.spawn_bullet(damage, bullet_speed, boosted)
 		add_child(bullet_instance)
 		bullet_instance.position = player.position
 		GlobalAudio.play_laser()
