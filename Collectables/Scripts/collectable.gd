@@ -26,7 +26,6 @@ func get_player(area: Area2D) -> Player:
 		return player
 	return null
 
-
 func _on_area_2d_area_entered(area: Area2D) -> void:
 	player = get_player(area)
 	if !player:

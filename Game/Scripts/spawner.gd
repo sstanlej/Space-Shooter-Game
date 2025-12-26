@@ -6,10 +6,13 @@ class_name Spawner extends Node2D
 @export var spawn_point = [250, 65]
 @onready var spawn_timer: Timer = $SpawnTimer
 @onready var pattern_gen: PatternGenerator = $PatternGenerator
+var boost_speed: float = 50
+var boost_duration: float = 5
 var is_ready : bool = true
 var wave_count: int = 0
 const meteor = preload("res://Enemies/meteor.tscn")
 const fire_boost = preload("res://Collectables/fire_booster.tscn")
+const attack_boost = preload("res://Collectables/attack_booster.tscn")
 var rng = RandomNumberGenerator.new()
 
 func get_random_spawn_point() -> Array:
@@ -23,19 +26,37 @@ func _ready() -> void:
 	# spawn_list(spawn_points)
 	pass
 
-func spawn_fire_boost(point: Array, speed: float) -> void:
-	var boost_instance: Collectable = fire_boost.instantiate()
-	get_node("/root/Playground").add_child(boost_instance)
-	boost_instance.position.x = point[0]
-	boost_instance.position.y = point[1]
-	boost_instance.set_speed(speed)
+func spawn_random_boost() -> void:
+	var rand: int = rng.randi_range(0, 2)
+	var boost: Collectable
+	print(rand)
+	var point: Array = get_random_spawn_point()
+	if rand == 0:
+		boost = fire_boost.instantiate()
+		spawn_boost(point, boost)
+	elif rand == 1:
+		boost = attack_boost.instantiate()
+		spawn_boost(point, boost)
+	elif rand == 2:
+		boost = fire_boost.instantiate()
+		spawn_boost(point, boost)
+		point = get_random_spawn_point()
+		boost = attack_boost.instantiate()
+		spawn_boost(point, boost)
+
+func spawn_boost(point: Array, boost: Collectable) -> void:
+	get_node("/root/Playground").add_child(boost)
+	boost.position.x = point[0]
+	boost.position.y = point[1]
+	boost.set_speed(boost_speed)
+	boost.set_duration(boost_duration)
 
 func _process(_delta: float) -> void:
 	var is_running = get_parent().get_running()
 	if is_ready and is_running:
 		is_ready = false
 		spawn_random_wave()
-		spawn_fire_boost(get_random_spawn_point(), 50)
+		spawn_random_boost()
 	#if !is_running:
 		#kill_everything()
 
