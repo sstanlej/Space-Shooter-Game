@@ -12,4 +12,8 @@ wait_time = 10.0
 [node name="PatternGenerator" type="Node2D" parent="."]
 script = ExtResource("2_smwj3")
 
+[node name="BoostSpawnTimer" type="Timer" parent="."]
+wait_time = 12.0
+
 [connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]
+[connection signal="timeout" from="BoostSpawnTimer" to="." method="_on_boost_spawn_timer_timeout"]

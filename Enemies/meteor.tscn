@@ -1,10 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://dtx5n23ng2cpc"]
+[gd_scene load_steps=7 format=3 uid="uid://dtx5n23ng2cpc"]
 
-[ext_resource type="Script" uid="uid://d7c8hg0qgv2b" path="res://Enemies/Scripts/meteor_movement.gd" id="1_xtgxe"]
+[ext_resource type="Script" uid="uid://d7c8hg0qgv2b" path="res://Enemies/Scripts/enemy_movement.gd" id="1_xtgxe"]
 [ext_resource type="Texture2D" uid="uid://c48t25sg1mpjx" path="res://Enemies/Sprites/meteor.png" id="2_87xaf"]
 [ext_resource type="Script" uid="uid://b4ivf2ayqw3rq" path="res://Enemies/Scripts/enemy_health.gd" id="3_vgorg"]
 [ext_resource type="Script" uid="uid://dqihe208dt14r" path="res://Enemies/Scripts/hitbox.gd" id="4_g7ndn"]
-[ext_resource type="AudioStream" uid="uid://dt5c2y6kq4hji" path="res://Enemies/Sounds/car-crash-sound-376882.mp3" id="5_g7ndn"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_qhs2c"]
 radius = 6.0827627
@@ -30,9 +29,6 @@ shape = SubResource("CircleShape2D_qhs2c")
 
 [node name="CollisionHitbox" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_vgorg")
-
-[node name="CrashSound" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("5_g7ndn")
 
 [connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

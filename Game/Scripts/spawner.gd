@@ -5,14 +5,28 @@ class_name Spawner extends Node2D
 @export var pos_x : float = 250
 @export var spawn_point = [250, 65]
 @onready var spawn_timer: Timer = $SpawnTimer
+@onready var boost_spawn_timer: Timer = $BoostSpawnTimer
 @onready var pattern_gen: PatternGenerator = $PatternGenerator
-var boost_speed: float = 50
-var boost_duration: float = 5
-var is_ready : bool = true
+@onready var game_manager: GameManager = $".."
+var ready_to_spawn : bool = true
+var ready_to_boost: bool = false
 var wave_count: int = 0
+
 const meteor = preload("res://Enemies/meteor.tscn")
+var meteor_speed: float = 30
+var meteor_damage: float = 1
+var meteor_health: float = 2
+
+const ufo = preload("res://Enemies/ufo.tscn")
+var ufo_speed: float = 40
+var ufo_damage: float = 2
+var ufo_health: float = 3
+
 const fire_boost = preload("res://Collectables/fire_booster.tscn")
 const attack_boost = preload("res://Collectables/attack_booster.tscn")
+var boost_speed: float = 50
+var boost_duration: float = 5
+
 var rng = RandomNumberGenerator.new()
 
 func get_random_spawn_point() -> Array:
@@ -22,14 +36,11 @@ func get_random_spawn_point() -> Array:
 
 func _ready() -> void:
 	await get_tree().process_frame
-	# var spawn_points = pattern_gen.get_sinusoid(30, 50, 30)
-	# spawn_list(spawn_points)
-	pass
+	boost_spawn_timer.start() 
 
 func spawn_random_boost() -> void:
 	var rand: int = rng.randi_range(0, 2)
 	var boost: Collectable
-	print(rand)
 	var point: Array = get_random_spawn_point()
 	if rand == 0:
 		boost = fire_boost.instantiate()
@@ -53,10 +64,19 @@ func spawn_boost(point: Array, boost: Collectable) -> void:
 
 func _process(_delta: float) -> void:
 	var is_running = get_parent().get_running()
-	if is_ready and is_running:
-		is_ready = false
+	if !is_running:
+		return
+	if ready_to_spawn:
+		ready_to_spawn = false
 		spawn_random_wave()
+		spawn_timer.start()
+	if ready_to_boost:
+		ready_to_boost = false
 		spawn_random_boost()
+		boost_spawn_timer.start()
+	if wave_count > 10:
+		spawn_timer.wait_time = 7
+	
 	#if !is_running:
 		#kill_everything()
 
@@ -68,29 +88,40 @@ func kill_everything() -> void:
 	pass
 
 func spawn_random_wave() -> void:
-	var n: int = rng.randi_range(4, 12)
+	var n: int = 2
 	var amp: int = rng.randi_range(40, 50)
 	var gap: int = rng.randi_range(10, 50)
 	var offset: int = rng.randi_range(0, 50)
-	var spawn_points = pattern_gen.get_sinusoid(n, amp, gap, offset)
+	var pattern = pattern_gen.get_sinusoid(n, amp, gap, offset)
+	var enemies = GameManager.Enemies.METEOR
 	wave_count += 1
 	print("Wave %s" % wave_count)
-	spawn_list(spawn_points)
-	spawn_timer.start()
+	spawn_list(pattern, enemies)
 
-func spawn_list(points: Array) -> void:
+func spawn_list(points: Array, enemies: GameManager.Enemies) -> void:
 	for point in points:
 		var x: float = point[0] + spawn_point[0]
 		var y: float = point[1] + spawn_point[1]
-		var meteor_instance = meteor.instantiate()
-		get_node("/root/Playground").add_child(meteor_instance)
-		meteor_instance.position.x = x
-		meteor_instance.position.y = y
-		
-		var score: float = get_parent().get_score()
-		var speed_mult: float = 1 + score / 400
-		var new_speed = meteor_instance.get_move_speed() * speed_mult
-		meteor_instance.set_move_speed(new_speed)
+		if enemies == GameManager.Enemies.METEOR:
+			spawn_meteor(x, y)
+		elif enemies == GameManager.Enemies.UFO:
+			spawn_ufo(x, y)
+
+func spawn_meteor(x: float, y: float) -> void:
+	var score: float = get_parent().get_score()
+	var speed_mult: float = 1 + score / 400
+	var meteor_instance = EnemyMovement.spawn_enemy(meteor_damage, meteor_speed * speed_mult, meteor_health)
+	get_node("/root/Playground").add_child(meteor_instance)
+	meteor_instance.position.x = x
+	meteor_instance.position.y = y
+
+func spawn_ufo(x: float, y: float) -> void:
+	var score: float = get_parent().get_score()
+	var speed_mult: float = 1 + score / 400
+	var ufo_instance = UfoMovement.spawn_enemy(ufo_damage, ufo_speed * speed_mult, ufo_health)
+	get_node("/root/Playground").add_child(ufo_instance)
+	ufo_instance.position.x = x
+	ufo_instance.position.y = y
 
 func spawn_at_random() -> void:
 	var meteor_instance = meteor.instantiate()
@@ -101,4 +132,7 @@ func spawn_at_random() -> void:
 	spawn_timer.start()
 
 func _on_spawn_timer_timeout() -> void:
-	is_ready = true
+	ready_to_spawn = true
+
+func _on_boost_spawn_timer_timeout() -> void:
+	ready_to_boost = true

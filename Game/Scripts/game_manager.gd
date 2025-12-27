@@ -8,6 +8,11 @@ class_name GameManager extends Node2D
 @onready var play_again_label: RichTextLabel = $PlayAgainLabel
 @onready var escaped_label: RichTextLabel = $EscapedLabel
 
+enum Enemies {
+	METEOR,
+	UFO
+}
+
 var is_running: bool = true
 var score : float
 var escaped: int
