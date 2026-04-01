@@ -3,6 +3,7 @@ class_name Player extends CharacterBody2D
 var direction : Vector2 = Vector2.ZERO
 var is_attacking : bool = false
 signal player_died
+signal player_damage_taken
 @onready var state_machine : PlayerStateMachine = $StateMachine
 
 # Called when the node enters the scene tree for the first time.
@@ -19,9 +20,13 @@ func _process(_delta: float) -> void:
 
 func _physics_process(_delta: float) -> void:
 	move_and_slide()
-	
+
 	pass
 
 
 func _on_tree_exiting() -> void:
 	emit_signal("player_died")
+
+
+func _on_health_component_damage_taken() -> void:
+	emit_signal("player_damage_taken")

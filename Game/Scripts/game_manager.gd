@@ -24,15 +24,9 @@ func _ready() -> void:
 	background.set_animation_active(true)
 	label_manager.configure_default_labels()
 	label_manager.show_wave_label()
+	update_player_health_label()
 
 func _process(_delta: float):
-	var health: float
-	if player_health:
-		health = player_health.get_health()
-	else:
-		health = 0
-	label_manager.update_health_label(health)
-
 	if !is_running and Input.is_action_just_pressed("reset"):
 		reload_scene()
 
@@ -84,3 +78,14 @@ func start_next_wave() -> void:
 func reload_scene() -> void:
 	if get_tree():
 		get_tree().reload_current_scene()
+
+func update_player_health_label() -> void:
+	var health: float
+	if player_health:
+		health = player_health.get_health()
+	else:
+		health = 0
+	label_manager.update_health_label(health)
+
+func _on_player_player_damage_taken() -> void:
+	update_player_health_label()

@@ -64,4 +64,5 @@ libraries = {
 }
 autoplay = "RESET"
 
+[connection signal="player_damage_taken" from="Player" to="GameManager" method="_on_player_player_damage_taken"]
 [connection signal="player_died" from="Player" to="GameManager" method="_on_player_player_died"]
