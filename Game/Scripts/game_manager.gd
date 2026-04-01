@@ -1,12 +1,6 @@
 class_name GameManager extends Node2D
 
-@onready var score_label: RichTextLabel = $ScoreLabel
-@onready var health_label: RichTextLabel = $HealthLabel
 @onready var player_health: Health = $"../Player/HealthComponent"
-@onready var game_over_label: RichTextLabel = $GameOverLabel
-@onready var final_score_label: RichTextLabel = $FinalScoreLabel
-@onready var play_again_label: RichTextLabel = $PlayAgainLabel
-@onready var escaped_label: RichTextLabel = $EscapedLabel
 @onready var spawner: Spawner = $Spawner
 @onready var background: Background = $"../Background"
 @onready var shop_manager: ShopManager = $ShopManager
@@ -26,20 +20,19 @@ var wave_finished: bool = false
 
 func _ready() -> void:
 	await get_tree().process_frame
-	game_over_label.visible = false
-	final_score_label.visible = false
-	play_again_label.visible = false
-	escaped_label.visible = false
 	spawner.set_spawn_timer(wave_duration)
 	background.set_animation_active(true)
 
 	label_manager.show_wave_label()
 
 func _process(_delta: float):
+	var health: float
 	if player_health:
-		update_health(player_health.get_health())
+		health = player_health.get_health()
 	else:
-		update_health(0)
+		health = 0
+	label_manager.update_health_label(health)
+
 	if !is_running and Input.is_action_just_pressed("reset"):
 		reload_scene()
 
@@ -57,7 +50,7 @@ func set_wave_finished(value: bool) -> void:
 
 func update_score(points: float):
 	score += points
-	score_label.text = "Score: " + str(roundi(score))
+	label_manager.update_score_label(score)
 
 func get_score() -> float:
 	return score
@@ -68,19 +61,12 @@ func get_running() -> bool:
 func get_spawn_timer_time() -> float:
 	return spawner.spawn_timer.time_left
 
-func update_health(health: float):
-	health_label.text = "Health: " + str(roundi(health))
+func get_escaped() -> int:
+	return escaped
 
 func _on_player_player_died() ->  void:
 	is_running = false
-	game_over_label.visible = true
-	final_score_label.text = "[center]Score: " + str(roundi(score))
-	final_score_label.visible = true
-	escaped_label.text = "[center]Enemies escaped: " + str(escaped)
-	escaped_label.visible = true
-	play_again_label.visible = true
-	health_label.visible = false
-	score_label.visible = false
+	label_manager.show_end_game_labels()
 
 func finish_wave() -> void:
 	print("finishing wave")

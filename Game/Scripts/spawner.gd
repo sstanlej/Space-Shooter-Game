@@ -127,6 +127,9 @@ func spawn_at_random() -> void:
 	meteor_instance.position.y = point[1]
 
 func set_ready_to_spawn(value: bool) -> void:
+	var is_running = game_manager.get_running()
+	if !is_running:
+		return
 	print("setting ready to spawn to %s" % value)
 	ready_to_spawn = value
 	if ready_to_spawn:
@@ -137,6 +140,9 @@ func set_ready_to_spawn(value: bool) -> void:
 		label_manager.show_wave_label()
 
 func _on_spawn_timer_timeout() -> void:
+	var is_running = game_manager.get_running()
+	if !is_running:
+		return
 	print("spawn timer timeout")
 	game_manager.finish_wave()
 
