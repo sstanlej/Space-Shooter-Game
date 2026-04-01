@@ -27,40 +27,7 @@ func _ready() -> void:
 	update_player_health_label()
 
 func _process(_delta: float):
-	if !is_running and Input.is_action_just_pressed("reset"):
-		reload_scene()
-
-func inc_esaped() -> void:
-	escaped += 1
-
-func increment_wave_count() -> void:
-	wave_count += 1
-
-func get_wave_count() -> int:
-	return wave_count
-
-func set_wave_finished(value: bool) -> void:
-	wave_finished = value
-
-func update_score(points: float):
-	score += points
-	label_manager.update_score_label(score)
-
-func get_score() -> float:
-	return score
-
-func get_running() -> bool:
-	return is_running
-
-func get_spawn_timer_time() -> float:
-	return spawner.spawn_timer.time_left
-
-func get_escaped() -> int:
-	return escaped
-
-func _on_player_player_died() ->  void:
-	is_running = false
-	label_manager.show_end_game_labels()
+	pass
 
 func finish_wave() -> void:
 	print("finishing wave")
@@ -75,10 +42,6 @@ func start_next_wave() -> void:
 	background.set_animation_active(true)
 	spawner.set_ready_to_spawn(true)
 
-func reload_scene() -> void:
-	if get_tree():
-		get_tree().reload_current_scene()
-
 func update_player_health_label() -> void:
 	var health: float
 	if player_health:
@@ -87,5 +50,45 @@ func update_player_health_label() -> void:
 		health = 0
 	label_manager.update_health_label(health)
 
+func update_score(points: float):
+	score += points
+	label_manager.update_score_label(score)
+
+func inc_esaped() -> void:
+	escaped += 1
+
+func increment_wave_count() -> void:
+	wave_count += 1
+
+func get_wave_count() -> int:
+	return wave_count
+
+func set_wave_finished(value: bool) -> void:
+	wave_finished = value
+
+func get_score() -> float:
+	return score
+
+func get_running() -> bool:
+	return is_running
+
+func get_spawn_timer_time() -> float:
+	return spawner.spawn_timer.time_left
+
+func get_escaped() -> int:
+	return escaped
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("reset") and !is_running:
+		reload_scene()
+
 func _on_player_player_damage_taken() -> void:
 	update_player_health_label()
+
+func _on_player_player_died() ->  void:
+	is_running = false
+	label_manager.show_end_game_labels()
+
+func reload_scene() -> void:
+	if get_tree():
+		get_tree().reload_current_scene()
