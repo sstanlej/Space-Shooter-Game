@@ -12,8 +12,7 @@ class_name LabelManager extends Node2D
 @onready var wave_label_timer: Timer = $WaveLabelTimer
 
 func _ready() -> void:
-	await get_tree().process_frame
-	configure_default_labels()
+	pass
 
 func _process(_delta: float) -> void:
 	update_time_left_label()

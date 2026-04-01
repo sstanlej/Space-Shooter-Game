@@ -22,7 +22,7 @@ func _ready() -> void:
 	await get_tree().process_frame
 	spawner.set_spawn_timer(wave_duration)
 	background.set_animation_active(true)
-
+	label_manager.configure_default_labels()
 	label_manager.show_wave_label()
 
 func _process(_delta: float):
