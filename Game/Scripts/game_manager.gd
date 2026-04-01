@@ -80,6 +80,9 @@ func get_score() -> float:
 func get_running() -> bool:
 	return is_running
 
+func get_spawn_timer_time() -> float:
+	return spawner.spawn_timer.time_left
+
 func update_health(health: float):
 	health_label.text = "Health: " + str(roundi(health))
 
