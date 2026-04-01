@@ -10,7 +10,6 @@ class_name Spawner extends Node2D
 @onready var game_manager: GameManager = $".."
 var ready_to_spawn : bool = true
 var ready_to_boost: bool = false
-var wave_count: int = 0
 
 const meteor = preload("res://Enemies/meteor.tscn")
 var meteor_speed: float = 30
@@ -36,7 +35,10 @@ func get_random_spawn_point() -> Array:
 
 func _ready() -> void:
 	await get_tree().process_frame
-	boost_spawn_timer.start() 
+	boost_spawn_timer.start()
+
+func set_spawn_timer(new_time: int) -> void:
+	spawn_timer.wait_time = new_time
 
 func spawn_random_boost() -> void:
 	var rand: int = rng.randi_range(0, 2)
@@ -74,9 +76,9 @@ func _process(_delta: float) -> void:
 		ready_to_boost = false
 		spawn_random_boost()
 		boost_spawn_timer.start()
-	if wave_count > 10:
+	if game_manager.get_wave_count() > 10:
 		spawn_timer.wait_time = 7
-	
+
 	#if !is_running:
 		#kill_everything()
 
@@ -94,8 +96,8 @@ func spawn_random_wave() -> void:
 	var offset: int = rng.randi_range(0, 50)
 	var pattern = pattern_gen.get_sinusoid(n, amp, gap, offset)
 	var enemies = GameManager.Enemies.METEOR
-	wave_count += 1
-	print("Wave %s" % wave_count)
+	game_manager.increment_wave_count()
+	print("GM wave %s" % game_manager.get_wave_count())
 	spawn_list(pattern, enemies)
 
 func spawn_list(points: Array, enemies: GameManager.Enemies) -> void:

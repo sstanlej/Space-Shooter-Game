@@ -7,6 +7,7 @@ class_name GameManager extends Node2D
 @onready var final_score_label: RichTextLabel = $FinalScoreLabel
 @onready var play_again_label: RichTextLabel = $PlayAgainLabel
 @onready var escaped_label: RichTextLabel = $EscapedLabel
+@onready var spawner: Spawner = $Spawner
 
 enum Enemies {
 	METEOR,
@@ -16,6 +17,8 @@ enum Enemies {
 var is_running: bool = true
 var score : float
 var escaped: int
+var wave_count: int = 0
+var wave_duration: int = 12
 
 func _ready() -> void:
 	score = 0
@@ -23,6 +26,7 @@ func _ready() -> void:
 	final_score_label.visible = false
 	play_again_label.visible = false
 	escaped_label.visible = false
+	spawner.set_spawn_timer(wave_duration)
 
 func _process(_delta: float):
 	if player_health:
@@ -34,6 +38,12 @@ func _process(_delta: float):
 
 func inc_esaped() -> void:
 	escaped += 1
+
+func increment_wave_count() -> void:
+	wave_count += 1
+
+func get_wave_count() -> int:
+	return wave_count
 
 func update_score(points: float):
 	score += points
