@@ -72,6 +72,7 @@ func _process(_delta: float) -> void:
 		ready_to_spawn = false
 		spawn_random_wave()
 		spawn_timer.start()
+		game_manager.show_wave_label()
 	if ready_to_boost:
 		ready_to_boost = false
 		spawn_random_boost()

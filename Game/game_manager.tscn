@@ -67,3 +67,18 @@ theme_override_fonts/normal_font = ExtResource("2_p2a7g")
 theme_override_font_sizes/normal_font_size = 5
 bbcode_enabled = true
 text = "[center]Enemies escaped:"
+
+[node name="WaveLabel" type="RichTextLabel" parent="."]
+offset_left = 48.0
+offset_top = 9.0
+offset_right = 208.0
+offset_bottom = 51.0
+theme_override_fonts/normal_font = ExtResource("2_p2a7g")
+theme_override_font_sizes/normal_font_size = 15
+bbcode_enabled = true
+text = "[center]Wave X"
+
+[node name="WaveLabelTimer" type="Timer" parent="."]
+wait_time = 2.0
+
+[connection signal="timeout" from="WaveLabelTimer" to="." method="_on_wave_label_timer_timeout"]
