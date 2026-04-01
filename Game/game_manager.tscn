@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://5w2ev07haq3d"]
+[gd_scene load_steps=6 format=3 uid="uid://5w2ev07haq3d"]
 
 [ext_resource type="Script" uid="uid://dm1jlaqpgu05" path="res://Game/Scripts/game_manager.gd" id="1_qqcev"]
 [ext_resource type="FontFile" uid="uid://bvlhnv4ultuef" path="res://Fonts/Pixeled.ttf" id="2_p2a7g"]
 [ext_resource type="PackedScene" uid="uid://cn7m0yjbprdtk" path="res://Game/spawner.tscn" id="3_8yi26"]
+[ext_resource type="PackedScene" uid="uid://bvbyu4kf8lwlr" path="res://Game/shop_manager.tscn" id="4_p2a7g"]
+[ext_resource type="Script" uid="uid://c6w471vnalgaq" path="res://Game/label_manager.gd" id="5_8yi26"]
 
 [node name="GameManager" type="Node2D"]
 script = ExtResource("1_qqcev")
@@ -80,5 +82,19 @@ text = "[center]Wave X"
 
 [node name="WaveLabelTimer" type="Timer" parent="."]
 wait_time = 2.0
+
+[node name="ShopManager" parent="." instance=ExtResource("4_p2a7g")]
+
+[node name="LabelManager" type="Node2D" parent="."]
+script = ExtResource("5_8yi26")
+
+[node name="TimeLeftLabel" type="RichTextLabel" parent="LabelManager"]
+offset_left = 220.0
+offset_top = -1.0
+offset_right = 241.0
+offset_bottom = 15.0
+theme_override_fonts/normal_font = ExtResource("2_p2a7g")
+theme_override_font_sizes/normal_font_size = 5
+text = "0.00"
 
 [connection signal="timeout" from="WaveLabelTimer" to="." method="_on_wave_label_timer_timeout"]
