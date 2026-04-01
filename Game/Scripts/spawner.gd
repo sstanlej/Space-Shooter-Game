@@ -8,6 +8,7 @@ class_name Spawner extends Node2D
 @onready var boost_spawn_timer: Timer = $BoostSpawnTimer
 @onready var pattern_gen: PatternGenerator = $PatternGenerator
 @onready var game_manager: GameManager = $".."
+@onready var label_manager: LabelManager = $"../LabelManager"
 var ready_to_spawn : bool
 var ready_to_boost: bool = false
 
@@ -124,7 +125,6 @@ func spawn_at_random() -> void:
 	var point = get_random_spawn_point()
 	meteor_instance.position.x = point[0]
 	meteor_instance.position.y = point[1]
-	# spawn_timer.start()
 
 func set_ready_to_spawn(value: bool) -> void:
 	print("setting ready to spawn to %s" % value)
@@ -134,12 +134,11 @@ func set_ready_to_spawn(value: bool) -> void:
 		ready_to_spawn = false
 		spawn_random_wave()
 		spawn_timer.start()
-		game_manager.show_wave_label()
+		label_manager.show_wave_label()
 
 func _on_spawn_timer_timeout() -> void:
 	print("spawn timer timeout")
 	game_manager.finish_wave()
-	# ready_to_spawn = true
 
 func _on_boost_spawn_timer_timeout() -> void:
 	ready_to_boost = true
