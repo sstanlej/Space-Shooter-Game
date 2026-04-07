@@ -1,6 +1,6 @@
-class_name ShopManager extends Node2D
+class_name ShopManager extends Sprite2D
 
-@onready var game_manager: GameManager = $".."
+@onready var game_manager: GameManager = $"../GameManager"
 @onready var shop_timer: Timer = $ShopTimer
 
 func _ready() -> void:

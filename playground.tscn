@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://ctolyotyjbqwg"]
+[gd_scene load_steps=10 format=3 uid="uid://ctolyotyjbqwg"]
 
 [ext_resource type="PackedScene" uid="uid://b5gn1svcnnf7a" path="res://Player/player.tscn" id="1_rupst"]
 [ext_resource type="PackedScene" uid="uid://5w2ev07haq3d" path="res://Game/game_manager.tscn" id="2_is3ju"]
 [ext_resource type="Texture2D" uid="uid://bhbwyd8jh0yey" path="res://Game/Sprites/bckg_animation.png" id="3_m8u5f"]
 [ext_resource type="Script" uid="uid://beuwlxgn6r237" path="res://stop_background.gd" id="4_is3ju"]
 [ext_resource type="Texture2D" uid="uid://j34b2leh1iib" path="res://Game/Sprites/shop_background.png" id="5_o00ia"]
+[ext_resource type="Script" uid="uid://bwmlfjlwlsibt" path="res://Game/shop_manager.gd" id="6_4bqqs"]
 
 [sub_resource type="Animation" id="Animation_is3ju"]
 length = 10.0
@@ -65,10 +66,15 @@ libraries = {
 }
 autoplay = "RESET"
 
-[node name="Shop" type="Sprite2D" parent="."]
-visible = false
-position = Vector2(120, 67)
+[node name="ShopManager" type="Sprite2D" parent="."]
+position = Vector2(120, -63)
 texture = ExtResource("5_o00ia")
+script = ExtResource("6_4bqqs")
+
+[node name="ShopTimer" type="Timer" parent="ShopManager"]
+wait_time = 5.0
+one_shot = true
 
 [connection signal="player_damage_taken" from="Player" to="GameManager" method="_on_player_player_damage_taken"]
 [connection signal="player_died" from="Player" to="GameManager" method="_on_player_player_died"]
+[connection signal="timeout" from="ShopManager/ShopTimer" to="ShopManager" method="_on_shop_timer_timeout"]

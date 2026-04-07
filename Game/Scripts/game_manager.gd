@@ -3,7 +3,7 @@ class_name GameManager extends Node2D
 @onready var player_health: Health = $"../Player/HealthComponent"
 @onready var spawner: Spawner = $Spawner
 @onready var background: Background = $"../Background"
-@onready var shop_manager: ShopManager = $ShopManager
+@onready var shop_manager: ShopManager = $"../ShopManager"
 @onready var label_manager: LabelManager = $LabelManager
 
 enum Enemies {

@@ -1,9 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://5w2ev07haq3d"]
+[gd_scene load_steps=5 format=3 uid="uid://5w2ev07haq3d"]
 
 [ext_resource type="Script" uid="uid://dm1jlaqpgu05" path="res://Game/Scripts/game_manager.gd" id="1_qqcev"]
 [ext_resource type="FontFile" uid="uid://bvlhnv4ultuef" path="res://Fonts/Pixeled.ttf" id="2_p2a7g"]
 [ext_resource type="PackedScene" uid="uid://cn7m0yjbprdtk" path="res://Game/spawner.tscn" id="3_8yi26"]
-[ext_resource type="PackedScene" uid="uid://bvbyu4kf8lwlr" path="res://Game/shop_manager.tscn" id="4_p2a7g"]
 [ext_resource type="Script" uid="uid://c6w471vnalgaq" path="res://Game/label_manager.gd" id="5_8yi26"]
 
 [node name="GameManager" type="Node2D"]
@@ -11,8 +10,6 @@ script = ExtResource("1_qqcev")
 
 [node name="Spawner" parent="." instance=ExtResource("3_8yi26")]
 position = Vector2(-1, 0)
-
-[node name="ShopManager" parent="." instance=ExtResource("4_p2a7g")]
 
 [node name="LabelManager" type="Node2D" parent="."]
 script = ExtResource("5_8yi26")
