@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://dfoffskck6rmw"]
 
 [ext_resource type="Texture2D" uid="uid://j34b2leh1iib" path="res://Game/Sprites/shop_background.png" id="1_x5iwi"]
-[ext_resource type="Script" uid="uid://bwmlfjlwlsibt" path="res://Game/shop_manager.gd" id="2_qhy2r"]
+[ext_resource type="Script" uid="uid://cagk6yoomssui" path="res://Game/Scripts/shop_manager.gd" id="2_qhy2r"]
 [ext_resource type="Texture2D" uid="uid://eswg6d7i37gd" path="res://Collectables/Sprites/fire_speed_booster.png" id="3_qhy2r"]
 
 [sub_resource type="Animation" id="Animation_ynsuh"]
