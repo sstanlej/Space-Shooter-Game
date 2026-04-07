@@ -13,7 +13,6 @@ func show_shop() -> void:
 func _process(_delta: float) -> void:
 	pass
 
-
 func _on_shop_timer_timeout() -> void:
 	print("shop timer finished")
 	game_manager.start_next_wave()
