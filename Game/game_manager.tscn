@@ -12,6 +12,7 @@ script = ExtResource("1_qqcev")
 position = Vector2(-1, 0)
 
 [node name="LabelManager" type="Node2D" parent="."]
+z_index = 10
 script = ExtResource("5_8yi26")
 
 [node name="TimeLeftLabel" type="RichTextLabel" parent="LabelManager"]
