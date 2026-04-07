@@ -31,7 +31,6 @@ func get_cooldown() -> float:
 func set_cooldown(new_cooldown: float) -> void:
 	$CooldownTimer.wait_time = new_cooldown
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
 	if player.is_attacking and is_ready:
 		var bullet_instance = Bullet.spawn_bullet(damage, bullet_speed, boosted)

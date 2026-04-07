@@ -1,5 +1,7 @@
 class_name GameManager extends Node2D
 
+@onready var player: Player = $"../Player"
+@onready var player_attack_controler: AttackControler = $"../Player/AttackControler"
 @onready var player_health: Health = $"../Player/HealthComponent"
 @onready var spawner: Spawner = $Spawner
 @onready var background: Background = $"../Background"
@@ -32,14 +34,16 @@ func _process(_delta: float):
 func finish_wave() -> void:
 	print("finishing wave")
 	set_wave_finished(true)
+	set_player(false)
 	label_manager.show_wave_finished_label()
-	background.set_animation_active(false)
+	# background.set_animation_active(false)
 	spawner.kill_all_enemies()
 	shop_manager.show_shop()
 
 func start_next_wave() -> void:
 	wave_finished = false
-	background.set_animation_active(true)
+	set_player(true)
+	# background.set_animation_active(true)
 	spawner.set_ready_to_spawn(true)
 
 func update_player_health_label() -> void:
@@ -49,6 +53,13 @@ func update_player_health_label() -> void:
 	else:
 		health = 0
 	label_manager.update_health_label(health)
+
+func set_player(value: bool) -> void:
+	player.set_process(value)
+	# player.visible = value
+	if value == false:
+		player.direction = Vector2.ZERO
+	player_attack_controler.set_process(value)
 
 func update_score(points: float):
 	score += points
