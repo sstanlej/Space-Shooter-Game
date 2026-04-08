@@ -41,6 +41,7 @@ script = ExtResource("5_k53q1")
 
 [node name="AttackControler" type="Node" parent="."]
 script = ExtResource("6_fhl08")
+bullet_speed = 300.0
 
 [node name="CooldownTimer" type="Timer" parent="AttackControler"]
 wait_time = 0.33

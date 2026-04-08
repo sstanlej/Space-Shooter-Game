@@ -2,16 +2,18 @@ class_name AttackControler extends Node
 
 static var player : Player
 var is_ready : bool = true
-var cooldown: float = 0.33
-var original_damage: float = 1
 var damage: float
-var bullet_speed: float = 200
 var boosted: bool = false
+var cooldown: float = 0.33
+@export var original_damage: float = 1
+@export var bullet_speed: float = 200
+@export var attack_speed: float = 3
 
 func _ready() -> void:
 	player = $".."
-	set_cooldown(cooldown)
 	damage = original_damage
+	cooldown = 1/attack_speed
+	set_cooldown(cooldown)
 
 func set_damage(new_dmg: float) -> void:
 	damage = new_dmg
@@ -30,6 +32,9 @@ func get_cooldown() -> float:
 
 func set_cooldown(new_cooldown: float) -> void:
 	$CooldownTimer.wait_time = new_cooldown
+
+func set_attack_speed(new_attack_speed: float) -> void:
+	$CooldownTimer.wait_time = 1/new_attack_speed
 
 func _process(_delta: float) -> void:
 	if player.is_attacking and is_ready:
