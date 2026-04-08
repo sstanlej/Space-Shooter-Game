@@ -8,6 +8,7 @@ var cooldown: float = 0.33
 @export var original_damage: float = 1
 @export var bullet_speed: float = 200
 @export var attack_speed: float = 3
+@onready var cooldown_timer: Timer = $CooldownTimer
 
 func _ready() -> void:
 	player = $".."
@@ -28,13 +29,16 @@ func get_original_cooldown() -> float:
 	return cooldown
 
 func get_cooldown() -> float:
-	return $CooldownTimer.wait_time
+	return cooldown_timer.wait_time
+
+func get_attack_speed() -> float:
+	return cooldown_timer.wait_time
 
 func set_cooldown(new_cooldown: float) -> void:
-	$CooldownTimer.wait_time = new_cooldown
+	cooldown_timer.wait_time = new_cooldown
 
 func set_attack_speed(new_attack_speed: float) -> void:
-	$CooldownTimer.wait_time = 1/new_attack_speed
+	cooldown_timer.wait_time = 1/new_attack_speed
 
 func _process(_delta: float) -> void:
 	if player.is_attacking and is_ready:
@@ -43,7 +47,7 @@ func _process(_delta: float) -> void:
 		bullet_instance.position = player.position
 		GlobalAudio.play_laser()
 		is_ready = false
-		$CooldownTimer.start()
+		cooldown_timer.start()
 
 
 func _on_cooldown_timer_timeout() -> void:
