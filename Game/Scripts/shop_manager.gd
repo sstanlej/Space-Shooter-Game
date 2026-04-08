@@ -4,12 +4,12 @@ class_name ShopManager extends Sprite2D
 @onready var shop_timer: Timer = $ShopTimer
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 
-@onready var options = [$ShopOptions/AttackSpeedUpgrade, $ShopOptions/AttackDamageUpgrade, $ShopOptions/AttackDamageUpgrade2]
+@onready var options = [$ShopOptions/AttackSpeedUpgrade, $ShopOptions/AttackDamageUpgrade]
 @onready var selected_icon: Sprite2D = $ShopOptions/SelectedIcon
 
-var current_option: Sprite2D
-var previous_option: Sprite2D
-var next_option: Sprite2D
+var current_option: PlayerUpgrade
+var previous_option: PlayerUpgrade
+var next_option: PlayerUpgrade
 var active: bool = false
 var selected: int = 0
 
@@ -48,5 +48,6 @@ func _process(_delta: float) -> void:
 func _on_shop_timer_timeout() -> void:
 	print("shop timer finished")
 	animation_player.play("hide")
+	current_option.affect_player()
 	active = false
 	game_manager.start_next_wave()

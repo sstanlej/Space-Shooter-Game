@@ -1,9 +1,8 @@
 class_name Collectable extends CharacterBody2D
 
 @export var speed: float = 30
-var player: Player
+@onready var player: Player = $"../../../Player"
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass
 

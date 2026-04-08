@@ -1,6 +1,5 @@
 class_name State_Walk extends State
 
-@export var move_speed : float = 100.0
 @onready var idle : State = $"../Idle"
 
 # What happens when the player enters this state
@@ -11,7 +10,7 @@ func Enter() -> void:
 # What happens when the player exits this state
 func Exit() -> void:
 	pass
-	
+
 # What happens during _process update in this state
 func Process(_delta : float) -> State:
 	if player.direction == Vector2.ZERO:
@@ -24,8 +23,8 @@ func Process(_delta : float) -> State:
 		player.direction.x = 0
 	if player.position.x >= 230 and player.direction.x > 0:
 		player.direction.x = 0
-	player.velocity = player.direction.normalized() * move_speed
-	return null 
+	player.velocity = player.direction.normalized() * player.movement_speed
+	return null
 
 # What happens during _physics_process update in this state
 func Physics(_delta : float) -> State:
@@ -38,4 +37,3 @@ func HandleInput(_event : InputEvent) -> State:
 	if _event.is_action_released("attack"):
 		player.is_attacking = false
 	return null
-	
