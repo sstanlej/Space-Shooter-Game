@@ -5,7 +5,7 @@ var is_attacking : bool = false
 signal player_died
 signal player_damage_taken
 @onready var state_machine : PlayerStateMachine = $StateMachine
-@export var movement_speed: float = 50
+@export var movement_speed: float = 5
 
 func _ready() -> void:
 	state_machine.Initialize(self)
@@ -22,6 +22,9 @@ func get_movement_speed() -> float:
 
 func set_movement_speed(new_movement_speed: float) -> void:
 	movement_speed = new_movement_speed
+
+func add_movement_speed(value: float) -> void:
+	movement_speed += value
 
 func _on_tree_exiting() -> void:
 	emit_signal("player_died")

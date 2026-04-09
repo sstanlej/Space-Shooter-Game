@@ -23,7 +23,7 @@ func Process(_delta : float) -> State:
 		player.direction.x = 0
 	if player.position.x >= 230 and player.direction.x > 0:
 		player.direction.x = 0
-	player.velocity = player.direction.normalized() * player.movement_speed
+	player.velocity = player.direction.normalized() * player.movement_speed * 10
 	return null
 
 # What happens during _physics_process update in this state

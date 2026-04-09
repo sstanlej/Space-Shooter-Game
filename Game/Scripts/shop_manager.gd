@@ -5,7 +5,7 @@ class_name ShopManager extends Sprite2D
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var description_label: RichTextLabel = $DescriptionLabel
 
-@onready var options = [$ShopOptions/AttackSpeedUpgrade, $ShopOptions/AttackDamageUpgrade]
+@onready var options = [$ShopOptions/AttackSpeedUpgrade, $ShopOptions/MovementSpeedUpgrade, $ShopOptions/AttackDamageUpgrade]
 @onready var selected_icon: Sprite2D = $ShopOptions/SelectedIcon
 
 var current_option: PlayerUpgrade

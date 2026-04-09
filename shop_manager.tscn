@@ -1,13 +1,15 @@
-[gd_scene load_steps=13 format=3 uid="uid://dfoffskck6rmw"]
+[gd_scene load_steps=15 format=3 uid="uid://dfoffskck6rmw"]
 
 [ext_resource type="Texture2D" uid="uid://j34b2leh1iib" path="res://Game/Sprites/shop_background.png" id="1_x5iwi"]
 [ext_resource type="Script" uid="uid://cagk6yoomssui" path="res://Game/Scripts/shop_manager.gd" id="2_qhy2r"]
-[ext_resource type="Texture2D" uid="uid://eswg6d7i37gd" path="res://Collectables/Sprites/fire_speed_booster.png" id="3_qhy2r"]
 [ext_resource type="Texture2D" uid="uid://dugump0ukmep5" path="res://Collectables/Sprites/selected.png" id="4_dfcim"]
+[ext_resource type="Texture2D" uid="uid://cyhla4dmpvmef" path="res://Upgrades/Sprites/attack_speed_upgrade.png" id="4_ko4n7"]
 [ext_resource type="Script" uid="uid://1p2rxeli25vm" path="res://Upgrades/Scripts/attack_speed_upgrade.gd" id="5_ilwm6"]
 [ext_resource type="FontFile" uid="uid://bvlhnv4ultuef" path="res://Fonts/Pixeled.ttf" id="6_ilwm6"]
-[ext_resource type="Texture2D" uid="uid://cgkx5mjpmpvtq" path="res://Collectables/Sprites/attack_booster.png" id="6_ko4n7"]
+[ext_resource type="Texture2D" uid="uid://r50hjrws6do8" path="res://Upgrades/Sprites/attack_damage_upgrade.png" id="6_npmie"]
 [ext_resource type="Script" uid="uid://cqpyjajhkcr0s" path="res://Upgrades/Scripts/attack_damage_upgrade.gd" id="7_npmie"]
+[ext_resource type="Texture2D" uid="uid://f0t1hbuev73m" path="res://Upgrades/Sprites/movement_speed_upgrade.png" id="8_6mltd"]
+[ext_resource type="Script" uid="uid://bets534mmwdhy" path="res://Upgrades/Scripts/movement_speed_upgrade.gd" id="9_71l6v"]
 
 [sub_resource type="Animation" id="Animation_ynsuh"]
 length = 0.001
@@ -79,20 +81,25 @@ libraries = {
 [node name="ShopOptions" type="Node2D" parent="."]
 
 [node name="SelectedIcon" type="Sprite2D" parent="ShopOptions"]
-position = Vector2(-12, 0)
+position = Vector2(-20, 0)
 texture = ExtResource("4_dfcim")
 
 [node name="AttackSpeedUpgrade" type="Sprite2D" parent="ShopOptions"]
-position = Vector2(-12, 0)
-texture = ExtResource("3_qhy2r")
+position = Vector2(-20, 0)
+texture = ExtResource("4_ko4n7")
 script = ExtResource("5_ilwm6")
 metadata/_custom_type_script = "uid://1p2rxeli25vm"
 
 [node name="AttackDamageUpgrade" type="Sprite2D" parent="ShopOptions"]
-position = Vector2(12, 0)
-texture = ExtResource("6_ko4n7")
+position = Vector2(20, 0)
+texture = ExtResource("6_npmie")
 script = ExtResource("7_npmie")
 metadata/_custom_type_script = "uid://cqpyjajhkcr0s"
+
+[node name="MovementSpeedUpgrade" type="Sprite2D" parent="ShopOptions"]
+texture = ExtResource("8_6mltd")
+script = ExtResource("9_71l6v")
+metadata/_custom_type_script = "uid://bets534mmwdhy"
 
 [node name="ChooseTheUpgradeLabel" type="RichTextLabel" parent="."]
 offset_left = -93.0
