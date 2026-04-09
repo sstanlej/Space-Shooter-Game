@@ -3,6 +3,7 @@ class_name ShopManager extends Sprite2D
 @onready var game_manager: GameManager = $"../GameManager"
 @onready var shop_timer: Timer = $ShopTimer
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var description_label: RichTextLabel = $DescriptionLabel
 
 @onready var options = [$ShopOptions/AttackSpeedUpgrade, $ShopOptions/AttackDamageUpgrade]
 @onready var selected_icon: Sprite2D = $ShopOptions/SelectedIcon
@@ -24,6 +25,7 @@ func show_shop() -> void:
 	shop_timer.start()
 	animation_player.play("show")
 	active = true
+	update_description_label()
 	print("showing shop")
 
 func _process(_delta: float) -> void:
@@ -35,6 +37,7 @@ func _process(_delta: float) -> void:
 		current_option = next_option
 		next_option = options[selected+1] if selected < options.size()-1 else null
 		selected_icon.position = current_option.position
+		update_description_label()
 		print(selected)
 	if Input.is_action_just_pressed("left") and selected > 0:
 		selected -= 1
@@ -42,11 +45,15 @@ func _process(_delta: float) -> void:
 		current_option = previous_option
 		previous_option = options[selected-1] if selected > 0 else null
 		selected_icon.position = current_option.position
+		update_description_label()
 		print(selected)
 	if Input.is_action_just_pressed("attack"):
 		shop_timer.stop()
 		shop_timer.timeout.emit()
 
+func update_description_label() -> void:
+	var description: String = "[center]" + current_option.description
+	description_label.text = description
 
 func _on_shop_timer_timeout() -> void:
 	print("shop timer finished")
