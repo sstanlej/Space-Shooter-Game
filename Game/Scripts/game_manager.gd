@@ -41,7 +41,7 @@ func finish_wave() -> void:
 	shop_manager.show_shop()
 
 func start_next_wave() -> void:
-	wave_finished = false
+	set_wave_finished(false)
 	set_player(true)
 	# background.set_animation_active(true)
 	spawner.set_ready_to_spawn(true)
@@ -77,6 +77,9 @@ func get_wave_count() -> int:
 func set_wave_finished(value: bool) -> void:
 	wave_finished = value
 
+func get_wave_finished() -> bool:
+	return wave_finished
+
 func get_score() -> float:
 	return score
 
@@ -85,6 +88,9 @@ func get_running() -> bool:
 
 func get_spawn_timer_time() -> float:
 	return spawner.spawn_timer.time_left
+
+func get_shop_timer_time() -> float:
+	return shop_manager.shop_timer.time_left
 
 func get_escaped() -> int:
 	return escaped

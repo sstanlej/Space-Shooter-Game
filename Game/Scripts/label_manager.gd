@@ -25,7 +25,11 @@ func configure_default_labels() -> void:
 	play_again_label.visible = false
 
 func update_time_left_label() -> void:
-	var time_left: float = game_manager.get_spawn_timer_time()
+	var time_left: float
+	if not game_manager.get_wave_finished():
+		time_left  = game_manager.get_spawn_timer_time()
+	else:
+		time_left = game_manager.get_shop_timer_time()
 	time_left_label.text = "%.2f" % time_left
 
 func show_wave_label() -> void:
