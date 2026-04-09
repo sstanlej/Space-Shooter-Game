@@ -43,6 +43,9 @@ func _process(_delta: float) -> void:
 		previous_option = options[selected-1] if selected > 0 else null
 		selected_icon.position = current_option.position
 		print(selected)
+	if Input.is_action_just_pressed("attack"):
+		shop_timer.stop()
+		shop_timer.timeout.emit()
 
 
 func _on_shop_timer_timeout() -> void:
