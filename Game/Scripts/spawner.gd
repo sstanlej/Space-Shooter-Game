@@ -16,12 +16,12 @@ var ready_to_boost: bool = false
 const meteor = preload("res://Enemies/meteor.tscn")
 var meteor_speed: float = 50
 var meteor_damage: float = 1
-var meteor_health: float = 2
+var meteor_health: float = 3
 
 const ufo = preload("res://Enemies/ufo.tscn")
 var ufo_speed: float = 40
 var ufo_damage: float = 2
-var ufo_health: float = 3
+var ufo_health: float = 5
 
 const fire_boost = preload("res://Collectables/fire_booster.tscn")
 const attack_boost = preload("res://Collectables/attack_booster.tscn")
