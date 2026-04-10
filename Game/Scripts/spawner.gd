@@ -1,9 +1,5 @@
 class_name Spawner extends Node2D
 
-@export var max_y : float = 110
-@export var min_y : float = 12
-@export var pos_x : float = 250
-@export var spawn_point = [250, 65]
 @onready var spawn_timer: Timer = $SpawnTimer
 @onready var boost_spawn_timer: Timer = $BoostSpawnTimer
 @onready var pattern_gen: PatternGenerator = $PatternGenerator
@@ -29,9 +25,15 @@ var boost_duration: float = 5
 
 var rng = RandomNumberGenerator.new()
 
+@export var min_y : float = 12
+@export var max_y : float = 110
+@export var spawn_pos_x : float = 250
+var min_enemy_gap: int = 40
+var max_enemy_gap: int = 160
+
 func _ready() -> void:
 	await get_tree().process_frame
-	set_ready_to_spawn(true)
+	set_ready_to_spawn(false)
 
 func _process(_delta: float) -> void:
 	pass
@@ -40,7 +42,7 @@ func set_spawn_timer(new_time: int) -> void:
 	spawn_timer.wait_time = new_time
 
 func get_random_spawn_point() -> Array:
-	var x: float = pos_x
+	var x: float = spawn_pos_x
 	var y: float = rng.randf_range(min_y, max_y)
 	return [x, y]
 
@@ -77,13 +79,7 @@ func kill_all_enemies() -> void:
 
 func spawn_random_wave() -> void:
 	var n: int = rng.randi_range(5, 8)
-	# var amp: int = rng.randi_range(40, 50)
-	# var gap: int = rng.randi_range(30, 70)
-	var min_gap: int = 30
-	var max_gap: int = 70
-	# var offset: int = rng.randi_range(0, 50)
-	# var pattern = pattern_gen.get_sinusoid(n, amp, gap, offset)
-	var pattern = pattern_gen.get_random_points(n, min_gap, max_gap, min_y, max_y)
+	var pattern = pattern_gen.get_random_points(n, min_enemy_gap, max_enemy_gap, min_y, max_y)
 	var enemies = GameManager.Enemies.METEOR
 	game_manager.increment_wave_count()
 	print("GM wave %s" % game_manager.get_wave_count())
@@ -91,8 +87,8 @@ func spawn_random_wave() -> void:
 
 func spawn_list(points: Array, enemies: GameManager.Enemies) -> void:
 	for point in points:
-		var x: float = point[0] + spawn_point[0]
-		var y: float = point[1] # + spawn_point[1]
+		var x: float = point[0] + spawn_pos_x
+		var y: float = point[1]
 		if enemies == GameManager.Enemies.METEOR:
 			spawn_meteor(x, y)
 		elif enemies == GameManager.Enemies.UFO:
