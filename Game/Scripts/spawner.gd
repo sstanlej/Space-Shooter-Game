@@ -12,10 +12,11 @@ var rng = RandomNumberGenerator.new()
 
 static var min_y : float = 12
 static var max_y : float = 110
-static var spawn_pos_x : float = 250
+static var spawn_pos_x : int = 250
+static var middle_pos_y: int = 65
 
 const meteor = preload("res://Enemies/meteor.tscn")
-var base_meteor_speed: float = 50
+var base_meteor_speed: float = 75
 var base_meteor_health: float = 3
 var base_meteor_damage: float = 1
 var meteor_speed: float = base_meteor_speed
@@ -44,6 +45,8 @@ var min_enemy_gap: int = base_min_enemy_gap
 var max_enemy_gap: int = base_max_enemy_gap
 var min_enemy_count: int = base_min_enemy_count
 var max_enemy_count: int = base_max_enemy_count
+
+var min_cluster_vertical_distance: int = 15
 
 func _ready() -> void:
 	await get_tree().process_frame
@@ -84,8 +87,10 @@ func kill_all_enemies() -> void:
 
 func spawn_random_wave() -> void:
 	var amount: int = rng.randi_range(min_enemy_count, max_enemy_count)
-	var pattern = pattern_gen.get_random_points(amount, min_enemy_gap, max_enemy_gap, min_y, max_y)
-	var enemy_type: GDScript = UfoMovement
+	var pattern: Array
+	pattern = pattern_gen.get_random_points(amount, spawn_pos_x, min_enemy_gap, max_enemy_gap, min_y, max_y)
+	# pattern = pattern_gen.get_straight_cluster(4, min_cluster_vertical_distance, Vector2(spawn_pos_x, middle_pos_y))
+	var enemy_type: GDScript = MeteorMovement
 	game_manager.increment_wave_count()
 	print("Spawning wave %s:" % game_manager.get_wave_count())
 	print("%s enemies" % amount)
@@ -93,7 +98,7 @@ func spawn_random_wave() -> void:
 
 func spawn_list(points: Array, enemy_type: GDScript) -> void:
 	for point in points:
-		var x: float = point[0] + spawn_pos_x
+		var x: float = point[0]
 		var y: float = point[1]
 		var enemy_position: Vector2 = Vector2(x, y)
 		if enemy_type == MeteorMovement:
