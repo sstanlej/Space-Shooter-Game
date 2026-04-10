@@ -17,6 +17,8 @@ var is_running: bool = true
 var score : float = 0
 var escaped: int
 var wave_count: int = 0
+var difficulty: float = 1
+var difficulty_wave_gain: float = 0.25
 var wave_duration: int = 10
 var wave_finished: bool = false
 
@@ -36,6 +38,8 @@ func finish_wave() -> void:
 	set_wave_finished(true)
 	set_player(false)
 	label_manager.show_wave_finished_label()
+	add_difficulty(difficulty_wave_gain)
+	print("new difficulty: %s" % difficulty)
 	# background.set_animation_active(false)
 	spawner.kill_all_enemies()
 	shop_manager.show_shop()
@@ -60,6 +64,15 @@ func set_player(value: bool) -> void:
 	if value == false:
 		player.direction = Vector2.ZERO
 	player_attack_controler.set_process(value)
+
+func get_dificulty() -> float:
+	return difficulty
+
+func set_difficulty(new_difficulty: float) -> void:
+	difficulty = new_difficulty
+
+func add_difficulty(value: float) -> void:
+	difficulty += value
 
 func update_score(points: float):
 	score += points

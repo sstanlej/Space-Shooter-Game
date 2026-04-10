@@ -9,6 +9,19 @@ func get_sinusoid(n: int, amp: int, gap: int, offset: int) -> Array :
 		points.append([i*gap, y])
 	return points
 
+func get_random_points(amount: int, min_gap: int, max_gap: int, min_y, max_y) -> Array:
+	var points: Array
+	var gaps: Array = []
+	for i in range(amount): gaps.append(randi_range(min_gap, max_gap))
+	for i in range(1, amount):
+		gaps[i] += gaps[i-1]
+	for i in range(amount):
+		var y: int = rng.randi_range(min_y, max_y)
+		var point: Array = [gaps[i], y]
+		points.append(point)
+	print(points)
+	return points
+
 func get_enemy_list(meteors: int, ufos: int) -> Array:
 	var enemy_list: Array
 	var size: int = meteors + ufos

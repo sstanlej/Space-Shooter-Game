@@ -1,6 +1,6 @@
 class_name Spawner extends Node2D
 
-@export var max_y : float = 120
+@export var max_y : float = 110
 @export var min_y : float = 12
 @export var pos_x : float = 250
 @export var spawn_point = [250, 65]
@@ -76,11 +76,14 @@ func kill_all_enemies() -> void:
 	pass
 
 func spawn_random_wave() -> void:
-	var n: int = rng.randi_range(2, 8)
-	var amp: int = rng.randi_range(40, 50)
-	var gap: int = rng.randi_range(30, 70)
-	var offset: int = rng.randi_range(0, 50)
-	var pattern = pattern_gen.get_sinusoid(n, amp, gap, offset)
+	var n: int = rng.randi_range(5, 8)
+	# var amp: int = rng.randi_range(40, 50)
+	# var gap: int = rng.randi_range(30, 70)
+	var min_gap: int = 30
+	var max_gap: int = 70
+	# var offset: int = rng.randi_range(0, 50)
+	# var pattern = pattern_gen.get_sinusoid(n, amp, gap, offset)
+	var pattern = pattern_gen.get_random_points(n, min_gap, max_gap, min_y, max_y)
 	var enemies = GameManager.Enemies.METEOR
 	game_manager.increment_wave_count()
 	print("GM wave %s" % game_manager.get_wave_count())
@@ -89,7 +92,7 @@ func spawn_random_wave() -> void:
 func spawn_list(points: Array, enemies: GameManager.Enemies) -> void:
 	for point in points:
 		var x: float = point[0] + spawn_point[0]
-		var y: float = point[1] + spawn_point[1]
+		var y: float = point[1] # + spawn_point[1]
 		if enemies == GameManager.Enemies.METEOR:
 			spawn_meteor(x, y)
 		elif enemies == GameManager.Enemies.UFO:
