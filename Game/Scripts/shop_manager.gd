@@ -31,7 +31,6 @@ func _process(_delta: float) -> void:
 		next_option = options[selected+1] if selected < options.size()-1 else null
 		selected_icon.position = current_option.position
 		update_description_label()
-		print(selected)
 	if Input.is_action_just_pressed("left") and selected > 0:
 		selected -= 1
 		next_option = current_option
@@ -39,7 +38,6 @@ func _process(_delta: float) -> void:
 		previous_option = options[selected-1] if selected > 0 else null
 		selected_icon.position = current_option.position
 		update_description_label()
-		print(selected)
 	if Input.is_action_just_pressed("attack"):
 		shop_timer.stop()
 		shop_timer.timeout.emit()
