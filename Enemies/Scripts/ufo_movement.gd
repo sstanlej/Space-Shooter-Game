@@ -4,11 +4,12 @@ var vertical_dir: Vector2 = Vector2(0, 1)
 
 static func spawn_enemy(dmg: float, speed: float, health: float) -> EnemyMovement:
 	my_scene = load("res://Enemies/ufo.tscn")
-	var new_enemy: EnemyMovement = my_scene.instantiate()
-	new_enemy.set_attack(dmg)
-	new_enemy.set_move_speed(speed)
-	new_enemy.set_health(health)
-	return new_enemy
+	return super(dmg, speed, health)
+	# var new_enemy: EnemyMovement = my_scene.instantiate()
+	# new_enemy.set_attack(dmg)
+	# new_enemy.set_move_speed(speed)
+	# new_enemy.set_health(health)
+	# return new_enemy
 
 func do_movement() -> void:
 	if position.y > 120:

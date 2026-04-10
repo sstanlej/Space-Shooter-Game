@@ -81,7 +81,7 @@ func spawn_random_wave() -> void:
 	var gap: int = rng.randi_range(30, 70)
 	var offset: int = rng.randi_range(0, 50)
 	var pattern = pattern_gen.get_sinusoid(n, amp, gap, offset)
-	var enemies = GameManager.Enemies.UFO
+	var enemies = GameManager.Enemies.METEOR
 	game_manager.increment_wave_count()
 	print("GM wave %s" % game_manager.get_wave_count())
 	spawn_list(pattern, enemies)
@@ -98,7 +98,7 @@ func spawn_list(points: Array, enemies: GameManager.Enemies) -> void:
 func spawn_meteor(x: float, y: float) -> void:
 	# var score: float = game_manager.get_score()
 	var speed_mult: float = 1 # + score / 100
-	var meteor_instance = EnemyMovement.spawn_enemy(meteor_damage, meteor_speed * speed_mult, meteor_health)
+	var meteor_instance = MeteorMovement.spawn_enemy(meteor_damage, meteor_speed * speed_mult, meteor_health)
 	get_node("/root/Playground").add_child(meteor_instance)
 	meteor_instance.position.x = x
 	meteor_instance.position.y = y

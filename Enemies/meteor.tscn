@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://dtx5n23ng2cpc"]
 
-[ext_resource type="Script" uid="uid://d7c8hg0qgv2b" path="res://Enemies/Scripts/enemy_movement.gd" id="1_xtgxe"]
+[ext_resource type="Script" uid="uid://dnadqw27ek0ph" path="res://Enemies/Scripts/meteor_movement.gd" id="1_vgorg"]
 [ext_resource type="Texture2D" uid="uid://c48t25sg1mpjx" path="res://Enemies/Sprites/meteor.png" id="2_87xaf"]
 [ext_resource type="Script" uid="uid://b4ivf2ayqw3rq" path="res://Enemies/Scripts/enemy_health.gd" id="3_vgorg"]
 [ext_resource type="Script" uid="uid://dqihe208dt14r" path="res://Enemies/Scripts/hitbox.gd" id="4_g7ndn"]
@@ -12,7 +12,7 @@ radius = 6.0827627
 radius = 6.0
 
 [node name="Meteor" type="CharacterBody2D"]
-script = ExtResource("1_xtgxe")
+script = ExtResource("1_vgorg")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_87xaf")

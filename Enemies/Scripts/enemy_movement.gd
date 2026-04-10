@@ -1,9 +1,9 @@
 class_name EnemyMovement extends CharacterBody2D
+
 var direction : Vector2 = Vector2.LEFT
-var rng = RandomNumberGenerator.new()
 @export var move_speed : float = 30
 @export var attack : float = 1
-static var my_scene: PackedScene = preload("res://Enemies/meteor.tscn")
+static var my_scene: PackedScene
 
 static func spawn_enemy(dmg: float, speed: float, health: float) -> EnemyMovement:
 	var new_enemy: EnemyMovement = my_scene.instantiate()
@@ -20,7 +20,7 @@ func get_move_speed() -> float:
 
 func set_attack(new_attack: float):
 	attack = new_attack
-	
+
 func get_attack() -> float:
 	return attack
 
