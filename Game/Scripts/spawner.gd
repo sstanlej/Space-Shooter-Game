@@ -25,9 +25,9 @@ var boost_duration: float = 5
 
 var rng = RandomNumberGenerator.new()
 
-@export var min_y : float = 12
-@export var max_y : float = 110
-@export var spawn_pos_x : float = 250
+var min_y : float = 12
+var max_y : float = 110
+var spawn_pos_x : float = 250
 var min_enemy_gap: int = 40
 var max_enemy_gap: int = 160
 var min_enemy_count: int = 4
@@ -82,36 +82,26 @@ func kill_all_enemies() -> void:
 func spawn_random_wave() -> void:
 	var amount: int = rng.randi_range(min_enemy_count, max_enemy_count)
 	var pattern = pattern_gen.get_random_points(amount, min_enemy_gap, max_enemy_gap, min_y, max_y)
-	var enemies = GameManager.Enemies.METEOR
+	var enemy_type: GDScript = MeteorMovement
 	game_manager.increment_wave_count()
 	print("Spawning wave %s:" % game_manager.get_wave_count())
 	print("%s enemies" % amount)
-	spawn_list(pattern, enemies)
+	spawn_list(pattern, enemy_type)
 
-func spawn_list(points: Array, enemies: GameManager.Enemies) -> void:
+func spawn_list(points: Array, enemy_type: GDScript) -> void:
 	for point in points:
 		var x: float = point[0] + spawn_pos_x
 		var y: float = point[1]
-		if enemies == GameManager.Enemies.METEOR:
-			spawn_meteor(x, y)
-		elif enemies == GameManager.Enemies.UFO:
-			spawn_ufo(x, y)
+		var enemy_position: Vector2 = Vector2(x, y)
+		if enemy_type == MeteorMovement:
+			spawn_enemy(enemy_position, MeteorMovement, meteor_damage, meteor_speed, meteor_health)
+		elif enemy_type == UfoMovement:
+			spawn_enemy(enemy_position, UfoMovement, ufo_damage, ufo_speed, ufo_health)
 
-func spawn_meteor(x: float, y: float) -> void:
-	# var score: float = game_manager.get_score()
-	var speed_mult: float = 1 # + score / 100
-	var meteor_instance = MeteorMovement.spawn_enemy(meteor_damage, meteor_speed * speed_mult, meteor_health)
-	get_node("/root/Playground").add_child(meteor_instance)
-	meteor_instance.position.x = x
-	meteor_instance.position.y = y
-
-func spawn_ufo(x: float, y: float) -> void:
-	# var score: float = game_manager.get_score()
-	var speed_mult: float = 1 # + score / 100
-	var ufo_instance = UfoMovement.spawn_enemy(ufo_damage, ufo_speed * speed_mult, ufo_health)
-	get_node("/root/Playground").add_child(ufo_instance)
-	ufo_instance.position.x = x
-	ufo_instance.position.y = y
+func spawn_enemy(enemy_position: Vector2, type: GDScript, damage: float, speed: float, health: float) -> void:
+	var enemy_instance = type.spawn_enemy(damage, speed, health)
+	get_node("/root/Playground").add_child(enemy_instance)
+	enemy_instance.position = enemy_position
 
 func spawn_at_random() -> void:
 	var meteor_instance = meteor.instantiate()
