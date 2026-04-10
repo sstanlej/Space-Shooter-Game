@@ -19,12 +19,13 @@ var escaped: int
 var wave_count: int = 0
 var difficulty: float = 1
 var difficulty_wave_gain: float = 0.25
-var wave_duration: int = 10
+var wave_duration: int = 15
 var wave_finished: bool = false
 
 func _ready() -> void:
 	await get_tree().process_frame
 	spawner.set_spawn_timer(wave_duration)
+	spawner.set_ready_to_spawn(true)
 	background.set_animation_active(true)
 	label_manager.configure_default_labels()
 	label_manager.show_wave_label()
@@ -34,12 +35,12 @@ func _process(_delta: float):
 	pass
 
 func finish_wave() -> void:
-	print("finishing wave")
+	print("Finishing wave")
 	set_wave_finished(true)
 	set_player(false)
 	label_manager.show_wave_finished_label()
 	add_difficulty(difficulty_wave_gain)
-	print("new difficulty: %s" % difficulty)
+	print("New difficulty: %s" % difficulty)
 	# background.set_animation_active(false)
 	spawner.kill_all_enemies()
 	shop_manager.show_shop()

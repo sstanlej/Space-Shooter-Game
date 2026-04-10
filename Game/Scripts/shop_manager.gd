@@ -47,14 +47,14 @@ func show_shop() -> void:
 	animation_player.play("show")
 	active = true
 	update_description_label()
-	print("showing shop")
+	print("Showing shop")
 
 func update_description_label() -> void:
 	var description: String = "[center]" + current_option.description
 	description_label.text = description
 
 func _on_shop_timer_timeout() -> void:
-	print("shop timer finished")
+	print("Hiding shop")
 	animation_player.play("hide")
 	current_option.affect_player()
 	active = false

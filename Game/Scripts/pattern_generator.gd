@@ -19,7 +19,7 @@ func get_random_points(amount: int, min_gap: int, max_gap: int, min_y, max_y) ->
 		var y: int = rng.randi_range(min_y, max_y)
 		var point: Array = [gaps[i], y]
 		points.append(point)
-	print(points)
+	# print(points)
 	return points
 
 func get_enemy_list(meteors: int, ufos: int) -> Array:

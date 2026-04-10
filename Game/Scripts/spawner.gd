@@ -30,6 +30,8 @@ var rng = RandomNumberGenerator.new()
 @export var spawn_pos_x : float = 250
 var min_enemy_gap: int = 40
 var max_enemy_gap: int = 160
+var min_enemy_count: int = 4
+var max_enemy_count: int = 6
 
 func _ready() -> void:
 	await get_tree().process_frame
@@ -78,11 +80,12 @@ func kill_all_enemies() -> void:
 	pass
 
 func spawn_random_wave() -> void:
-	var n: int = rng.randi_range(5, 8)
-	var pattern = pattern_gen.get_random_points(n, min_enemy_gap, max_enemy_gap, min_y, max_y)
+	var amount: int = rng.randi_range(min_enemy_count, max_enemy_count)
+	var pattern = pattern_gen.get_random_points(amount, min_enemy_gap, max_enemy_gap, min_y, max_y)
 	var enemies = GameManager.Enemies.METEOR
 	game_manager.increment_wave_count()
-	print("GM wave %s" % game_manager.get_wave_count())
+	print("Spawning wave %s:" % game_manager.get_wave_count())
+	print("%s enemies" % amount)
 	spawn_list(pattern, enemies)
 
 func spawn_list(points: Array, enemies: GameManager.Enemies) -> void:
@@ -123,7 +126,7 @@ func set_ready_to_spawn(value: bool) -> void:
 		return
 	ready_to_spawn = value
 	if ready_to_spawn:
-		print("ready to spawn - starting spawn timer")
+		# print("ready to spawn - starting spawn timer")
 		ready_to_spawn = false
 		spawn_random_wave()
 		spawn_timer.start()
@@ -133,7 +136,7 @@ func _on_spawn_timer_timeout() -> void:
 	var is_running = game_manager.get_running()
 	if !is_running:
 		return
-	print("spawn timer timeout")
+	# print("spawn timer timeout")
 	game_manager.finish_wave()
 
 func _on_boost_spawn_timer_timeout() -> void:
