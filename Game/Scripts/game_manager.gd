@@ -19,7 +19,7 @@ var escaped: int
 var wave_count: int = 0
 var difficulty: float = 1
 var difficulty_wave_gain: float = 0.25
-var wave_duration: int = 15
+var wave_duration: int = 10
 var wave_finished: bool = false
 
 func _ready() -> void:

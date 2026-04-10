@@ -13,6 +13,7 @@ func get_random_points(amount: int, min_gap: int, max_gap: int, min_y, max_y) ->
 	var points: Array
 	var gaps: Array = []
 	for i in range(amount): gaps.append(randi_range(min_gap, max_gap))
+	print(gaps)
 	for i in range(1, amount):
 		gaps[i] += gaps[i-1]
 	for i in range(amount):

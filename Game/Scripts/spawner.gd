@@ -37,6 +37,7 @@ var ufo_health: float = 5
 
 var base_min_enemy_gap: int = 40
 var base_max_enemy_gap: int = 160
+var max_enemy_gap_limit: int = 80
 var base_min_enemy_count: int = 4
 var base_max_enemy_count: int = 6
 var min_enemy_gap: int = base_min_enemy_gap
@@ -55,6 +56,16 @@ func adjust_difficulty_parameters(difficulty: float) -> void:
 	var enemy_count_modifier: int = 1 * floor(2 * (difficulty-1))
 	min_enemy_count = base_min_enemy_count + enemy_count_modifier
 	max_enemy_count = base_max_enemy_count + enemy_count_modifier
+
+	var enemy_gap_modifier: float = 20 * (difficulty-1)
+	max_enemy_gap = base_max_enemy_gap - int(enemy_gap_modifier)
+
+	# 1,25 - 5
+	# 1,50 - 10
+	# 1,75 - 15
+	# 2,00 - 20
+	# 3,00 - 40
+	# 4,00 - 60
 
 func set_spawn_timer(new_time: int) -> void:
 	spawn_timer.wait_time = new_time
