@@ -12,7 +12,6 @@ class_name Spawner extends Node2D
 var ready_to_spawn : bool
 var ready_to_boost: bool = false
 
-
 const meteor = preload("res://Enemies/meteor.tscn")
 var meteor_speed: float = 50
 var meteor_damage: float = 1
@@ -30,18 +29,20 @@ var boost_duration: float = 5
 
 var rng = RandomNumberGenerator.new()
 
+func _ready() -> void:
+	await get_tree().process_frame
+	set_ready_to_spawn(true)
+
+func _process(_delta: float) -> void:
+	pass
+
+func set_spawn_timer(new_time: int) -> void:
+	spawn_timer.wait_time = new_time
+
 func get_random_spawn_point() -> Array:
 	var x: float = pos_x
 	var y: float = rng.randf_range(min_y, max_y)
 	return [x, y]
-
-func _ready() -> void:
-	await get_tree().process_frame
-	set_ready_to_spawn(true)
-	#boost_spawn_timer.start()
-
-func set_spawn_timer(new_time: int) -> void:
-	spawn_timer.wait_time = new_time
 
 func spawn_random_boost() -> void:
 	var rand: int = rng.randi_range(0, 2)
@@ -67,15 +68,6 @@ func spawn_boost(point: Array, boost: Collectable) -> void:
 	boost.set_speed(boost_speed)
 	boost.set_duration(boost_duration)
 
-func _process(_delta: float) -> void:
-	var is_running = game_manager.get_running()
-	if !is_running:
-		return
-	# if ready_to_boost:
-	# 	ready_to_boost = false
-	# 	spawn_random_boost()
-	# 	boost_spawn_timer.start()
-
 func kill_all_enemies() -> void:
 	var scene = game_manager.get_parent()
 	for child in scene.get_children():
@@ -89,7 +81,7 @@ func spawn_random_wave() -> void:
 	var gap: int = rng.randi_range(30, 70)
 	var offset: int = rng.randi_range(0, 50)
 	var pattern = pattern_gen.get_sinusoid(n, amp, gap, offset)
-	var enemies = GameManager.Enemies.METEOR
+	var enemies = GameManager.Enemies.UFO
 	game_manager.increment_wave_count()
 	print("GM wave %s" % game_manager.get_wave_count())
 	spawn_list(pattern, enemies)
@@ -130,7 +122,6 @@ func set_ready_to_spawn(value: bool) -> void:
 	var is_running = game_manager.get_running()
 	if !is_running:
 		return
-	print("setting ready to spawn to %s" % value)
 	ready_to_spawn = value
 	if ready_to_spawn:
 		print("ready to spawn - starting spawn timer")

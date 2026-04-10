@@ -21,13 +21,6 @@ func _ready() -> void:
 	next_option = options[1]
 	selected_icon.position = current_option.position
 
-func show_shop() -> void:
-	shop_timer.start()
-	animation_player.play("show")
-	active = true
-	update_description_label()
-	print("showing shop")
-
 func _process(_delta: float) -> void:
 	if not active:
 		return
@@ -50,6 +43,13 @@ func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("attack"):
 		shop_timer.stop()
 		shop_timer.timeout.emit()
+
+func show_shop() -> void:
+	shop_timer.start()
+	animation_player.play("show")
+	active = true
+	update_description_label()
+	print("showing shop")
 
 func update_description_label() -> void:
 	var description: String = "[center]" + current_option.description
