@@ -40,6 +40,7 @@ func finish_wave() -> void:
 	set_player(false)
 	label_manager.show_wave_finished_label()
 	add_difficulty(difficulty_wave_gain)
+	spawner.adjust_difficulty_parameters(difficulty)
 	print("New difficulty: %s" % difficulty)
 	# background.set_animation_active(false)
 	spawner.kill_all_enemies()
