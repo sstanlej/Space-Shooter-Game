@@ -52,6 +52,7 @@ position = Vector2(13, 50)
 
 [node name="GameManager" parent="." instance=ExtResource("2_is3ju")]
 position = Vector2(1, -1)
+wave_duration = 10
 
 [node name="Background" type="Sprite2D" parent="."]
 z_index = -1
