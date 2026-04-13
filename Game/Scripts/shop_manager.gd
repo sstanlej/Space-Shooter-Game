@@ -4,6 +4,8 @@ class_name ShopManager extends Sprite2D
 @onready var shop_timer: Timer = $ShopTimer
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var description_label: RichTextLabel = $DescriptionLabel
+@onready var stats_label: RichTextLabel = $StatsLabel
+@onready var player: Player = $"../Player"
 
 @onready var options = [$ShopOptions/AttackSpeedUpgrade, $ShopOptions/MovementSpeedUpgrade, $ShopOptions/AttackDamageUpgrade]
 @onready var selected_icon: Sprite2D = $ShopOptions/SelectedIcon
@@ -49,6 +51,8 @@ func show_shop() -> void:
 	shop_timer.start()
 	# animation_player.play("show")
 	move_open()
+	update_stats_label()
+	await get_tree().create_timer(0.5).timeout
 	active = true
 	update_description_label()
 	print("Showing shop")
@@ -57,11 +61,21 @@ func update_description_label() -> void:
 	var description: String = "[center]" + current_option.description
 	description_label.text = description
 
+func update_stats_label() -> void:
+	var player_damage: float = player.get_attack_controler().get_damage()
+	var player_attack_speed: float = player.get_attack_controler().get_attack_speed()
+	var player_speed: float = player.get_movement_speed()
+	var dmg_text: String = "[center]DMG:  %.1f \n" % player_damage
+	var atk_spd_text: String = "ATK  SPD:  %.1f \n" % player_attack_speed
+	var mv_spd_text: String = "MV SPD: %.1f \n" % player_speed
+	stats_label.text = dmg_text + atk_spd_text + mv_spd_text
+
 func _on_shop_timer_timeout() -> void:
 	print("Hiding shop")
 	# animation_player.play("hide")
 	move_close()
 	current_option.affect_player()
+	update_stats_label()
 	active = false
 	game_manager.start_next_wave()
 

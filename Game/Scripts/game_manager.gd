@@ -44,6 +44,8 @@ func finish_wave() -> void:
 	print("New difficulty: %s" % difficulty)
 	# background.set_animation_active(false)
 	spawner.kill_all_enemies()
+	await get_tree().create_timer(0.5).timeout
+	# wait(1)
 	shop_manager.show_shop()
 
 func start_next_wave() -> void:
@@ -66,6 +68,9 @@ func set_player(value: bool) -> void:
 	if value == false:
 		player.direction = Vector2.ZERO
 	player_attack_controler.set_process(value)
+
+func wait(seconds: float) -> void:
+	await get_tree().create_timer(seconds).timeout
 
 func get_dificulty() -> float:
 	return difficulty

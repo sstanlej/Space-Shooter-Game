@@ -42,7 +42,7 @@ func add_attack_speed(value: float) -> void:
 	set_attack_speed(attack_speed)
 
 func get_attack_speed() -> float:
-	return cooldown_timer.wait_time
+	return attack_speed
 
 func set_cooldown(new_cooldown: float) -> void:
 	cooldown_timer.wait_time = new_cooldown

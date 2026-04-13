@@ -127,5 +127,24 @@ theme_override_fonts/normal_font = ExtResource("6_ilwm6")
 theme_override_font_sizes/normal_font_size = 5
 bbcode_enabled = true
 text = "[center][Upgrade description here]"
+fit_content = true
+
+[node name="StatsLabel" type="RichTextLabel" parent="."]
+offset_left = 12.0
+offset_top = -30.0
+offset_right = 83.0
+offset_bottom = -2.0
+theme_override_colors/default_color = Color(0.75686276, 0.9019608, 0.7294118, 1)
+theme_override_constants/line_separation = -7
+theme_override_constants/paragraph_separation = -7
+theme_override_constants/underline_alpha = 50
+theme_override_constants/strikethrough_alpha = 50
+theme_override_fonts/normal_font = ExtResource("6_ilwm6")
+theme_override_font_sizes/normal_font_size = 5
+bbcode_enabled = true
+text = "[center]DMG:  X
+ATK  SPD:  X
+MV SPD:  X"
+fit_content = true
 
 [connection signal="timeout" from="ShopTimer" to="." method="_on_shop_timer_timeout"]
