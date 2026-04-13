@@ -14,8 +14,11 @@ var next_option: PlayerUpgrade
 var active: bool = false
 var selected: int = 0
 
+var tween: Tween
+
 func _ready() -> void:
 	await get_tree().process_frame
+	reset_tween()
 	previous_option = null
 	current_option = options[0]
 	next_option = options[1]
@@ -44,7 +47,8 @@ func _process(_delta: float) -> void:
 
 func show_shop() -> void:
 	shop_timer.start()
-	animation_player.play("show")
+	# animation_player.play("show")
+	move_open()
 	active = true
 	update_description_label()
 	print("Showing shop")
@@ -55,7 +59,25 @@ func update_description_label() -> void:
 
 func _on_shop_timer_timeout() -> void:
 	print("Hiding shop")
-	animation_player.play("hide")
+	# animation_player.play("hide")
+	move_close()
 	current_option.affect_player()
 	active = false
 	game_manager.start_next_wave()
+
+func move_open() -> void:
+	reset_tween()
+	tween.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	tween.tween_property(self, "global_position:y", 65, 0.8)
+	tween.tween_property(self, "global_position:y", 60, 0.1).set_ease(Tween.EASE_OUT)
+	tween.tween_property(self, "global_position:y", 65, 0.2).set_ease(Tween.EASE_IN)
+
+func move_close() -> void:
+	reset_tween()
+	tween.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
+	tween.tween_property(self, "global_position:y", -65, 1)
+
+func reset_tween() -> void:
+	if tween:
+		tween.kill()
+	tween = get_tree().create_tween()

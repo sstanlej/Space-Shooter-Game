@@ -24,7 +24,7 @@ func get_random_points(amount: int, start_x: int, min_gap: int, max_gap: int, mi
 	return points
 
 func add_cluster(base_array: Array, cluster_array: Array, index: int) -> Array:
-	var base_pos_y = base_array[index][1]
+	# var base_pos_y = base_array[index][1]
 	# var cluster_pos_y =
 	for i in range(cluster_array.size()):
 		cluster_array[i][0] = base_array[index][0]

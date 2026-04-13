@@ -1,7 +1,7 @@
 class_name MovementSpeedUpgrade extends PlayerUpgrade
 
 func _ready() -> void:
-	description = "Movement speed upgrade. Increases your movement speed by " + str(level) + "."
+	description = "Increases your movement speed by " + str(level) + "."
 
 
 func affect_player() -> void:
