@@ -62,13 +62,7 @@ func adjust_difficulty_parameters(difficulty: float) -> void:
 
 	var enemy_gap_modifier: float = 20 * (difficulty-1)
 	max_enemy_gap = base_max_enemy_gap - int(enemy_gap_modifier)
-
-	# 1,25 - 5
-	# 1,50 - 10
-	# 1,75 - 15
-	# 2,00 - 20
-	# 3,00 - 40
-	# 4,00 - 60
+	if max_enemy_gap < max_enemy_gap_limit: max_enemy_gap = max_enemy_gap_limit
 
 func set_spawn_timer(new_time: int) -> void:
 	spawn_timer.wait_time = new_time
@@ -89,8 +83,11 @@ func spawn_random_wave() -> void:
 	var amount: int = rng.randi_range(min_enemy_count, max_enemy_count)
 	var pattern: Array
 	pattern = pattern_gen.get_random_points(amount, spawn_pos_x, min_enemy_gap, max_enemy_gap, min_y, max_y)
-	# pattern = pattern_gen.get_straight_cluster(4, min_cluster_vertical_distance, Vector2(spawn_pos_x, middle_pos_y))
+	var cluster = pattern_gen.get_straight_cluster(4, min_cluster_vertical_distance, Vector2(spawn_pos_x, middle_pos_y))
+	pattern = pattern_gen.add_cluster(pattern, cluster, 2)
+	# TYPE OF ENEMY SPAWNED
 	var enemy_type: GDScript = MeteorMovement
+
 	game_manager.increment_wave_count()
 	print("Spawning wave %s:" % game_manager.get_wave_count())
 	print("%s enemies" % amount)
@@ -105,6 +102,8 @@ func spawn_list(points: Array, enemy_type: GDScript) -> void:
 			spawn_enemy(enemy_position, MeteorMovement, meteor_damage, meteor_speed, meteor_health)
 		elif enemy_type == UfoMovement:
 			spawn_enemy(enemy_position, UfoMovement, ufo_damage, ufo_speed, ufo_health)
+		elif enemy_type == DummySpawnPoint:
+			spawn_enemy(enemy_position, DummySpawnPoint, 0, 0, 0)
 
 func spawn_enemy(enemy_position: Vector2, type: GDScript, damage: float, speed: float, health: float) -> void:
 	var enemy_instance = type.spawn_enemy(damage, speed, health)

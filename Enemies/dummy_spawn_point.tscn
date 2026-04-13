@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://cs67v4r8msoej"]
+
+[ext_resource type="Script" uid="uid://brwvpnyrahyit" path="res://Enemies/Scripts/dummy_spawn_point.gd" id="1_0hqv1"]
+[ext_resource type="Texture2D" uid="uid://bx8qgovqv45tq" path="res://Enemies/Sprites/spawn_point.png" id="2_051wd"]
+
+[node name="DummySpawnPoint" type="CharacterBody2D"]
+script = ExtResource("1_0hqv1")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_051wd")
