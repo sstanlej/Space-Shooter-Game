@@ -22,11 +22,14 @@ func add_pattern(pattern: Pattern) -> void:
 	points += pattern.get_pattern()
 	size = points.size()
 
+func clusterify(x_index: int, amount: int, gap_y: int) -> void:
+	var cluster_position: Array = points[x_index]
+	points.remove_at(x_index)
+	self.add_cluster(amount, 0, gap_y, cluster_position)
+
 func add_cluster(cluster_size: int, gap_x: int, gap_y, cluster_start: Array) -> void:
 	var point_list: Array = []
 	if cluster_start == []:
-		#print(points.size())
-		# var last_point = points[-1]
 		cluster_start = [points[-1][0] + gap_x, 15]
 	point_list.append(cluster_start)
 	var y: int = cluster_start[1] + gap_y

@@ -84,12 +84,13 @@ func spawn_random_wave() -> void:
 	var amount: int = rng.randi_range(min_enemy_count, max_enemy_count)
 	pattern1.add_random_points(amount, spawn_pos_x, min_enemy_gap, max_enemy_gap, min_y, max_y)
 	print(pattern1.get_size())
-	var gap_x: int = rng.randi_range(min_enemy_gap, max_enemy_gap)
-	pattern1.add_cluster(5, gap_x, 30, [])
-	pattern1.add_cluster(3, gap_x, 15, [])
+	pattern1.clusterify(2, 3, 20)
+	# var gap_x: int = rng.randi_range(min_enemy_gap, max_enemy_gap)
+	# pattern1.add_cluster(5, gap_x, 30, [])
+	# pattern1.add_cluster(3, gap_x, 15, [])
 
 	# TYPE OF ENEMY SPAWNED
-	var enemy_type: GDScript = DummySpawnPoint
+	var enemy_type: GDScript = MeteorMovement
 
 	game_manager.increment_wave_count()
 	print("Spawning wave %s:" % game_manager.get_wave_count())
