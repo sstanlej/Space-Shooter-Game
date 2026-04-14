@@ -77,6 +77,7 @@ func _on_shop_timer_timeout() -> void:
 	current_option.affect_player()
 	update_stats_label()
 	active = false
+	await get_tree().create_timer(0.2).timeout
 	game_manager.start_next_wave()
 
 func move_open() -> void:

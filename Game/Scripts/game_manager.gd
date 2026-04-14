@@ -64,6 +64,7 @@ func update_player_health_label() -> void:
 
 func set_player(value: bool) -> void:
 	player.set_process(value)
+	player.get_attack_controler().set_process(value)
 	# player.visible = value
 	if value == false:
 		player.direction = Vector2.ZERO
