@@ -12,8 +12,9 @@ func _ready() -> void:
 	state_machine.Initialize(self)
 
 func _process(_delta: float) -> void:
-	direction.x = Input.get_action_strength("right") - Input.get_action_strength("left")
-	direction.y = Input.get_action_strength("down") - Input.get_action_strength("up")
+	if not Input.is_key_pressed(KEY_SHIFT):
+		direction.x = Input.get_action_strength("right") - Input.get_action_strength("left")
+		direction.y = Input.get_action_strength("down") - Input.get_action_strength("up")
 
 func _physics_process(_delta: float) -> void:
 	move_and_slide()

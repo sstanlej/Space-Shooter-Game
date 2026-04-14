@@ -7,7 +7,7 @@
 
 [node name="GameManager" type="Node2D"]
 script = ExtResource("1_qqcev")
-wave_duration = 5
+wave_duration = 20
 
 [node name="Spawner" parent="." instance=ExtResource("3_8yi26")]
 position = Vector2(-1, 0)
