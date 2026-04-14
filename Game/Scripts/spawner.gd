@@ -2,7 +2,6 @@ class_name Spawner extends Node2D
 
 @onready var spawn_timer: Timer = $SpawnTimer
 # @onready var boost_spawn_timer: Timer = $BoostSpawnTimer
-@onready var pattern_gen: PatternGenerator = $PatternGenerator
 @onready var game_manager: GameManager = $".."
 @onready var label_manager: LabelManager = $"../LabelManager"
 var ready_to_spawn : bool = false
@@ -80,21 +79,14 @@ func kill_all_enemies() -> void:
 	pass
 
 func spawn_random_wave() -> void:
-	# PATTERN GENERATION
-	var amount: int = rng.randi_range(min_enemy_count, max_enemy_count)
-	var pattern: Array
-	pattern = pattern_gen.get_random_points(amount, spawn_pos_x, min_enemy_gap, max_enemy_gap, min_y, max_y)
-	var cluster = pattern_gen.get_straight_cluster(4, min_cluster_vertical_distance, Vector2(spawn_pos_x, middle_pos_y))
-	pattern = pattern_gen.add_cluster(pattern, cluster, 2)
-
 	# NEW PATTERN GENERATION
 	var pattern1: Pattern = Pattern.new()
+	var amount: int = rng.randi_range(min_enemy_count, max_enemy_count)
 	pattern1.add_random_points(amount, spawn_pos_x, min_enemy_gap, max_enemy_gap, min_y, max_y)
 	print(pattern1.get_size())
 	var gap_x: int = rng.randi_range(min_enemy_gap, max_enemy_gap)
 	pattern1.add_cluster(5, gap_x, 30, [])
 	pattern1.add_cluster(3, gap_x, 15, [])
-
 
 	# TYPE OF ENEMY SPAWNED
 	var enemy_type: GDScript = DummySpawnPoint
