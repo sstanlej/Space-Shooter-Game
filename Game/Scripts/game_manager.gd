@@ -7,6 +7,7 @@ class_name GameManager extends Node2D
 @onready var background: Background = $"../Background"
 @onready var shop_manager: ShopManager = $"../ShopManager"
 @onready var label_manager: LabelManager = $LabelManager
+@onready var ui_manager: UIManager = $"../CameraFrame/UI"
 
 enum Enemies {
 	METEOR,
@@ -85,6 +86,7 @@ func add_difficulty(value: float) -> void:
 func update_score(points: float):
 	score += points
 	label_manager.update_score_label(score)
+	ui_manager.update_score_label(int(score))
 
 func inc_esaped() -> void:
 	escaped += 1

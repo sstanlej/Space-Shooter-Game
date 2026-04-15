@@ -10,7 +10,7 @@ var ready_to_boost: bool = false
 var rng = RandomNumberGenerator.new()
 
 static var min_y : float = 12
-static var max_y : float = 110
+static var max_y : float = 90
 static var spawn_pos_x : int = 250
 static var middle_pos_y: int = 65
 

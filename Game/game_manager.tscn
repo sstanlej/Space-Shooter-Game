@@ -17,6 +17,7 @@ z_index = 10
 script = ExtResource("3_p2a7g")
 
 [node name="TimeLeftLabel" type="RichTextLabel" parent="LabelManager"]
+visible = false
 offset_left = 220.0
 offset_top = -1.0
 offset_right = 241.0
@@ -89,6 +90,7 @@ theme_override_font_sizes/normal_font_size = 5
 text = "Health: 0"
 
 [node name="ScoreLabel" type="RichTextLabel" parent="LabelManager"]
+visible = false
 offset_left = 185.0
 offset_top = 119.0
 offset_right = 240.0
