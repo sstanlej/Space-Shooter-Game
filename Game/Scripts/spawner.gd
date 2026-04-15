@@ -46,6 +46,7 @@ var min_enemy_count: int = base_min_enemy_count
 var max_enemy_count: int = base_max_enemy_count
 
 var ufo_threshold: float = 0.1
+var clusterify_chance: float = 0.1
 
 var min_cluster_vertical_distance: int = 15
 
@@ -84,40 +85,33 @@ func kill_all_enemies() -> void:
 func generate_wave() -> Wave:
 	var wave: Wave = Wave.new()
 	var pattern: Pattern = Pattern.new()
-	# pattern1.add_random_points()
+	var wave_size: int = rng.randi_range(min_enemy_count, max_enemy_count)
+	pattern.add_random_points(wave_size, spawn_pos_x, min_enemy_gap, max_enemy_gap, min_y, max_y)
+	var cluster_size: int = 3
+	var cluster_gap: int = 20
+	for i in range(wave_size):
+		var r: float = rng.randf()
+		if r < clusterify_chance:
+			pattern.clusterify(i, cluster_size, cluster_gap)
+			print("Clusterified index %s" % i)
+
+	var enemy_types: Array
+	for i in range(pattern.get_size()):
+		var r: float = 1
+		if r > ufo_threshold:
+			enemy_types.append(DummySpawnPoint)
+		else:
+			enemy_types.append(UfoMovement)
+	wave.set_pattern(pattern)
+	wave.set_enemy_types(enemy_types)
 	return wave
 
 func spawn_random_wave() -> void:
-	# NEW PATTERN GENERATION
-	var pattern1: Pattern = Pattern.new()
-	var amount: int = rng.randi_range(min_enemy_count, max_enemy_count)
-	pattern1.add_random_points(amount, spawn_pos_x, min_enemy_gap, max_enemy_gap, min_y, max_y)
-	print(pattern1.get_size())
-	pattern1.clusterify(2, 3, 20)
-	# var gap_x: int = rng.randi_range(min_enemy_gap, max_enemy_gap)
-	# pattern1.add_cluster(5, gap_x, 30, [])
-	# pattern1.add_cluster(3, gap_x, 15, [])
-
-	# TYPE OF ENEMY SPAWNED
-	var enemy_types: Array
-	for i in range(pattern1.get_size()):
-		var r: float = rng.randf()
-		if r > ufo_threshold:
-			enemy_types.append(MeteorMovement)
-		else:
-			enemy_types.append(UfoMovement)
-
+	var wave1: Wave = generate_wave()
 	game_manager.increment_wave_count()
 	print("Spawning wave %s:" % game_manager.get_wave_count())
-	print("%s enemies" % amount)
-	var wave1: Wave = Wave.new()
-	wave1.set_pattern(pattern1)
-	wave1.set_enemy_types(enemy_types)
+	print("%s enemies" % wave1.get_size())
 	wave1.spawn(self)
-	# spawn_list(pattern1.get_pattern(), enemy_type)
-	print(pattern1.get_pattern())
-	print(pattern1.get_x_indexes())
-	print(pattern1.get_y_indexes())
 
 func spawn_enemy(enemy_position: Vector2, type: GDScript, damage: float, speed: float, health: float) -> void:
 	var enemy_instance = type.spawn_enemy(damage, speed, health)

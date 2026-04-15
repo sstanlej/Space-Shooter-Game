@@ -20,6 +20,9 @@ func set_enemy_types(new_enemy_types: Array) -> void:
 func set_pattern(new_pattern: Pattern) -> void:
     pattern = new_pattern
 
+func get_size() -> int:
+    return pattern.get_size()
+
 func spawn(spawner_node: Spawner) -> void:
     var points: Array = pattern.get_pattern()
     for i in range(points.size()):
