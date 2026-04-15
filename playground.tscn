@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://b5gn1svcnnf7a" path="res://Player/player.tscn" id="1_rupst"]
 [ext_resource type="PackedScene" uid="uid://cs1ajgmp67y01" path="res://Game/game_manager.tscn" id="2_is3ju"]
-[ext_resource type="Texture2D" uid="uid://bhbwyd8jh0yey" path="res://Game/Sprites/bckg_animation.png" id="3_m8u5f"]
+[ext_resource type="Texture2D" uid="uid://cmunpk534qfk6" path="res://Game/Sprites/base_background.png" id="3_h1jm5"]
 [ext_resource type="Script" uid="uid://beuwlxgn6r237" path="res://stop_background.gd" id="4_is3ju"]
 [ext_resource type="PackedScene" uid="uid://dfoffskck6rmw" path="res://shop_manager.tscn" id="5_o00ia"]
 [ext_resource type="Script" uid="uid://bvscfifqg2eho" path="res://Game/Scripts/Camera/camera_movement.gd" id="6_4bqqs"]
@@ -24,7 +24,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 10),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(360, 68), Vector2(-120, 68)]
+"values": [Vector2(360, 67), Vector2(-120, 67)]
 }
 
 [sub_resource type="Animation" id="Animation_m8u5f"]
@@ -41,7 +41,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 10),
 "transitions": PackedFloat32Array(1, 1.0000008),
 "update": 0,
-"values": [Vector2(360, 66), Vector2(-120, 66)]
+"values": [Vector2(360, 120), Vector2(-120, 120)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_o00ia"]
@@ -61,8 +61,8 @@ wave_duration = 10
 
 [node name="Background" type="Sprite2D" parent="."]
 z_index = -1
-position = Vector2(360, 68)
-texture = ExtResource("3_m8u5f")
+position = Vector2(360, 67)
+texture = ExtResource("3_h1jm5")
 script = ExtResource("4_is3ju")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Background"]
@@ -80,6 +80,7 @@ script = ExtResource("6_4bqqs")
 offset = Vector2(120, 67)
 
 [node name="UI" type="Sprite2D" parent="CameraFrame"]
+z_index = 100
 texture = ExtResource("7_ynsuh")
 offset = Vector2(120, 67)
 script = ExtResource("8_v7dth")
