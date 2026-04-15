@@ -20,7 +20,6 @@ var tween: Tween
 
 func _ready() -> void:
 	await get_tree().process_frame
-	reset_tween()
 	previous_option = null
 	current_option = options[0]
 	next_option = options[1]
