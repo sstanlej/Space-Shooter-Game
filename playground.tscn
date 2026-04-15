@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://ctolyotyjbqwg"]
+[gd_scene load_steps=12 format=3 uid="uid://ctolyotyjbqwg"]
 
 [ext_resource type="PackedScene" uid="uid://b5gn1svcnnf7a" path="res://Player/player.tscn" id="1_rupst"]
 [ext_resource type="PackedScene" uid="uid://cs1ajgmp67y01" path="res://Game/game_manager.tscn" id="2_is3ju"]
@@ -6,6 +6,8 @@
 [ext_resource type="Script" uid="uid://beuwlxgn6r237" path="res://stop_background.gd" id="4_is3ju"]
 [ext_resource type="PackedScene" uid="uid://dfoffskck6rmw" path="res://shop_manager.tscn" id="5_o00ia"]
 [ext_resource type="Script" uid="uid://bvscfifqg2eho" path="res://Game/Scripts/Camera/camera_movement.gd" id="6_4bqqs"]
+[ext_resource type="Texture2D" uid="uid://caubnil2iehm" path="res://Game/Scripts/ui/Sprites/game_overlay.png" id="7_ynsuh"]
+[ext_resource type="Script" uid="uid://ceksi56kybfsk" path="res://Game/Scripts/ui/ui_manager.gd" id="8_v7dth"]
 
 [sub_resource type="Animation" id="Animation_is3ju"]
 length = 10.0
@@ -74,7 +76,14 @@ script = ExtResource("6_4bqqs")
 
 [node name="Camera2D" type="Camera2D" parent="CameraFrame"]
 offset = Vector2(120, 67)
-script = ExtResource("6_4bqqs")
+
+[node name="UI" type="Sprite2D" parent="CameraFrame"]
+texture = ExtResource("7_ynsuh")
+offset = Vector2(120, 67)
+script = ExtResource("8_v7dth")
+
+[node name="HeartStartPosition" type="Node2D" parent="CameraFrame/UI"]
+position = Vector2(90, 120)
 
 [connection signal="player_damage_taken" from="Player" to="GameManager" method="_on_player_player_damage_taken"]
 [connection signal="player_died" from="Player" to="GameManager" method="_on_player_player_died"]
