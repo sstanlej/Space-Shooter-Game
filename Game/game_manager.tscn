@@ -79,6 +79,7 @@ bbcode_enabled = true
 text = "[center]GAME OVER !"
 
 [node name="HealthLabel" type="RichTextLabel" parent="LabelManager"]
+visible = false
 offset_left = 3.0
 offset_top = 119.0
 offset_right = 58.0

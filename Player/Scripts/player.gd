@@ -6,6 +6,7 @@ signal player_died
 signal player_damage_taken
 @onready var state_machine : PlayerStateMachine = $StateMachine
 @onready var attack_controler: AttackControler = $AttackControler
+@onready var health_component: Health = $HealthComponent
 @export var movement_speed: float = 5
 
 func _ready() -> void:
@@ -18,6 +19,9 @@ func _process(_delta: float) -> void:
 
 func _physics_process(_delta: float) -> void:
 	move_and_slide()
+
+func get_health_component() -> Health:
+	return health_component
 
 func get_movement_speed() -> float:
 	return movement_speed
