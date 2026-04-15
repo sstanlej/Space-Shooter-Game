@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://cn7m0yjbprdtk"]
+[gd_scene load_steps=2 format=3 uid="uid://cn7m0yjbprdtk"]
 
-[ext_resource type="Script" uid="uid://cb5atvjak52cv" path="res://Game/Scripts/spawner.gd" id="1_pvmun"]
-[ext_resource type="Script" path="res://Game/Scripts/pattern_generator.gd" id="2_smwj3"]
+[ext_resource type="Script" uid="uid://dga8epmke5iyx" path="res://Game/Scripts/spawner.gd" id="1_pvmun"]
 
 [node name="Spawner" type="Node2D"]
 script = ExtResource("1_pvmun")
@@ -9,9 +8,6 @@ script = ExtResource("1_pvmun")
 [node name="SpawnTimer" type="Timer" parent="."]
 wait_time = 10.0
 one_shot = true
-
-[node name="PatternGenerator" type="Node2D" parent="."]
-script = ExtResource("2_smwj3")
 
 [node name="BoostSpawnTimer" type="Timer" parent="."]
 wait_time = 12.0
