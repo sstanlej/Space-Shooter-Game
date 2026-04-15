@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://cmunpk534qfk6" path="res://Game/Sprites/base_background.png" id="3_h1jm5"]
 [ext_resource type="Script" uid="uid://beuwlxgn6r237" path="res://stop_background.gd" id="4_is3ju"]
 [ext_resource type="PackedScene" uid="uid://dfoffskck6rmw" path="res://shop_manager.tscn" id="5_o00ia"]
-[ext_resource type="Script" uid="uid://bvscfifqg2eho" path="res://Game/Scripts/Camera/camera_movement.gd" id="6_4bqqs"]
+[ext_resource type="Script" uid="uid://bvscfifqg2eho" path="res://Game/Scripts/camera/camera_movement.gd" id="6_4bqqs"]
 [ext_resource type="Texture2D" uid="uid://caubnil2iehm" path="res://Game/Scripts/ui/Sprites/game_overlay.png" id="7_ynsuh"]
 [ext_resource type="Script" uid="uid://ceksi56kybfsk" path="res://Game/Scripts/ui/ui_manager.gd" id="8_v7dth"]
 [ext_resource type="Texture2D" uid="uid://c8a02micrjojr" path="res://Game/Scripts/ui/Sprites/heart.png" id="9_pi42a"]
@@ -81,6 +81,7 @@ offset = Vector2(120, 67)
 
 [node name="UI" type="Sprite2D" parent="CameraFrame"]
 z_index = 100
+position = Vector2(0, 5)
 texture = ExtResource("7_ynsuh")
 offset = Vector2(120, 67)
 script = ExtResource("8_v7dth")
@@ -89,26 +90,26 @@ script = ExtResource("8_v7dth")
 position = Vector2(88, 118)
 
 [node name="Heart1" type="Sprite2D" parent="CameraFrame/UI"]
-position = Vector2(96, 126)
+position = Vector2(96, 123)
 texture = ExtResource("9_pi42a")
 
 [node name="Heart2" type="Sprite2D" parent="CameraFrame/UI"]
-position = Vector2(112, 126)
+position = Vector2(112, 123)
 texture = ExtResource("9_pi42a")
 
 [node name="Heart3" type="Sprite2D" parent="CameraFrame/UI"]
-position = Vector2(128, 126)
+position = Vector2(128, 123)
 texture = ExtResource("9_pi42a")
 
 [node name="Heart4" type="Sprite2D" parent="CameraFrame/UI"]
-position = Vector2(144, 126)
+position = Vector2(144, 123)
 texture = ExtResource("9_pi42a")
 
 [node name="ScoreLabel" type="RichTextLabel" parent="CameraFrame/UI"]
 offset_left = 144.0
-offset_top = 117.0
+offset_top = 115.0
 offset_right = 237.0
-offset_bottom = 138.0
+offset_bottom = 136.0
 theme_override_colors/default_color = Color(0.75686276, 0.9019608, 0.7294118, 1)
 theme_override_fonts/normal_font = ExtResource("10_h1jm5")
 theme_override_font_sizes/normal_font_size = 5

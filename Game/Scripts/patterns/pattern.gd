@@ -2,11 +2,28 @@ class_name Pattern extends Node2D
 
 var size: int
 var points: Array = []
+var x_indexes: Array = []
+var y_indexes: Array = []
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 
 func set_list(point_list: Array) -> void:
 	points = point_list
+	update_arrays()
+
+func update_arrays() -> void:
 	size = points.size()
+	points.sort_custom(func(a, b): return a[0] < b[0]) # chuj to ty twoja stara
+	x_indexes = []
+	y_indexes = []
+	for i in size:
+		x_indexes.append(points[i][0])
+		y_indexes.append(points[i][1])
+
+func get_x_indexes() -> Array:
+	return x_indexes
+
+func get_y_indexes() -> Array:
+	return y_indexes
 
 func get_pattern() -> Array:
 	return points
@@ -16,16 +33,18 @@ func get_size():
 
 func add_list(point_list: Array) -> void:
 	points += point_list
-	size = points.size()
+	update_arrays()
 
 func add_pattern(pattern: Pattern) -> void:
 	points += pattern.get_pattern()
-	size = points.size()
+	update_arrays()
 
 func clusterify(x_index: int, amount: int, gap_y: int) -> void:
 	var cluster_position: Array = points[x_index]
 	points.remove_at(x_index)
 	self.add_cluster(amount, 0, gap_y, cluster_position)
+	update_arrays()
+
 
 func add_cluster(cluster_size: int, gap_x: int, gap_y, cluster_start: Array) -> void:
 	var point_list: Array = []
@@ -37,6 +56,8 @@ func add_cluster(cluster_size: int, gap_x: int, gap_y, cluster_start: Array) -> 
 		point_list.append([cluster_start[0], y])
 		y += gap_y
 	points += point_list
+	update_arrays()
+
 
 func add_random_points(amount: int, start_x: int, min_gap: int, max_gap: int, min_y, max_y) -> void:
 	var point_list: Array
@@ -50,12 +71,4 @@ func add_random_points(amount: int, start_x: int, min_gap: int, max_gap: int, mi
 		var point: Array = [x_values[i], y]
 		point_list.append(point)
 	points += point_list
-
-# func get_straight_cluster(amount: int, gap: int, cluster_position: Vector2) -> Array:
-#     var point_list: Array = []
-#     point_list.append([cluster_position.x, cluster_position.y])
-#     var y: int = int(cluster_position.y) + gap
-#     for i in range(1, amount):
-#         point_list.append([cluster_position.x, y])
-#         y += gap
-#     return points
+	update_arrays()

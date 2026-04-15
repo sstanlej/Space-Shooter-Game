@@ -45,6 +45,8 @@ var max_enemy_gap: int = base_max_enemy_gap
 var min_enemy_count: int = base_min_enemy_count
 var max_enemy_count: int = base_max_enemy_count
 
+var ufo_threshold: float = 0.1
+
 var min_cluster_vertical_distance: int = 15
 
 func _ready() -> void:
@@ -63,6 +65,8 @@ func adjust_difficulty_parameters(difficulty: float) -> void:
 	max_enemy_gap = base_max_enemy_gap - int(enemy_gap_modifier)
 	if max_enemy_gap < max_enemy_gap_limit: max_enemy_gap = max_enemy_gap_limit
 
+	ufo_threshold = difficulty/10
+
 func set_spawn_timer(new_time: int) -> void:
 	spawn_timer.wait_time = new_time
 
@@ -76,7 +80,12 @@ func kill_all_enemies() -> void:
 	for child in scene.get_children():
 		if child is EnemyMovement:
 			child.queue_free()
-	pass
+
+func generate_wave() -> Wave:
+	var wave: Wave = Wave.new()
+	var pattern: Pattern = Pattern.new()
+	# pattern1.add_random_points()
+	return wave
 
 func spawn_random_wave() -> void:
 	# NEW PATTERN GENERATION
@@ -90,36 +99,30 @@ func spawn_random_wave() -> void:
 	# pattern1.add_cluster(3, gap_x, 15, [])
 
 	# TYPE OF ENEMY SPAWNED
-	var enemy_type: GDScript = MeteorMovement
+	var enemy_types: Array
+	for i in range(pattern1.get_size()):
+		var r: float = rng.randf()
+		if r > ufo_threshold:
+			enemy_types.append(MeteorMovement)
+		else:
+			enemy_types.append(UfoMovement)
 
 	game_manager.increment_wave_count()
 	print("Spawning wave %s:" % game_manager.get_wave_count())
 	print("%s enemies" % amount)
-	spawn_list(pattern1.get_pattern(), enemy_type)
-
-func spawn_list(points: Array, enemy_type: GDScript) -> void:
-	for point in points:
-		var x: float = point[0]
-		var y: float = point[1]
-		var enemy_position: Vector2 = Vector2(x, y)
-		if enemy_type == MeteorMovement:
-			spawn_enemy(enemy_position, MeteorMovement, meteor_damage, meteor_speed, meteor_health)
-		elif enemy_type == UfoMovement:
-			spawn_enemy(enemy_position, UfoMovement, ufo_damage, ufo_speed, ufo_health)
-		elif enemy_type == DummySpawnPoint:
-			spawn_enemy(enemy_position, DummySpawnPoint, 0, 0, 0)
+	var wave1: Wave = Wave.new()
+	wave1.set_pattern(pattern1)
+	wave1.set_enemy_types(enemy_types)
+	wave1.spawn(self)
+	# spawn_list(pattern1.get_pattern(), enemy_type)
+	print(pattern1.get_pattern())
+	print(pattern1.get_x_indexes())
+	print(pattern1.get_y_indexes())
 
 func spawn_enemy(enemy_position: Vector2, type: GDScript, damage: float, speed: float, health: float) -> void:
 	var enemy_instance = type.spawn_enemy(damage, speed, health)
 	get_node("/root/Playground").add_child(enemy_instance)
 	enemy_instance.position = enemy_position
-
-func spawn_at_random() -> void:
-	var meteor_instance = meteor.instantiate()
-	get_node("/root/Playground").add_child(meteor_instance)
-	var point = get_random_spawn_point()
-	meteor_instance.position.x = point[0]
-	meteor_instance.position.y = point[1]
 
 func set_ready_to_spawn(value: bool) -> void:
 	var is_running = game_manager.get_running()
@@ -139,30 +142,3 @@ func _on_spawn_timer_timeout() -> void:
 		return
 	# print("spawn timer timeout")
 	game_manager.finish_wave()
-
-# func _on_boost_spawn_timer_timeout() -> void:
-# 	ready_to_boost = true
-
-# func spawn_random_boost() -> void:
-# 	var rand: int = rng.randi_range(0, 2)
-# 	var boost: Collectable
-# 	var point: Array = get_random_spawn_point()
-# 	if rand == 0:
-# 		boost = fire_boost.instantiate()
-# 		spawn_boost(point, boost)
-# 	elif rand == 1:
-# 		boost = attack_boost.instantiate()
-# 		spawn_boost(point, boost)
-# 	elif rand == 2:
-# 		boost = fire_boost.instantiate()
-# 		spawn_boost(point, boost)
-# 		point = get_random_spawn_point()
-# 		boost = attack_boost.instantiate()
-# 		spawn_boost(point, boost)
-
-# func spawn_boost(point: Array, boost: Collectable) -> void:
-# 	get_node("/root/Playground").add_child(boost)
-# 	boost.position.x = point[0]
-# 	boost.position.y = point[1]
-# 	boost.set_speed(boost_speed)
-# 	boost.set_duration(boost_duration)
