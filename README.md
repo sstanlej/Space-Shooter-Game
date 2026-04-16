@@ -12,3 +12,12 @@ Currently implemented:
   - Attack speed booster
   - Attack damage booster
 - After losing all health (by colliding with asteroids), Game Over screen will show statistics. Pressing "R" will reset the game.
+
+State of April 17:
+- 10 second Wave system with few enemy spawning mechanics
+- Upgrade shop between waves with upgrades to choose
+- Game difficulty scaling over time affecting aspects of the spawning system
+- UI overlay with player's health and score and shop UI
+- Simple looping backround
+- Asteroids and UFOs
+- Simple debug system (holding shift and using WSAD controls the camera)

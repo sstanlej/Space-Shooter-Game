@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://b2qymqbc30gx1"]
+[gd_scene load_steps=15 format=3 uid="uid://dfoffskck6rmw"]
 
 [ext_resource type="Texture2D" uid="uid://dkmjrm1f6a12b" path="res://Game/Sprites/shop_panel.png" id="1_6mltd"]
 [ext_resource type="Script" uid="uid://cagk6yoomssui" path="res://Game/Scripts/shop_manager.gd" id="2_qhy2r"]
