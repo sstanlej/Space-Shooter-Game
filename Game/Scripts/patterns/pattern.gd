@@ -16,7 +16,9 @@ func update_arrays() -> void:
 	x_indexes = []
 	y_indexes = []
 	for i in size:
-		x_indexes.append(points[i][0])
+		var x_index: int = points[i][0]
+		if x_index not in x_indexes:
+			x_indexes.append(x_index)
 		y_indexes.append(points[i][1])
 
 func get_x_indexes() -> Array:
@@ -44,7 +46,6 @@ func clusterify(x_index: int, amount: int, gap_y: int) -> void:
 	points.remove_at(x_index)
 	self.add_cluster(amount, 0, gap_y, cluster_position)
 	update_arrays()
-
 
 func add_cluster(cluster_size: int, gap_x: int, gap_y, cluster_start: Array) -> void:
 	var point_list: Array = []

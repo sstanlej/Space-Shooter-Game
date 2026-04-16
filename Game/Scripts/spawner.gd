@@ -23,12 +23,12 @@ var meteor_damage: float = base_meteor_damage
 var meteor_health: float = base_meteor_health
 
 const ufo = preload("res://Enemies/ufo.tscn")
-var base_ufo_speed: float = 40
+var base_ufo_speed: float = 100
 var base_ufo_damage: float = 2
-var base_ufo_health: float = 5
-var ufo_speed: float = 40
-var ufo_damage: float = 2
-var ufo_health: float = 5
+var base_ufo_health: float = 50
+var ufo_speed: float = base_ufo_speed
+var ufo_damage: float = base_ufo_damage
+var ufo_health: float = base_ufo_health
 
 # const fire_boost = preload("res://Collectables/fire_booster.tscn")
 # const attack_boost = preload("res://Collectables/attack_booster.tscn")
@@ -45,7 +45,7 @@ var max_enemy_gap: int = base_max_enemy_gap
 var min_enemy_count: int = base_min_enemy_count
 var max_enemy_count: int = base_max_enemy_count
 
-var ufo_threshold: float = 0.1
+var ufo_chance: float = 0.1
 var clusterify_chance: float = 0.1
 
 var min_cluster_vertical_distance: int = 15
@@ -66,7 +66,7 @@ func adjust_difficulty_parameters(difficulty: float) -> void:
 	max_enemy_gap = base_max_enemy_gap - int(enemy_gap_modifier)
 	if max_enemy_gap < max_enemy_gap_limit: max_enemy_gap = max_enemy_gap_limit
 
-	ufo_threshold = difficulty/10
+	ufo_chance = difficulty/10
 
 func set_spawn_timer(new_time: int) -> void:
 	spawn_timer.wait_time = new_time
@@ -97,21 +97,24 @@ func generate_wave() -> Wave:
 
 	var enemy_types: Array
 	for i in range(pattern.get_size()):
-		var r: float = 1
-		if r > ufo_threshold:
-			enemy_types.append(DummySpawnPoint)
-		else:
+		var r: float = rng.randf()
+		if r < ufo_chance:
 			enemy_types.append(UfoMovement)
+		else:
+			enemy_types.append(MeteorMovement)
 	wave.set_pattern(pattern)
 	wave.set_enemy_types(enemy_types)
 	return wave
 
 func spawn_random_wave() -> void:
 	var wave1: Wave = generate_wave()
+	print(wave1.get_pattern().get_pattern())
+	print(wave1.get_pattern().get_x_indexes())
 	game_manager.increment_wave_count()
 	print("Spawning wave %s:" % game_manager.get_wave_count())
 	print("%s enemies" % wave1.get_size())
 	wave1.spawn(self)
+	# Dodaj komunikat o zabiciu wsyzstkich wrogow danej fali i za to dodatkowe punkty
 
 func spawn_enemy(enemy_position: Vector2, type: GDScript, damage: float, speed: float, health: float) -> void:
 	var enemy_instance = type.spawn_enemy(damage, speed, health)

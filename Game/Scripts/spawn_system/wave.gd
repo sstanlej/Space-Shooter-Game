@@ -20,6 +20,9 @@ func set_enemy_types(new_enemy_types: Array) -> void:
 func set_pattern(new_pattern: Pattern) -> void:
     pattern = new_pattern
 
+func get_pattern() -> Pattern:
+    return pattern
+
 func get_size() -> int:
     return pattern.get_size()
 
