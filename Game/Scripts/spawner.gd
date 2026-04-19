@@ -1,7 +1,6 @@
 class_name Spawner extends Node2D
 
 @onready var spawn_timer: Timer = $SpawnTimer
-# @onready var boost_spawn_timer: Timer = $BoostSpawnTimer
 @onready var game_manager: GameManager = $".."
 @onready var label_manager: LabelManager = $"../LabelManager"
 var ready_to_spawn : bool = false
@@ -14,41 +13,20 @@ static var max_y : float = 90
 static var spawn_pos_x : int = 250
 static var middle_pos_y: int = 65
 
-const meteor = preload("res://Enemies/meteor.tscn")
-var base_meteor_speed: float = 75
-var base_meteor_health: float = 3
-var base_meteor_damage: float = 1
-var meteor_speed: float = base_meteor_speed
-var meteor_damage: float = base_meteor_damage
-var meteor_health: float = base_meteor_health
+@export var base_min_enemy_gap: int = 40
+@export var base_max_enemy_gap: int = 160
+@export var max_enemy_gap_limit: int = 80
+@export var base_min_enemy_count: int = 4
+@export var base_max_enemy_count: int = 6
+@export var min_enemy_gap: int = base_min_enemy_gap
+@export var max_enemy_gap: int = base_max_enemy_gap
+@export var min_enemy_count: int = base_min_enemy_count
+@export var max_enemy_count: int = base_max_enemy_count
 
-const ufo = preload("res://Enemies/ufo.tscn")
-var base_ufo_speed: float = 100
-var base_ufo_damage: float = 2
-var base_ufo_health: float = 50
-var ufo_speed: float = base_ufo_speed
-var ufo_damage: float = base_ufo_damage
-var ufo_health: float = base_ufo_health
+@export var ufo_chance: float = 0.1
+@export var clusterify_chance: float = 0.1
 
-# const fire_boost = preload("res://Collectables/fire_booster.tscn")
-# const attack_boost = preload("res://Collectables/attack_booster.tscn")
-# var boost_speed: float = 50
-# var boost_duration: float = 5
-
-var base_min_enemy_gap: int = 40
-var base_max_enemy_gap: int = 160
-var max_enemy_gap_limit: int = 80
-var base_min_enemy_count: int = 4
-var base_max_enemy_count: int = 6
-var min_enemy_gap: int = base_min_enemy_gap
-var max_enemy_gap: int = base_max_enemy_gap
-var min_enemy_count: int = base_min_enemy_count
-var max_enemy_count: int = base_max_enemy_count
-
-var ufo_chance: float = 0.1
-var clusterify_chance: float = 0.1
-
-var min_cluster_vertical_distance: int = 15
+@export var min_cluster_vertical_distance: int = 15
 
 func _ready() -> void:
 	await get_tree().process_frame

@@ -5,6 +5,10 @@ class_name UIManager extends Sprite2D
 @onready var player: Player = $"../../Player"
 @onready var game_manager: GameManager = $"../../GameManager"
 @onready var score_label: RichTextLabel = $ScoreLabel
+@onready var stats_label: RichTextLabel = $StatsLabel
+@onready var damage_label: RichTextLabel = $DamageLabel
+@onready var movement_speed_label: RichTextLabel = $MoveSpeedLabel
+@onready var attack_speed_label: RichTextLabel = $AttackSpeedLabel
 
 var player_health: int
 var player_score: float
@@ -37,3 +41,9 @@ func _process(_delta: float) -> void:
 
 func update_score_label(score: int) -> void:
 	score_label.text = "[center]" + str(score)
+
+func update_stats_label(damage: int, movement_speed: int, attack_speed: int) -> void:
+	damage_label.text = str(damage)
+	movement_speed_label.text = str(movement_speed)
+	attack_speed_label.text = str(attack_speed)
+	stats_label.text = str(damage) + "     " + str(movement_speed) + "     " + str(attack_speed)

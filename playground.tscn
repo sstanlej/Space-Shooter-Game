@@ -79,7 +79,7 @@ offset = Vector2(120, 67)
 
 [node name="UI" type="Sprite2D" parent="CameraFrame"]
 z_index = 100
-position = Vector2(0, 5)
+texture_filter = 1
 texture = ExtResource("7_ynsuh")
 offset = Vector2(120, 67)
 script = ExtResource("8_v7dth")
@@ -88,31 +88,82 @@ script = ExtResource("8_v7dth")
 position = Vector2(88, 118)
 
 [node name="Heart1" type="Sprite2D" parent="CameraFrame/UI"]
-position = Vector2(96, 123)
+position = Vector2(96, 128)
 texture = ExtResource("9_pi42a")
 
 [node name="Heart2" type="Sprite2D" parent="CameraFrame/UI"]
-position = Vector2(112, 123)
+position = Vector2(112, 128)
 texture = ExtResource("9_pi42a")
 
 [node name="Heart3" type="Sprite2D" parent="CameraFrame/UI"]
-position = Vector2(128, 123)
+position = Vector2(128, 128)
 texture = ExtResource("9_pi42a")
 
 [node name="Heart4" type="Sprite2D" parent="CameraFrame/UI"]
-position = Vector2(144, 123)
+position = Vector2(144, 128)
 texture = ExtResource("9_pi42a")
 
 [node name="ScoreLabel" type="RichTextLabel" parent="CameraFrame/UI"]
-offset_left = 144.0
-offset_top = 115.0
-offset_right = 237.0
-offset_bottom = 136.0
+offset_left = 142.0
+offset_top = 121.0
+offset_right = 235.0
+offset_bottom = 142.0
 theme_override_colors/default_color = Color(0.75686276, 0.9019608, 0.7294118, 1)
 theme_override_fonts/normal_font = ExtResource("10_h1jm5")
 theme_override_font_sizes/normal_font_size = 5
 bbcode_enabled = true
 text = "[center][ SCORE ]"
+fit_content = true
+
+[node name="StatsLabel" type="RichTextLabel" parent="CameraFrame/UI"]
+visible = false
+offset_left = 37.0
+offset_top = 121.0
+offset_right = 104.0
+offset_bottom = 136.0
+theme_override_colors/default_color = Color(0.75686276, 0.9019608, 0.7294118, 1)
+theme_override_constants/line_separation = -7
+theme_override_constants/paragraph_separation = -7
+theme_override_constants/underline_alpha = 50
+theme_override_constants/strikethrough_alpha = 50
+theme_override_fonts/normal_font = ExtResource("10_h1jm5")
+theme_override_font_sizes/normal_font_size = 5
+bbcode_enabled = true
+text = "X     X     X"
+fit_content = true
+
+[node name="DamageLabel" type="RichTextLabel" parent="CameraFrame/UI"]
+texture_filter = 1
+offset_left = 37.0
+offset_top = 121.0
+offset_right = 48.0
+offset_bottom = 136.0
+theme_override_colors/default_color = Color(0.75686276, 0.9019608, 0.7294118, 1)
+theme_override_fonts/normal_font = ExtResource("10_h1jm5")
+theme_override_font_sizes/normal_font_size = 5
+text = "0"
+fit_content = true
+
+[node name="MoveSpeedLabel" type="RichTextLabel" parent="CameraFrame/UI"]
+offset_left = 53.0
+offset_top = 121.0
+offset_right = 73.0
+offset_bottom = 135.0
+theme_override_colors/default_color = Color(0.75686276, 0.9019608, 0.7294118, 1)
+theme_override_fonts/normal_font = ExtResource("10_h1jm5")
+theme_override_font_sizes/normal_font_size = 5
+text = "0"
+fit_content = true
+
+[node name="AttackSpeedLabel" type="RichTextLabel" parent="CameraFrame/UI"]
+offset_left = 68.0
+offset_top = 121.0
+offset_right = 80.0
+offset_bottom = 135.0
+theme_override_colors/default_color = Color(0.75686276, 0.9019608, 0.7294118, 1)
+theme_override_fonts/normal_font = ExtResource("10_h1jm5")
+theme_override_font_sizes/normal_font_size = 5
+text = "0"
 fit_content = true
 
 [connection signal="player_damage_taken" from="Player" to="GameManager" method="_on_player_player_damage_taken"]

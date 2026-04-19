@@ -7,6 +7,8 @@
     - Regeneracja punktu życia (“RegenerationUpgrade”)
     - Tarcza która chroni przed określoną ilością obrażeń (“ShieldUpgrade”)
     - Parametr Rarity - rzadkość, im większa tym rzadziej występuje w sklepie
+5. Zbalansować spawnowanie przeciwników i ulepszenia w sklepie
+    - Zbalansować UFO
 
 - [ ] dodac final bossa
 - [ ] dodac ekran wygranej i mozliwosc kontynuowania

@@ -99,6 +99,9 @@ func set_wave_finished(value: bool) -> void:
 func get_wave_finished() -> bool:
 	return wave_finished
 
+func get_ui_manager() -> UIManager:
+	return ui_manager
+
 func get_score() -> float:
 	return score
 
