@@ -1,4 +1,4 @@
-class_name HeartTexture extends Sprite2D
+class_name Heart extends Sprite2D
 
 var texture_on = preload("res://Game/Scripts/ui/Sprites/heart.png")
 var texture_off = preload("res://Game/Scripts/ui/Sprites/heart_empty.png")

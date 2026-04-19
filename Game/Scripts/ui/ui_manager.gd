@@ -20,7 +20,7 @@ func _ready() -> void:
 	update_score_label(0)
 	max_health = hearts.size()
 	for i in hearts.size():
-		var heart: HeartTexture = hearts[i]
+		var heart: Heart = hearts[i]
 		heart.set_on(true)
 		# hearts[i].hide()
 		# heart_visible.append(0)
