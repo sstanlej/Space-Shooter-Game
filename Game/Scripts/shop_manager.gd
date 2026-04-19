@@ -49,7 +49,6 @@ func _process(_delta: float) -> void:
 
 func show_shop() -> void:
 	shop_timer.start()
-	# animation_player.play("show")
 	move_open()
 	update_stats_label()
 	await get_tree().create_timer(0.5).timeout
@@ -65,15 +64,10 @@ func update_stats_label() -> void:
 	var player_damage: int = int(player.get_attack_controler().get_damage())
 	var player_attack_speed: int = int(player.get_attack_controler().get_attack_speed())
 	var player_speed: int = int(player.get_movement_speed())
-	# var dmg_text: String = "[center]DMG:  %.1f \n" % player_damage
-	# var atk_spd_text: String = "ATK  SPD:  %.1f \n" % player_attack_speed
-	# var mv_spd_text: String = "MV SPD: %.1f \n" % player_speed
-	# stats_label.text = dmg_text + atk_spd_text + mv_spd_text
 	game_manager.get_ui_manager().update_stats_label(player_damage, player_attack_speed, player_speed)
 
 func _on_shop_timer_timeout() -> void:
 	print("Hiding shop")
-	# animation_player.play("hide")
 	move_close()
 	current_option.affect_player()
 	update_stats_label()
