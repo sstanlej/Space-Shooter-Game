@@ -25,6 +25,7 @@ static var middle_pos_y: int = 65
 
 @export var ufo_chance: float = 0.1
 @export var clusterify_chance: float = 0.1
+@export var max_ufo_chance: float = 0.5
 
 @export var min_cluster_vertical_distance: int = 15
 
@@ -44,7 +45,7 @@ func adjust_difficulty_parameters(difficulty: float) -> void:
 	max_enemy_gap = base_max_enemy_gap - int(enemy_gap_modifier)
 	if max_enemy_gap < max_enemy_gap_limit: max_enemy_gap = max_enemy_gap_limit
 
-	ufo_chance = difficulty/10
+	ufo_chance = min(max_ufo_chance, difficulty/10)
 
 func set_spawn_timer(new_time: int) -> void:
 	spawn_timer.wait_time = new_time
