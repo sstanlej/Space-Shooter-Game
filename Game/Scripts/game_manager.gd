@@ -6,7 +6,7 @@ class_name GameManager extends Node2D
 @onready var spawner: Spawner = $Spawner
 @onready var shop_manager: ShopManager = $"../ShopManager"
 @onready var label_manager: LabelManager = $LabelManager
-@onready var ui_manager: UIManager = $"../CameraFrame/UI"
+@onready var ui_manager: UIManager = $"../UICanvasLayer/UIControl/UI"
 
 enum Enemies {
 	METEOR,

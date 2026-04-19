@@ -1,4 +1,4 @@
-class_name UIManager extends Sprite2D
+class_name UIManager extends TextureRect
 
 @onready var heart_start_position: Transform2D = $HeartStartPosition.transform
 @onready var hearts: Array = [$Heart1, $Heart2, $Heart3, $Heart4]
