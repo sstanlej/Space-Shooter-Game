@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://ctolyotyjbqwg"]
+[gd_scene load_steps=15 format=3 uid="uid://ctolyotyjbqwg"]
 
 [ext_resource type="PackedScene" uid="uid://b5gn1svcnnf7a" path="res://Player/player.tscn" id="1_rupst"]
 [ext_resource type="PackedScene" uid="uid://cs1ajgmp67y01" path="res://Game/game_manager.tscn" id="2_is3ju"]
@@ -9,6 +9,8 @@
 [ext_resource type="Script" uid="uid://ceksi56kybfsk" path="res://Game/Scripts/ui/ui_manager.gd" id="8_v7dth"]
 [ext_resource type="Texture2D" uid="uid://c8a02micrjojr" path="res://Game/Scripts/ui/Sprites/heart.png" id="9_pi42a"]
 [ext_resource type="FontFile" uid="uid://bvlhnv4ultuef" path="res://Fonts/Pixeled.ttf" id="10_h1jm5"]
+[ext_resource type="Script" uid="uid://cqqa8b61fppgh" path="res://heart.gd" id="10_pio1y"]
+[ext_resource type="Script" uid="uid://cqqa8b61fppgh" path="res://Game/Scripts/ui/heart.gd" id="11_pio1y"]
 
 [sub_resource type="Animation" id="Animation_is3ju"]
 length = 10.0
@@ -172,20 +174,24 @@ fit_content = true
 position = Vector2(88, 118)
 
 [node name="Heart1" type="Sprite2D" parent="UICanvasLayer/UIControl/UI"]
-position = Vector2(96, 128)
+position = Vector2(96, 129)
 texture = ExtResource("9_pi42a")
+script = ExtResource("10_pio1y")
 
 [node name="Heart2" type="Sprite2D" parent="UICanvasLayer/UIControl/UI"]
-position = Vector2(112, 128)
+position = Vector2(112, 129)
 texture = ExtResource("9_pi42a")
+script = ExtResource("11_pio1y")
 
 [node name="Heart3" type="Sprite2D" parent="UICanvasLayer/UIControl/UI"]
-position = Vector2(128, 128)
+position = Vector2(128, 129)
 texture = ExtResource("9_pi42a")
+script = ExtResource("11_pio1y")
 
 [node name="Heart4" type="Sprite2D" parent="UICanvasLayer/UIControl/UI"]
-position = Vector2(144, 128)
+position = Vector2(144, 129)
 texture = ExtResource("9_pi42a")
+script = ExtResource("11_pio1y")
 
 [connection signal="player_damage_taken" from="Player" to="GameManager" method="_on_player_player_damage_taken"]
 [connection signal="player_died" from="Player" to="GameManager" method="_on_player_player_died"]

@@ -20,7 +20,9 @@ func _ready() -> void:
 	update_score_label(0)
 	max_health = hearts.size()
 	for i in hearts.size():
-		hearts[i].hide()
+		var heart: HeartTexture = hearts[i]
+		heart.set_on(true)
+		# hearts[i].hide()
 		# heart_visible.append(0)
 
 func _process(_delta: float) -> void:
@@ -33,10 +35,11 @@ func _process(_delta: float) -> void:
 		for i in missing_hearts:
 			heart_visible.append(0)
 		for i in heart_visible.size():
-			hearts[i].visible = heart_visible[i]
+			hearts[i].set_on(heart_visible[i])
+			# hearts[i].visible = heart_visible[i]
 	else:
 		for i in heart_visible.size():
-			hearts[i].visible = false
+			hearts[i].set_on(false)
 			pass
 
 func update_score_label(score: int) -> void:
