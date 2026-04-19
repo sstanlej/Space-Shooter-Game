@@ -7,7 +7,7 @@ class_name Wave extends Node2D
 
 var enemy_stats_config = {
 	MeteorMovement: {"dmg": 1, "speed": 75, "hp": 3},
-	UfoMovement: {"dmg": 2, "speed": 100, "hp": 50},
+	UfoMovement: {"dmg": 2, "speed": 75, "hp": 50},
 	DummySpawnPoint: {"dmg": 0, "speed": 0, "hp": 0}
 }
 
