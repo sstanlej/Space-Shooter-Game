@@ -2,8 +2,8 @@ class_name UIManager extends TextureRect
 
 @onready var heart_start_position: Transform2D = $HeartStartPosition.transform
 @onready var hearts: Array = [$Heart1, $Heart2, $Heart3, $Heart4]
-@onready var player: Player = $"../../Player"
-@onready var game_manager: GameManager = $"../../GameManager"
+@onready var player: Player = $"../../../Player"
+@onready var game_manager: GameManager = $"../../../GameManager"
 @onready var score_label: RichTextLabel = $ScoreLabel
 @onready var stats_label: RichTextLabel = $StatsLabel
 @onready var damage_label: RichTextLabel = $DamageLabel

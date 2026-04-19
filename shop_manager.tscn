@@ -1,6 +1,6 @@
 [gd_scene load_steps=15 format=3 uid="uid://b2qymqbc30gx1"]
 
-[ext_resource type="Texture2D" uid="uid://dkmjrm1f6a12b" path="res://Game/Sprites/shop_panel.png" id="1_6mltd"]
+[ext_resource type="Texture2D" uid="uid://b3v7jgas4mstk" path="res://Game/Scripts/ui/Sprites/shop_panel.png" id="1_6mltd"]
 [ext_resource type="Script" uid="uid://cagk6yoomssui" path="res://Game/Scripts/shop_manager.gd" id="2_qhy2r"]
 [ext_resource type="Texture2D" uid="uid://dugump0ukmep5" path="res://Collectables/Sprites/selected.png" id="4_dfcim"]
 [ext_resource type="Texture2D" uid="uid://cyhla4dmpvmef" path="res://Upgrades/Sprites/attack_speed_upgrade.png" id="4_ko4n7"]
@@ -116,9 +116,9 @@ text = "[center]Choose the Upgrade:"
 
 [node name="DescriptionLabel" type="RichTextLabel" parent="."]
 offset_left = 12.0
-offset_top = 7.0
+offset_top = -25.0
 offset_right = 82.0
-offset_bottom = 35.0
+offset_bottom = 34.0
 theme_override_colors/default_color = Color(0.75686276, 0.9019608, 0.7294118, 1)
 theme_override_constants/line_separation = -7
 theme_override_constants/underline_alpha = 50
@@ -130,6 +130,7 @@ text = "[center][Upgrade description here]"
 fit_content = true
 
 [node name="StatsLabel" type="RichTextLabel" parent="."]
+visible = false
 offset_left = 12.0
 offset_top = -30.0
 offset_right = 83.0
