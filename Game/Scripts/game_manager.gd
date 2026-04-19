@@ -21,6 +21,7 @@ var difficulty: float = 1
 var difficulty_wave_gain: float = 0.25
 @export var wave_duration: int = 10
 var wave_finished: bool = false
+var distance: float = 0
 
 func _ready() -> void:
 	await get_tree().process_frame
@@ -30,8 +31,13 @@ func _ready() -> void:
 	label_manager.show_wave_label()
 	update_player_health_label()
 
+
 func _process(_delta: float):
-	pass
+	distance += _delta
+	ui_manager.update_distance_label(distance)
+
+func get_distance() -> float:
+	return distance
 
 func finish_wave() -> void:
 	print("Finishing wave")
@@ -82,7 +88,7 @@ func add_difficulty(value: float) -> void:
 func update_score(points: float):
 	score += points
 	label_manager.update_score_label(score)
-	ui_manager.update_score_label(int(score))
+	# ui_manager.update_score_label(int(score))
 
 func inc_esaped() -> void:
 	escaped += 1

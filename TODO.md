@@ -9,6 +9,14 @@
     - Parametr Rarity - rzadkość, im większa tym rzadziej występuje w sklepie
 5. Zbalansować spawnowanie przeciwników i ulepszenia w sklepie
     - Zbalansować UFO
+6. Scenerie:
+    - Rozne scenerie ktore mozna aktywowac w kodzie
+    - Kazda sceneria ma inne parametry:
+        - tlo
+        - rodzaj przeciwników
+    - Dodać obiekty takie jak ksiezyc ktore pojawiaja sie tylko raz
+7. Zmienic label score na distance
+
 
 - [ ] dodac final bossa
 - [ ] dodac ekran wygranej i mozliwosc kontynuowania
