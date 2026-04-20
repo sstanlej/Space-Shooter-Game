@@ -74,7 +74,7 @@ func _on_shop_timer_timeout() -> void:
 	active = false
 	await get_tree().create_timer(0.2).timeout
 	game_manager.set_player(true)
-	# game_manager.start_next_wave()
+	game_manager.start_next_wave()
 
 func move_open() -> void:
 	reset_tween()

@@ -40,6 +40,8 @@ func _ready() -> void:
 	update_player_health_label()
 
 func _process(_delta: float):
+	if not is_running:
+		return
 	distance += _delta
 	ui_manager.update_distance_label(distance)
 	# print(wave_cooldown_timer.time_left)
@@ -167,7 +169,7 @@ func reload_scene() -> void:
 		get_tree().reload_current_scene()
 
 func _on_wave_cooldown_timer_timeout() -> void:
-	if not is_running:
+	if not is_running or not wave_finished:
 		return
 	# Cooldown between waves passed, start the next wave
 	start_next_wave()

@@ -17,7 +17,7 @@ var player_score: float
 var max_health: int
 var missing_hearts: int
 var heart_visible: Array = []
-var health_sprite_offset: int = 10
+var health_sprite_offset: int = 12
 
 func _ready() -> void:
 	update_score_label(0)

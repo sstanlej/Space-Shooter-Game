@@ -150,7 +150,7 @@ text = "[center][ SCORE ]"
 fit_content = true
 
 [node name="HeartStartPosition" type="Node2D" parent="UICanvasLayer/UIControl/UI"]
-position = Vector2(96, 119)
+position = Vector2(93, 119)
 
 [node name="ShopManager" parent="UICanvasLayer/UIControl" node_paths=PackedStringArray("game_manager", "player") instance=ExtResource("5_o00ia")]
 game_manager = NodePath("../../../GameManager")
