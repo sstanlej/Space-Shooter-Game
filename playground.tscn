@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://ctolyotyjbqwg"]
+[gd_scene load_steps=12 format=3 uid="uid://ctolyotyjbqwg"]
 
 [ext_resource type="PackedScene" uid="uid://b5gn1svcnnf7a" path="res://Player/player.tscn" id="1_rupst"]
 [ext_resource type="PackedScene" uid="uid://cs1ajgmp67y01" path="res://Game/game_manager.tscn" id="2_is3ju"]
@@ -7,8 +7,6 @@
 [ext_resource type="Script" uid="uid://bvscfifqg2eho" path="res://Game/Scripts/camera/camera_movement.gd" id="6_4bqqs"]
 [ext_resource type="Texture2D" uid="uid://caubnil2iehm" path="res://Game/Scripts/ui/Sprites/game_overlay.png" id="7_ynsuh"]
 [ext_resource type="Script" uid="uid://ceksi56kybfsk" path="res://Game/Scripts/ui/ui_manager.gd" id="8_v7dth"]
-[ext_resource type="Script" uid="uid://0a1ibs53tok2" path="res://Game/Scripts/ui/heart.gd" id="9_h1jm5"]
-[ext_resource type="Texture2D" uid="uid://c8a02micrjojr" path="res://Game/Scripts/ui/Sprites/heart.png" id="9_pi42a"]
 [ext_resource type="FontFile" uid="uid://bvlhnv4ultuef" path="res://Fonts/Pixeled.ttf" id="10_h1jm5"]
 
 [sub_resource type="Animation" id="Animation_is3ju"]
@@ -143,46 +141,8 @@ bbcode_enabled = true
 text = "[center][ SCORE ]"
 fit_content = true
 
-[node name="StatsLabel" type="RichTextLabel" parent="UICanvasLayer/UIControl/UI"]
-visible = false
-layout_mode = 0
-offset_left = 37.0
-offset_top = 121.0
-offset_right = 104.0
-offset_bottom = 136.0
-theme_override_colors/default_color = Color(0.75686276, 0.9019608, 0.7294118, 1)
-theme_override_constants/line_separation = -7
-theme_override_constants/paragraph_separation = -7
-theme_override_constants/underline_alpha = 50
-theme_override_constants/strikethrough_alpha = 50
-theme_override_fonts/normal_font = ExtResource("10_h1jm5")
-theme_override_font_sizes/normal_font_size = 5
-bbcode_enabled = true
-text = "X     X     X"
-fit_content = true
-
 [node name="HeartStartPosition" type="Node2D" parent="UICanvasLayer/UIControl/UI"]
-position = Vector2(88, 118)
-
-[node name="Heart1" type="Sprite2D" parent="UICanvasLayer/UIControl/UI"]
-position = Vector2(96, 129)
-texture = ExtResource("9_pi42a")
-script = ExtResource("9_h1jm5")
-
-[node name="Heart2" type="Sprite2D" parent="UICanvasLayer/UIControl/UI"]
-position = Vector2(112, 129)
-texture = ExtResource("9_pi42a")
-script = ExtResource("9_h1jm5")
-
-[node name="Heart3" type="Sprite2D" parent="UICanvasLayer/UIControl/UI"]
-position = Vector2(128, 129)
-texture = ExtResource("9_pi42a")
-script = ExtResource("9_h1jm5")
-
-[node name="Heart4" type="Sprite2D" parent="UICanvasLayer/UIControl/UI"]
-position = Vector2(144, 129)
-texture = ExtResource("9_pi42a")
-script = ExtResource("9_h1jm5")
+position = Vector2(88, 121)
 
 [node name="ShopManager" parent="UICanvasLayer/UIControl" node_paths=PackedStringArray("game_manager", "player") instance=ExtResource("5_o00ia")]
 game_manager = NodePath("../../../GameManager")
