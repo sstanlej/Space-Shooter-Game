@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://ctolyotyjbqwg"]
+[gd_scene load_steps=14 format=3 uid="uid://ctolyotyjbqwg"]
 
 [ext_resource type="PackedScene" uid="uid://b5gn1svcnnf7a" path="res://Player/player.tscn" id="1_rupst"]
 [ext_resource type="PackedScene" uid="uid://cs1ajgmp67y01" path="res://Game/game_manager.tscn" id="2_is3ju"]
@@ -9,8 +9,7 @@
 [ext_resource type="Script" uid="uid://ceksi56kybfsk" path="res://Game/Scripts/ui/ui_manager.gd" id="8_v7dth"]
 [ext_resource type="Texture2D" uid="uid://c8a02micrjojr" path="res://Game/Scripts/ui/Sprites/heart.png" id="9_pi42a"]
 [ext_resource type="FontFile" uid="uid://bvlhnv4ultuef" path="res://Fonts/Pixeled.ttf" id="10_h1jm5"]
-[ext_resource type="Script" uid="uid://cqqa8b61fppgh" path="res://heart.gd" id="10_pio1y"]
-[ext_resource type="Script" uid="uid://cqqa8b61fppgh" path="res://Game/Scripts/ui/heart.gd" id="11_pio1y"]
+[ext_resource type="Script" uid="uid://cqqa8b61fppgh" path="res://heart.gd" id="11_pio1y"]
 
 [sub_resource type="Animation" id="Animation_is3ju"]
 length = 10.0
@@ -77,13 +76,6 @@ autoplay = "RESET"
 script = ExtResource("6_4bqqs")
 
 [node name="Camera2D" type="Camera2D" parent="CameraFrame"]
-offset = Vector2(120, 67)
-
-[node name="UI" type="Sprite2D" parent="CameraFrame"]
-visible = false
-z_index = 100
-texture_filter = 1
-texture = ExtResource("7_ynsuh")
 offset = Vector2(120, 67)
 
 [node name="UICanvasLayer" type="CanvasLayer" parent="."]
@@ -176,7 +168,7 @@ position = Vector2(88, 118)
 [node name="Heart1" type="Sprite2D" parent="UICanvasLayer/UIControl/UI"]
 position = Vector2(96, 129)
 texture = ExtResource("9_pi42a")
-script = ExtResource("10_pio1y")
+script = ExtResource("11_pio1y")
 
 [node name="Heart2" type="Sprite2D" parent="UICanvasLayer/UIControl/UI"]
 position = Vector2(112, 129)

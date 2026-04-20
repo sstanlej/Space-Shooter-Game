@@ -1,0 +1,114 @@
+[gd_scene load_steps=6 format=3 uid="uid://c6lx0t74s52yg"]
+
+[ext_resource type="Texture2D" uid="uid://caubnil2iehm" path="res://Game/Scripts/ui/Sprites/game_overlay.png" id="1_ibotj"]
+[ext_resource type="Script" uid="uid://ceksi56kybfsk" path="res://Game/Scripts/ui/ui_manager.gd" id="2_n5ude"]
+[ext_resource type="FontFile" uid="uid://bvlhnv4ultuef" path="res://Fonts/Pixeled.ttf" id="3_y4yjw"]
+[ext_resource type="Texture2D" uid="uid://c8a02micrjojr" path="res://Game/Scripts/ui/Sprites/heart.png" id="4_waa4j"]
+[ext_resource type="Script" uid="uid://cqqa8b61fppgh" path="res://heart.gd" id="5_ok7cu"]
+
+[node name="UICanvasLayer" type="CanvasLayer"]
+
+[node name="UIControl" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+metadata/_edit_use_anchors_ = true
+
+[node name="UI" type="TextureRect" parent="UIControl"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("1_ibotj")
+script = ExtResource("2_n5ude")
+
+[node name="AttackSpeedLabel" type="RichTextLabel" parent="UIControl/UI"]
+layout_mode = 0
+offset_left = 68.0
+offset_top = 121.0
+offset_right = 80.0
+offset_bottom = 135.0
+theme_override_colors/default_color = Color(0.75686276, 0.9019608, 0.7294118, 1)
+theme_override_fonts/normal_font = ExtResource("3_y4yjw")
+theme_override_font_sizes/normal_font_size = 5
+text = "0"
+fit_content = true
+
+[node name="DamageLabel" type="RichTextLabel" parent="UIControl/UI"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 37.0
+offset_top = 121.0
+offset_right = 48.0
+offset_bottom = 136.0
+theme_override_colors/default_color = Color(0.75686276, 0.9019608, 0.7294118, 1)
+theme_override_fonts/normal_font = ExtResource("3_y4yjw")
+theme_override_font_sizes/normal_font_size = 5
+text = "0"
+fit_content = true
+
+[node name="MoveSpeedLabel" type="RichTextLabel" parent="UIControl/UI"]
+layout_mode = 0
+offset_left = 53.0
+offset_top = 121.0
+offset_right = 73.0
+offset_bottom = 135.0
+theme_override_colors/default_color = Color(0.75686276, 0.9019608, 0.7294118, 1)
+theme_override_fonts/normal_font = ExtResource("3_y4yjw")
+theme_override_font_sizes/normal_font_size = 5
+text = "0"
+fit_content = true
+
+[node name="ScoreLabel" type="RichTextLabel" parent="UIControl/UI"]
+layout_mode = 0
+offset_left = 142.0
+offset_top = 121.0
+offset_right = 235.0
+offset_bottom = 142.0
+theme_override_colors/default_color = Color(0.75686276, 0.9019608, 0.7294118, 1)
+theme_override_fonts/normal_font = ExtResource("3_y4yjw")
+theme_override_font_sizes/normal_font_size = 5
+bbcode_enabled = true
+text = "[center][ SCORE ]"
+fit_content = true
+
+[node name="StatsLabel" type="RichTextLabel" parent="UIControl/UI"]
+visible = false
+layout_mode = 0
+offset_left = 37.0
+offset_top = 121.0
+offset_right = 104.0
+offset_bottom = 136.0
+theme_override_colors/default_color = Color(0.75686276, 0.9019608, 0.7294118, 1)
+theme_override_constants/line_separation = -7
+theme_override_constants/paragraph_separation = -7
+theme_override_constants/underline_alpha = 50
+theme_override_constants/strikethrough_alpha = 50
+theme_override_fonts/normal_font = ExtResource("3_y4yjw")
+theme_override_font_sizes/normal_font_size = 5
+bbcode_enabled = true
+text = "X     X     X"
+fit_content = true
+
+[node name="HeartStartPosition" type="Node2D" parent="UIControl/UI"]
+position = Vector2(88, 118)
+
+[node name="Heart1" type="Sprite2D" parent="UIControl/UI"]
+position = Vector2(96, 129)
+texture = ExtResource("4_waa4j")
+script = ExtResource("5_ok7cu")
+
+[node name="Heart2" type="Sprite2D" parent="UIControl/UI"]
+position = Vector2(112, 129)
+texture = ExtResource("4_waa4j")
+script = ExtResource("5_ok7cu")
+
+[node name="Heart3" type="Sprite2D" parent="UIControl/UI"]
+position = Vector2(128, 129)
+texture = ExtResource("4_waa4j")
+script = ExtResource("5_ok7cu")
+
+[node name="Heart4" type="Sprite2D" parent="UIControl/UI"]
+position = Vector2(144, 129)
+texture = ExtResource("4_waa4j")
+script = ExtResource("5_ok7cu")

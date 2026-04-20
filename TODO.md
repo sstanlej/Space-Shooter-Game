@@ -1,21 +1,29 @@
 # TO DO lista pomysły
-1. Statystyki ataku, szybkosci i szybkosci ataku wyswietlac w ui overlayu zamiast w panelu ulepszen
-2. Zastapic serduszka zielonymi lampkami
-3. Zaimplementowac nowe typu clusterow: W ksztalcie klucza ptakow i inne
+- Zastapic serduszka zielonymi lampkami
+- Zaimplementowac nowe typu clusterow: W ksztalcie klucza ptakow i inne
     - Dodac rozne rozmiary clusterow i czestotliwosc zalezna od difficulty
-4. Ulepszenia w sklepie:
+- Ulepszenia w sklepie:
     - Regeneracja punktu życia (“RegenerationUpgrade”)
     - Tarcza która chroni przed określoną ilością obrażeń (“ShieldUpgrade”)
     - Parametr Rarity - rzadkość, im większa tym rzadziej występuje w sklepie
-5. Zbalansować spawnowanie przeciwników i ulepszenia w sklepie
+        - ulepszenia o roznym rarity beda mialy inne tlo w sklepie i w opisie bedzie wzmianka o rarity
+- Zbalansować spawnowanie przeciwników i ulepszenia w sklepie
     - Zbalansować UFO
-6. Scenerie:
+- Scenerie:
     - Rozne scenerie ktore mozna aktywowac w kodzie
     - Kazda sceneria ma inne parametry:
         - tlo
         - rodzaj przeciwników
+        - obiekty w paralax
     - Dodać obiekty takie jak ksiezyc ktore pojawiaja sie tylko raz
-7. Zmienic label score na distance
+    - Tło zatrzymuje sie po zniszczeniu statku, distance przestaje sie naliczać
+- Punkty zycia:
+    - Zamiast na sztywno w kodzie i na scenie 4 obiekty serduszek, kod powinien sprawdzac max_health gracza i wyswietlac tyle serc ile gracz ma zycia
+
+
+# DONE:
+- Statystyki ataku, szybkosci i szybkosci ataku wyswietlac w ui overlayu zamiast w panelu ulepszen
+- Zmienic label score na distance
 
 
 - [ ] dodac final bossa
