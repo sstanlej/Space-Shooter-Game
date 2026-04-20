@@ -16,6 +16,9 @@ var next_option: PlayerUpgrade
 var active: bool = false
 var selected: int = 0
 
+@export var closed_y: int = -65
+@export var open_y: int = 66
+
 var tween: Tween
 
 func _ready() -> void:
@@ -64,7 +67,7 @@ func update_stats_label() -> void:
 	var player_damage: int = int(player.get_attack_controler().get_damage())
 	var player_attack_speed: int = int(player.get_attack_controler().get_attack_speed())
 	var player_speed: int = int(player.get_movement_speed())
-	game_manager.get_ui_manager().update_stats_label(player_damage, player_attack_speed, player_speed)
+	game_manager.get_ui_manager().update_stats_label(player_damage, player_speed, player_attack_speed)
 
 func _on_shop_timer_timeout() -> void:
 	print("Hiding shop")
@@ -79,14 +82,14 @@ func _on_shop_timer_timeout() -> void:
 func move_open() -> void:
 	reset_tween()
 	tween.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
-	tween.tween_property(self, "global_position:y", 65, 0.8)
-	tween.tween_property(self, "global_position:y", 60, 0.1).set_ease(Tween.EASE_OUT)
-	tween.tween_property(self, "global_position:y", 65, 0.2).set_ease(Tween.EASE_IN)
+	tween.tween_property(self, "global_position:y", open_y, 0.8)
+	tween.tween_property(self, "global_position:y", open_y-5, 0.1).set_ease(Tween.EASE_OUT)
+	tween.tween_property(self, "global_position:y", open_y, 0.2).set_ease(Tween.EASE_IN)
 
 func move_close() -> void:
 	reset_tween()
 	tween.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
-	tween.tween_property(self, "global_position:y", -65, 1)
+	tween.tween_property(self, "global_position:y", closed_y, 1)
 
 func reset_tween() -> void:
 	if tween:
