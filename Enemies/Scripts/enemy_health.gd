@@ -1,8 +1,9 @@
 extends Health
 
 @export var points: float = 10
-@onready var game_manager : GameManager = $"../../GameManager"
+@export var experience: float = 10
+signal died(points: float, experience: float)
 
 func die() -> void:
-	game_manager.update_score(points)
+	died.emit(points, experience)
 	get_parent().queue_free()

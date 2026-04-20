@@ -23,6 +23,10 @@ var difficulty_wave_gain: float = 0.25
 var wave_finished: bool = false
 var distance: float = 0
 
+var experience: int
+var experience_needed: int = 100
+var level: int = 1
+
 func _ready() -> void:
 	await get_tree().process_frame
 	spawner.set_spawn_timer(wave_duration)
@@ -30,7 +34,6 @@ func _ready() -> void:
 	label_manager.configure_default_labels()
 	label_manager.show_wave_label()
 	update_player_health_label()
-
 
 func _process(_delta: float):
 	distance += _delta
@@ -85,11 +88,6 @@ func set_difficulty(new_difficulty: float) -> void:
 func add_difficulty(value: float) -> void:
 	difficulty += value
 
-func update_score(points: float):
-	score += points
-	label_manager.update_score_label(score)
-	# ui_manager.update_score_label(int(score))
-
 func inc_esaped() -> void:
 	escaped += 1
 
@@ -133,6 +131,21 @@ func _on_player_player_damage_taken() -> void:
 func _on_player_player_died() ->  void:
 	is_running = false
 	label_manager.show_end_game_labels()
+
+func _on_enemy_died(points: float, xp: float) -> void:
+	score += points
+	experience += int(xp)
+	ui_manager.update_experience_bar(experience)
+	label_manager.update_score_label(score)
+	check_level_up()
+	# print(points, " ", xp)
+
+func check_level_up() -> void:
+	if experience >= experience_needed:
+		experience = 0
+		level += 1
+		ui_manager.update_experience_bar(experience)
+		print("Level up to level: ", level)
 
 func reload_scene() -> void:
 	if get_tree():

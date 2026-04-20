@@ -87,8 +87,8 @@ func generate_wave() -> Wave:
 
 func spawn_random_wave() -> void:
 	var wave1: Wave = generate_wave()
-	print(wave1.get_pattern().get_pattern())
-	print(wave1.get_pattern().get_x_indexes())
+	# print(wave1.get_pattern().get_pattern())
+	# print(wave1.get_pattern().get_x_indexes())
 	game_manager.increment_wave_count()
 	print("Spawning wave %s:" % game_manager.get_wave_count())
 	print("%s enemies" % wave1.get_size())
@@ -99,6 +99,9 @@ func spawn_enemy(enemy_position: Vector2, type: GDScript, damage: float, speed: 
 	var enemy_instance = type.spawn_enemy(damage, speed, health)
 	get_node("/root/Playground").add_child(enemy_instance)
 	enemy_instance.position = enemy_position
+
+	var health_node = enemy_instance.get_node("HealthComponent")
+	health_node.died.connect(game_manager._on_enemy_died)
 
 func set_ready_to_spawn(value: bool) -> void:
 	var is_running = game_manager.get_running()

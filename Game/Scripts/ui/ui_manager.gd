@@ -52,6 +52,9 @@ func _process(_delta: float) -> void:
 			hearts[i].set_on(false)
 			pass
 
+func update_experience_bar(new_value: int) -> void:
+	experience_bar.value = new_value
+
 func update_distance_label(distance: float):
 	score_label.text = "[center]" + str("%.0f" % distance) + "     km"
 
