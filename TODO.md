@@ -1,5 +1,4 @@
 # TO DO lista pomysły
-- Zastapic serduszka zielonymi lampkami
 - Zaimplementowac nowe typu clusterow: W ksztalcie klucza ptakow i inne
     - Dodac rozne rozmiary clusterow i czestotliwosc zalezna od difficulty
 - Ulepszenia w sklepie:
