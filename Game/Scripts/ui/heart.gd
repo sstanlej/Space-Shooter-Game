@@ -1,7 +1,7 @@
 class_name Heart extends Sprite2D
 
-var texture_on = preload("res://Game/Scripts/ui/Sprites/heart.png")
-var texture_off = preload("res://Game/Scripts/ui/Sprites/heart_empty.png")
+static var texture_on = preload("res://Game/Scripts/ui/Sprites/heart.png")
+static var texture_off = preload("res://Game/Scripts/ui/Sprites/heart_empty.png")
 static var my_scene: PackedScene = preload("res://Game/Scripts/ui/heart.tscn")
 
 static func spawn_heart() -> Heart:
@@ -9,6 +9,10 @@ static func spawn_heart() -> Heart:
 
 func _ready() -> void:
 	texture = texture_on
+
+static func set_textures(new_texture_on: Texture, new_texture_off: Texture) -> void:
+	texture_on = new_texture_on
+	texture_off = new_texture_off
 
 func set_on(value: bool) -> void:
 	if value:

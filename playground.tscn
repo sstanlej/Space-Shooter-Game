@@ -1,13 +1,17 @@
-[gd_scene load_steps=12 format=3 uid="uid://ctolyotyjbqwg"]
+[gd_scene load_steps=16 format=3 uid="uid://ctolyotyjbqwg"]
 
 [ext_resource type="PackedScene" uid="uid://b5gn1svcnnf7a" path="res://Player/player.tscn" id="1_rupst"]
 [ext_resource type="PackedScene" uid="uid://cs1ajgmp67y01" path="res://Game/game_manager.tscn" id="2_is3ju"]
 [ext_resource type="Texture2D" uid="uid://cmunpk534qfk6" path="res://Game/Sprites/base_background.png" id="3_h1jm5"]
 [ext_resource type="PackedScene" uid="uid://b2qymqbc30gx1" path="res://shop_manager.tscn" id="5_o00ia"]
 [ext_resource type="Script" uid="uid://bvscfifqg2eho" path="res://Game/Scripts/camera/camera_movement.gd" id="6_4bqqs"]
+[ext_resource type="Texture2D" uid="uid://ee48briuh3x5" path="res://Game/Scripts/ui/Sprites/health_full.png" id="7_h1jm5"]
 [ext_resource type="Texture2D" uid="uid://caubnil2iehm" path="res://Game/Scripts/ui/Sprites/game_overlay.png" id="7_ynsuh"]
+[ext_resource type="Texture2D" uid="uid://di4dto3ibdtf3" path="res://Game/Scripts/ui/Sprites/health_empty.png" id="8_pio1y"]
 [ext_resource type="Script" uid="uid://ceksi56kybfsk" path="res://Game/Scripts/ui/ui_manager.gd" id="8_v7dth"]
 [ext_resource type="FontFile" uid="uid://bvlhnv4ultuef" path="res://Fonts/Pixeled.ttf" id="10_h1jm5"]
+[ext_resource type="Texture2D" uid="uid://c16xy12030r1n" path="res://Game/Scripts/ui/Sprites/experience_bar_under.png" id="11_pio1y"]
+[ext_resource type="Texture2D" uid="uid://to23gur3vo1e" path="res://Game/Scripts/ui/Sprites/experience_bar_progress.png" id="12_te8jg"]
 
 [sub_resource type="Animation" id="Animation_is3ju"]
 length = 10.0
@@ -84,12 +88,15 @@ offset_right = 40.0
 offset_bottom = 40.0
 metadata/_edit_use_anchors_ = true
 
-[node name="UI" type="TextureRect" parent="UICanvasLayer/UIControl"]
+[node name="UI" type="TextureRect" parent="UICanvasLayer/UIControl" node_paths=PackedStringArray("experience_bar")]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 240.0
+offset_bottom = 135.0
 texture = ExtResource("7_ynsuh")
 script = ExtResource("8_v7dth")
+experience_bar = NodePath("../ExperienceBar")
+health_full_sprite = ExtResource("7_h1jm5")
+health_empty_sprite = ExtResource("8_pio1y")
 
 [node name="AttackSpeedLabel" type="RichTextLabel" parent="UICanvasLayer/UIControl/UI"]
 layout_mode = 0
@@ -142,11 +149,21 @@ text = "[center][ SCORE ]"
 fit_content = true
 
 [node name="HeartStartPosition" type="Node2D" parent="UICanvasLayer/UIControl/UI"]
-position = Vector2(88, 121)
+position = Vector2(96, 119)
 
 [node name="ShopManager" parent="UICanvasLayer/UIControl" node_paths=PackedStringArray("game_manager", "player") instance=ExtResource("5_o00ia")]
 game_manager = NodePath("../../../GameManager")
 player = NodePath("../../../Player")
+
+[node name="ExperienceBar" type="TextureProgressBar" parent="UICanvasLayer/UIControl"]
+layout_mode = 0
+offset_left = 92.0
+offset_top = 131.0
+offset_right = 146.0
+offset_bottom = 134.0
+value = 50.0
+texture_under = ExtResource("11_pio1y")
+texture_progress = ExtResource("12_te8jg")
 
 [connection signal="player_damage_taken" from="Player" to="GameManager" method="_on_player_player_damage_taken"]
 [connection signal="player_died" from="Player" to="GameManager" method="_on_player_player_died"]

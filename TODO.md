@@ -19,6 +19,9 @@
     - Tło zatrzymuje sie po zniszczeniu statku, distance przestaje sie naliczać
 - Punkty zycia:
     - Zamiast na sztywno w kodzie i na scenie 4 obiekty serduszek, kod powinien sprawdzac max_health gracza i wyswietlac tyle serc ile gracz ma zycia
+- SKLEP:
+    - Zamiast odpalac sie co 10 sekund, gracz zbiera kuleczki ktore laduja poziom
+    - Po zebraniu odpowiedniej ilosci uruchamia sie sklep z losowymi ulepszeniami
 
 
 # DONE:

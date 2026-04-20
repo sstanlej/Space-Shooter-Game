@@ -7,6 +7,9 @@ class_name UIManager extends TextureRect
 @onready var damage_label: RichTextLabel = $DamageLabel
 @onready var movement_speed_label: RichTextLabel = $MoveSpeedLabel
 @onready var attack_speed_label: RichTextLabel = $AttackSpeedLabel
+@export var experience_bar: TextureProgressBar
+@export var health_full_sprite: Texture
+@export var health_empty_sprite: Texture
 
 var hearts: Array
 var player_health: int
@@ -14,6 +17,7 @@ var player_score: float
 var max_health: int
 var missing_hearts: int
 var heart_visible: Array = []
+var health_sprite_offset: int = 10
 
 func _ready() -> void:
 	update_score_label(0)
@@ -21,13 +25,15 @@ func _ready() -> void:
 		max_health = roundi(player.get_health_component().get_health())
 		player_health = max_health
 	var offset: int = 0
+	experience_bar.value = 0
+	Heart.set_textures(health_full_sprite, health_empty_sprite)
 	for i in range(player_health):
 		var heart_instance = Heart.spawn_heart()
 		heart_start_position.add_child(heart_instance)
 		heart_instance.position.x += offset
 		hearts.append(heart_instance)
 		heart_instance.set_on(false)
-		offset += 16
+		offset += health_sprite_offset
 
 func _process(_delta: float) -> void:
 	if player:
