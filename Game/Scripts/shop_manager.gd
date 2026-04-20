@@ -1,11 +1,11 @@
 class_name ShopManager extends Sprite2D
 
-@onready var game_manager: GameManager = $"../GameManager"
+@export var game_manager: GameManager
+@export var player: Player
 @onready var shop_timer: Timer = $ShopTimer
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var description_label: RichTextLabel = $DescriptionLabel
 @onready var stats_label: RichTextLabel = $StatsLabel
-@onready var player: Player = $"../Player"
 
 @onready var options = [$ShopOptions/AttackSpeedUpgrade, $ShopOptions/MovementSpeedUpgrade, $ShopOptions/AttackDamageUpgrade]
 @onready var selected_icon: Sprite2D = $ShopOptions/SelectedIcon
@@ -69,7 +69,7 @@ func update_stats_label() -> void:
 func _on_shop_timer_timeout() -> void:
 	print("Hiding shop")
 	move_close()
-	current_option.affect_player()
+	current_option.affect_player(player)
 	update_stats_label()
 	active = false
 	await get_tree().create_timer(0.2).timeout

@@ -7,9 +7,9 @@
 [ext_resource type="Script" uid="uid://bvscfifqg2eho" path="res://Game/Scripts/camera/camera_movement.gd" id="6_4bqqs"]
 [ext_resource type="Texture2D" uid="uid://caubnil2iehm" path="res://Game/Scripts/ui/Sprites/game_overlay.png" id="7_ynsuh"]
 [ext_resource type="Script" uid="uid://ceksi56kybfsk" path="res://Game/Scripts/ui/ui_manager.gd" id="8_v7dth"]
+[ext_resource type="Script" uid="uid://0a1ibs53tok2" path="res://Game/Scripts/ui/heart.gd" id="9_h1jm5"]
 [ext_resource type="Texture2D" uid="uid://c8a02micrjojr" path="res://Game/Scripts/ui/Sprites/heart.png" id="9_pi42a"]
 [ext_resource type="FontFile" uid="uid://bvlhnv4ultuef" path="res://Fonts/Pixeled.ttf" id="10_h1jm5"]
-[ext_resource type="Script" uid="uid://cqqa8b61fppgh" path="res://heart.gd" id="11_pio1y"]
 
 [sub_resource type="Animation" id="Animation_is3ju"]
 length = 10.0
@@ -55,8 +55,9 @@ _data = {
 [node name="Player" parent="." instance=ExtResource("1_rupst")]
 position = Vector2(13, 50)
 
-[node name="GameManager" parent="." instance=ExtResource("2_is3ju")]
+[node name="GameManager" parent="." node_paths=PackedStringArray("shop_manager") instance=ExtResource("2_is3ju")]
 position = Vector2(1, -1)
+shop_manager = NodePath("../UICanvasLayer/UIControl/ShopManager")
 wave_duration = 10
 
 [node name="Background" type="Sprite2D" parent="."]
@@ -69,8 +70,6 @@ libraries = {
 &"": SubResource("AnimationLibrary_o00ia")
 }
 autoplay = "RESET"
-
-[node name="ShopManager" parent="." instance=ExtResource("5_o00ia")]
 
 [node name="CameraFrame" type="Node2D" parent="."]
 script = ExtResource("6_4bqqs")
@@ -168,22 +167,26 @@ position = Vector2(88, 118)
 [node name="Heart1" type="Sprite2D" parent="UICanvasLayer/UIControl/UI"]
 position = Vector2(96, 129)
 texture = ExtResource("9_pi42a")
-script = ExtResource("11_pio1y")
+script = ExtResource("9_h1jm5")
 
 [node name="Heart2" type="Sprite2D" parent="UICanvasLayer/UIControl/UI"]
 position = Vector2(112, 129)
 texture = ExtResource("9_pi42a")
-script = ExtResource("11_pio1y")
+script = ExtResource("9_h1jm5")
 
 [node name="Heart3" type="Sprite2D" parent="UICanvasLayer/UIControl/UI"]
 position = Vector2(128, 129)
 texture = ExtResource("9_pi42a")
-script = ExtResource("11_pio1y")
+script = ExtResource("9_h1jm5")
 
 [node name="Heart4" type="Sprite2D" parent="UICanvasLayer/UIControl/UI"]
 position = Vector2(144, 129)
 texture = ExtResource("9_pi42a")
-script = ExtResource("11_pio1y")
+script = ExtResource("9_h1jm5")
+
+[node name="ShopManager" parent="UICanvasLayer/UIControl" node_paths=PackedStringArray("game_manager", "player") instance=ExtResource("5_o00ia")]
+game_manager = NodePath("../../../GameManager")
+player = NodePath("../../../Player")
 
 [connection signal="player_damage_taken" from="Player" to="GameManager" method="_on_player_player_damage_taken"]
 [connection signal="player_died" from="Player" to="GameManager" method="_on_player_player_died"]
