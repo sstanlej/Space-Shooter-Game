@@ -5,8 +5,9 @@
 [ext_resource type="PackedScene" uid="uid://cn7m0yjbprdtk" path="res://Game/spawner.tscn" id="3_8yi26"]
 [ext_resource type="Script" uid="uid://c6w471vnalgaq" path="res://Game/Scripts/label_manager.gd" id="3_p2a7g"]
 
-[node name="GameManager" type="Node2D"]
+[node name="GameManager" type="Node2D" node_paths=PackedStringArray("wave_cooldown_timer")]
 script = ExtResource("1_qqcev")
+wave_cooldown_timer = NodePath("WaveCooldownTimer")
 wave_duration = 20
 
 [node name="Spawner" parent="." instance=ExtResource("3_8yi26")]
@@ -104,4 +105,9 @@ theme_override_fonts/normal_font = ExtResource("2_p2a7g")
 theme_override_font_sizes/normal_font_size = 5
 text = "Score: 0"
 
+[node name="WaveCooldownTimer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
 [connection signal="timeout" from="LabelManager/WaveLabelTimer" to="LabelManager" method="_on_wave_label_timer_timeout"]
+[connection signal="timeout" from="WaveCooldownTimer" to="." method="_on_wave_cooldown_timer_timeout"]

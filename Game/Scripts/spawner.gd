@@ -117,7 +117,8 @@ func set_ready_to_spawn(value: bool) -> void:
 
 func _on_spawn_timer_timeout() -> void:
 	var is_running = game_manager.get_running()
-	if !is_running:
+	var is_wave_finished = game_manager.get_wave_finished()
+	if not is_running or is_wave_finished:
 		return
 	# print("spawn timer timeout")
 	game_manager.finish_wave()

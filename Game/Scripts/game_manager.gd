@@ -7,6 +7,7 @@ class_name GameManager extends Node2D
 @export var shop_manager: ShopManager
 @onready var label_manager: LabelManager = $LabelManager
 @onready var ui_manager: UIManager = $"../UICanvasLayer/UIControl/UI"
+@export var wave_cooldown_timer: Timer
 
 enum Enemies {
 	METEOR,
@@ -20,6 +21,7 @@ var wave_count: int = 0
 var difficulty: float = 1
 var difficulty_wave_gain: float = 0.25
 @export var wave_duration: int = 10
+@export var wave_cooldown: int = 5
 var wave_finished: bool = false
 var distance: float = 0
 
@@ -29,6 +31,8 @@ var level: int = 1
 
 func _ready() -> void:
 	await get_tree().process_frame
+	wave_cooldown_timer.wait_time = wave_cooldown
+	# wave_cooldown_timer.start()
 	spawner.set_spawn_timer(wave_duration)
 	spawner.set_ready_to_spawn(true)
 	label_manager.configure_default_labels()
@@ -38,6 +42,7 @@ func _ready() -> void:
 func _process(_delta: float):
 	distance += _delta
 	ui_manager.update_distance_label(distance)
+	# print(wave_cooldown_timer.time_left)
 
 func get_distance() -> float:
 	return distance
@@ -45,15 +50,16 @@ func get_distance() -> float:
 func finish_wave() -> void:
 	print("Finishing wave")
 	set_wave_finished(true)
-	set_player(false)
+	# set_player(false)
 	label_manager.show_wave_finished_label()
 	add_difficulty(difficulty_wave_gain)
 	spawner.adjust_difficulty_parameters(difficulty)
 	print("New difficulty: %s" % difficulty)
-	spawner.kill_all_enemies()
-	await get_tree().create_timer(0.5).timeout
+	# spawner.kill_all_enemies()
+	# await get_tree().create_timer(0.5).timeout
 	# wait(1)
-	shop_manager.show_shop()
+	# shop_manager.show_shop()
+	wave_cooldown_timer.start()
 
 func start_next_wave() -> void:
 	set_wave_finished(false)
@@ -146,7 +152,22 @@ func check_level_up() -> void:
 		level += 1
 		ui_manager.update_experience_bar(experience)
 		print("Level up to level: ", level)
+		shop_manager.show_shop()
+		# toggle_pause()
+		spawner.kill_all_enemies()
+		finish_wave()
+		set_player(false)
+
+func toggle_pause() -> void:
+	var new_pause_state = not get_tree().paused
+	get_tree().paused = new_pause_state
 
 func reload_scene() -> void:
 	if get_tree():
 		get_tree().reload_current_scene()
+
+func _on_wave_cooldown_timer_timeout() -> void:
+	if not is_running:
+		return
+	# Cooldown between waves passed, start the next wave
+	start_next_wave()

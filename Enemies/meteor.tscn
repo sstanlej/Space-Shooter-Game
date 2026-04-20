@@ -19,6 +19,7 @@ texture = ExtResource("2_87xaf")
 
 [node name="HealthComponent" type="Node2D" parent="."]
 script = ExtResource("3_vgorg")
+experience = 15.0
 MAX_HEALTH = 3.0
 
 [node name="Area2D" type="Area2D" parent="."]

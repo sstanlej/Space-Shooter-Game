@@ -22,6 +22,7 @@ texture = ExtResource("2_qgf0o")
 [node name="HealthComponent" type="Node2D" parent="."]
 script = ExtResource("3_h4bi8")
 points = 30.0
+experience = 45.0
 MAX_HEALTH = 3.0
 
 [node name="Area2D" type="Area2D" parent="."]
