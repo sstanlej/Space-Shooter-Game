@@ -17,16 +17,19 @@
         - obiekty w paralax
     - Dodać obiekty takie jak ksiezyc ktore pojawiaja sie tylko raz
     - Tło zatrzymuje sie po zniszczeniu statku, distance przestaje sie naliczać
-- Punkty zycia:
-    - Zamiast na sztywno w kodzie i na scenie 4 obiekty serduszek, kod powinien sprawdzac max_health gracza i wyswietlac tyle serc ile gracz ma zycia
 - SKLEP:
-    - Zamiast odpalac sie co 10 sekund, gracz zbiera kuleczki ktore laduja poziom
-    - Po zebraniu odpowiedniej ilosci uruchamia sie sklep z losowymi ulepszeniami
+    - NIE KOŃCZY WAVE'a tylko go zatrzymuje
 
 
 # DONE:
 - Statystyki ataku, szybkosci i szybkosci ataku wyswietlac w ui overlayu zamiast w panelu ulepszen
 - Zmienic label score na distance
+- SKLEP:
+    - Zamiast odpalac sie co 10 sekund, gracz zbiera kuleczki ktore laduja poziom
+    - Po zebraniu odpowiedniej ilosci uruchamia sie sklep z losowymi ulepszeniami
+- Punkty zycia:
+    - Zamiast na sztywno w kodzie i na scenie 4 obiekty serduszek, kod powinien sprawdzac max_health gracza i wyswietlac tyle serc ile gracz ma zycia
+
 
 
 - [ ] dodac final bossa

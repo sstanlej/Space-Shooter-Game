@@ -83,23 +83,23 @@ libraries = {
 
 [node name="SelectedIcon" type="Sprite2D" parent="ShopOptions"]
 modulate = Color(0.75686276, 0.9019608, 0.7294118, 1)
-position = Vector2(-18, 18)
+position = Vector2(-16, 20)
 texture = ExtResource("4_dfcim")
 
 [node name="AttackSpeedUpgrade" type="Sprite2D" parent="ShopOptions"]
-position = Vector2(-58, 18)
+position = Vector2(-65, 20)
 texture = ExtResource("4_ko4n7")
 script = ExtResource("5_ilwm6")
 metadata/_custom_type_script = "uid://1p2rxeli25vm"
 
 [node name="AttackDamageUpgrade" type="Sprite2D" parent="ShopOptions"]
-position = Vector2(-18, 18)
+position = Vector2(-16, 20)
 texture = ExtResource("6_npmie")
 script = ExtResource("7_npmie")
 metadata/_custom_type_script = "uid://cqpyjajhkcr0s"
 
 [node name="MovementSpeedUpgrade" type="Sprite2D" parent="ShopOptions"]
-position = Vector2(-38, 18)
+position = Vector2(-41, 20)
 texture = ExtResource("8_6mltd")
 script = ExtResource("9_71l6v")
 metadata/_custom_type_script = "uid://bets534mmwdhy"
