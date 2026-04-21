@@ -18,6 +18,8 @@
     - Tło zatrzymuje sie po zniszczeniu statku, distance przestaje sie naliczać
 - SKLEP:
     - NIE KOŃCZY WAVE'a tylko go zatrzymuje
+- UI
+    - Przeniesc calkowicie funkcjonalnosc LabelManagera z GameManagera do UIManagera i usunac LabelManager
 
 
 # DONE:
