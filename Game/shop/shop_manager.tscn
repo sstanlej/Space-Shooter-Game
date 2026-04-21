@@ -1,7 +1,7 @@
 [gd_scene load_steps=15 format=3 uid="uid://b2qymqbc30gx1"]
 
-[ext_resource type="Texture2D" uid="uid://b3v7jgas4mstk" path="res://Game/Scripts/ui/Sprites/shop_panel.png" id="1_6mltd"]
-[ext_resource type="Script" uid="uid://cagk6yoomssui" path="res://Game/Scripts/shop_manager.gd" id="2_qhy2r"]
+[ext_resource type="Texture2D" uid="uid://b3v7jgas4mstk" path="res://Game/ui/Sprites/shop_panel.png" id="1_6mltd"]
+[ext_resource type="Script" uid="uid://cagk6yoomssui" path="res://Game/shop/shop_manager.gd" id="2_qhy2r"]
 [ext_resource type="Texture2D" uid="uid://dugump0ukmep5" path="res://Collectables/Sprites/selected.png" id="4_dfcim"]
 [ext_resource type="Texture2D" uid="uid://cyhla4dmpvmef" path="res://Upgrades/Sprites/attack_speed_upgrade.png" id="4_ko4n7"]
 [ext_resource type="Script" uid="uid://1p2rxeli25vm" path="res://Upgrades/Scripts/attack_speed_upgrade.gd" id="5_ilwm6"]

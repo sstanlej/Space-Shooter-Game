@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cmunpk534qfk6"
-path="res://.godot/imported/base_background.png-fd2dd46e56efaeb267fb50de0a1345d2.ctex"
+uid="uid://caubnil2iehm"
+path="res://.godot/imported/game_overlay.png-e7899fa8c6efc2b9ddc1d443c7246266.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Game/Sprites/base_background.png"
-dest_files=["res://.godot/imported/base_background.png-fd2dd46e56efaeb267fb50de0a1345d2.ctex"]
+source_file="res://Game/ui/Sprites/game_overlay.png"
+dest_files=["res://.godot/imported/game_overlay.png-e7899fa8c6efc2b9ddc1d443c7246266.ctex"]
 
 [params]
 

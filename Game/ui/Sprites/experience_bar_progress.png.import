@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bhbwyd8jh0yey"
-path="res://.godot/imported/bckg_animation.png-bee88f1890e5c184888d6291a32617e7.ctex"
+uid="uid://to23gur3vo1e"
+path="res://.godot/imported/experience_bar_progress.png-556b93459fae58a95c8737872ae09eeb.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Game/Sprites/bckg_animation.png"
-dest_files=["res://.godot/imported/bckg_animation.png-bee88f1890e5c184888d6291a32617e7.ctex"]
+source_file="res://Game/ui/Sprites/experience_bar_progress.png"
+dest_files=["res://.godot/imported/experience_bar_progress.png-556b93459fae58a95c8737872ae09eeb.ctex"]
 
 [params]
 

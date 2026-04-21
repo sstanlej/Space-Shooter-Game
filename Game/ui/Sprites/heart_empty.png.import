@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://j34b2leh1iib"
-path="res://.godot/imported/shop_background.png-89ad87faa3841cbed303bfbe28207645.ctex"
+uid="uid://cvxhn5ox81s0d"
+path="res://.godot/imported/heart_empty.png-c4e35f69cb589892f0f693e1d69f0438.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Game/Sprites/shop_background.png"
-dest_files=["res://.godot/imported/shop_background.png-89ad87faa3841cbed303bfbe28207645.ctex"]
+source_file="res://Game/ui/Sprites/heart_empty.png"
+dest_files=["res://.godot/imported/heart_empty.png-c4e35f69cb589892f0f693e1d69f0438.ctex"]
 
 [params]
 

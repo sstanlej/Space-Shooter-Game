@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://b7l6nx2xuqy5x"]
 
-[ext_resource type="Script" uid="uid://0a1ibs53tok2" path="res://Game/Scripts/ui/heart.gd" id="1_lrmso"]
+[ext_resource type="Script" uid="uid://0a1ibs53tok2" path="res://Game/ui/heart.gd" id="1_lrmso"]
 
 [node name="Heart" type="Sprite2D"]
 centered = false

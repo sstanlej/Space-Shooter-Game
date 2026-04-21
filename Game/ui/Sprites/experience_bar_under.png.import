@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c16xy12030r1n"
-path="res://.godot/imported/experience_bar_under.png-8db0f79d066759843584a60c69bd89a1.ctex"
+path="res://.godot/imported/experience_bar_under.png-6231ace814381d8f3134df1323348751.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Game/Scripts/ui/Sprites/experience_bar_under.png"
-dest_files=["res://.godot/imported/experience_bar_under.png-8db0f79d066759843584a60c69bd89a1.ctex"]
+source_file="res://Game/ui/Sprites/experience_bar_under.png"
+dest_files=["res://.godot/imported/experience_bar_under.png-6231ace814381d8f3134df1323348751.ctex"]
 
 [params]
 

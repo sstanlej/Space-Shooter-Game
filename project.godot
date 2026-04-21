@@ -11,13 +11,12 @@ config_version=5
 [application]
 
 config/name="First Godot Game"
-run/main_scene="res://playground.tscn"
+run/main_scene="res://Game/playground.tscn"
 config/features=PackedStringArray("4.5", "Forward Plus")
-config/icon="res://icon.svg"
 
 [autoload]
 
-GlobalAudio="*res://Game/game_audio.tscn"
+GlobalAudio="*res://Game/game_manager/game_audio.tscn"
 
 [display]
 

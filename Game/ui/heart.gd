@@ -1,8 +1,8 @@
 class_name Heart extends Sprite2D
 
-static var texture_on = preload("res://Game/Scripts/ui/Sprites/heart.png")
-static var texture_off = preload("res://Game/Scripts/ui/Sprites/heart_empty.png")
-static var my_scene: PackedScene = preload("res://Game/Scripts/ui/heart.tscn")
+static var texture_on = preload("res://Game/ui/Sprites/heart.png")
+static var texture_off = preload("res://Game/ui/Sprites/heart_empty.png")
+static var my_scene: PackedScene = preload("res://Game/ui/heart.tscn")
 
 static func spawn_heart() -> Heart:
 	return my_scene.instantiate()

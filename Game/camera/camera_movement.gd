@@ -13,4 +13,3 @@ func _physics_process(_delta: float) -> void:
 # func _unhandled_input(event: InputEvent) -> void:
 # 	if event.is_action("ui_right") and Input.is_key_pressed(KEY_SHIFT):
 # 		position.x += 10
-

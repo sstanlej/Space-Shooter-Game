@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://to23gur3vo1e"
-path="res://.godot/imported/experience_bar_progress.png-f620672ff4b2a4022432890d17293ce0.ctex"
+uid="uid://cmunpk534qfk6"
+path="res://.godot/imported/base_background.png-012cf5da5163eb0c238ca0f08e349b7d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Game/Scripts/ui/Sprites/experience_bar_progress.png"
-dest_files=["res://.godot/imported/experience_bar_progress.png-f620672ff4b2a4022432890d17293ce0.ctex"]
+source_file="res://Game/sceneries/Sprites/base_background.png"
+dest_files=["res://.godot/imported/base_background.png-012cf5da5163eb0c238ca0f08e349b7d.ctex"]
 
 [params]
 
