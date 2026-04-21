@@ -1,7 +1,10 @@
 # Space Shooter
 Stanisław Liszewski
 
-## Experience Update (02.15)
+My first attempt at making a game in Godot Engine.
+Game about shooting incoming asteroids and gaining as many points as possible.
+
+## Experience Update (21.04)
 Changelog:
 - Added experience system, enemies now give you experience after death
 - Experience Bar - tracks your progress
@@ -9,23 +12,14 @@ Changelog:
 - Shop now doesn't trigger between waves
 - Updated UI
 
-My first attempt at making a game in Godot Engine.
-Game about shooting incoming asteroids and gaining as many points as possible.
-
-Currently implemented:
+## Currently implemented:
 - Player movement (WASD) and shooting (Space)
-- Asteroid spawning in random sinusoid patterns in waves
-- Shooting down an asteroid grants points
-- 2 types of boosters spawn periodically:
-  - Attack speed booster
-  - Attack damage booster
+- Shooting down an asteroid grants points and experience
 - After losing all health (by colliding with asteroids), Game Over screen will show statistics. Pressing "R" will reset the game.
-
-State of April 17:
 - 10 second Wave system with few enemy spawning mechanics
-- Upgrade shop between waves with upgrades to choose
+- Upgrade shop with upgrades to choose
 - Game difficulty scaling over time affecting aspects of the spawning system
-- UI overlay with player's health and score and shop UI
+- UI overlay with player's health, distance, stats and shop UI
 - Simple looping backround
 - Asteroids and UFOs
 - Simple debug system (holding shift and using WSAD controls the camera)
