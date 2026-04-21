@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://dm65e3c05axaa"]
 
 [ext_resource type="Script" uid="uid://cnand14y6nkig" path="res://Game/game_manager/game_audio.gd" id="1_ykmpt"]
-[ext_resource type="AudioStream" uid="uid://dt5c2y6kq4hji" path="res://Enemies/Sounds/car-crash-sound-376882.mp3" id="2_oxt5x"]
+[ext_resource type="AudioStream" uid="uid://dt5c2y6kq4hji" path="res://Enemies/general/Sounds/car-crash-sound-376882.mp3" id="2_oxt5x"]
 [ext_resource type="AudioStream" uid="uid://tkgndh2r3xbw" path="res://Bullet/Sounds/laser-312360.mp3" id="3_jv0w2"]
 
 [node name="GameAudio" type="Node2D"]

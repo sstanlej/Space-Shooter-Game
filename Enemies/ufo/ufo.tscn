@@ -1,9 +1,9 @@
 [gd_scene load_steps=7 format=3 uid="uid://c3awanfc1db0g"]
 
-[ext_resource type="Script" uid="uid://btfoxhajj6pal" path="res://Enemies/Scripts/ufo_movement.gd" id="1_qgf0o"]
-[ext_resource type="Texture2D" uid="uid://cv5m8dh0jyoem" path="res://Enemies/Sprites/ufo.png" id="2_qgf0o"]
-[ext_resource type="Script" uid="uid://b4ivf2ayqw3rq" path="res://Enemies/Scripts/enemy_health.gd" id="3_h4bi8"]
-[ext_resource type="Script" uid="uid://dqihe208dt14r" path="res://Enemies/Scripts/hitbox.gd" id="4_m625d"]
+[ext_resource type="Script" uid="uid://btfoxhajj6pal" path="res://Enemies/ufo/ufo_movement.gd" id="1_qgf0o"]
+[ext_resource type="Texture2D" uid="uid://cv5m8dh0jyoem" path="res://Enemies/ufo/ufo.png" id="2_qgf0o"]
+[ext_resource type="Script" uid="uid://b4ivf2ayqw3rq" path="res://Enemies/general/Scripts/enemy_health.gd" id="3_h4bi8"]
+[ext_resource type="Script" uid="uid://dqihe208dt14r" path="res://Enemies/general/Scripts/hitbox.gd" id="4_m625d"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ft8ul"]
 radius = 5.0

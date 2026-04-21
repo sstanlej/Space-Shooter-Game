@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://o88evbl3t7uj"
-path="res://.godot/imported/flying_demon.png-0b0e875b3065244271bfdefa1a8d2843.ctex"
+uid="uid://c48t25sg1mpjx"
+path="res://.godot/imported/meteor.png-60149556c15592e76959a11755916a22.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Enemies/Sprites/flying_demon.png"
-dest_files=["res://.godot/imported/flying_demon.png-0b0e875b3065244271bfdefa1a8d2843.ctex"]
+source_file="res://Enemies/meteor/meteor.png"
+dest_files=["res://.godot/imported/meteor.png-60149556c15592e76959a11755916a22.ctex"]
 
 [params]
 

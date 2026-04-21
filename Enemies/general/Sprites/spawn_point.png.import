@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c48t25sg1mpjx"
-path="res://.godot/imported/meteor.png-9d373b10e0fba080fab3d8fc7b3e403b.ctex"
+uid="uid://bx8qgovqv45tq"
+path="res://.godot/imported/spawn_point.png-28baa734c6fbad537cce9227e18406a8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Enemies/Sprites/meteor.png"
-dest_files=["res://.godot/imported/meteor.png-9d373b10e0fba080fab3d8fc7b3e403b.ctex"]
+source_file="res://Enemies/general/Sprites/spawn_point.png"
+dest_files=["res://.godot/imported/spawn_point.png-28baa734c6fbad537cce9227e18406a8.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bx8qgovqv45tq"
-path="res://.godot/imported/spawn_point.png-954ec8069eec9b63deaa7c9e64e5a79c.ctex"
+uid="uid://o88evbl3t7uj"
+path="res://.godot/imported/flying_demon.png-3adca099931334f6091da959a886bffd.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Enemies/Sprites/spawn_point.png"
-dest_files=["res://.godot/imported/spawn_point.png-954ec8069eec9b63deaa7c9e64e5a79c.ctex"]
+source_file="res://Enemies/general/Sprites/flying_demon.png"
+dest_files=["res://.godot/imported/flying_demon.png-3adca099931334f6091da959a886bffd.ctex"]
 
 [params]
 

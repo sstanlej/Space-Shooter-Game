@@ -5,7 +5,7 @@ var amplitude: float = 30
 var vertical_speed_mult: float = 1
 
 static func spawn_enemy(dmg: float, speed: float, health: float) -> EnemyMovement:
-	my_scene = load("res://Enemies/ufo.tscn")
+	my_scene = load("res://Enemies/ufo/ufo.tscn")
 	return super(dmg, speed, health)
 
 func do_movement() -> void:
