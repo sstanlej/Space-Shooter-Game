@@ -13,19 +13,19 @@ repeat_size = Vector2(720, 135)
 texture = ExtResource("1_ia822")
 centered = false
 
+[node name="StarsParallax" type="Parallax2D" parent="."]
+scroll_scale = Vector2(0.5, 0.5)
+repeat_size = Vector2(720, 135)
+autoscroll = Vector2(-10, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="StarsParallax"]
+texture = ExtResource("2_64q22")
+centered = false
+
 [node name="MoonParallax" type="Parallax2D" parent="."]
 repeat_size = Vector2(720, 0)
 autoscroll = Vector2(-30, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="MoonParallax"]
 texture = ExtResource("3_f70rk")
-centered = false
-
-[node name="StarsParallax" type="Parallax2D" parent="."]
-scroll_scale = Vector2(0.5, 0.5)
-repeat_size = Vector2(720, 135)
-autoscroll = Vector2(-60, 0)
-
-[node name="Sprite2D" type="Sprite2D" parent="StarsParallax"]
-texture = ExtResource("2_64q22")
 centered = false
