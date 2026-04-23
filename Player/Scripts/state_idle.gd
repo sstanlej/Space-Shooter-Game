@@ -29,6 +29,3 @@ func HandleInput(_event : InputEvent) -> State:
 	if _event.is_action_released("attack"):
 		player.is_attacking = false
 	return null
-
-func set_is_attacking(value: bool) -> void:
-	player.is_attacking = value
