@@ -99,7 +99,6 @@ func spawn_enemy(enemy_position: Vector2, type: GDScript, damage: float, speed: 
 	var enemy_instance = type.spawn_enemy(damage, speed, health)
 	get_node("/root/Playground").add_child(enemy_instance)
 	enemy_instance.position = enemy_position
-
 	var health_node = enemy_instance.get_node("HealthComponent")
 	health_node.died.connect(game_manager._on_enemy_died)
 
