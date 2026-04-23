@@ -31,13 +31,7 @@ var level: int = 1
 
 func _ready() -> void:
 	await get_tree().process_frame
-	wave_cooldown_timer.wait_time = wave_cooldown
-	# wave_cooldown_timer.start()
-	spawner.set_spawn_timer(wave_duration)
-	spawner.set_ready_to_spawn(true)
-	label_manager.configure_default_labels()
-	label_manager.show_wave_label()
-	update_player_health_label()
+	start_game()
 
 func _process(_delta: float):
 	if not is_running:
@@ -45,6 +39,15 @@ func _process(_delta: float):
 	distance += _delta
 	ui_manager.update_distance_label(distance)
 	# print(wave_cooldown_timer.time_left)
+
+func start_game() -> void:
+	wave_cooldown_timer.wait_time = wave_cooldown
+	# wave_cooldown_timer.start()
+	spawner.set_spawn_timer(wave_duration)
+	spawner.set_ready_to_spawn(true)
+	label_manager.configure_default_labels()
+	label_manager.show_wave_label()
+	update_player_health_label()
 
 func get_distance() -> float:
 	return distance
@@ -154,11 +157,12 @@ func check_level_up() -> void:
 		level += 1
 		ui_manager.update_experience_bar(experience)
 		print("Level up to level: ", level)
+		toggle_pause()
 		shop_manager.show_shop()
-		# toggle_pause()
-		spawner.kill_all_enemies()
-		finish_wave()
-		set_player(false)
+		player.set_is_attacking(false)
+		# spawner.kill_all_enemies()
+		# finish_wave()
+		# set_player(false)
 
 func toggle_pause() -> void:
 	var new_pause_state = not get_tree().paused

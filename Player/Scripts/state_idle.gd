@@ -10,13 +10,13 @@ func Enter() -> void:
 # What happens when the player exits this state
 func Exit() -> void:
 	pass
-	
+
 # What happens during _process update in this state
 func Process(_delta : float) -> State:
 	if player.direction != Vector2.ZERO:
 		return walk
 	player.velocity = Vector2.ZERO
-	return null 
+	return null
 
 # What happens during _physics_process update in this state
 func Physics(_delta : float) -> State:
@@ -29,4 +29,6 @@ func HandleInput(_event : InputEvent) -> State:
 	if _event.is_action_released("attack"):
 		player.is_attacking = false
 	return null
-	
+
+func set_is_attacking(value: bool) -> void:
+	player.is_attacking = value

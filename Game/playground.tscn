@@ -74,22 +74,27 @@ libraries = {
 autoplay = "RESET"
 
 [node name="CameraFrame" type="Node2D" parent="."]
+process_mode = 3
 script = ExtResource("6_4bqqs")
 
 [node name="Camera2D" type="Camera2D" parent="CameraFrame"]
+process_mode = 3
 offset = Vector2(120, 67)
 
 [node name="UICanvasLayer" type="CanvasLayer" parent="."]
 process_mode = 3
 
 [node name="UIControl" type="Control" parent="UICanvasLayer"]
+process_mode = 3
 layout_mode = 3
-anchors_preset = 0
+anchor_right = 0.8375
+anchor_bottom = 0.6962963
 offset_right = 40.0
 offset_bottom = 40.0
 metadata/_edit_use_anchors_ = true
 
 [node name="UI" type="TextureRect" parent="UICanvasLayer/UIControl" node_paths=PackedStringArray("experience_bar")]
+process_mode = 3
 layout_mode = 0
 offset_right = 240.0
 offset_bottom = 135.0
@@ -100,6 +105,7 @@ health_full_sprite = ExtResource("7_h1jm5")
 health_empty_sprite = ExtResource("8_pio1y")
 
 [node name="AttackSpeedLabel" type="RichTextLabel" parent="UICanvasLayer/UIControl/UI"]
+process_mode = 3
 layout_mode = 0
 offset_left = 68.0
 offset_top = 121.0
@@ -112,6 +118,7 @@ text = "0"
 fit_content = true
 
 [node name="DamageLabel" type="RichTextLabel" parent="UICanvasLayer/UIControl/UI"]
+process_mode = 3
 texture_filter = 1
 layout_mode = 0
 offset_left = 37.0
@@ -125,6 +132,7 @@ text = "0"
 fit_content = true
 
 [node name="MoveSpeedLabel" type="RichTextLabel" parent="UICanvasLayer/UIControl/UI"]
+process_mode = 3
 layout_mode = 0
 offset_left = 53.0
 offset_top = 121.0
@@ -137,6 +145,7 @@ text = "0"
 fit_content = true
 
 [node name="ScoreLabel" type="RichTextLabel" parent="UICanvasLayer/UIControl/UI"]
+process_mode = 3
 layout_mode = 0
 offset_left = 142.0
 offset_top = 121.0
@@ -150,13 +159,18 @@ text = "[center][ SCORE ]"
 fit_content = true
 
 [node name="HeartStartPosition" type="Node2D" parent="UICanvasLayer/UIControl/UI"]
+process_mode = 3
 position = Vector2(93, 119)
 
 [node name="ShopManager" parent="UICanvasLayer/UIControl" node_paths=PackedStringArray("game_manager", "player") instance=ExtResource("5_o00ia")]
+top_level = true
+z_index = 20
+position = Vector2(119, -67)
 game_manager = NodePath("../../../GameManager")
 player = NodePath("../../../Player")
 
 [node name="ExperienceBar" type="TextureProgressBar" parent="UICanvasLayer/UIControl"]
+process_mode = 3
 layout_mode = 0
 offset_left = 92.0
 offset_top = 131.0
@@ -167,9 +181,11 @@ texture_under = ExtResource("11_pio1y")
 texture_progress = ExtResource("12_te8jg")
 
 [node name="BottomPanel" type="Sprite2D" parent="UICanvasLayer/UIControl"]
+process_mode = 3
 visible = false
 position = Vector2(120, 67)
 texture = ExtResource("7_ynsuh")
 
 [connection signal="player_damage_taken" from="Player" to="GameManager" method="_on_player_player_damage_taken"]
 [connection signal="player_died" from="Player" to="GameManager" method="_on_player_player_died"]
+[connection signal="visibility_changed" from="UICanvasLayer/UIControl/ShopManager" to="UICanvasLayer/UIControl/ShopManager" method="_on_visibility_changed"]

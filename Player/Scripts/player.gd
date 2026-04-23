@@ -20,6 +20,9 @@ func _process(_delta: float) -> void:
 func _physics_process(_delta: float) -> void:
 	move_and_slide()
 
+func set_is_attacking(value: bool) -> void:
+	is_attacking = value
+
 func get_health_component() -> Health:
 	return health_component
 
