@@ -9,7 +9,7 @@ var ready_to_boost: bool = false
 var rng = RandomNumberGenerator.new()
 
 static var min_y : float = 12
-static var max_y : float = 90
+static var max_y : float = 110
 static var spawn_pos_x : int = 250
 static var middle_pos_y: int = 65
 
@@ -24,10 +24,12 @@ static var middle_pos_y: int = 65
 @export var max_enemy_count: int = base_max_enemy_count
 
 @export var ufo_chance: float = 0.1
-@export var clusterify_chance: float = 0.1
 @export var max_ufo_chance: float = 0.5
 
+@export var clusterify_chance: float = 1
 @export var min_cluster_vertical_distance: int = 15
+@export var cluster_size: int = 3
+@export var cluster_gap: int = 20
 
 func _ready() -> void:
 	await get_tree().process_frame
@@ -66,8 +68,6 @@ func generate_wave() -> Wave:
 	var pattern: Pattern = Pattern.new()
 	var wave_size: int = rng.randi_range(min_enemy_count, max_enemy_count)
 	pattern.add_random_points(wave_size, spawn_pos_x, min_enemy_gap, max_enemy_gap, min_y, max_y)
-	var cluster_size: int = 3
-	var cluster_gap: int = 20
 	for i in range(wave_size):
 		var r: float = rng.randf()
 		if r < clusterify_chance:
@@ -76,19 +76,23 @@ func generate_wave() -> Wave:
 
 	var enemy_types: Array
 	for i in range(pattern.get_size()):
-		var r: float = rng.randf()
-		if r < ufo_chance:
-			enemy_types.append(UfoMovement)
-		else:
-			enemy_types.append(MeteorMovement)
+		enemy_types.append(DummySpawnPoint)
+		# var r: float = rng.randf()
+		# if r < ufo_chance:
+		# 	enemy_types.append(UfoMovement)
+		# else:
+		# 	enemy_types.append(MeteorMovement)
 	wave.set_pattern(pattern)
 	wave.set_enemy_types(enemy_types)
 	return wave
 
 func spawn_random_wave() -> void:
+	kill_all_enemies()
 	var wave1: Wave = generate_wave()
-	# print(wave1.get_pattern().get_pattern())
+	print(wave1.get_pattern().get_pattern())
+	print(wave1.get_pattern().get_original_points())
 	# print(wave1.get_pattern().get_x_indexes())
+	# print(wave1.get_pattern().get_y_indexes())
 	game_manager.increment_wave_count()
 	print("Spawning wave %s:" % game_manager.get_wave_count())
 	print("%s enemies" % wave1.get_size())
@@ -100,7 +104,7 @@ func spawn_enemy(enemy_position: Vector2, type: GDScript, damage: float, speed: 
 	get_node("/root/Playground").add_child(enemy_instance)
 	enemy_instance.position = enemy_position
 	var health_node = enemy_instance.get_node("HealthComponent")
-	health_node.died.connect(game_manager._on_enemy_died)
+	if health_node: health_node.died.connect(game_manager._on_enemy_died)
 
 func set_ready_to_spawn(value: bool) -> void:
 	var is_running = game_manager.get_running()
