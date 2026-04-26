@@ -86,8 +86,7 @@ func generate_wave() -> Wave:
 	wave.set_enemy_types(enemy_types)
 	return wave
 
-func spawn_random_wave() -> void:
-	kill_all_enemies()
+func spawn_wave() -> void:
 	var wave1: Wave = generate_wave()
 	print(wave1.get_pattern().get_pattern())
 	print(wave1.get_pattern().get_original_points())
@@ -99,12 +98,16 @@ func spawn_random_wave() -> void:
 	wave1.spawn(self)
 	# Dodaj komunikat o zabiciu wsyzstkich wrogow danej fali i za to dodatkowe punkty
 
+func spawn_random_wave() -> void:
+	kill_all_enemies()
+	# spawn_wave()
+
 func spawn_enemy(enemy_position: Vector2, type: GDScript, damage: float, speed: float, health: float) -> void:
 	var enemy_instance = type.spawn_enemy(damage, speed, health)
 	get_node("/root/Playground").add_child(enemy_instance)
 	enemy_instance.position = enemy_position
 	var health_node = enemy_instance.get_node("HealthComponent")
-	if health_node: health_node.died.connect(game_manager._on_enemy_died)
+	if enemy_instance.get_node("HealthComponent"): health_node.died.connect(game_manager._on_enemy_died)
 
 func set_ready_to_spawn(value: bool) -> void:
 	var is_running = game_manager.get_running()

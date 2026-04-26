@@ -8,6 +8,7 @@ class_name GameManager extends Node2D
 @onready var label_manager: LabelManager = $LabelManager
 @onready var ui_manager: UIManager = $"../UICanvasLayer/UIControl/UI"
 @export var wave_cooldown_timer: Timer
+@export var debug_panel: DebugPanel
 
 enum Enemies {
 	METEOR,
@@ -135,6 +136,16 @@ func get_escaped() -> int:
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("reset") and !is_running:
 		reload_scene()
+	if event.is_action_pressed("debug"):
+		toggle_debug_panel()
+
+func toggle_debug_panel() -> void:
+	if debug_panel.is_open:
+		debug_panel.move_close()
+		print("Closed debug panel")
+	else:
+		debug_panel.move_open()
+		print("Opened debug panel")
 
 func _on_player_player_damage_taken() -> void:
 	update_player_health_label()

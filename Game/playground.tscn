@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://ctolyotyjbqwg"]
+[gd_scene load_steps=16 format=3 uid="uid://ctolyotyjbqwg"]
 
 [ext_resource type="PackedScene" uid="uid://qoymek85ecx7" path="res://Game/sceneries/background_parallax.tscn" id="1_rfo2y"]
 [ext_resource type="PackedScene" uid="uid://b5gn1svcnnf7a" path="res://Player/player.tscn" id="1_rupst"]
@@ -13,6 +13,8 @@
 [ext_resource type="FontFile" uid="uid://bvlhnv4ultuef" path="res://Fonts/Pixeled.ttf" id="10_h1jm5"]
 [ext_resource type="Texture2D" uid="uid://c16xy12030r1n" path="res://Game/ui/Sprites/experience_bar_under.png" id="11_pio1y"]
 [ext_resource type="Texture2D" uid="uid://to23gur3vo1e" path="res://Game/ui/Sprites/experience_bar_progress.png" id="12_te8jg"]
+[ext_resource type="Texture2D" uid="uid://i0g1dwxkaib5" path="res://Game/ui/Sprites/lower_panel.png" id="14_m0fbd"]
+[ext_resource type="Script" uid="uid://ba4xdtmfk8wgi" path="res://Game/game_manager/debug_panel.gd" id="15_jcug6"]
 
 [node name="Playground" type="Node2D"]
 
@@ -21,9 +23,10 @@
 [node name="Player" parent="." instance=ExtResource("1_rupst")]
 position = Vector2(13, 50)
 
-[node name="GameManager" parent="." node_paths=PackedStringArray("shop_manager") instance=ExtResource("2_is3ju")]
+[node name="GameManager" parent="." node_paths=PackedStringArray("shop_manager", "debug_panel") instance=ExtResource("2_is3ju")]
 position = Vector2(1, -1)
 shop_manager = NodePath("../UICanvasLayer/UIControl/ShopManager")
+debug_panel = NodePath("../UICanvasLayer/DebugPanel")
 wave_duration = 10
 
 [node name="CameraFrame" type="Node2D" parent="."]
@@ -140,6 +143,23 @@ process_mode = 3
 visible = false
 position = Vector2(120, 67)
 texture = ExtResource("7_ynsuh")
+
+[node name="DebugPanel" type="TextureRect" parent="UICanvasLayer"]
+offset_top = 135.0
+offset_right = 240.0
+offset_bottom = 270.0
+texture = ExtResource("14_m0fbd")
+script = ExtResource("15_jcug6")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="UICanvasLayer/DebugPanel"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 22.0
+offset_right = 76.0
+offset_bottom = 38.0
+theme_override_fonts/normal_font = ExtResource("10_h1jm5")
+theme_override_font_sizes/normal_font_size = 5
+text = "Pause game"
 
 [connection signal="player_damage_taken" from="Player" to="GameManager" method="_on_player_player_damage_taken"]
 [connection signal="player_died" from="Player" to="GameManager" method="_on_player_player_died"]
