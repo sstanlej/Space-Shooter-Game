@@ -2,9 +2,9 @@
 Stanisław Liszewski
 
 My first attempt at making a game in Godot Engine.
-Game about shooting incoming asteroids and gaining as many points as possible.
+Game about exploring space in a spaceship and shooting your way through.
 
-## Experience Update (21.04)
+### Experience Update (21.04)
 Changelog:
 - Added experience system, enemies now give you experience after death
 - Experience Bar - tracks your progress

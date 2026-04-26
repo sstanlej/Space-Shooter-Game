@@ -1,6 +1,7 @@
-# TO DO lista pomysły
+# DOING
 - Zaimplementowac nowe typu clusterow: W ksztalcie klucza ptakow i inne
     - Dodac rozne rozmiary clusterow i czestotliwosc zalezna od difficulty
+# TO DO
 - Ulepszenia w sklepie:
     - Regeneracja punktu życia (“RegenerationUpgrade”)
     - Tarcza która chroni przed określoną ilością obrażeń (“ShieldUpgrade”)
@@ -20,8 +21,6 @@
     - NIE KOŃCZY WAVE'a tylko go zatrzymuje
 - UI
     - Przeniesc calkowicie funkcjonalnosc LabelManagera z GameManagera do UIManagera i usunac LabelManager
-
-
 # DONE:
 - Statystyki ataku, szybkosci i szybkosci ataku wyswietlac w ui overlayu zamiast w panelu ulepszen
 - Zmienic label score na distance
