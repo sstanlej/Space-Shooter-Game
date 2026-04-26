@@ -1,6 +1,7 @@
 # DOING
 - Zaimplementowac nowe typu clusterow: W ksztalcie klucza ptakow i inne
     - Dodac rozne rozmiary clusterow i czestotliwosc zalezna od difficulty
+- DEBUG SCREEN i opcje
 # TO DO
 - Ulepszenia w sklepie:
     - Regeneracja punktu życia (“RegenerationUpgrade”)
