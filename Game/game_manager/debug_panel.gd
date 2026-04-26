@@ -4,9 +4,38 @@ var tween: Tween
 var pos_hidden = [0, 135]
 var pos_open = [0, 0]
 var is_open: bool = false
+var options: Array = ["trigger_pause", "level_up"]
+@export var trigger_pause_label: RichTextLabel
+@export var add_level_label: RichTextLabel
+
+var labels: Array
+var selected: int = 0
 
 func _ready() -> void:
-	pass
+	labels = [trigger_pause_label, add_level_label]
+	labels[selected].add_theme_color_override("default_color", Color.LIME)
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not is_open:
+		return
+	if event.is_action_pressed("down"):
+		if options.size() > selected + 1:
+			selected += 1
+			labels[selected-1].add_theme_color_override("default_color", Color.WHITE)
+			labels[selected].add_theme_color_override("default_color", Color.LIME)
+	if event.is_action_pressed("up"):
+		if selected - 1 >= 0:
+			selected -= 1
+			labels[selected+1].add_theme_color_override("default_color", Color.WHITE)
+			labels[selected].add_theme_color_override("default_color", Color.LIME)
+	if event.is_action_pressed("attack"):
+		execute_option(options[selected])
+
+func execute_option(option: String) -> void:
+	if option == "trigger_pause":
+		pass
+	elif option == "add_level":
+		pass
 
 func move_open() -> void:
 	reset_tween()

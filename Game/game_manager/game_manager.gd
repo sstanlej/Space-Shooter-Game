@@ -26,9 +26,9 @@ var difficulty_wave_gain: float = 0.25
 var wave_finished: bool = false
 var distance: float = 0
 
-var experience: int
-var experience_needed: int = 100
-var level: int = 1
+static var experience: int
+static var experience_needed: int = 100
+static var level: int = 1
 
 func _ready() -> void:
 	await get_tree().process_frame
@@ -161,6 +161,16 @@ func _on_enemy_died(points: float, xp: float) -> void:
 	label_manager.update_score_label(score)
 	check_level_up()
 	# print(points, " ", xp)
+
+func level_up(levels: int) -> void:
+	if not levels:
+		levels = 1
+	for i in range(levels):
+		ui_manager.update_experience_bar(experience)
+		print("Level up to level: ", level)
+		toggle_pause()
+		shop_manager.show_shop()
+		player.set_is_attacking(false)
 
 func check_level_up() -> void:
 	if experience >= experience_needed:

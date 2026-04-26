@@ -144,14 +144,16 @@ visible = false
 position = Vector2(120, 67)
 texture = ExtResource("7_ynsuh")
 
-[node name="DebugPanel" type="TextureRect" parent="UICanvasLayer"]
+[node name="DebugPanel" type="TextureRect" parent="UICanvasLayer" node_paths=PackedStringArray("trigger_pause_label", "add_level_label")]
 offset_top = 135.0
 offset_right = 240.0
 offset_bottom = 270.0
 texture = ExtResource("14_m0fbd")
 script = ExtResource("15_jcug6")
+trigger_pause_label = NodePath("TriggerPauseLabel")
+add_level_label = NodePath("LevelUpLabel")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="UICanvasLayer/DebugPanel"]
+[node name="TriggerPauseLabel" type="RichTextLabel" parent="UICanvasLayer/DebugPanel"]
 layout_mode = 0
 offset_left = 24.0
 offset_top = 22.0
@@ -160,6 +162,16 @@ offset_bottom = 38.0
 theme_override_fonts/normal_font = ExtResource("10_h1jm5")
 theme_override_font_sizes/normal_font_size = 5
 text = "Pause game"
+
+[node name="LevelUpLabel" type="RichTextLabel" parent="UICanvasLayer/DebugPanel"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 40.0
+offset_right = 76.0
+offset_bottom = 56.0
+theme_override_fonts/normal_font = ExtResource("10_h1jm5")
+theme_override_font_sizes/normal_font_size = 5
+text = "Level Up"
 
 [connection signal="player_damage_taken" from="Player" to="GameManager" method="_on_player_player_damage_taken"]
 [connection signal="player_died" from="Player" to="GameManager" method="_on_player_player_died"]
