@@ -4,7 +4,19 @@ Stanisław Liszewski
 My first attempt at making a game in Godot Engine.
 Game about exploring space in a spaceship and shooting your way through.
 
-### Experience Update (21.04)
+### Clusters update (may 5th)
+Changelog:
+- Added 6 types of clusters:
+  - Vertical
+  - Horizontal
+  - Key
+  - Block
+  - Rising
+  - Falling
+- When the wave is generated, each enemy spawnpoint has a chance to become a cluster
+- Cluster size and chance rise as the game progresses
+
+### Experience Update (april 21st)
 Changelog:
 - Added experience system, enemies now give you experience after death
 - Experience Bar - tracks your progress
