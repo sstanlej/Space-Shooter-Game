@@ -64,7 +64,7 @@ func hide_shop() -> void:
 	current_option.affect_player(player)
 	update_stats_label()
 	active = false
-	await get_tree().create_timer(0.2).timeout
+	await get_tree().create_timer(1).timeout
 	game_manager.toggle_pause()
 	# game_manager.set_player(true)
 	# game_manager.start_next_wave()
@@ -84,12 +84,12 @@ func _on_shop_timer_timeout() -> void:
 
 func move_open() -> void:
 	reset_tween()
-	print("Start animacji z Y: ", position.y)
+	# print("Start animacji z Y: ", position.y)
 	tween.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 	tween.tween_property(self, "position:y", open_y, 0.8)
 	tween.tween_property(self, "position:y", open_y-5, 0.1).set_ease(Tween.EASE_OUT)
 	tween.tween_property(self, "position:y", open_y, 0.2).set_ease(Tween.EASE_IN)
-	print("KONIEC animacji Y: ", position.y)
+	# print("KONIEC animacji Y: ", position.y)
 
 
 func move_close() -> void:
@@ -102,8 +102,4 @@ func reset_tween() -> void:
 		tween.kill()
 	tween = get_tree().create_tween()
 	tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
-	print("Tween stworzony dla: ", name) # Sprawdźmy czy to ten obiekt
-
-
-func _on_visibility_changed() -> void:
-	print("CHANGED")
+	# print("Tween stworzony dla: ", name)

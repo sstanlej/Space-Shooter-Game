@@ -6,7 +6,7 @@ var original_points: Array = []
 var x_indexes: Array = []
 var y_indexes: Array = []
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
-var radius: int = 16
+var min_point_radius: int = 16
 
 func set_list(point_list: Array) -> void:
 	points = point_list
@@ -66,7 +66,7 @@ func add_cluster(cluster_size: int, gap_x: int, gap_y, cluster_start: Array) -> 
 			print("Cluster pos_y %s crossed limit" % y)
 			continue
 		for p in points:
-			if Vector2(p[0], p[1]).distance_squared_to(Vector2(pos[0], pos[1])) < radius * radius:
+			if Vector2(p[0], p[1]).distance_squared_to(Vector2(pos[0], pos[1])) < min_point_radius * min_point_radius:
 				print("Cluster point %s overlaps with other point" % pos)
 				continue
 		point_list.append(pos)

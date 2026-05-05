@@ -14,7 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://c16xy12030r1n" path="res://Game/ui/Sprites/experience_bar_under.png" id="11_pio1y"]
 [ext_resource type="Texture2D" uid="uid://to23gur3vo1e" path="res://Game/ui/Sprites/experience_bar_progress.png" id="12_te8jg"]
 [ext_resource type="Texture2D" uid="uid://i0g1dwxkaib5" path="res://Game/ui/Sprites/lower_panel.png" id="14_m0fbd"]
-[ext_resource type="Script" uid="uid://ba4xdtmfk8wgi" path="res://Game/game_manager/debug_panel.gd" id="15_jcug6"]
+[ext_resource type="Script" uid="uid://ba4xdtmfk8wgi" path="res://Game/ui/debug_panel.gd" id="15_jcug6"]
 
 [node name="Playground" type="Node2D"]
 

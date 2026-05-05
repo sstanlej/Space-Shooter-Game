@@ -134,18 +134,16 @@ func get_escaped() -> int:
 	return escaped
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("reset") and !is_running:
+	if event.is_action_pressed("reset"):
 		reload_scene()
-	if event.is_action_pressed("debug"):
-		toggle_debug_panel()
 
-func toggle_debug_panel() -> void:
-	if debug_panel.is_open:
-		debug_panel.move_close()
-		print("Closed debug panel")
-	else:
-		debug_panel.move_open()
-		print("Opened debug panel")
+# func toggle_debug_panel() -> void:
+# 	if debug_panel.is_open:
+# 		debug_panel.move_close()
+# 		print("Closed debug panel")
+# 	else:
+# 		debug_panel.move_open()
+# 		print("Opened debug panel")
 
 func _on_player_player_damage_taken() -> void:
 	update_player_health_label()

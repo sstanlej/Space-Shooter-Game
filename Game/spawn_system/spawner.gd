@@ -76,7 +76,7 @@ func generate_wave() -> Wave:
 
 	var enemy_types: Array
 	for i in range(pattern.get_size()):
-		enemy_types.append(DummySpawnPoint)
+		enemy_types.append(MeteorMovement)
 		# var r: float = rng.randf()
 		# if r < ufo_chance:
 		# 	enemy_types.append(UfoMovement)
@@ -99,8 +99,8 @@ func spawn_wave() -> void:
 	# Dodaj komunikat o zabiciu wsyzstkich wrogow danej fali i za to dodatkowe punkty
 
 func spawn_random_wave() -> void:
-	kill_all_enemies()
-	# spawn_wave()
+	# kill_all_enemies()
+	spawn_wave()
 
 func spawn_enemy(enemy_position: Vector2, type: GDScript, damage: float, speed: float, health: float) -> void:
 	var enemy_instance = type.spawn_enemy(damage, speed, health)
