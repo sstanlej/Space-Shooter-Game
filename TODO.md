@@ -1,6 +1,5 @@
 # DOING
-- Zaimplementowac nowe typu clusterow: W ksztalcie klucza ptakow i inne
-    - Dodac rozne rozmiary clusterow i czestotliwosc zalezna od difficulty
+
 # TO DO
 - Ulepszenia w sklepie:
     - Regeneracja punktu życia (“RegenerationUpgrade”)
@@ -19,8 +18,24 @@
     - Tło zatrzymuje sie po zniszczeniu statku, distance przestaje sie naliczać
 - UI
     - Przeniesc calkowicie funkcjonalnosc LabelManagera z GameManagera do UIManagera i usunac LabelManager
+- PAUSE SCREEN
+    - nacisniecie ESC zatrzymuje gre i wyswietla menu pauzy
+    - ponowne naciscienie ESC wznawia gre
+    - w menu pauzy opcje takie jak:
+        - back to the game
+        - return to main menu
+    - w menu pauzy wyswietlane sa wszystkie statystyki takie jak:
+        - punkty
+        - escaped enemies
+        - wave
+- MAIN MENU
+    - proste menu z animacja kuli ziemskiej w tle
+    - przycisk start:
+        - po przycisnieciu przycisku pojawia sie animacja rakiety kosmicznej wylatujacej z ziemii i gra zaczyna sie plynnie od tego momentu
 - DEBUG SCREEN i opcje
 # DONE:
+- Zaimplementowac nowe typu clusterow: W ksztalcie klucza ptakow i inne
+    - Dodac rozne rozmiary clusterow i czestotliwosc zalezna od difficulty
 - SKLEP:
     - NIE KOŃCZY WAVE'a tylko go zatrzymuje
     - Po wybraniu ulepszenia gra nie uruchamia sie od razu tylko czeka az skonczy sie animacja chowania sklepu

@@ -53,6 +53,8 @@ func adjust_difficulty_parameters(difficulty: float) -> void:
 	ufo_chance = min(max_ufo_chance, difficulty/10)
 
 	clusterify_chance = difficulty/10
+	cluster_size = 3 + floor(log(2 * (difficulty-1)))
+	# print("Cluster size: ", cluster_size)
 
 func set_spawn_timer(new_time: int) -> void:
 	spawn_timer.wait_time = new_time
