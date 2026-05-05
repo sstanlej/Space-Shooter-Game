@@ -26,10 +26,13 @@ static var middle_pos_y: int = 65
 @export var ufo_chance: float = 0.1
 @export var max_ufo_chance: float = 0.5
 
-@export var clusterify_chance: float = 1
+@export var clusterify_chance: float = 0.1
 @export var min_cluster_vertical_distance: int = 15
-@export var cluster_size: int = 4
+@export var cluster_size: int = 3
 @export var cluster_y_gap: int = 20
+@export var cluster_x_gap: int = 20
+
+var cluster_types = ["vertical", "horizontal", "key", "block", "rising", "falling"]
 
 func _ready() -> void:
 	await get_tree().process_frame
@@ -48,6 +51,8 @@ func adjust_difficulty_parameters(difficulty: float) -> void:
 	if max_enemy_gap < max_enemy_gap_limit: max_enemy_gap = max_enemy_gap_limit
 
 	ufo_chance = min(max_ufo_chance, difficulty/10)
+
+	clusterify_chance = difficulty/10
 
 func set_spawn_timer(new_time: int) -> void:
 	spawn_timer.wait_time = new_time
@@ -68,10 +73,19 @@ func generate_wave() -> Wave:
 	var pattern: Pattern = Pattern.new()
 	var wave_size: int = rng.randi_range(min_enemy_count, max_enemy_count)
 	pattern.generate_random_base(wave_size, spawn_pos_x, min_enemy_gap, max_enemy_gap)
-	for i in range(wave_size):
+
+	var cluster_params = {
+		"size": cluster_size,
+		"gap_x": cluster_x_gap,
+		"gap_y": cluster_y_gap,
+		"size_x": cluster_size,
+		"size_y": cluster_size
+	}
+	for i in range(pattern.get_size()):
 		var r: float = rng.randf()
 		if r < clusterify_chance:
-			pattern.make_vertical_cluster(i, cluster_size, cluster_y_gap)
+			var cluster_type = cluster_types[rng.randi_range(0, cluster_types.size() - 1)]
+			pattern.make_cluster(i, cluster_type, cluster_params)
 
 	var enemy_types: Array
 	for i in range(pattern.get_size()):

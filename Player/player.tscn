@@ -41,7 +41,6 @@ script = ExtResource("5_k53q1")
 
 [node name="AttackControler" type="Node" parent="."]
 script = ExtResource("6_fhl08")
-original_damage = 20.0
 
 [node name="CooldownTimer" type="Timer" parent="AttackControler"]
 wait_time = 0.33
