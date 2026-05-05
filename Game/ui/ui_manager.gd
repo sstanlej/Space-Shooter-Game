@@ -55,6 +55,9 @@ func _process(_delta: float) -> void:
 func update_experience_bar(new_value: int) -> void:
 	experience_bar.value = new_value
 
+func extend_experience_bar(new_value: int) -> void:
+	experience_bar.max_value = new_value
+
 func update_distance_label(distance: float):
 	score_label.text = "[center]" + str("%.0f" % distance) + "     km"
 

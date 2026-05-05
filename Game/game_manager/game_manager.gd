@@ -29,6 +29,7 @@ var distance: float = 0
 static var experience: int
 static var experience_needed: int = 100
 static var level: int = 1
+static var experience_needed_modifier: float = 1.5
 
 func _ready() -> void:
 	await get_tree().process_frame
@@ -172,9 +173,11 @@ func level_up(levels: int) -> void:
 
 func check_level_up() -> void:
 	if experience >= experience_needed:
-		experience = 0
+		experience -= experience_needed
+		experience_needed = int(experience_needed * experience_needed_modifier)
 		level += 1
 		ui_manager.update_experience_bar(experience)
+		ui_manager.extend_experience_bar(experience_needed)
 		print("Level up to level: ", level)
 		toggle_pause()
 		shop_manager.show_shop()
