@@ -8,8 +8,8 @@ var ready_to_boost: bool = false
 
 var rng = RandomNumberGenerator.new()
 
-static var min_y : float = 12
-static var max_y : float = 110
+static var min_y : int = 12
+static var max_y : int = 110
 static var spawn_pos_x : int = 250
 static var middle_pos_y: int = 65
 
@@ -28,8 +28,8 @@ static var middle_pos_y: int = 65
 
 @export var clusterify_chance: float = 1
 @export var min_cluster_vertical_distance: int = 15
-@export var cluster_size: int = 3
-@export var cluster_gap: int = 20
+@export var cluster_size: int = 4
+@export var cluster_y_gap: int = 20
 
 func _ready() -> void:
 	await get_tree().process_frame
@@ -67,12 +67,11 @@ func generate_wave() -> Wave:
 	var wave: Wave = Wave.new()
 	var pattern: Pattern = Pattern.new()
 	var wave_size: int = rng.randi_range(min_enemy_count, max_enemy_count)
-	pattern.add_random_points(wave_size, spawn_pos_x, min_enemy_gap, max_enemy_gap, min_y, max_y)
+	pattern.generate_random_base(wave_size, spawn_pos_x, min_enemy_gap, max_enemy_gap)
 	for i in range(wave_size):
 		var r: float = rng.randf()
 		if r < clusterify_chance:
-			pattern.clusterify(i, cluster_size, cluster_gap)
-			print("Clusterified index %s" % i)
+			pattern.make_vertical_cluster(i, cluster_size, cluster_y_gap)
 
 	var enemy_types: Array
 	for i in range(pattern.get_size()):
@@ -89,9 +88,6 @@ func generate_wave() -> Wave:
 func spawn_wave() -> void:
 	var wave1: Wave = generate_wave()
 	print(wave1.get_pattern().get_pattern())
-	print(wave1.get_pattern().get_original_points())
-	# print(wave1.get_pattern().get_x_indexes())
-	# print(wave1.get_pattern().get_y_indexes())
 	game_manager.increment_wave_count()
 	print("Spawning wave %s:" % game_manager.get_wave_count())
 	print("%s enemies" % wave1.get_size())

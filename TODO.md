@@ -1,7 +1,6 @@
 # DOING
 - Zaimplementowac nowe typu clusterow: W ksztalcie klucza ptakow i inne
     - Dodac rozne rozmiary clusterow i czestotliwosc zalezna od difficulty
-- DEBUG SCREEN i opcje
 # TO DO
 - Ulepszenia w sklepie:
     - Regeneracja punktu życia (“RegenerationUpgrade”)
@@ -18,11 +17,13 @@
         - obiekty w paralax
     - Dodać obiekty takie jak ksiezyc ktore pojawiaja sie tylko raz
     - Tło zatrzymuje sie po zniszczeniu statku, distance przestaje sie naliczać
-- SKLEP:
-    - NIE KOŃCZY WAVE'a tylko go zatrzymuje
 - UI
     - Przeniesc calkowicie funkcjonalnosc LabelManagera z GameManagera do UIManagera i usunac LabelManager
+- DEBUG SCREEN i opcje
 # DONE:
+- SKLEP:
+    - NIE KOŃCZY WAVE'a tylko go zatrzymuje
+    - Po wybraniu ulepszenia gra nie uruchamia sie od razu tylko czeka az skonczy sie animacja chowania sklepu
 - Statystyki ataku, szybkosci i szybkosci ataku wyswietlac w ui overlayu zamiast w panelu ulepszen
 - Zmienic label score na distance
 - SKLEP:

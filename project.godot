@@ -18,6 +18,10 @@ config/features=PackedStringArray("4.5", "Forward Plus")
 
 GlobalAudio="*res://Game/game_manager/game_audio.tscn"
 
+[debug]
+
+gdscript/warnings/integer_division=0
+
 [display]
 
 window/size/viewport_width=240
