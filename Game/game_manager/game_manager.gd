@@ -6,16 +6,17 @@ class_name GameManager extends Node2D
 @onready var spawner: Spawner = $Spawner
 @export var shop_manager: ShopManager
 @onready var label_manager: LabelManager = $LabelManager
-@onready var ui_manager: UIManager = $"../UICanvasLayer/UIControl/UI"
+@onready var ui_manager: UIManager = $"../UICanvasLayer/UIControl/UIManager"
 @export var wave_cooldown_timer: Timer
 @export var debug_panel: DebugPanel
+@export var camera_frame: CameraFrame
 
 enum Enemies {
 	METEOR,
 	UFO
 }
 
-var is_running: bool = true
+var is_running: bool = false
 var score : float = 0
 var escaped: int
 var wave_count: int = 0
@@ -33,23 +34,34 @@ static var experience_needed_modifier: float = 1.5
 
 func _ready() -> void:
 	await get_tree().process_frame
-	start_game()
+	wait_to_start()
 
 func _process(_delta: float):
 	if not is_running:
 		return
 	distance += _delta
 	ui_manager.update_distance_label(distance)
-	# print(wave_cooldown_timer.time_left)
+
+func wait_to_start() -> void:
+	camera_frame.move_to_menu_view()
+	set_player(false)
+	wave_cooldown_timer.wait_time = wave_cooldown
+	spawner.set_spawn_timer(wave_duration)
 
 func start_game() -> void:
-	wave_cooldown_timer.wait_time = wave_cooldown
-	# wave_cooldown_timer.start()
-	spawner.set_spawn_timer(wave_duration)
+	is_running = true
+	ui_manager.hide_start_game_label()
+	play_start_animation()
 	spawner.set_ready_to_spawn(true)
 	label_manager.configure_default_labels()
 	label_manager.show_wave_label()
 	update_player_health_label()
+
+func play_start_animation() -> void:
+	var _camera_tween = camera_frame.move_to_game_view()
+	var player_tween = player.move_to_game_view()
+	await player_tween.finished
+	set_player(true)
 
 func get_distance() -> float:
 	return distance
@@ -57,7 +69,6 @@ func get_distance() -> float:
 func finish_wave() -> void:
 	print("Finishing wave")
 	set_wave_finished(true)
-	# set_player(false)
 	label_manager.show_wave_finished_label()
 	add_difficulty(difficulty_wave_gain)
 	spawner.adjust_difficulty_parameters(difficulty)
@@ -137,6 +148,8 @@ func get_escaped() -> int:
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("reset"):
 		reload_scene()
+	if event.is_action_pressed("attack") and not is_running:
+		start_game()
 
 # func toggle_debug_panel() -> void:
 # 	if debug_panel.is_open:

@@ -91,7 +91,6 @@ func move_open() -> void:
 	tween.tween_property(self, "position:y", open_y, 0.2).set_ease(Tween.EASE_IN)
 	# print("KONIEC animacji Y: ", position.y)
 
-
 func move_close() -> void:
 	reset_tween()
 	tween.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
@@ -102,4 +101,3 @@ func reset_tween() -> void:
 		tween.kill()
 	tween = get_tree().create_tween()
 	tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
-	# print("Tween stworzony dla: ", name)

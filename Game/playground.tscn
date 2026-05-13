@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://ctolyotyjbqwg"]
+[gd_scene load_steps=17 format=3 uid="uid://ctolyotyjbqwg"]
 
 [ext_resource type="PackedScene" uid="uid://qoymek85ecx7" path="res://Game/sceneries/background_parallax.tscn" id="1_rfo2y"]
 [ext_resource type="PackedScene" uid="uid://b5gn1svcnnf7a" path="res://Player/player.tscn" id="1_rupst"]
@@ -15,22 +15,24 @@
 [ext_resource type="Texture2D" uid="uid://to23gur3vo1e" path="res://Game/ui/Sprites/experience_bar_progress.png" id="12_te8jg"]
 [ext_resource type="Texture2D" uid="uid://i0g1dwxkaib5" path="res://Game/ui/Sprites/lower_panel.png" id="14_m0fbd"]
 [ext_resource type="Script" uid="uid://ba4xdtmfk8wgi" path="res://Game/ui/debug_panel.gd" id="15_jcug6"]
+[ext_resource type="Texture2D" uid="uid://cpbex4mtdoatj" path="res://Game/sceneries/Sprites/earth.png" id="16_7qstd"]
 
 [node name="Playground" type="Node2D"]
 
 [node name="BackgroundParallax" parent="." instance=ExtResource("1_rfo2y")]
 
 [node name="Player" parent="." instance=ExtResource("1_rupst")]
-position = Vector2(13, 50)
+position = Vector2(-120, 65)
 
-[node name="GameManager" parent="." node_paths=PackedStringArray("shop_manager", "debug_panel") instance=ExtResource("2_is3ju")]
-position = Vector2(1, -1)
+[node name="GameManager" parent="." node_paths=PackedStringArray("shop_manager", "debug_panel", "camera_frame") instance=ExtResource("2_is3ju")]
 shop_manager = NodePath("../UICanvasLayer/UIControl/ShopManager")
 debug_panel = NodePath("../UICanvasLayer/DebugPanel")
+camera_frame = NodePath("../CameraFrame")
 wave_duration = 10
 
 [node name="CameraFrame" type="Node2D" parent="."]
 process_mode = 3
+position = Vector2(-240, 0)
 script = ExtResource("6_4bqqs")
 
 [node name="Camera2D" type="Camera2D" parent="CameraFrame"]
@@ -51,18 +53,18 @@ offset_right = 40.0
 offset_bottom = 40.0
 metadata/_edit_use_anchors_ = true
 
-[node name="UI" type="TextureRect" parent="UICanvasLayer/UIControl" node_paths=PackedStringArray("experience_bar")]
+[node name="UIManager" type="TextureRect" parent="UICanvasLayer/UIControl" node_paths=PackedStringArray("experience_bar")]
 process_mode = 3
 layout_mode = 0
 offset_right = 240.0
 offset_bottom = 135.0
 texture = ExtResource("7_ynsuh")
 script = ExtResource("8_v7dth")
-experience_bar = NodePath("../ExperienceBar")
+experience_bar = NodePath("ExperienceBar")
 health_full_sprite = ExtResource("7_h1jm5")
 health_empty_sprite = ExtResource("8_pio1y")
 
-[node name="AttackSpeedLabel" type="RichTextLabel" parent="UICanvasLayer/UIControl/UI"]
+[node name="AttackSpeedLabel" type="RichTextLabel" parent="UICanvasLayer/UIControl/UIManager"]
 process_mode = 3
 layout_mode = 0
 offset_left = 68.0
@@ -75,7 +77,7 @@ theme_override_font_sizes/normal_font_size = 5
 text = "0"
 fit_content = true
 
-[node name="DamageLabel" type="RichTextLabel" parent="UICanvasLayer/UIControl/UI"]
+[node name="DamageLabel" type="RichTextLabel" parent="UICanvasLayer/UIControl/UIManager"]
 process_mode = 3
 texture_filter = 1
 layout_mode = 0
@@ -89,7 +91,7 @@ theme_override_font_sizes/normal_font_size = 5
 text = "0"
 fit_content = true
 
-[node name="MoveSpeedLabel" type="RichTextLabel" parent="UICanvasLayer/UIControl/UI"]
+[node name="MoveSpeedLabel" type="RichTextLabel" parent="UICanvasLayer/UIControl/UIManager"]
 process_mode = 3
 layout_mode = 0
 offset_left = 53.0
@@ -102,7 +104,7 @@ theme_override_font_sizes/normal_font_size = 5
 text = "0"
 fit_content = true
 
-[node name="ScoreLabel" type="RichTextLabel" parent="UICanvasLayer/UIControl/UI"]
+[node name="ScoreLabel" type="RichTextLabel" parent="UICanvasLayer/UIControl/UIManager"]
 process_mode = 3
 layout_mode = 0
 offset_left = 142.0
@@ -116,18 +118,11 @@ bbcode_enabled = true
 text = "[center][ SCORE ]"
 fit_content = true
 
-[node name="HeartStartPosition" type="Node2D" parent="UICanvasLayer/UIControl/UI"]
+[node name="HeartStartPosition" type="Node2D" parent="UICanvasLayer/UIControl/UIManager"]
 process_mode = 3
 position = Vector2(93, 119)
 
-[node name="ShopManager" parent="UICanvasLayer/UIControl" node_paths=PackedStringArray("game_manager", "player") instance=ExtResource("5_o00ia")]
-top_level = true
-z_index = 20
-position = Vector2(119, -67)
-game_manager = NodePath("../../../GameManager")
-player = NodePath("../../../Player")
-
-[node name="ExperienceBar" type="TextureProgressBar" parent="UICanvasLayer/UIControl"]
+[node name="ExperienceBar" type="TextureProgressBar" parent="UICanvasLayer/UIControl/UIManager"]
 process_mode = 3
 layout_mode = 0
 offset_left = 92.0
@@ -138,11 +133,30 @@ value = 5.0
 texture_under = ExtResource("11_pio1y")
 texture_progress = ExtResource("12_te8jg")
 
-[node name="BottomPanel" type="Sprite2D" parent="UICanvasLayer/UIControl"]
-process_mode = 3
-visible = false
-position = Vector2(120, 67)
-texture = ExtResource("7_ynsuh")
+[node name="ShopManager" parent="UICanvasLayer/UIControl" node_paths=PackedStringArray("game_manager", "player") instance=ExtResource("5_o00ia")]
+top_level = true
+z_index = 20
+position = Vector2(119, -67)
+game_manager = NodePath("../../../GameManager")
+player = NodePath("../../../Player")
+
+[node name="LabelManager" type="Control" parent="UICanvasLayer/UIControl"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="StartGameLabel" type="RichTextLabel" parent="UICanvasLayer/UIControl/LabelManager"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 7.0
+offset_right = 221.0
+offset_bottom = 35.0
+theme_override_colors/default_color = Color(0.7372549, 0.6862745, 0.7137255, 1)
+theme_override_fonts/normal_font = ExtResource("10_h1jm5")
+theme_override_font_sizes/normal_font_size = 10
+bbcode_enabled = true
+text = "[center]Press SPACE to start"
+fit_content = true
 
 [node name="DebugPanel" type="TextureRect" parent="UICanvasLayer" node_paths=PackedStringArray("trigger_pause_label", "add_level_label")]
 offset_top = 135.0
@@ -172,6 +186,11 @@ offset_bottom = 56.0
 theme_override_fonts/normal_font = ExtResource("10_h1jm5")
 theme_override_font_sizes/normal_font_size = 5
 text = "Level Up"
+
+[node name="Earth" type="Sprite2D" parent="."]
+z_index = 5
+position = Vector2(-120, 67)
+texture = ExtResource("16_7qstd")
 
 [connection signal="player_damage_taken" from="Player" to="GameManager" method="_on_player_player_damage_taken"]
 [connection signal="player_died" from="Player" to="GameManager" method="_on_player_player_died"]

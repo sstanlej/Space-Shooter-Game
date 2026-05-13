@@ -8,6 +8,7 @@
 
 [node name="BackgroundParallax" type="Parallax2D" parent="."]
 repeat_size = Vector2(720, 135)
+repeat_times = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="BackgroundParallax"]
 texture = ExtResource("1_ia822")

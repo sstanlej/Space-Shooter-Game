@@ -9,6 +9,10 @@ signal player_damage_taken
 @onready var health_component: Health = $HealthComponent
 @export var movement_speed: float = 5
 
+var menu_pos_x: float = -240
+var game_pos_x: float = 30
+var tween: Tween
+
 func _ready() -> void:
 	state_machine.Initialize(self)
 
@@ -19,6 +23,12 @@ func _process(_delta: float) -> void:
 
 func _physics_process(_delta: float) -> void:
 	move_and_slide()
+
+func move_to_game_view() -> Tween:
+	var tw = create_tween()
+	tw.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	tw.tween_property(self, "position:x", game_pos_x, 2)
+	return tw
 
 func set_is_attacking(value: bool) -> void:
 	is_attacking = value
@@ -43,3 +53,9 @@ func _on_tree_exiting() -> void:
 
 func _on_health_component_damage_taken() -> void:
 	emit_signal("player_damage_taken")
+
+func reset_tween() -> void:
+	if tween:
+		tween.kill()
+	tween = get_tree().create_tween()
+	tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
