@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bcw2il7mod2n3"
-path="res://.godot/imported/moon_background.png-d11404245dfb0013f8137e9bd38187a1.ctex"
+uid="uid://dv66malu7t7c3"
+path="res://.godot/imported/foreground_stars.png-4e0aa6aee59f8ad05d0d29845230bda8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Game/sceneries/Sprites/moon_background.png"
-dest_files=["res://.godot/imported/moon_background.png-d11404245dfb0013f8137e9bd38187a1.ctex"]
+source_file="res://Game/locations/Sprites/foreground_stars.png"
+dest_files=["res://.godot/imported/foreground_stars.png-4e0aa6aee59f8ad05d0d29845230bda8.ctex"]
 
 [params]
 

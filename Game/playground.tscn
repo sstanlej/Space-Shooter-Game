@@ -1,9 +1,9 @@
 [gd_scene load_steps=17 format=3 uid="uid://ctolyotyjbqwg"]
 
-[ext_resource type="PackedScene" uid="uid://qoymek85ecx7" path="res://Game/sceneries/background_parallax.tscn" id="1_rfo2y"]
+[ext_resource type="PackedScene" uid="uid://qoymek85ecx7" path="res://Game/locations/background_parallax.tscn" id="1_rfo2y"]
 [ext_resource type="PackedScene" uid="uid://b5gn1svcnnf7a" path="res://Player/player.tscn" id="1_rupst"]
 [ext_resource type="PackedScene" uid="uid://cs1ajgmp67y01" path="res://Game/game_manager/game_manager.tscn" id="2_is3ju"]
-[ext_resource type="PackedScene" uid="uid://crj7yimqxa3ht" path="res://Game/sceneries/foreground_parallax.tscn" id="5_1ht5c"]
+[ext_resource type="PackedScene" uid="uid://crj7yimqxa3ht" path="res://Game/locations/foreground_parallax.tscn" id="5_1ht5c"]
 [ext_resource type="PackedScene" uid="uid://b2qymqbc30gx1" path="res://Game/shop/shop_manager.tscn" id="5_o00ia"]
 [ext_resource type="Script" uid="uid://bvscfifqg2eho" path="res://Game/camera/camera_movement.gd" id="6_4bqqs"]
 [ext_resource type="Texture2D" uid="uid://ee48briuh3x5" path="res://Game/ui/Sprites/health_full.png" id="7_h1jm5"]
@@ -15,7 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://to23gur3vo1e" path="res://Game/ui/Sprites/experience_bar_progress.png" id="12_te8jg"]
 [ext_resource type="Texture2D" uid="uid://i0g1dwxkaib5" path="res://Game/ui/Sprites/lower_panel.png" id="14_m0fbd"]
 [ext_resource type="Script" uid="uid://ba4xdtmfk8wgi" path="res://Game/ui/debug_panel.gd" id="15_jcug6"]
-[ext_resource type="Texture2D" uid="uid://cpbex4mtdoatj" path="res://Game/sceneries/Sprites/earth.png" id="16_7qstd"]
+[ext_resource type="Texture2D" uid="uid://cpbex4mtdoatj" path="res://Game/locations/Sprites/earth.png" id="16_7qstd"]
 
 [node name="Playground" type="Node2D"]
 

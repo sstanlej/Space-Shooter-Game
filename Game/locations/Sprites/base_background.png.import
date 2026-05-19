@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d3oxyr043gp58"
-path="res://.godot/imported/foreground_stars2.png-b1fa6504cc044b85cfe6d19daeb9bed4.ctex"
+uid="uid://cmunpk534qfk6"
+path="res://.godot/imported/base_background.png-4a233235b925996546f6317726615d4f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Game/sceneries/Sprites/foreground_stars2.png"
-dest_files=["res://.godot/imported/foreground_stars2.png-b1fa6504cc044b85cfe6d19daeb9bed4.ctex"]
+source_file="res://Game/locations/Sprites/base_background.png"
+dest_files=["res://.godot/imported/base_background.png-4a233235b925996546f6317726615d4f.ctex"]
 
 [params]
 

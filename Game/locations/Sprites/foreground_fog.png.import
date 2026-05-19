@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cpbex4mtdoatj"
-path="res://.godot/imported/earth.png-3af4d690fbb6162d6d79635ce64c8e08.ctex"
+uid="uid://dvbv11gg7x1e4"
+path="res://.godot/imported/foreground_fog.png-7c78ec78a15701e970c67109f4065be6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Game/sceneries/Sprites/earth.png"
-dest_files=["res://.godot/imported/earth.png-3af4d690fbb6162d6d79635ce64c8e08.ctex"]
+source_file="res://Game/locations/Sprites/foreground_fog.png"
+dest_files=["res://.godot/imported/foreground_fog.png-7c78ec78a15701e970c67109f4065be6.ctex"]
 
 [params]
 

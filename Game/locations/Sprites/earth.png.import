@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://da5hvq82udt0w"
-path="res://.godot/imported/red_planet.png-7c56d9c6e8ea4bc5e7f627e9ce9ba5d3.ctex"
+uid="uid://cpbex4mtdoatj"
+path="res://.godot/imported/earth.png-94b2e50b7470386d01f2837c67d9667c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Game/sceneries/Sprites/red_planet.png"
-dest_files=["res://.godot/imported/red_planet.png-7c56d9c6e8ea4bc5e7f627e9ce9ba5d3.ctex"]
+source_file="res://Game/locations/Sprites/earth.png"
+dest_files=["res://.godot/imported/earth.png-94b2e50b7470386d01f2837c67d9667c.ctex"]
 
 [params]
 

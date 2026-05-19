@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://mdlvynmvyy5l"
-path="res://.godot/imported/stars_background.png-d1263baf3091c8547055b744fc5dcebe.ctex"
+uid="uid://da5hvq82udt0w"
+path="res://.godot/imported/red_planet.png-6a2080d812f9e6c22f27439780ae528c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Game/sceneries/Sprites/stars_background.png"
-dest_files=["res://.godot/imported/stars_background.png-d1263baf3091c8547055b744fc5dcebe.ctex"]
+source_file="res://Game/locations/Sprites/red_planet.png"
+dest_files=["res://.godot/imported/red_planet.png-6a2080d812f9e6c22f27439780ae528c.ctex"]
 
 [params]
 
