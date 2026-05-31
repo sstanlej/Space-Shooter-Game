@@ -1,6 +1,6 @@
 [gd_scene load_steps=17 format=3 uid="uid://ctolyotyjbqwg"]
 
-[ext_resource type="PackedScene" uid="uid://qoymek85ecx7" path="res://Game/locations/background_parallax.tscn" id="1_rfo2y"]
+[ext_resource type="PackedScene" uid="uid://qoymek85ecx7" path="res://Game/locations/background_manager.tscn" id="1_rfo2y"]
 [ext_resource type="PackedScene" uid="uid://b5gn1svcnnf7a" path="res://Player/player.tscn" id="1_rupst"]
 [ext_resource type="PackedScene" uid="uid://cs1ajgmp67y01" path="res://Game/game_manager/game_manager.tscn" id="2_is3ju"]
 [ext_resource type="PackedScene" uid="uid://crj7yimqxa3ht" path="res://Game/locations/foreground_parallax.tscn" id="5_1ht5c"]
@@ -19,7 +19,7 @@
 
 [node name="Playground" type="Node2D"]
 
-[node name="BackgroundParallax" parent="." instance=ExtResource("1_rfo2y")]
+[node name="BackgroundManager" parent="." instance=ExtResource("1_rfo2y")]
 
 [node name="Player" parent="." instance=ExtResource("1_rupst")]
 position = Vector2(-120, 65)

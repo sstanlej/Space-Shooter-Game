@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="LocationData" load_steps=5 format=3 uid="uid://c1l3ogqv4mxp5"]
+
+[ext_resource type="Texture2D" uid="uid://dafc7vj4da0cf" path="res://Game/locations/Sprites/Space/space_background.png" id="1_4j5r2"]
+[ext_resource type="Script" uid="uid://4ko4pcyqo2oo" path="res://Game/locations/Scripts/LocationData.gd" id="1_06t5y"]
+[ext_resource type="Texture2D" uid="uid://btgr316xwbgqa" path="res://Game/locations/Sprites/Space/space_moon.png" id="2_cn145"]
+[ext_resource type="Texture2D" uid="uid://bq5rkdyi32l6h" path="res://Game/locations/Sprites/Space/space_stars.png" id="3_hmarg"]
+
+[resource]
+script = ExtResource("1_06t5y")
+location_name = "Space"
+background_texture = ExtResource("1_4j5r2")
+middle_texture = ExtResource("3_hmarg")
+front_texture = ExtResource("2_cn145")
+metadata/_custom_type_script = "uid://4ko4pcyqo2oo"
