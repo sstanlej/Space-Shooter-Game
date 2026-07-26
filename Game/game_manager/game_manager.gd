@@ -10,6 +10,7 @@ class_name GameManager extends Node2D
 @export var wave_cooldown_timer: Timer
 @export var debug_panel: DebugPanel
 @export var camera_frame: CameraFrame
+@onready var background_manager: BackgroundManager = $"../BackgroundManager"
 
 enum Enemies {
 	METEOR,
@@ -31,6 +32,10 @@ var experience: int
 var experience_needed: int = 100
 var level: int = 1
 var experience_needed_modifier: float = 1.5
+
+var locations: Array[LocationData] = [load("res://Game/locations/Resources/SpaceLocation.tres"), load("res://Game/locations/Resources/StarryLocation.tres")]
+var current_location_index: int = 0
+var next_location_index: int = 1
 
 func _ready() -> void:
 	await get_tree().process_frame
@@ -78,6 +83,15 @@ func finish_wave() -> void:
 	# wait(1)
 	# shop_manager.show_shop()
 	wave_cooldown_timer.start()
+	set_next_location()
+
+
+func set_next_location() -> void:
+	current_location_index = next_location_index
+	next_location_index = (next_location_index + 1) % locations.size()
+	background_manager.set_current_location(locations[current_location_index])
+	background_manager.set_next_location(locations[next_location_index])
+	background_manager.update_textures()
 
 func start_next_wave() -> void:
 	set_wave_finished(false)
@@ -103,7 +117,7 @@ func set_player(value: bool) -> void:
 func wait(seconds: float) -> void:
 	await get_tree().create_timer(seconds).timeout
 
-func get_dificulty() -> float:
+func get_difficulty() -> float:
 	return difficulty
 
 func set_difficulty(new_difficulty: float) -> void:
