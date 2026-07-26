@@ -33,12 +33,13 @@ var experience_needed: int = 100
 var level: int = 1
 var experience_needed_modifier: float = 1.5
 
-var locations: Array[LocationData] = [load("res://Game/locations/Resources/SpaceLocation.tres"), load("res://Game/locations/Resources/StarryLocation.tres")]
+var locations: Array[LocationData] = [load("res://Game/locations/Resources/SpaceLocation.tres"), load("res://Game/locations/Resources/CityLocation.tres")]
 var current_location_index: int = 0
 var next_location_index: int = 1
 
 func _ready() -> void:
 	await get_tree().process_frame
+	prepare_locations()
 	wait_to_start()
 
 func _process(_delta: float):
@@ -75,21 +76,23 @@ func finish_wave() -> void:
 	print("Finishing wave")
 	set_wave_finished(true)
 	label_manager.show_wave_finished_label()
+
 	add_difficulty(difficulty_wave_gain)
 	spawner.adjust_difficulty_parameters(difficulty)
 	print("New difficulty: %s" % difficulty)
-	# spawner.kill_all_enemies()
-	# await get_tree().create_timer(0.5).timeout
-	# wait(1)
-	# shop_manager.show_shop()
+
 	wave_cooldown_timer.start()
-	set_next_location()
 
-
-func set_next_location() -> void:
+	background_manager.transition_to_next_location()
 	current_location_index = next_location_index
 	next_location_index = (next_location_index + 1) % locations.size()
+
+func prepare_locations() -> void:
 	background_manager.set_current_location(locations[current_location_index])
+	background_manager.set_next_location(locations[next_location_index])
+	background_manager.update_textures()
+
+func prepare_next_location() -> void:
 	background_manager.set_next_location(locations[next_location_index])
 	background_manager.update_textures()
 
@@ -97,6 +100,7 @@ func start_next_wave() -> void:
 	set_wave_finished(false)
 	set_player(true)
 	spawner.set_ready_to_spawn(true)
+	prepare_next_location()
 
 func update_player_health_label() -> void:
 	var health: float
