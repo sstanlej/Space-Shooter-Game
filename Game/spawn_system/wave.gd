@@ -10,7 +10,7 @@ var enemy_types: Array = []
 
 var enemy_stats_config = {
 	MeteorMovement: {"dmg": 1, "speed": 75, "hp": 3},
-	UfoMovement: {"dmg": 2, "speed": 50, "hp": 50},
+	UfoMovement: {"dmg": 2, "speed": 50, "hp": 12},
 	DummySpawnPoint: {"dmg": 0, "speed": 0, "hp": 0}
 }
 

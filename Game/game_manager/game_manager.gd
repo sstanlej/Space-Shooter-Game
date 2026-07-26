@@ -27,10 +27,10 @@ var difficulty_wave_gain: float = 0.25
 var wave_finished: bool = false
 var distance: float = 0
 
-static var experience: int
-static var experience_needed: int = 100
-static var level: int = 1
-static var experience_needed_modifier: float = 1.5
+var experience: int
+var experience_needed: int = 100
+var level: int = 1
+var experience_needed_modifier: float = 1.5
 
 func _ready() -> void:
 	await get_tree().process_frame

@@ -91,12 +91,12 @@ func generate_wave() -> Wave:
 
 	var enemy_types: Array
 	for i in range(pattern.get_size()):
-		enemy_types.append(MeteorMovement)
-		# var r: float = rng.randf()
-		# if r < ufo_chance:
-		# 	enemy_types.append(UfoMovement)
-		# else:
-		# 	enemy_types.append(MeteorMovement)
+		# enemy_types.append(MeteorMovement)
+		var r: float = rng.randf()
+		if r < ufo_chance:
+			enemy_types.append(UfoMovement)
+		else:
+			enemy_types.append(MeteorMovement)
 	wave.set_pattern(pattern)
 	wave.set_enemy_types(enemy_types)
 	return wave
