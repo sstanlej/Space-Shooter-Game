@@ -8,7 +8,6 @@
 z_index = 10
 
 [node name="FogParallax" type="Parallax2D" parent="."]
-visible = false
 repeat_size = Vector2(720, 135)
 autoscroll = Vector2(-100, 0)
 repeat_times = 2
