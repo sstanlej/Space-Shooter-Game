@@ -18,6 +18,7 @@ enum Enemies {
 }
 
 var is_running: bool = false
+var is_player_alive: bool = true
 var score : float = 0
 var escaped: int
 var wave_count: int = 0
@@ -58,6 +59,7 @@ func start_game() -> void:
 	is_running = true
 	ui_manager.hide_start_game_label()
 	play_start_animation()
+	is_player_alive = true
 	spawner.set_ready_to_spawn(true)
 	label_manager.configure_default_labels()
 	label_manager.show_wave_label()
@@ -166,7 +168,7 @@ func get_escaped() -> int:
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("reset"):
 		reload_scene()
-	if event.is_action_pressed("attack") and not is_running:
+	if event.is_action_pressed("attack") and not is_running and is_player_alive:
 		start_game()
 
 # func toggle_debug_panel() -> void:
@@ -182,6 +184,7 @@ func _on_player_player_damage_taken() -> void:
 
 func _on_player_player_died() ->  void:
 	is_running = false
+	is_player_alive = false
 	label_manager.show_end_game_labels()
 
 func _on_enemy_died(points: float, xp: float) -> void:
