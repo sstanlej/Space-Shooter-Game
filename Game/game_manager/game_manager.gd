@@ -34,7 +34,9 @@ var experience_needed: int = 100
 var level: int = 1
 var experience_needed_modifier: float = 1.2
 
-var locations: Array[LocationData] = [load("res://Game/locations/Resources/SpaceLocation.tres"), load("res://Game/locations/Resources/CityLocation.tres")]
+var locations: Array[LocationData] = [load("res://Game/locations/Resources/SpaceLocation.tres"),
+										load("res://Game/locations/Resources/CityLocation.tres"),
+										load("res://Game/locations/Resources/GreenPlanetOrbitLocation.tres"),]
 var current_location_index: int = 0
 var next_location_index: int = 1
 var map: Array[int] = []
