@@ -9,6 +9,7 @@
 script = ExtResource("1_a6s1b")
 location_id = 1
 location_name = "City"
+location_rarity = 1
 background_texture = ExtResource("1_2emso")
 middle_texture = ExtResource("3_y6vbn")
 front_texture = ExtResource("2_fpigo")

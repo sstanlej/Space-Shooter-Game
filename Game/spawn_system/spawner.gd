@@ -104,7 +104,6 @@ func generate_wave() -> Wave:
 func spawn_wave() -> void:
 	var wave1: Wave = generate_wave()
 	print(wave1.get_pattern().get_pattern())
-	game_manager.increment_wave_count()
 	print("Spawning wave %s:" % game_manager.get_wave_count())
 	print("%s enemies" % wave1.get_size())
 	wave1.spawn(self)

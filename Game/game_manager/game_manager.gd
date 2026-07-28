@@ -58,6 +58,7 @@ func wait_to_start() -> void:
 
 func start_game() -> void:
 	is_running = true
+	wave_count = 1
 	ui_manager.hide_start_game_label()
 	play_start_animation()
 	is_player_alive = true
@@ -87,12 +88,21 @@ func finish_wave() -> void:
 	wave_cooldown_timer.start()
 
 	background_manager.transition_to_next_location()
+	wave_count += 1
 	if wave_count - 1 >= map.size() - 1:
 		generate_map(10)
 	current_location_index = map[wave_count - 1]
 	next_location_index = map[wave_count]
 
+func start_next_wave() -> void:
+	set_wave_finished(false)
+	set_player(true)
+	spawner.set_ready_to_spawn(true)
+	prepare_next_location()
+
 func setup_map() -> void:
+	for i in range(3):
+		map.append(0) # First 3 waves are always the first location (Space)
 	generate_map(10)
 	current_location_index = map[0]
 	next_location_index = map[1]
@@ -100,20 +110,26 @@ func setup_map() -> void:
 	background_manager.set_next_location(locations[next_location_index])
 	background_manager.update_textures()
 
-func generate_map(map_length: int) -> void:
-	for i in range(map_length):
-		map.append(randi() % locations.size())
+func generate_map(locations_amount: int) -> void:
+	var sequence = []
+	var max_value = locations.size() - 1
+	var min_value = 0
+	var last_value = map[map.size() - 1]
+	for i in range(locations_amount):
+		var new_value = randi_range(min_value, max_value)
+		while new_value == last_value:
+			new_value = randi_range(min_value, max_value)
+		sequence.append(new_value)
+		last_value = new_value
+	for i in sequence:
+		var duration = randi_range(2, 4)
+		for j in range(duration):
+			map.append(i)
 	print("Map: ", map)
 
 func prepare_next_location() -> void:
 	background_manager.set_next_location(locations[next_location_index])
 	background_manager.update_textures()
-
-func start_next_wave() -> void:
-	set_wave_finished(false)
-	set_player(true)
-	spawner.set_ready_to_spawn(true)
-	prepare_next_location()
 
 func update_player_health_label() -> void:
 	var health: float
