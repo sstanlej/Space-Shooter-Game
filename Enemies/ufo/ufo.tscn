@@ -1,8 +1,8 @@
 [gd_scene load_steps=7 format=3 uid="uid://c3awanfc1db0g"]
 
-[ext_resource type="Script" uid="uid://btfoxhajj6pal" path="res://Enemies/ufo/ufo_movement.gd" id="1_qgf0o"]
+[ext_resource type="Script" uid="uid://bb27867nqvvqr" path="res://Enemies/ufo/UfoEnemy.gd" id="1_i8qp5"]
 [ext_resource type="Texture2D" uid="uid://cv5m8dh0jyoem" path="res://Enemies/ufo/ufo.png" id="2_qgf0o"]
-[ext_resource type="Script" uid="uid://b4ivf2ayqw3rq" path="res://Enemies/general/Scripts/enemy_health.gd" id="3_h4bi8"]
+[ext_resource type="Script" uid="uid://cmxkc1l3uevq1" path="res://Enemies/general/Scripts/HealthComponent.gd" id="3_i8qp5"]
 [ext_resource type="Script" uid="uid://dqihe208dt14r" path="res://Enemies/general/Scripts/hitbox.gd" id="4_m625d"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ft8ul"]
@@ -14,19 +14,17 @@ radius = 5.0
 height = 16.0
 
 [node name="Ufo" type="CharacterBody2D"]
-script = ExtResource("1_qgf0o")
+script = ExtResource("1_i8qp5")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_qgf0o")
 
 [node name="HealthComponent" type="Node2D" parent="."]
-script = ExtResource("3_h4bi8")
-points = 30.0
-experience = 45.0
-MAX_HEALTH = 3.0
+script = ExtResource("3_i8qp5")
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="Area2D" type="Area2D" parent="." node_paths=PackedStringArray("health_component")]
 script = ExtResource("4_m625d")
+health_component = NodePath("../HealthComponent")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(0, 2)

@@ -1,8 +1,8 @@
 [gd_scene load_steps=7 format=3 uid="uid://dtx5n23ng2cpc"]
 
-[ext_resource type="Script" uid="uid://dnadqw27ek0ph" path="res://Enemies/meteor/meteor_movement.gd" id="1_vgorg"]
+[ext_resource type="Script" uid="uid://csyx4tp8pesgb" path="res://Enemies/meteor/MeteorEnemy.gd" id="1_ey0ym"]
 [ext_resource type="Texture2D" uid="uid://c48t25sg1mpjx" path="res://Enemies/meteor/meteor.png" id="2_87xaf"]
-[ext_resource type="Script" uid="uid://b4ivf2ayqw3rq" path="res://Enemies/general/Scripts/enemy_health.gd" id="3_vgorg"]
+[ext_resource type="Script" uid="uid://cmxkc1l3uevq1" path="res://Enemies/general/Scripts/HealthComponent.gd" id="3_ey0ym"]
 [ext_resource type="Script" uid="uid://dqihe208dt14r" path="res://Enemies/general/Scripts/hitbox.gd" id="4_g7ndn"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_qhs2c"]
@@ -12,18 +12,17 @@ radius = 6.0827627
 radius = 6.0
 
 [node name="Meteor" type="CharacterBody2D"]
-script = ExtResource("1_vgorg")
+script = ExtResource("1_ey0ym")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_87xaf")
 
 [node name="HealthComponent" type="Node2D" parent="."]
-script = ExtResource("3_vgorg")
-experience = 15.0
-MAX_HEALTH = 3.0
+script = ExtResource("3_ey0ym")
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="Area2D" type="Area2D" parent="." node_paths=PackedStringArray("health_component")]
 script = ExtResource("4_g7ndn")
+health_component = NodePath("../HealthComponent")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("CircleShape2D_qhs2c")
@@ -32,4 +31,5 @@ shape = SubResource("CircleShape2D_qhs2c")
 shape = SubResource("CircleShape2D_vgorg")
 
 [connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
+[connection signal="died" from="HealthComponent" to="." method="_on_health_component_died"]
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

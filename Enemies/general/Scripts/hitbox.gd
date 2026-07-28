@@ -1,7 +1,7 @@
 extends Area2D
 
-@onready var health_component : Node2D = $"../HealthComponent"
+@export var health_component : HealthComponent
 
-func damage(attack : float):
+func damage(attack : int):
 	if health_component:
 		health_component.take_damage(attack)

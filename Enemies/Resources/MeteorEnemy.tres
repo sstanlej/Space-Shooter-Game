@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=3 format=3 uid="uid://4abkmc58w7d"]
+
+[ext_resource type="PackedScene" uid="uid://dtx5n23ng2cpc" path="res://Enemies/meteor/meteor.tscn" id="1_c6q7k"]
+[ext_resource type="Script" uid="uid://c1jvipah3wjg0" path="res://Enemies/general/Scripts/EnemyData.gd" id="1_f4p1j"]
+
+[resource]
+script = ExtResource("1_f4p1j")
+enemy_name = "Meteor"
+enemy_scene = ExtResource("1_c6q7k")
+enemy_max_health = 3
+enemy_speed = 75.0
+enemy_damage = 1
+enemy_score_reward = 10
+enemy_xp_reward = 10
+enemy_weight = 1
+metadata/_custom_type_script = "uid://c1jvipah3wjg0"

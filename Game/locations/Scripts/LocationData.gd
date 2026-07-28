@@ -12,6 +12,8 @@ enum Rarity {
 @export var location_name: String
 @export var location_rarity: Rarity
 
+@export var spawnable_enemies: Array[EnemyData]
+
 @export var background_texture: Texture2D
 @export var middle_texture: Texture2D
 @export var front_texture: Texture2D

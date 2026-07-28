@@ -67,7 +67,7 @@ func get_random_spawn_point() -> Array:
 func kill_all_enemies() -> void:
 	var scene = game_manager.get_parent()
 	for child in scene.get_children():
-		if child is EnemyMovement:
+		if child is Enemy:
 			child.queue_free()
 
 func generate_wave() -> Wave:
@@ -89,16 +89,20 @@ func generate_wave() -> Wave:
 			var cluster_type = cluster_types[rng.randi_range(0, cluster_types.size() - 1)]
 			pattern.make_cluster(i, cluster_type, cluster_params)
 
-	var enemy_types: Array
+	var current_location: LocationData = game_manager.get_current_location()
+	var available_enemies: Array[EnemyData] = current_location.spawnable_enemies
+
+	if available_enemies.is_empty():
+		push_error("ERROR: Location %s does not have any spawnable enemies defined in spawnable_enemies!" % current_location.location_name)
+		return wave
+
+	var selected_enemy_datas: Array[EnemyData] = []
 	for i in range(pattern.get_size()):
-		# enemy_types.append(MeteorMovement)
-		var r: float = rng.randf()
-		if r < ufo_chance:
-			enemy_types.append(UfoMovement)
-		else:
-			enemy_types.append(MeteorMovement)
+		var random_enemy: EnemyData = available_enemies[rng.randi_range(0, available_enemies.size() - 1)]
+		selected_enemy_datas.append(random_enemy)
+
 	wave.set_pattern(pattern)
-	wave.set_enemy_types(enemy_types)
+	wave.set_enemy_datas(selected_enemy_datas)
 	return wave
 
 func spawn_wave() -> void:
@@ -113,12 +117,15 @@ func spawn_random_wave() -> void:
 	# kill_all_enemies()
 	spawn_wave()
 
-func spawn_enemy(enemy_position: Vector2, type: GDScript, damage: float, speed: float, health: float) -> void:
-	var enemy_instance = type.spawn_enemy(damage, speed, health)
+func spawn_enemy(enemy_position: Vector2, enemy_data: EnemyData) -> void:
+	var enemy_instance = enemy_data.enemy_scene.instantiate() as Enemy
+
 	get_node("/root/Playground").add_child(enemy_instance)
 	enemy_instance.position = enemy_position
-	var health_node = enemy_instance.get_node("HealthComponent")
-	if enemy_instance.get_node("HealthComponent"): health_node.died.connect(game_manager._on_enemy_died)
+	enemy_instance.setup(enemy_data)
+
+	if not enemy_instance.enemy_died.is_connected(game_manager._on_enemy_died):
+		enemy_instance.enemy_died.connect(game_manager._on_enemy_died)
 
 func set_ready_to_spawn(value: bool) -> void:
 	var is_running = game_manager.get_running()

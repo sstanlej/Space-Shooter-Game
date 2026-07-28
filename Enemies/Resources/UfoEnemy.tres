@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=3 format=3 uid="uid://b21uumo1tahqe"]
+
+[ext_resource type="Script" uid="uid://c1jvipah3wjg0" path="res://Enemies/general/Scripts/EnemyData.gd" id="1_17873"]
+[ext_resource type="PackedScene" uid="uid://c3awanfc1db0g" path="res://Enemies/ufo/ufo.tscn" id="1_phfss"]
+
+[resource]
+script = ExtResource("1_17873")
+enemy_id = 1
+enemy_name = "UFO"
+enemy_scene = ExtResource("1_phfss")
+enemy_max_health = 12
+enemy_speed = 50.0
+enemy_damage = 2
+metadata/_custom_type_script = "uid://c1jvipah3wjg0"

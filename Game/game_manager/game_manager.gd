@@ -2,7 +2,7 @@ class_name GameManager extends Node2D
 
 @onready var player: Player = $"../Player"
 @onready var player_attack_controler: AttackControler = $"../Player/AttackControler"
-@onready var player_health: Health = $"../Player/HealthComponent"
+@onready var player_health: HealthComponent = $"../Player/HealthComponent"
 @onready var spawner: Spawner = $Spawner
 @export var shop_manager: ShopManager
 @onready var label_manager: LabelManager = $LabelManager
@@ -132,6 +132,9 @@ func generate_map(locations_amount: int) -> void:
 func prepare_next_location() -> void:
 	background_manager.set_next_location(locations[next_location_index])
 	background_manager.update_textures()
+
+func get_current_location() -> LocationData:
+	return locations[current_location_index]
 
 func update_player_health_label() -> void:
 	var health: float

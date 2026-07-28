@@ -6,7 +6,7 @@ signal player_died
 signal player_damage_taken
 @onready var state_machine : PlayerStateMachine = $StateMachine
 @onready var attack_controler: AttackControler = $AttackControler
-@onready var health_component: Health = $HealthComponent
+@onready var health_component: HealthComponent = $HealthComponent
 @export var movement_speed: float = 5
 
 var menu_pos_x: float = -240
@@ -15,6 +15,7 @@ var tween: Tween
 
 func _ready() -> void:
 	state_machine.Initialize(self)
+	health_component.died.connect(_on_player_died)
 
 func _process(_delta: float) -> void:
 	if not Input.is_key_pressed(KEY_SHIFT):
@@ -33,7 +34,7 @@ func move_to_game_view() -> Tween:
 func set_is_attacking(value: bool) -> void:
 	is_attacking = value
 
-func get_health_component() -> Health:
+func get_health_component() -> HealthComponent:
 	return health_component
 
 func get_movement_speed() -> float:
@@ -48,11 +49,12 @@ func add_movement_speed(value: float) -> void:
 func get_attack_controler() -> AttackControler:
 	return attack_controler
 
-func _on_tree_exiting() -> void:
-	emit_signal("player_died")
+func _on_player_died() -> void:
+	player_died.emit()
+	queue_free()
 
 func _on_health_component_damage_taken() -> void:
-	emit_signal("player_damage_taken")
+	player_damage_taken.emit()
 
 func reset_tween() -> void:
 	if tween:
