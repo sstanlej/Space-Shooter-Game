@@ -1,9 +1,8 @@
-[gd_scene load_steps=17 format=3 uid="uid://ctolyotyjbqwg"]
+[gd_scene load_steps=16 format=3 uid="uid://ctolyotyjbqwg"]
 
 [ext_resource type="PackedScene" uid="uid://qoymek85ecx7" path="res://Game/locations/background_manager.tscn" id="1_rfo2y"]
 [ext_resource type="PackedScene" uid="uid://b5gn1svcnnf7a" path="res://Player/player.tscn" id="1_rupst"]
 [ext_resource type="PackedScene" uid="uid://cs1ajgmp67y01" path="res://Game/game_manager/game_manager.tscn" id="2_is3ju"]
-[ext_resource type="PackedScene" uid="uid://crj7yimqxa3ht" path="res://Game/locations/foreground_parallax.tscn" id="5_1ht5c"]
 [ext_resource type="PackedScene" uid="uid://b2qymqbc30gx1" path="res://Game/shop/shop_manager.tscn" id="5_o00ia"]
 [ext_resource type="Script" uid="uid://bvscfifqg2eho" path="res://Game/camera/camera_movement.gd" id="6_4bqqs"]
 [ext_resource type="Texture2D" uid="uid://ee48briuh3x5" path="res://Game/ui/Sprites/health_full.png" id="7_h1jm5"]
@@ -38,9 +37,6 @@ script = ExtResource("6_4bqqs")
 [node name="Camera2D" type="Camera2D" parent="CameraFrame"]
 process_mode = 3
 offset = Vector2(120, 67)
-
-[node name="ForegroundParallax" parent="." instance=ExtResource("5_1ht5c")]
-visible = false
 
 [node name="UICanvasLayer" type="CanvasLayer" parent="."]
 process_mode = 3
