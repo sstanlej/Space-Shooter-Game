@@ -40,6 +40,9 @@ func update_textures() -> void:
 		print("Next location textures updated: %s" % next_location.location_name)
 
 func transition_to_next_location() -> void:
+	if next_location == current_location:
+		print("Next location is the same as current location. No transition needed.")
+		return
 	var tween = create_tween().set_parallel(true)
 
 	tween.tween_property(next_location_node, "modulate:a", 1.0, transition_duration)

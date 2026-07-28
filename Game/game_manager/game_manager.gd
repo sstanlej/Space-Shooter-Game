@@ -32,15 +32,16 @@ var distance: float = 0
 var experience: int
 var experience_needed: int = 100
 var level: int = 1
-var experience_needed_modifier: float = 1.5
+var experience_needed_modifier: float = 1.2
 
 var locations: Array[LocationData] = [load("res://Game/locations/Resources/SpaceLocation.tres"), load("res://Game/locations/Resources/CityLocation.tres")]
 var current_location_index: int = 0
 var next_location_index: int = 1
+var map: Array[int] = []
 
 func _ready() -> void:
 	await get_tree().process_frame
-	prepare_locations()
+	setup_map()
 	wait_to_start()
 
 func _process(_delta: float):
@@ -86,13 +87,23 @@ func finish_wave() -> void:
 	wave_cooldown_timer.start()
 
 	background_manager.transition_to_next_location()
-	current_location_index = next_location_index
-	next_location_index = (next_location_index + 1) % locations.size()
+	if wave_count - 1 >= map.size() - 1:
+		generate_map(10)
+	current_location_index = map[wave_count - 1]
+	next_location_index = map[wave_count]
 
-func prepare_locations() -> void:
+func setup_map() -> void:
+	generate_map(10)
+	current_location_index = map[0]
+	next_location_index = map[1]
 	background_manager.set_current_location(locations[current_location_index])
 	background_manager.set_next_location(locations[next_location_index])
 	background_manager.update_textures()
+
+func generate_map(map_length: int) -> void:
+	for i in range(map_length):
+		map.append(randi() % locations.size())
+	print("Map: ", map)
 
 func prepare_next_location() -> void:
 	background_manager.set_next_location(locations[next_location_index])
