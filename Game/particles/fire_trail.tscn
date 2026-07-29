@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=3 uid="uid://d2608o6gxf224"]
+
+[ext_resource type="Texture2D" uid="uid://bqsomcwkoek07" path="res://Game/particles/fire_particle.png" id="1_c6jft"]
+
+[sub_resource type="Gradient" id="Gradient_lbms2"]
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ulkso"]
+gradient = SubResource("Gradient_lbms2")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_6nuac"]
+particle_flag_disable_z = true
+direction = Vector3(-1, 0, 0)
+spread = 10.0
+initial_velocity_min = 10.0
+initial_velocity_max = 30.0
+gravity = Vector3(0, 0, 0)
+color_ramp = SubResource("GradientTexture1D_ulkso")
+
+[node name="GPUParticles2D" type="GPUParticles2D"]
+texture = ExtResource("1_c6jft")
+process_material = SubResource("ParticleProcessMaterial_6nuac")
