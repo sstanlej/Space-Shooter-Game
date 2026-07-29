@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://cet664o2kh2vh"]
+[gd_scene load_steps=8 format=3 uid="uid://cet664o2kh2vh"]
 
 [ext_resource type="Script" uid="uid://csyx4tp8pesgb" path="res://Enemies/meteor/MeteorEnemy.gd" id="1_tbd1g"]
 [ext_resource type="Texture2D" uid="uid://cgdu5drmhm7dd" path="res://Enemies/big_meteor/big_meteor.png" id="2_ced25"]
+[ext_resource type="PackedScene" uid="uid://df7720odkejuq" path="res://Game/particles/smoke_trail.tscn" id="2_nohey"]
 [ext_resource type="Script" uid="uid://cmxkc1l3uevq1" path="res://Enemies/general/Scripts/HealthComponent.gd" id="3_4wt2a"]
 [ext_resource type="Script" uid="uid://dqihe208dt14r" path="res://Enemies/general/Scripts/hitbox.gd" id="4_awlgc"]
 
@@ -15,6 +16,9 @@ radius = 11.0
 collision_layer = 2
 collision_mask = 0
 script = ExtResource("1_tbd1g")
+
+[node name="GPUParticles2D" parent="." instance=ExtResource("2_nohey")]
+position = Vector2(10, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_ced25")
