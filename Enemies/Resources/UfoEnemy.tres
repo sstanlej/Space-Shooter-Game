@@ -11,4 +11,7 @@ enemy_scene = ExtResource("1_phfss")
 enemy_max_health = 12
 enemy_speed = 50.0
 enemy_damage = 2
+enemy_score_reward = 20
+enemy_xp_reward = 20
+enemy_weight = 3
 metadata/_custom_type_script = "uid://c1jvipah3wjg0"

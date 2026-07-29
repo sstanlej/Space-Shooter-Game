@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=3 format=3 uid="uid://dsmu3iu5fdtp0"]
+
+[ext_resource type="PackedScene" uid="uid://cet664o2kh2vh" path="res://Enemies/big_meteor/big_meteor.tscn" id="1_421jr"]
+[ext_resource type="Script" uid="uid://c1jvipah3wjg0" path="res://Enemies/general/Scripts/EnemyData.gd" id="1_qdbpn"]
+
+[resource]
+script = ExtResource("1_qdbpn")
+enemy_id = 3
+enemy_name = "Big Meteor"
+enemy_scene = ExtResource("1_421jr")
+enemy_max_health = 6
+enemy_speed = 40.0
+enemy_damage = 2
+enemy_score_reward = 20
+enemy_xp_reward = 20
+enemy_weight = 3
+metadata/_custom_type_script = "uid://c1jvipah3wjg0"
