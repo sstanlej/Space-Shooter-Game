@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://c3awanfc1db0g"]
+[gd_scene load_steps=8 format=3 uid="uid://c3awanfc1db0g"]
 
 [ext_resource type="Script" uid="uid://bb27867nqvvqr" path="res://Enemies/ufo/UfoEnemy.gd" id="1_i8qp5"]
 [ext_resource type="Texture2D" uid="uid://cv5m8dh0jyoem" path="res://Enemies/ufo/ufo.png" id="2_qgf0o"]
 [ext_resource type="Script" uid="uid://cmxkc1l3uevq1" path="res://Enemies/general/Scripts/HealthComponent.gd" id="3_i8qp5"]
 [ext_resource type="Script" uid="uid://dqihe208dt14r" path="res://Enemies/general/Scripts/hitbox.gd" id="4_m625d"]
+[ext_resource type="PackedScene" uid="uid://d2608o6gxf224" path="res://Game/particles/fire_trail.tscn" id="5_irrii"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ft8ul"]
 radius = 5.0
@@ -17,6 +18,10 @@ height = 16.0
 collision_layer = 2
 collision_mask = 0
 script = ExtResource("1_i8qp5")
+
+[node name="GPUParticles2D" parent="." instance=ExtResource("5_irrii")]
+position = Vector2(8, 3)
+rotation = 3.1415925
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_qgf0o")

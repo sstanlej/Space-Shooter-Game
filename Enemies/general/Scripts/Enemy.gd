@@ -23,7 +23,7 @@ func setup(enemy_data: EnemyData) -> void:
 			health_component.died.connect(_on_health_component_died)
 
 func _physics_process(_delta: float) -> void:
-	if position.x < -30:
+	if position.x < -200:
 		# inc_escaped() # Zamiast tego wyslij sygnal do GameManager
 		queue_free()
 	do_movement(_delta)

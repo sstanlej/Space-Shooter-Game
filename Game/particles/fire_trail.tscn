@@ -12,8 +12,8 @@ gradient = SubResource("Gradient_lbms2")
 particle_flag_disable_z = true
 direction = Vector3(-1, 0, 0)
 spread = 10.0
-initial_velocity_min = 10.0
-initial_velocity_max = 30.0
+initial_velocity_min = 20.0
+initial_velocity_max = 40.0
 gravity = Vector3(0, 0, 0)
 color_ramp = SubResource("GradientTexture1D_ulkso")
 
