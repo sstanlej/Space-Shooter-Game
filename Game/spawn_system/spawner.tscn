@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dga8epmke5iyx" path="res://Game/spawn_system/spawner.gd" id="1_pvmun"]
 
-[node name="Spawner" type="Node2D"]
+[node name="Spawner" type="Node2D" groups=["spawner"]]
 script = ExtResource("1_pvmun")
 
 [node name="SpawnTimer" type="Timer" parent="."]

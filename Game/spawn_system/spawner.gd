@@ -117,15 +117,16 @@ func spawn_random_wave() -> void:
 	# kill_all_enemies()
 	spawn_wave()
 
-func spawn_enemy(enemy_position: Vector2, enemy_data: EnemyData) -> void:
+func spawn_enemy(enemy_position: Vector2, enemy_data: EnemyData) -> Enemy:
 	var enemy_instance = enemy_data.enemy_scene.instantiate() as Enemy
 
 	get_node("/root/Playground").add_child(enemy_instance)
 	enemy_instance.position = enemy_position
 	enemy_instance.setup(enemy_data)
 
-	if not enemy_instance.enemy_died.is_connected(game_manager._on_enemy_died):
+	if game_manager and not enemy_instance.enemy_died.is_connected(game_manager._on_enemy_died):
 		enemy_instance.enemy_died.connect(game_manager._on_enemy_died)
+	return enemy_instance
 
 func set_ready_to_spawn(value: bool) -> void:
 	var is_running = game_manager.get_running()

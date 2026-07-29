@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://cn7m0yjbprdtk" path="res://Game/spawn_system/spawner.tscn" id="3_8yi26"]
 [ext_resource type="Script" uid="uid://c6w471vnalgaq" path="res://Game/game_manager/label_manager.gd" id="3_p2a7g"]
 
-[node name="GameManager" type="Node2D" node_paths=PackedStringArray("wave_cooldown_timer")]
+[node name="GameManager" type="Node2D" node_paths=PackedStringArray("wave_cooldown_timer") groups=["game_maneger"]]
 z_index = 5
 script = ExtResource("1_qqcev")
 wave_cooldown_timer = NodePath("WaveCooldownTimer")

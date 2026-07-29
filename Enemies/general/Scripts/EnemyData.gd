@@ -14,3 +14,5 @@ class_name EnemyData extends Resource
 
 @export var death_scene: PackedScene
 
+@export var split_enemy_data: EnemyData
+@export var split_enemy_count: int
