@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=3 format=3 uid="uid://68yqma5ch2gt"]
+
+[ext_resource type="PackedScene" uid="uid://xaeitc1t4enu" path="res://Enemies/zoot/zoot.tscn" id="1_mxjcx"]
+[ext_resource type="Script" uid="uid://c1jvipah3wjg0" path="res://Enemies/general/Scripts/EnemyData.gd" id="1_s2oeq"]
+
+[resource]
+script = ExtResource("1_s2oeq")
+enemy_id = 4
+enemy_name = "Zoot"
+enemy_scene = ExtResource("1_mxjcx")
+enemy_max_health = 6
+enemy_speed = 40.0
+enemy_damage = 1
+enemy_score_reward = 20
+enemy_xp_reward = 20
+enemy_weight = 2
+metadata/_custom_type_script = "uid://c1jvipah3wjg0"

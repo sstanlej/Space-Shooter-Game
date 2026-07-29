@@ -12,6 +12,8 @@ radius = 6.0827627
 radius = 6.0
 
 [node name="Meteor" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 0
 script = ExtResource("1_ey0ym")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -21,6 +23,8 @@ texture = ExtResource("2_87xaf")
 script = ExtResource("3_ey0ym")
 
 [node name="Area2D" type="Area2D" parent="." node_paths=PackedStringArray("health_component")]
+collision_layer = 2
+collision_mask = 5
 script = ExtResource("4_g7ndn")
 health_component = NodePath("../HealthComponent")
 

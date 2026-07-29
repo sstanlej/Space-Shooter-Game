@@ -1,0 +1,39 @@
+[gd_scene load_steps=7 format=3 uid="uid://xaeitc1t4enu"]
+
+[ext_resource type="Script" uid="uid://vwa6kpj4j3xy" path="res://Enemies/general/Scripts/Enemy.gd" id="1_bvikt"]
+[ext_resource type="Texture2D" uid="uid://yj3vfusq3w44" path="res://Enemies/zoot/zoot.png" id="2_18i5x"]
+[ext_resource type="Script" uid="uid://cmxkc1l3uevq1" path="res://Enemies/general/Scripts/HealthComponent.gd" id="3_2pfxk"]
+[ext_resource type="Script" uid="uid://dqihe208dt14r" path="res://Enemies/general/Scripts/hitbox.gd" id="4_jp3px"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_w2akj"]
+radius = 5.0
+height = 34.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3bkon"]
+radius = 3.0
+height = 28.0
+
+[node name="Zoot" type="CharacterBody2D"]
+script = ExtResource("1_bvikt")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_18i5x")
+
+[node name="HealthComponent" type="Node2D" parent="."]
+script = ExtResource("3_2pfxk")
+
+[node name="Area2D" type="Area2D" parent="." node_paths=PackedStringArray("health_component")]
+script = ExtResource("4_jp3px")
+health_component = NodePath("../HealthComponent")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_w2akj")
+
+[node name="CollisionHitbox" type="CollisionShape2D" parent="."]
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_3bkon")
+
+[connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
+[connection signal="died" from="HealthComponent" to="." method="_on_health_component_died"]
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

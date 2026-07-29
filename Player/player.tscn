@@ -17,6 +17,7 @@ size = Vector2(14, 6)
 size = Vector2(20, 12)
 
 [node name="Player" type="CharacterBody2D"]
+collision_mask = 0
 script = ExtResource("1_4ntmi")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -48,6 +49,7 @@ wait_time = 0.33
 one_shot = true
 
 [node name="Area2D" type="Area2D" parent="." node_paths=PackedStringArray("health_component")]
+collision_mask = 10
 script = ExtResource("8_00tjw")
 health_component = NodePath("../HealthComponent")
 
