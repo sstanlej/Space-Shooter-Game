@@ -23,7 +23,7 @@ var score : float = 0
 var escaped: int
 var wave_count: int = 0
 var difficulty: float = 1
-var difficulty_wave_gain: float = 0.25
+@export var difficulty_wave_gain: float = 0.15
 @export var wave_duration: int = 10
 @export var wave_cooldown: int = 5
 var wave_finished: bool = false
