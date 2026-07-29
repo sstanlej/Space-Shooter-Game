@@ -12,6 +12,8 @@ radius = 13.0
 radius = 11.0
 
 [node name="Big Meteor" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 0
 script = ExtResource("1_tbd1g")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -21,6 +23,8 @@ texture = ExtResource("2_ced25")
 script = ExtResource("3_4wt2a")
 
 [node name="Area2D" type="Area2D" parent="." node_paths=PackedStringArray("health_component")]
+collision_layer = 2
+collision_mask = 5
 script = ExtResource("4_awlgc")
 health_component = NodePath("../HealthComponent")
 
