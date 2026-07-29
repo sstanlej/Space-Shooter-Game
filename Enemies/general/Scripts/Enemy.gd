@@ -34,7 +34,6 @@ func do_movement(_delta: float) -> void:
 
 func _on_health_component_died() -> void:
 	enemy_died.emit(data.enemy_score_reward, data.enemy_xp_reward)
-	print("Enemy died!")
 	queue_free()
 
 func _on_area_2d_area_entered(area: Area2D) -> void:
