@@ -12,3 +12,5 @@ class_name EnemyData extends Resource
 
 @export var enemy_weight: int
 
+@export var death_scene: PackedScene
+

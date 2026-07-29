@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="EnemyData" load_steps=3 format=3 uid="uid://b0rbftdnqtvl4"]
+[gd_resource type="Resource" script_class="EnemyData" load_steps=4 format=3 uid="uid://b0rbftdnqtvl4"]
 
 [ext_resource type="PackedScene" uid="uid://cm67hcmbqhaeq" path="res://Enemies/spacebus/spacebus.tscn" id="1_0fc1g"]
 [ext_resource type="Script" uid="uid://c1jvipah3wjg0" path="res://Enemies/general/Scripts/EnemyData.gd" id="1_fggfk"]
+[ext_resource type="PackedScene" uid="uid://cdfbi3flgf8ko" path="res://Game/effects/explosion/explosion.tscn" id="1_vccls"]
 
 [resource]
 script = ExtResource("1_fggfk")
@@ -14,4 +15,5 @@ enemy_damage = 2
 enemy_score_reward = 40
 enemy_xp_reward = 40
 enemy_weight = 3
+death_scene = ExtResource("1_vccls")
 metadata/_custom_type_script = "uid://c1jvipah3wjg0"

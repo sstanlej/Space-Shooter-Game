@@ -33,8 +33,16 @@ func do_movement(_delta: float) -> void:
 	move_and_slide()
 
 func _on_health_component_died() -> void:
+	spawn_death_effect()
 	enemy_died.emit(data.enemy_score_reward, data.enemy_xp_reward)
 	queue_free()
+
+func spawn_death_effect() -> void:
+	if data and data.death_scene:
+		var death_effect = data.death_scene.instantiate()
+		get_parent().add_child(death_effect)
+		death_effect.position = position
+		GlobalAudio.play_crash()
 
 func _on_area_2d_area_entered(area: Area2D) -> void:
 	if area.get_parent() is Enemy:
