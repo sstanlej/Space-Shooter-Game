@@ -1,7 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://xaeitc1t4enu"]
+[gd_scene load_steps=14 format=3 uid="uid://xaeitc1t4enu"]
 
 [ext_resource type="Script" uid="uid://bbmgtknyhxvwa" path="res://Enemies/zoot/zoot.gd" id="1_18i5x"]
 [ext_resource type="Texture2D" uid="uid://dilnkx7j41cy1" path="res://Enemies/zoot/zoot_animation.png" id="2_18i5x"]
+[ext_resource type="PackedScene" uid="uid://wikdcl5aogg5" path="res://Projectiles/enemy_projectile.tscn" id="2_exglh"]
 [ext_resource type="Script" uid="uid://cmxkc1l3uevq1" path="res://Enemies/general/Scripts/HealthComponent.gd" id="3_2pfxk"]
 [ext_resource type="Script" uid="uid://dqihe208dt14r" path="res://Enemies/general/Scripts/hitbox.gd" id="4_jp3px"]
 
@@ -60,8 +61,11 @@ height = 28.0
 collision_layer = 2
 collision_mask = 0
 script = ExtResource("1_18i5x")
-sine_frequency = 1.5
-sine_amplitude = 10.0
+bullet_scene = ExtResource("2_exglh")
+bullet_speed = 150.0
+fire_rate = 4.0
+burst_count = 1
+burst_delay = 0.3
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_l70hh")

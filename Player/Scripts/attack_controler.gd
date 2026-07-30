@@ -9,6 +9,7 @@ var cooldown: float = 0.33
 @export var bullet_speed: float = 200
 @export var attack_speed: float = 3
 @onready var cooldown_timer: Timer = $CooldownTimer
+@export var bullet_scene: PackedScene
 
 func _ready() -> void:
 	player = $".."
@@ -18,9 +19,11 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	if player.is_attacking and is_ready:
-		var bullet_instance = Bullet.spawn_bullet(damage, bullet_speed, boosted)
-		add_child(bullet_instance)
-		bullet_instance.position = player.position
+		if bullet_scene:
+			var bullet_instance = bullet_scene.instantiate() as Projectile
+			get_tree().current_scene.add_child(bullet_instance)
+			bullet_instance.global_position = player.global_position
+			bullet_instance.setup(damage, bullet_speed, Vector2.RIGHT)
 		GlobalAudio.play_laser()
 		is_ready = false
 		cooldown_timer.start()

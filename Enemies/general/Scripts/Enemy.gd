@@ -45,11 +45,7 @@ func spawn_death_effect() -> void:
 		GlobalAudio.play_crash()
 
 func _on_area_2d_area_entered(area: Area2D) -> void:
-	if area.get_parent() is Enemy:
-		return
-
-	var target = area # Area2D with "hitbox.gd" script
-
+	var target = area
 	if target.has_method("damage"):
 		target.damage(attack)
 		GlobalAudio.play_crash()
