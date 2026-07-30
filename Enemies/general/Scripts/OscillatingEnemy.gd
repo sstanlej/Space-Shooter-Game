@@ -1,6 +1,6 @@
-class_name UfoEnemy extends Enemy
+class_name OscillatingEnemy extends Enemy
 
-@export_group("UFO Movement Settings")
+@export_group("Movement Settings")
 @export var screen_margin: float = 25.0
 @export var sine_frequency: float = 2.5
 @export var sine_amplitude: float = 60.0

@@ -1,9 +1,52 @@
-[gd_scene load_steps=7 format=3 uid="uid://xaeitc1t4enu"]
+[gd_scene load_steps=13 format=3 uid="uid://xaeitc1t4enu"]
 
-[ext_resource type="Script" uid="uid://vwa6kpj4j3xy" path="res://Enemies/general/Scripts/Enemy.gd" id="1_bvikt"]
-[ext_resource type="Texture2D" uid="uid://yj3vfusq3w44" path="res://Enemies/zoot/zoot.png" id="2_18i5x"]
+[ext_resource type="Script" uid="uid://bbmgtknyhxvwa" path="res://Enemies/zoot/zoot.gd" id="1_18i5x"]
+[ext_resource type="Texture2D" uid="uid://dilnkx7j41cy1" path="res://Enemies/zoot/zoot_animation.png" id="2_18i5x"]
 [ext_resource type="Script" uid="uid://cmxkc1l3uevq1" path="res://Enemies/general/Scripts/HealthComponent.gd" id="3_2pfxk"]
 [ext_resource type="Script" uid="uid://dqihe208dt14r" path="res://Enemies/general/Scripts/hitbox.gd" id="4_jp3px"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_exglh"]
+atlas = ExtResource("2_18i5x")
+region = Rect2(0, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1vblq"]
+atlas = ExtResource("2_18i5x")
+region = Rect2(32, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xm8bk"]
+atlas = ExtResource("2_18i5x")
+region = Rect2(64, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_unr0c"]
+atlas = ExtResource("2_18i5x")
+region = Rect2(96, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jocg3"]
+atlas = ExtResource("2_18i5x")
+region = Rect2(128, 0, 32, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_l70hh"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_exglh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1vblq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xm8bk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_unr0c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jocg3")
+}],
+"loop": true,
+"name": &"default",
+"speed": 9.0
+}]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_w2akj"]
 radius = 5.0
@@ -16,10 +59,11 @@ height = 28.0
 [node name="Zoot" type="CharacterBody2D"]
 collision_layer = 2
 collision_mask = 0
-script = ExtResource("1_bvikt")
+script = ExtResource("1_18i5x")
+sine_amplitude = 10.0
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_18i5x")
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_l70hh")
 
 [node name="HealthComponent" type="Node2D" parent="."]
 script = ExtResource("3_2pfxk")
