@@ -103,8 +103,8 @@ func start_next_wave() -> void:
 	prepare_next_location()
 
 func setup_map() -> void:
-	for i in range(3):
-		map.append(0) # First 3 waves are always the first location (Space)
+	# for i in range(3):
+	# 	map.append(0)
 	generate_map(10)
 	current_location_index = map[0]
 	next_location_index = map[1]
@@ -116,7 +116,7 @@ func generate_map(locations_amount: int) -> void:
 	var sequence = []
 	var max_value = locations.size() - 1
 	var min_value = 0
-	var last_value = map[map.size() - 1]
+	var last_value = map[map.size() - 1] if map.size() > 0 else -1
 	for i in range(locations_amount):
 		var new_value = randi_range(min_value, max_value)
 		while new_value == last_value:
