@@ -1,10 +1,11 @@
-[gd_scene load_steps=14 format=3 uid="uid://xaeitc1t4enu"]
+[gd_scene load_steps=15 format=3 uid="uid://xaeitc1t4enu"]
 
 [ext_resource type="Script" uid="uid://bbmgtknyhxvwa" path="res://Enemies/zoot/zoot.gd" id="1_18i5x"]
 [ext_resource type="Texture2D" uid="uid://dilnkx7j41cy1" path="res://Enemies/zoot/zoot_animation.png" id="2_18i5x"]
 [ext_resource type="PackedScene" uid="uid://wikdcl5aogg5" path="res://Projectiles/enemy_projectile.tscn" id="2_exglh"]
 [ext_resource type="Script" uid="uid://cmxkc1l3uevq1" path="res://Enemies/general/Scripts/HealthComponent.gd" id="3_2pfxk"]
 [ext_resource type="Script" uid="uid://dqihe208dt14r" path="res://Enemies/general/Scripts/hitbox.gd" id="4_jp3px"]
+[ext_resource type="Script" uid="uid://cnbwlgjmc0w46" path="res://Enemies/general/Scripts/ShootingComponent.gd" id="5_exglh"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_exglh"]
 atlas = ExtResource("2_18i5x")
@@ -61,11 +62,7 @@ height = 28.0
 collision_layer = 2
 collision_mask = 0
 script = ExtResource("1_18i5x")
-bullet_scene = ExtResource("2_exglh")
-bullet_speed = 150.0
-fire_rate = 4.0
-burst_count = 1
-burst_delay = 0.3
+sine_amplitude = 10.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_l70hh")
@@ -86,6 +83,13 @@ shape = SubResource("CapsuleShape2D_w2akj")
 [node name="CollisionHitbox" type="CollisionShape2D" parent="."]
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_3bkon")
+
+[node name="ShootingComponent" type="Node2D" parent="."]
+script = ExtResource("5_exglh")
+bullet_scene = ExtResource("2_exglh")
+bullet_speed = 150.0
+burst_count = 1
+burst_delay = 0.3
 
 [connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
 [connection signal="died" from="HealthComponent" to="." method="_on_health_component_died"]

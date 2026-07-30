@@ -1,4 +1,4 @@
-class_name ShootingEnemy extends Enemy
+class_name ShootingComponent extends Node
 
 @export_group("Shooting Settings")
 @export var bullet_scene: PackedScene
@@ -7,6 +7,7 @@ class_name ShootingEnemy extends Enemy
 @export var fire_rate: float = 3.0
 @export var burst_count: int = 2
 @export var burst_delay: float = 0.15
+@export var bullet_direction: Vector2 = Vector2.UP
 
 var shoot_timer: Timer
 
@@ -21,7 +22,7 @@ func setup_shoot_timer() -> void:
 	add_child(shoot_timer)
 
 func _on_shoot_timer_timeout() -> void:
-	if not is_instance_valid(self):
+	if not is_instance_valid(owner):
 		return
 	start_burst()
 
@@ -31,12 +32,14 @@ func start_burst() -> void:
 		await get_tree().create_timer(burst_delay).timeout
 
 func shoot_single_bullet() -> void:
-	if not is_instance_valid(self) or not bullet_scene:
+	if not is_instance_valid(owner) or not bullet_scene:
 		return
 
 	GlobalAudio.play_laser()
 	var bullet_instance = bullet_scene.instantiate() as Projectile
-	get_parent().add_child(bullet_instance)
-	bullet_instance.global_position = global_position
 
-	bullet_instance.setup(bullet_damage, bullet_speed, Vector2.DOWN)
+	# Dodajemy pocisk do sceny głównej (Playground)
+	owner.get_parent().add_child(bullet_instance)
+	bullet_instance.global_position = owner.global_position
+
+	bullet_instance.setup(bullet_damage, bullet_speed, bullet_direction)
