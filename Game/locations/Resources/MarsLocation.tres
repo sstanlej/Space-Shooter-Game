@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="LocationData" load_steps=5 format=3 uid="uid://bit22uckw6lod"]
+
+[ext_resource type="Script" uid="uid://4ko4pcyqo2oo" path="res://Game/locations/Scripts/LocationData.gd" id="1_do47r"]
+[ext_resource type="Texture2D" uid="uid://cyr5u1b04c3vq" path="res://Game/locations/Sprites/Mars/background_mars.png" id="1_yrim2"]
+[ext_resource type="Texture2D" uid="uid://btyivbeyp531s" path="res://Game/locations/Sprites/Mars/stars_mars.png" id="2_fewxh"]
+[ext_resource type="Script" uid="uid://c1jvipah3wjg0" path="res://Enemies/general/Scripts/EnemyData.gd" id="2_kt816"]
+
+[resource]
+script = ExtResource("1_do47r")
+location_id = 3
+location_name = "Mars"
+location_rarity = 2
+background_texture = ExtResource("1_yrim2")
+middle_texture = ExtResource("2_fewxh")
+metadata/_custom_type_script = "uid://4ko4pcyqo2oo"

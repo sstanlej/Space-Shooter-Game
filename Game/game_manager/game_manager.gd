@@ -23,7 +23,7 @@ var score : float = 0
 var escaped: int
 var wave_count: int = 0
 var difficulty: float = 1
-@export var difficulty_wave_gain: float = 0.15
+@export var difficulty_wave_gain: float = 0.2
 @export var wave_duration: int = 10
 @export var wave_cooldown: int = 5
 var wave_finished: bool = false
@@ -36,7 +36,7 @@ var experience_needed_modifier: float = 1.2
 
 var locations: Array[LocationData] = [load("res://Game/locations/Resources/SpaceLocation.tres"),
 										load("res://Game/locations/Resources/CityLocation.tres"),
-										load("res://Game/locations/Resources/GreenPlanetOrbitLocation.tres"),]
+										load("res://Game/locations/Resources/GreenPlanetOrbitLocation.tres")]
 var current_location_index: int = 0
 var next_location_index: int = 1
 var map: Array[int] = []
@@ -103,8 +103,8 @@ func start_next_wave() -> void:
 	prepare_next_location()
 
 func setup_map() -> void:
-	# for i in range(3):
-	# 	map.append(0)
+	for i in range(3):
+		map.append(0)
 	generate_map(10)
 	current_location_index = map[0]
 	next_location_index = map[1]
