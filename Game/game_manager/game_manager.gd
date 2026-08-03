@@ -111,7 +111,7 @@ func change_state(new_state: GameState) -> void:
 			print("[GameManager] Stan: PAUSED")
 
 		GameState.GAME_OVER:
-			set_world_paused(true) # ZAMRAŻAMY ŚWIAT GRY po śmierci!
+			# set_world_paused(true) # ZAMRAŻAMY ŚWIAT GRY po śmierci!
 			set_player_input_enabled(false)
 			print("[GameManager] Stan: GAME_OVER")
 
@@ -235,6 +235,8 @@ func toggle_pause() -> void:
 func game_over() -> void:
 	is_player_alive = false
 	change_state(GameState.GAME_OVER)
+	if spawner and spawner.has_method("pause_timers"):
+			spawner.pause_timers(true)
 	if ui_manager and ui_manager.has_method("show_game_over_screen"):
 		ui_manager.show_game_over_screen()
 
