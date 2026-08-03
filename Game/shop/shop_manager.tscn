@@ -47,17 +47,6 @@ texture = ExtResource("8_6mltd")
 script = ExtResource("9_71l6v")
 metadata/_custom_type_script = "uid://bets534mmwdhy"
 
-[node name="ChooseTheUpgradeLabel" type="RichTextLabel" parent="."]
-visible = false
-offset_left = -93.0
-offset_top = -45.0
-offset_right = 93.0
-offset_bottom = -14.0
-theme_override_fonts/normal_font = ExtResource("6_ilwm6")
-theme_override_font_sizes/normal_font_size = 10
-bbcode_enabled = true
-text = "[center]Choose the Upgrade:"
-
 [node name="DescriptionLabel" type="RichTextLabel" parent="."]
 offset_left = 12.0
 offset_top = -25.0
@@ -71,25 +60,6 @@ theme_override_fonts/normal_font = ExtResource("6_ilwm6")
 theme_override_font_sizes/normal_font_size = 5
 bbcode_enabled = true
 text = "[center][Upgrade description here]"
-fit_content = true
-
-[node name="StatsLabel" type="RichTextLabel" parent="."]
-visible = false
-offset_left = 12.0
-offset_top = -30.0
-offset_right = 83.0
-offset_bottom = -2.0
-theme_override_colors/default_color = Color(0.75686276, 0.9019608, 0.7294118, 1)
-theme_override_constants/line_separation = -7
-theme_override_constants/paragraph_separation = -7
-theme_override_constants/underline_alpha = 50
-theme_override_constants/strikethrough_alpha = 50
-theme_override_fonts/normal_font = ExtResource("6_ilwm6")
-theme_override_font_sizes/normal_font_size = 5
-bbcode_enabled = true
-text = "[center]DMG:  X
-ATK  SPD:  X
-MV SPD:  X"
 fit_content = true
 
 [connection signal="timeout" from="ShopTimer" to="." method="_on_shop_timer_timeout"]

@@ -1,149 +1,136 @@
-class_name Spawner extends Node2D
+class_name Spawner extends Node
+
+@export_group("System References")
+@export var game_manager: GameManager
+@export var progression_manager: ProgressionManager
+@export var location_manager: LocationManager
+@export var enemies_container: Node2D
+@export var projectiles_container: Node2D
+
+@export_group("Spawn Settings")
+@export var base_spawn_interval: float = 2.0
+@export var wave_duration: float = 15.0 # Czas trwania fali w sekundach
 
 @onready var spawn_timer: Timer = $SpawnTimer
-@onready var game_manager: GameManager = $".."
-@onready var label_manager: LabelManager = $"../LabelManager"
-var ready_to_spawn : bool = false
-var ready_to_boost: bool = false
+@onready var wave_timer: Timer = $WaveTimer
 
-var rng = RandomNumberGenerator.new()
-
-static var min_y : int = 12
-static var max_y : int = 110
-static var spawn_pos_x : int = 250
-static var middle_pos_y: int = 65
-
-@export var base_min_enemy_gap: int = 40
-@export var base_max_enemy_gap: int = 160
-@export var max_enemy_gap_limit: int = 80
-@export var base_min_enemy_count: int = 4
-@export var base_max_enemy_count: int = 6
-@export var min_enemy_gap: int = base_min_enemy_gap
-@export var max_enemy_gap: int = base_max_enemy_gap
-@export var min_enemy_count: int = base_min_enemy_count
-@export var max_enemy_count: int = base_max_enemy_count
-
-@export var ufo_chance: float = 0.1
-@export var max_ufo_chance: float = 0.5
-
-@export var clusterify_chance: float = 0.1
-@export var min_cluster_vertical_distance: int = 15
-@export var cluster_size: int = 3
-@export var cluster_y_gap: int = 20
-@export var cluster_x_gap: int = 20
-
-var cluster_types = ["vertical", "horizontal", "key", "block", "rising", "falling"]
+var is_spawning: bool = false
+var difficulty_multiplier: float = 1.0
+var difficulty_wave_gain: float = 0.1 # Wzrost trudności na falę (15% na falę)
 
 func _ready() -> void:
-	await get_tree().process_frame
-	set_ready_to_spawn(false)
+	setup_timers()
 
-func _process(_delta: float) -> void:
-	pass
+func setup_timers() -> void:
+	if not spawn_timer:
+		spawn_timer = Timer.new()
+		spawn_timer.name = "SpawnTimer"
+		add_child(spawn_timer)
 
-func adjust_difficulty_parameters(difficulty: float) -> void:
-	var enemy_count_modifier: int = 1 * floor(2 * (difficulty-1))
-	min_enemy_count = base_min_enemy_count + enemy_count_modifier
-	max_enemy_count = base_max_enemy_count + enemy_count_modifier
+	if not wave_timer:
+		wave_timer = Timer.new()
+		wave_timer.name = "WaveTimer"
+		add_child(wave_timer)
 
-	var enemy_gap_modifier: float = 20 * (difficulty-1)
-	max_enemy_gap = base_max_enemy_gap - int(enemy_gap_modifier)
-	if max_enemy_gap < max_enemy_gap_limit: max_enemy_gap = max_enemy_gap_limit
+	spawn_timer.timeout.connect(_on_spawn_timer_timeout)
+	wave_timer.timeout.connect(_on_wave_timer_timeout)
 
-	ufo_chance = min(max_ufo_chance, difficulty/10)
+# --- KONTROLA FAL I SPAWNU ---
 
-	clusterify_chance = difficulty/10
-	cluster_size = 3 + floor(log(2 * (difficulty-1)))
-	# print("Cluster size: ", cluster_size)
+func start_spawning() -> void:
+	is_spawning = true
 
-func set_spawn_timer(new_time: int) -> void:
-	spawn_timer.wait_time = new_time
+	var current_wave = game_manager.current_wave if game_manager else 1
+	adjust_difficulty(current_wave)
 
-func get_random_spawn_point() -> Array:
-	var x: float = spawn_pos_x
-	var y: float = rng.randf_range(min_y, max_y)
-	return [x, y]
+	wave_timer.start(wave_duration)
+	spawn_timer.start(get_adjusted_spawn_interval())
+	print("[Spawner] Start spawnowania dla fali: ", current_wave)
 
-func kill_all_enemies() -> void:
-	var scene = game_manager.get_parent()
-	for child in scene.get_children():
-		if child is Enemy:
-			child.queue_free()
+func stop_spawning() -> void:
+	is_spawning = false
+	spawn_timer.stop()
+	wave_timer.stop()
+	print("[Spawner] Zatrzymano spawnowanie")
 
-func generate_wave() -> Wave:
-	var wave: Wave = Wave.new()
-	var pattern: Pattern = Pattern.new()
-	var wave_size: int = rng.randi_range(min_enemy_count, max_enemy_count)
-	pattern.generate_random_base(wave_size, spawn_pos_x, min_enemy_gap, max_enemy_gap)
+func adjust_difficulty(wave_number: int) -> void:
+	difficulty_multiplier = 1.0 + (wave_number - 1) * difficulty_wave_gain
+	print("[Spawner] Zmieniono trudność dla fali ", wave_number, ": multiplier = ", difficulty_multiplier)
 
-	var cluster_params = {
-		"size": cluster_size,
-		"gap_x": cluster_x_gap,
-		"gap_y": cluster_y_gap,
-		"size_x": cluster_size,
-		"size_y": cluster_size
-	}
-	for i in range(pattern.get_size()):
-		var r: float = rng.randf()
-		if r < clusterify_chance:
-			var cluster_type = cluster_types[rng.randi_range(0, cluster_types.size() - 1)]
-			pattern.make_cluster(i, cluster_type, cluster_params)
+func get_adjusted_spawn_interval() -> float:
+	return max(0.4, base_spawn_interval / difficulty_multiplier)
 
-	var current_location: LocationData = game_manager.get_current_location()
-	var available_enemies: Array[EnemyData] = current_location.spawnable_enemies
+# --- OBSŁUGA TIMERA I INSTANCJOWANIE WROGA ---
 
-	if available_enemies.is_empty():
-		push_error("ERROR: Location %s does not have any spawnable enemies defined in spawnable_enemies!" % current_location.location_name)
-		return wave
-
-	var selected_enemy_datas: Array[EnemyData] = []
-	for i in range(pattern.get_size()):
-		var random_enemy: EnemyData = available_enemies[rng.randi_range(0, available_enemies.size() - 1)]
-		selected_enemy_datas.append(random_enemy)
-
-	wave.set_pattern(pattern)
-	wave.set_enemy_datas(selected_enemy_datas)
-	return wave
-
-func spawn_wave() -> void:
-	var wave1: Wave = generate_wave()
-	print(wave1.get_pattern().get_pattern())
-	print("Spawning wave %s:" % game_manager.get_wave_count())
-	print("%s enemies" % wave1.get_size())
-	wave1.spawn(self)
-	# Dodaj komunikat o zabiciu wsyzstkich wrogow danej fali i za to dodatkowe punkty
-
-func spawn_random_wave() -> void:
-	# kill_all_enemies()
-	spawn_wave()
-
-func spawn_enemy(enemy_position: Vector2, enemy_data: EnemyData) -> Enemy:
-	var enemy_instance = enemy_data.enemy_scene.instantiate() as Enemy
-
-	get_node("/root/Playground").add_child(enemy_instance)
-	enemy_instance.position = enemy_position
-	enemy_instance.setup(enemy_data)
-
-	if game_manager and not enemy_instance.enemy_died.is_connected(game_manager._on_enemy_died):
-		enemy_instance.enemy_died.connect(game_manager._on_enemy_died)
-	return enemy_instance
-
-func set_ready_to_spawn(value: bool) -> void:
-	var is_running = game_manager.get_running()
-	if !is_running:
-		return
-	ready_to_spawn = value
-	if ready_to_spawn:
-		# print("ready to spawn - starting spawn timer")
-		ready_to_spawn = false
-		spawn_random_wave()
-		spawn_timer.start()
-		label_manager.show_wave_label()
+func pause_timers(should_pause: bool) -> void:
+	if spawn_timer:
+		spawn_timer.paused = should_pause
+	if wave_timer:
+		wave_timer.paused = should_pause
 
 func _on_spawn_timer_timeout() -> void:
-	var is_running = game_manager.get_running()
-	var is_wave_finished = game_manager.get_wave_finished()
-	if not is_running or is_wave_finished:
+	if not is_spawning:
 		return
-	# print("spawn timer timeout")
-	game_manager.finish_wave()
+
+	spawn_random_enemy_from_location()
+
+func spawn_random_enemy_from_location() -> void:
+	if not location_manager:
+		print("[Spawner] Brak przypiętego LocationManagera!")
+		return
+
+	var current_location: LocationData = location_manager.get_current_location()
+	if not current_location or current_location.spawnable_enemies.size() == 0:
+		print("[Spawner] Aktualna lokacja nie posiada zdefiniowanych wrogów!")
+		return
+
+	# 1. Losujemy EnemyData z lokacji
+	var selected_enemy_data: EnemyData = current_location.spawnable_enemies.pick_random()
+
+	# 2. Obliczamy pozycję spawnu poza prawą krawędzią ekranu
+	var viewport_rect = get_viewport().get_visible_rect()
+	var spawn_x = viewport_rect.size.x + 40.0
+	var spawn_y = randf_range(30.0, viewport_rect.size.y - 30.0)
+	var spawn_pos = Vector2(spawn_x, spawn_y)
+
+	# 3. Wywołujemy uniwersalną funkcję spawn_enemy!
+	spawn_enemy(spawn_pos, selected_enemy_data)
+
+# Główna, uniwersalna funkcja tworzenia wroga (REUSABLE)
+func spawn_enemy(spawn_position: Vector2, enemy_data: EnemyData) -> Enemy:
+	if not enemy_data or not enemy_data.enemy_scene:
+		print("[Spawner] Błąd: Brak danych lub sceny dla spawn_enemy!")
+		return null
+
+	var enemy_instance = enemy_data.enemy_scene.instantiate() as Enemy
+	if not enemy_instance:
+		return null
+
+	if enemies_container:
+		enemies_container.add_child(enemy_instance)
+	else:
+		add_child(enemy_instance)
+
+	enemy_instance.global_position = spawn_position
+
+	if enemy_instance.has_method("setup"):
+		enemy_instance.setup(enemy_data)
+
+	if enemy_instance.has_signal("enemy_died"):
+		enemy_instance.enemy_died.connect(_on_enemy_died)
+
+	return enemy_instance
+
+func _on_wave_timer_timeout() -> void:
+	stop_spawning()
+	if game_manager:
+		game_manager.finish_wave()
+
+func _on_enemy_died(points: float, xp: float) -> void:
+	if progression_manager:
+		progression_manager.add_enemy_reward(points, xp)
+
+func kill_all_enemies() -> void:
+	if enemies_container:
+		for enemy in enemies_container.get_children():
+			enemy.queue_free()

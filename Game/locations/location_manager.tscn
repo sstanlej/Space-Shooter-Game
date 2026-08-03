@@ -1,12 +1,16 @@
-[gd_scene load_steps=5 format=3 uid="uid://qoymek85ecx7"]
+[gd_scene load_steps=8 format=3 uid="uid://qoymek85ecx7"]
 
 [ext_resource type="Texture2D" uid="uid://dafc7vj4da0cf" path="res://Game/locations/Sprites/Space/space_background.png" id="1_1s2pd"]
-[ext_resource type="Script" uid="uid://ctmfxhq2ljo8h" path="res://Game/locations/Scripts/background_manager.gd" id="1_31bry"]
+[ext_resource type="Script" uid="uid://ctmfxhq2ljo8h" path="res://Game/locations/Scripts/location_manager.gd" id="1_31bry"]
 [ext_resource type="Texture2D" uid="uid://bq5rkdyi32l6h" path="res://Game/locations/Sprites/Space/space_stars.png" id="2_exbx4"]
+[ext_resource type="Resource" uid="uid://c1l3ogqv4mxp5" path="res://Game/locations/Resources/SpaceLocation.tres" id="2_xhstt"]
 [ext_resource type="Texture2D" uid="uid://btgr316xwbgqa" path="res://Game/locations/Sprites/Space/space_moon.png" id="3_exbx4"]
+[ext_resource type="Resource" uid="uid://cnm2rj4rhv22x" path="res://Game/locations/Resources/CityLocation.tres" id="3_s8p85"]
+[ext_resource type="Resource" uid="uid://c30ua1jkovq12" path="res://Game/locations/Resources/GreenPlanetOrbitLocation.tres" id="4_hp0nm"]
 
-[node name="BackgroundManager" type="Node2D"]
+[node name="LocationManager" type="Node2D"]
 script = ExtResource("1_31bry")
+locations = Array[Object]([ExtResource("2_xhstt"), ExtResource("3_s8p85"), ExtResource("4_hp0nm")])
 
 [node name="CurrentLocation" type="Node2D" parent="."]
 

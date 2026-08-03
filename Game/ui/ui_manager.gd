@@ -1,88 +1,118 @@
-class_name UIManager extends TextureRect
+class_name UIManager extends CanvasLayer
 
-@onready var heart_start_position = $HeartStartPosition
-@onready var player: Player = $"../../../Player"
-@onready var game_manager: GameManager = $"../../../GameManager"
-@onready var score_label: RichTextLabel = $ScoreLabel
-@onready var damage_label: RichTextLabel = $DamageLabel
-@onready var movement_speed_label: RichTextLabel = $MoveSpeedLabel
-@onready var attack_speed_label: RichTextLabel = $AttackSpeedLabel
+@export_group("UI Panels")
+@export var hud_panel: Control
+@export var intermission_panel: Control
+@export var shop_ui: ShopUI
+@export var start_game_panel: Control
+@export var game_over_panel: Control
+@export var pause_panel: Control
+
+@export_group("HUD Displays")
+@export var score_label: RichTextLabel
+@export var distance_label: RichTextLabel
+@export var upgrade_points_label: RichTextLabel
 @export var experience_bar: TextureProgressBar
-@export var health_full_sprite: Texture
-@export var health_empty_sprite: Texture
 
-@onready var start_game_label: RichTextLabel = $"../LabelManager/StartGameLabel"
+@export_group("Player Stats Displays")
+@export var damage_label: RichTextLabel
+@export var movement_speed_label: RichTextLabel
+@export var attack_speed_label: RichTextLabel
 
-var hearts: Array
-var player_health: int
-var player_score: float
-var max_health: int
-var missing_hearts: int
-var heart_visible: Array = []
-var health_sprite_offset: int = 12
+@export_group("Health / Hearts System")
+@export var hearts_container: Node2D # Dawne HeartStartPosition
+@export var health_full_sprite: Texture2D
+@export var health_empty_sprite: Texture2D
+@export var heart_sprite_offset: int = 12
 
-var tween: Tween
+var hearts: Array = []
+var max_health: int = 0
 
 func _ready() -> void:
-	start_game_label.visible = true
-	update_score_label(0)
-	if player:
-		max_health = roundi(player.get_health_component().get_health())
-		player_health = max_health
-	var offset: int = 0
-	experience_bar.value = 0
-	Heart.set_textures(health_full_sprite, health_empty_sprite)
-	for i in range(player_health):
-		var heart_instance = Heart.spawn_heart()
-		heart_start_position.add_child(heart_instance)
-		heart_instance.position.x += offset
-		hearts.append(heart_instance)
-		heart_instance.set_on(false)
-		offset += health_sprite_offset
+	show_start_screen()
 
-func _process(_delta: float) -> void:
-	if player:
-		player_health = roundi(player.get_health_component().get_health())
-		update_health_bar(player_health)
-	else:
-		for i in heart_visible.size():
-			hearts[i].set_on(false)
-			pass
+# --- ZARZĄDZANIE PANE LAMI ---
 
-func update_health_bar(new_health: int) -> void:
-	player_health = new_health
-	missing_hearts = max_health - player_health
-	heart_visible = []
-	for i in player_health:
-		heart_visible.append(1)
-	for i in missing_hearts:
-		heart_visible.append(0)
-	for i in heart_visible.size():
-		hearts[i].set_on(heart_visible[i])
-		# hearts[i].visible = heart_visible[i]
+func show_start_screen() -> void:
+	if start_game_panel: start_game_panel.show()
+	if hud_panel: hud_panel.hide()
+	if intermission_panel: intermission_panel.hide()
+	if game_over_panel: game_over_panel.hide()
+	if pause_panel: pause_panel.hide()
 
 func hide_start_game_label() -> void:
-	start_game_label.visible = false
+	if start_game_panel: start_game_panel.hide()
 
-func update_experience_bar(new_value: int) -> void:
-	experience_bar.value = new_value
+func show_hud() -> void:
+	if start_game_panel: start_game_panel.hide()
+	if hud_panel: hud_panel.show()
 
-func extend_experience_bar(new_value: int) -> void:
-	experience_bar.max_value = new_value
+func show_intermission_prompt(value: bool) -> void:
+	if intermission_panel:
+		intermission_panel.visible = value
 
-func update_distance_label(distance: float):
-	score_label.text = "[center]" + str("%.0f" % distance) + "     km"
+func show_game_over_screen() -> void:
+	if game_over_panel: game_over_panel.show()
 
-func update_score_label(score: int) -> void:
-	score_label.text = "[center]" + str(score)
+func show_pause_menu() -> void:
+	if pause_panel:
+		pause_panel.show()
+
+func hide_pause_menu() -> void:
+	if pause_panel:
+		pause_panel.hide()
+
+# --- SYSTEM SERDUSZEK (CZYSZCZONY I ZOPTYMALIZOWANY) ---
+
+func setup_hearts(initial_max_hp: int) -> void:
+	max_health = initial_max_hp
+
+	# Czyszczenie starych serduszek, jeśli restartujemy grę
+	for child in hearts_container.get_children():
+		child.queue_free()
+	hearts.clear()
+
+	Heart.set_textures(health_full_sprite, health_empty_sprite)
+
+	var pixel_offset: int = 0
+	for i in range(max_health):
+		var heart_instance = Heart.spawn_heart()
+		hearts_container.add_child(heart_instance)
+		heart_instance.position.x = pixel_offset
+		heart_instance.set_on(true) # Domyślnie pełne
+		hearts.append(heart_instance)
+		pixel_offset += heart_sprite_offset
+
+func update_health_bar(current_hp: int) -> void:
+	# Banalnie prosta i czysta logika:
+	# Wszystkie serduszka z indeksem mniejszym niż current_hp są włączone (pełne), reszta wyłączona (puste)!
+	for i in range(hearts.size()):
+		var is_full = i < current_hp
+		hearts[i].set_on(is_full)
+
+# --- PROGRESJA, DYSTANS I WYNIK ---
+
+func update_experience_bar(current_xp: int) -> void:
+	if experience_bar:
+		experience_bar.value = current_xp
+
+func extend_experience_bar(max_xp: int) -> void:
+	if experience_bar:
+		experience_bar.max_value = max_xp
+
+func update_distance_label(distance: float) -> void:
+	if distance_label:
+		distance_label.text = "[center]" + str("%.0f" % distance) + " km"
+
+func update_score_label(score: float) -> void:
+	if score_label:
+		score_label.text = "[center]" + str(int(score))
+
+func update_upgrade_points_label(points: int) -> void:
+	if upgrade_points_label:
+		upgrade_points_label.text = "Points: " + str(points)
 
 func update_stats_label(damage: int, movement_speed: int, attack_speed: int) -> void:
-	damage_label.text = str(damage)
-	movement_speed_label.text = str(movement_speed)
-	attack_speed_label.text = str(attack_speed)
-
-func reset_tween() -> void:
-	if tween:
-		tween.kill()
-	tween = get_tree().create_tween()
-	tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+	if damage_label: damage_label.text = str(damage)
+	if movement_speed_label: movement_speed_label.text = str(movement_speed)
+	if attack_speed_label: attack_speed_label.text = str(attack_speed)

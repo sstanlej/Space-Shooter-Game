@@ -1,0 +1,299 @@
+[gd_scene load_steps=24 format=3 uid="uid://ctolyotyjbqwg"]
+
+[ext_resource type="Script" uid="uid://dm1jlaqpgu05" path="res://Game/game_manager/game_manager.gd" id="1_anis7"]
+[ext_resource type="PackedScene" uid="uid://qoymek85ecx7" path="res://Game/locations/location_manager.tscn" id="1_ebmr7"]
+[ext_resource type="PackedScene" uid="uid://b5gn1svcnnf7a" path="res://Player/player.tscn" id="2_anis7"]
+[ext_resource type="Script" uid="uid://bvscfifqg2eho" path="res://Game/camera/camera_movement.gd" id="4_gbv4a"]
+[ext_resource type="Texture2D" uid="uid://caubnil2iehm" path="res://Game/ui/Sprites/game_overlay.png" id="5_j7lk2"]
+[ext_resource type="Script" uid="uid://dga8epmke5iyx" path="res://Game/spawn_system/spawner.gd" id="6_46ugy"]
+[ext_resource type="Script" uid="uid://ceksi56kybfsk" path="res://Game/ui/ui_manager.gd" id="6_heyl7"]
+[ext_resource type="Script" uid="uid://dw38kr6168wir" path="res://Game/game_manager/progression_manager.gd" id="7_anis7"]
+[ext_resource type="Texture2D" uid="uid://ee48briuh3x5" path="res://Game/ui/Sprites/health_full.png" id="7_gcygt"]
+[ext_resource type="Texture2D" uid="uid://di4dto3ibdtf3" path="res://Game/ui/Sprites/health_empty.png" id="8_2dyge"]
+[ext_resource type="FontFile" uid="uid://bvlhnv4ultuef" path="res://Fonts/Pixeled.ttf" id="9_46ugy"]
+[ext_resource type="Texture2D" uid="uid://c16xy12030r1n" path="res://Game/ui/Sprites/experience_bar_under.png" id="10_nfa4e"]
+[ext_resource type="Texture2D" uid="uid://b3v7jgas4mstk" path="res://Game/ui/Sprites/shop_panel.png" id="11_4k0jw"]
+[ext_resource type="Texture2D" uid="uid://to23gur3vo1e" path="res://Game/ui/Sprites/experience_bar_progress.png" id="11_kmckd"]
+[ext_resource type="Texture2D" uid="uid://dugump0ukmep5" path="res://Collectables/Sprites/selected.png" id="12_flq8k"]
+[ext_resource type="Texture2D" uid="uid://cpbex4mtdoatj" path="res://Game/locations/Sprites/earth.png" id="15_6g3sl"]
+[ext_resource type="Script" uid="uid://byxu7j2uos8l8" path="res://Game/shop/shop_ui.gd" id="15_46ugy"]
+[ext_resource type="Texture2D" uid="uid://cyhla4dmpvmef" path="res://Upgrades/Sprites/attack_speed_upgrade.png" id="16_heyl7"]
+[ext_resource type="Script" uid="uid://1p2rxeli25vm" path="res://Upgrades/Scripts/attack_speed_upgrade.gd" id="17_gcygt"]
+[ext_resource type="Texture2D" uid="uid://f0t1hbuev73m" path="res://Upgrades/Sprites/movement_speed_upgrade.png" id="18_2dyge"]
+[ext_resource type="Script" uid="uid://bets534mmwdhy" path="res://Upgrades/Scripts/movement_speed_upgrade.gd" id="19_46ugy"]
+[ext_resource type="Texture2D" uid="uid://r50hjrws6do8" path="res://Upgrades/Sprites/attack_damage_upgrade.png" id="20_2dyge"]
+[ext_resource type="Script" uid="uid://cqpyjajhkcr0s" path="res://Upgrades/Scripts/attack_damage_upgrade.gd" id="21_46ugy"]
+
+[node name="Main" type="Node2D" node_paths=PackedStringArray("world", "location_manager", "progression_manager", "spawner", "ui_manager", "shop_ui", "player", "camera_frame", "wave_cooldown_timer")]
+script = ExtResource("1_anis7")
+world = NodePath("World")
+location_manager = NodePath("World/LocationManager")
+progression_manager = NodePath("ProgressionManager")
+spawner = NodePath("Spawner")
+ui_manager = NodePath("UILayer")
+shop_ui = NodePath("UILayer/ShopUI")
+player = NodePath("World/Player")
+camera_frame = NodePath("World/CameraFrame")
+wave_cooldown_timer = NodePath("Timers/WaveCooldownTimer")
+
+[node name="World" type="Node2D" parent="."]
+
+[node name="LocationManager" parent="World" instance=ExtResource("1_ebmr7")]
+
+[node name="Player" parent="World" instance=ExtResource("2_anis7")]
+position = Vector2(-120, 65)
+
+[node name="CameraFrame" type="Node2D" parent="World"]
+process_mode = 3
+position = Vector2(-240, 0)
+script = ExtResource("4_gbv4a")
+
+[node name="Camera2D" type="Camera2D" parent="World/CameraFrame"]
+process_mode = 3
+offset = Vector2(120, 67)
+
+[node name="EnemiesContainer" type="Node2D" parent="World"]
+
+[node name="ProjectilesContainer" type="Node2D" parent="World"]
+
+[node name="Earth" type="Sprite2D" parent="World"]
+z_index = 5
+position = Vector2(-120, 67)
+texture = ExtResource("15_6g3sl")
+
+[node name="Spawner" type="Node" parent="." node_paths=PackedStringArray("game_manager", "progression_manager", "location_manager", "enemies_container", "projectiles_container") groups=["spawner"]]
+script = ExtResource("6_46ugy")
+game_manager = NodePath("..")
+progression_manager = NodePath("../ProgressionManager")
+location_manager = NodePath("../World/LocationManager")
+enemies_container = NodePath("../World/EnemiesContainer")
+projectiles_container = NodePath("../World/ProjectilesContainer")
+wave_duration = 10.0
+
+[node name="WaveTimer" type="Timer" parent="Spawner"]
+wait_time = 10.0
+
+[node name="SpawnTimer" type="Timer" parent="Spawner"]
+
+[node name="ProgressionManager" type="Node" parent="." node_paths=PackedStringArray("ui_manager")]
+script = ExtResource("7_anis7")
+ui_manager = NodePath("../UILayer")
+
+[node name="Timers" type="Node" parent="."]
+
+[node name="WaveCooldownTimer" type="Timer" parent="Timers"]
+wait_time = 10.0
+
+[node name="UILayer" type="CanvasLayer" parent="." node_paths=PackedStringArray("hud_panel", "intermission_panel", "shop_ui", "start_game_panel", "game_over_panel", "pause_panel", "score_label", "experience_bar", "damage_label", "movement_speed_label", "attack_speed_label", "hearts_container")]
+process_mode = 3
+script = ExtResource("6_heyl7")
+hud_panel = NodePath("HUD")
+intermission_panel = NodePath("IntermissionUI")
+shop_ui = NodePath("ShopUI")
+start_game_panel = NodePath("StartGameUI")
+game_over_panel = NodePath("GameOverUI")
+pause_panel = NodePath("PauseMenuUI")
+score_label = NodePath("HUD/ScoreLabel")
+experience_bar = NodePath("HUD/ExperienceBar")
+damage_label = NodePath("HUD/StatsPanel/DamageLabel")
+movement_speed_label = NodePath("HUD/StatsPanel/MoveSpeedLabel")
+attack_speed_label = NodePath("HUD/StatsPanel/AttackSpeedLabel")
+hearts_container = NodePath("HUD/HeartStartPosition")
+health_full_sprite = ExtResource("7_gcygt")
+health_empty_sprite = ExtResource("8_2dyge")
+
+[node name="HUD" type="Control" parent="UILayer"]
+process_mode = 3
+layout_mode = 3
+anchor_right = 0.8375
+anchor_bottom = 0.6962963
+offset_right = 40.0
+offset_bottom = 40.0
+metadata/_edit_use_anchors_ = true
+
+[node name="HUDTexture" type="TextureRect" parent="UILayer/HUD"]
+process_mode = 3
+layout_mode = 0
+offset_right = 240.0
+offset_bottom = 135.0
+texture = ExtResource("5_j7lk2")
+
+[node name="StatsPanel" type="HBoxContainer" parent="UILayer/HUD"]
+layout_mode = 0
+offset_left = 37.0
+offset_top = 121.0
+offset_right = 79.0
+offset_bottom = 138.0
+
+[node name="DamageLabel" type="RichTextLabel" parent="UILayer/HUD/StatsPanel"]
+process_mode = 3
+texture_filter = 1
+custom_minimum_size = Vector2(11, 10)
+layout_mode = 2
+theme_override_colors/default_color = Color(0.75686276, 0.9019608, 0.7294118, 1)
+theme_override_fonts/normal_font = ExtResource("9_46ugy")
+theme_override_font_sizes/normal_font_size = 5
+text = "0"
+fit_content = true
+
+[node name="MoveSpeedLabel" type="RichTextLabel" parent="UILayer/HUD/StatsPanel"]
+process_mode = 3
+custom_minimum_size = Vector2(12, 10)
+layout_mode = 2
+theme_override_colors/default_color = Color(0.75686276, 0.9019608, 0.7294118, 1)
+theme_override_fonts/normal_font = ExtResource("9_46ugy")
+theme_override_font_sizes/normal_font_size = 5
+text = "0"
+fit_content = true
+
+[node name="AttackSpeedLabel" type="RichTextLabel" parent="UILayer/HUD/StatsPanel"]
+process_mode = 3
+custom_minimum_size = Vector2(11, 10)
+layout_mode = 2
+theme_override_colors/default_color = Color(0.75686276, 0.9019608, 0.7294118, 1)
+theme_override_fonts/normal_font = ExtResource("9_46ugy")
+theme_override_font_sizes/normal_font_size = 5
+text = "0"
+fit_content = true
+
+[node name="ScoreLabel" type="RichTextLabel" parent="UILayer/HUD"]
+process_mode = 3
+layout_mode = 0
+offset_left = 142.0
+offset_top = 121.0
+offset_right = 235.0
+offset_bottom = 142.0
+theme_override_colors/default_color = Color(0.75686276, 0.9019608, 0.7294118, 1)
+theme_override_fonts/normal_font = ExtResource("9_46ugy")
+theme_override_font_sizes/normal_font_size = 5
+bbcode_enabled = true
+text = "[center][ SCORE ]"
+fit_content = true
+
+[node name="HeartStartPosition" type="Node2D" parent="UILayer/HUD"]
+process_mode = 3
+position = Vector2(93, 119)
+
+[node name="ExperienceBar" type="TextureProgressBar" parent="UILayer/HUD"]
+process_mode = 3
+layout_mode = 0
+offset_left = 92.0
+offset_top = 131.0
+offset_right = 146.0
+offset_bottom = 134.0
+value = 5.0
+texture_under = ExtResource("10_nfa4e")
+texture_progress = ExtResource("11_kmckd")
+
+[node name="IntermissionUI" type="Control" parent="UILayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ShopUI" type="Control" parent="UILayer" node_paths=PackedStringArray("game_manager", "progression_manager", "player", "description_label", "selected_icon", "options_container")]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("15_46ugy")
+game_manager = NodePath("../..")
+progression_manager = NodePath("../../ProgressionManager")
+player = NodePath("../../World/Player")
+description_label = NodePath("DescriptionLabel")
+selected_icon = NodePath("SelectedIcon")
+options_container = NodePath("ShopOptions")
+
+[node name="ShopBackground" type="TextureRect" parent="UILayer/ShopUI"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("11_4k0jw")
+
+[node name="ShopOptions" type="HBoxContainer" parent="UILayer/ShopUI"]
+layout_mode = 0
+offset_left = 47.0
+offset_top = 80.0
+offset_right = 115.0
+offset_bottom = 96.0
+
+[node name="AttackSpeedUpgrade" type="Sprite2D" parent="UILayer/ShopUI/ShopOptions"]
+position = Vector2(8, 8)
+texture = ExtResource("16_heyl7")
+script = ExtResource("17_gcygt")
+metadata/_custom_type_script = "uid://1p2rxeli25vm"
+
+[node name="MovementSpeedUpgrade" type="Sprite2D" parent="UILayer/ShopUI/ShopOptions"]
+position = Vector2(34, 8)
+texture = ExtResource("18_2dyge")
+script = ExtResource("19_46ugy")
+metadata/_custom_type_script = "uid://bets534mmwdhy"
+
+[node name="AttackDamageUpgrade" type="Sprite2D" parent="UILayer/ShopUI/ShopOptions"]
+position = Vector2(59, 8)
+texture = ExtResource("20_2dyge")
+script = ExtResource("21_46ugy")
+metadata/_custom_type_script = "uid://cqpyjajhkcr0s"
+
+[node name="SelectedIcon" type="Sprite2D" parent="UILayer/ShopUI"]
+modulate = Color(0.75686276, 0.9019608, 0.7294118, 1)
+position = Vector2(55, 88)
+texture = ExtResource("12_flq8k")
+
+[node name="DescriptionLabel" type="RichTextLabel" parent="UILayer/ShopUI"]
+layout_mode = 0
+offset_left = 131.0
+offset_top = 42.0
+offset_right = 201.0
+offset_bottom = 101.0
+theme_override_colors/default_color = Color(0.75686276, 0.9019608, 0.7294118, 1)
+theme_override_constants/line_separation = -7
+theme_override_constants/underline_alpha = 50
+theme_override_constants/strikethrough_alpha = 50
+theme_override_fonts/normal_font = ExtResource("9_46ugy")
+theme_override_font_sizes/normal_font_size = 5
+bbcode_enabled = true
+text = "[center][Upgrade description here]"
+fit_content = true
+
+[node name="PauseMenuUI" type="Control" parent="UILayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="GamePausedLabel" type="RichTextLabel" parent="UILayer/PauseMenuUI"]
+layout_mode = 0
+offset_right = 204.0
+offset_bottom = 71.0
+text = "GAME PAUSED"
+fit_content = true
+
+[node name="GameOverUI" type="Control" parent="UILayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="GameOverLabel" type="RichTextLabel" parent="UILayer/GameOverUI"]
+layout_mode = 0
+offset_top = 23.0
+offset_right = 204.0
+offset_bottom = 94.0
+text = "GAME OVER
+"
+fit_content = true
+
+[node name="StartGameUI" type="Control" parent="UILayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="StartGameLabel" type="RichTextLabel" parent="UILayer/StartGameUI"]
+layout_mode = 0
+offset_top = 48.0
+offset_right = 204.0
+offset_bottom = 119.0
+text = "PRESS SPACE TO START"
+fit_content = true
