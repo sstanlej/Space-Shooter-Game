@@ -86,7 +86,7 @@ ui_manager = NodePath("../UILayer")
 [node name="Timers" type="Node" parent="."]
 
 [node name="WaveCooldownTimer" type="Timer" parent="Timers"]
-wait_time = 10.0
+wait_time = 5.0
 
 [node name="UILayer" type="CanvasLayer" parent="." node_paths=PackedStringArray("hud_panel", "intermission_panel", "shop_ui", "start_game_panel", "game_over_panel", "pause_panel", "score_label", "experience_bar", "damage_label", "movement_speed_label", "attack_speed_label", "hearts_container", "notifications_container", "title_label", "subtitle_label", "health_bar", "damage_bar")]
 process_mode = 3
@@ -360,7 +360,7 @@ layout_mode = 2
 theme_override_fonts/normal_font = ExtResource("9_46ugy")
 theme_override_font_sizes/normal_font_size = 15
 bbcode_enabled = true
-text = "[center][TITLE]"
+text = "[center]SPACE SHOOTER"
 fit_content = true
 
 [node name="SubtitleLabel" type="RichTextLabel" parent="UILayer/NotificationsUI/MessageContainer"]
@@ -368,5 +368,5 @@ layout_mode = 2
 theme_override_fonts/normal_font = ExtResource("9_46ugy")
 theme_override_font_sizes/normal_font_size = 5
 bbcode_enabled = true
-text = "[center][SUBTITLE]"
+text = "[center]BABY"
 fit_content = true

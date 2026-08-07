@@ -111,7 +111,6 @@ func change_state(new_state: GameState) -> void:
 			print("[GameManager] Stan: PAUSED")
 
 		GameState.GAME_OVER:
-			# set_world_paused(true) # ZAMRAŻAMY ŚWIAT GRY po śmierci!
 			set_player_input_enabled(false)
 			print("[GameManager] Stan: GAME_OVER")
 
@@ -131,14 +130,13 @@ func wait_to_start() -> void:
 		camera_frame.move_to_menu_view()
 
 	if ui_manager and ui_manager.has_method("show_notification"):
-		ui_manager.show_notification("[color=red]SPACE SHOOTER[/color]", "PRESS SPACE TO START", 0.0)
+		ui_manager.show_notification("[color=red]SPACE SHOOTER[/color]", "[color=gray]PRESS [/color][color=gold][SPACE][/color][color=gray] TO START[/color]", 0.0)
 
 func start_game() -> void:
 	is_player_alive = true
 	current_wave = 1
 	change_state(GameState.TRANSITIONING)
 
-	# Płynnie chowamy napis początkowy
 	if ui_manager and ui_manager.has_method("hide_notification"):
 		ui_manager.hide_notification(0.4)
 
@@ -173,11 +171,11 @@ func finish_wave() -> void:
 
 		var subtitle_text: String = ""
 		if points > 0:
-			subtitle_text = "[color=gray]Spend [color=gold]" + str(points) + "[/color] [color=gray]upgrade point(s) in the Shop! [color=cyan][B][/color]"
+			subtitle_text = "[color=gray]Spend [/color][color=gold]" + str(points) + "[/color][color=gray] upgrade point(s) in the Shop! [/color][color=gold][B][/color]"
 		else:
-			subtitle_text = "[color=gray]Press [color=cyan][B][/color] to open Shop![/color]"
+			subtitle_text = "[color=gray]Press [/color][color=gold][B][/color][color=gray] to open Shop![/color]"
 
-		ui_manager.show_notification("WAVE COMPLETED!", subtitle_text, 3.5)
+		ui_manager.show_notification("[color=gold]WAVE FINISHED![/color]", subtitle_text, 3.5)
 
 	if spawner and spawner.has_method("stop_spawning"):
 		spawner.stop_spawning()
@@ -206,7 +204,7 @@ func start_wave() -> void:
 		if ui_manager.has_method("hide_start_game_label"): ui_manager.hide_start_game_label()
 		if ui_manager.has_method("show_hud"): ui_manager.show_hud()
 		if ui_manager.has_method("show_notification"):
-			ui_manager.show_notification("WAVE " + str(current_wave), "[color=gray]Shoot them up![/color]", 2.0)
+			ui_manager.show_notification("[color=gold]WAVE " + str(current_wave) + "[/color]", "[color=gray]Shoot them up![/color]", 2.0)
 	change_state(GameState.IN_WAVE)
 	wave_started.emit(current_wave)
 
@@ -242,10 +240,8 @@ func toggle_pause() -> void:
 			spawner.pause_timers(true)
 
 		change_state(GameState.PAUSED)
-		# if ui_manager and ui_manager.has_method("show_pause_menu"):
-		# 	ui_manager.show_pause_menu()
 		if ui_manager and ui_manager.has_method("show_notification"):
-			ui_manager.show_notification("PAUSED", "Press ESC to Resume", 0.0)
+			ui_manager.show_notification("[color=gold]PAUSED[/color]", "[color=gray]Press [/color][color=gold][ESC][/color][color=gray] to Resume[/color]", 0.0)
 
 	elif current_state == GameState.PAUSED:
 		change_state(state_before_pause)
@@ -256,8 +252,6 @@ func toggle_pause() -> void:
 		if spawner and spawner.has_method("pause_timers"):
 			spawner.pause_timers(false)
 
-		# if ui_manager and ui_manager.has_method("hide_pause_menu"):
-		# 	ui_manager.hide_pause_menu()
 		if ui_manager and ui_manager.has_method("hide_notification"):
 			ui_manager.hide_notification(0.4)
 
@@ -266,10 +260,8 @@ func game_over() -> void:
 	change_state(GameState.GAME_OVER)
 	if spawner and spawner.has_method("pause_timers"):
 			spawner.pause_timers(true)
-	# if ui_manager and ui_manager.has_method("show_game_over_screen"):
-	# 	ui_manager.show_game_over_screen()
 	if ui_manager and ui_manager.has_method("show_notification"):
-		ui_manager.show_notification("GAME OVER", "Press R to Restart", 0.0)
+		ui_manager.show_notification("[color=red]GAME OVER[/color]", "[color=gray]Press [/color][color=gold][R][/color][color=gray] to Restart[/color]", 0.0)
 
 func reload_scene() -> void:
 	get_tree().reload_current_scene()
