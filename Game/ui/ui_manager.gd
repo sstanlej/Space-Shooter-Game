@@ -179,28 +179,36 @@ func show_notification(title_text: String, subtitle_text: String = "", duration:
 	if subtitle_label:
 		subtitle_label.text = "[center]" + subtitle_text + "[/center]"
 
+	# Kill ANY previous animation and timers completely
 	if title_tween:
 		title_tween.kill()
 
-	title_tween = create_tween().set_parallel(true)
+	title_tween = create_tween()
 
 	notifications_container.pivot_offset = notifications_container.size / 2.0
-
 	notifications_container.modulate.a = 0.0
 	notifications_container.scale = Vector2(1.25, 1.25)
 	notifications_container.show()
 
-	title_tween.tween_property(notifications_container, "modulate:a", 1.0, 0.3)
+	# --- 1. APPEAR ANIMATION (Parallel Fade-In + Punch Scale) ---
+	var appear_tween = title_tween.parallel()
+	appear_tween.tween_property(notifications_container, "modulate:a", 1.0, 0.3)
+	appear_tween.tween_property(notifications_container, "scale", Vector2.ONE, 0.5)\
+		.set_trans(Tween.TRANS_BACK)\
+		.set_ease(Tween.EASE_OUT)
 
-	title_tween.tween_property(notifications_container, "scale", Vector2.ONE, 0.5)\
-		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-
+	# --- 2. FADE OUT ANIMATION (Sequential after duration) ---
 	if duration > 0.0:
-		var fade_out_tween = create_tween()
-		fade_out_tween.tween_interval(duration)
-		fade_out_tween.tween_property(notifications_container, "modulate:a", 0.0, 0.5)
-		fade_out_tween.tween_callback(notifications_container.hide)
+		# Wait for the display duration
+		title_tween.tween_interval(duration)
 
+		# Smoothly fade out transparency
+		title_tween.tween_property(notifications_container, "modulate:a", 0.0, 0.5)\
+			.set_trans(Tween.TRANS_SINE)\
+			.set_ease(Tween.EASE_IN_OUT)
+
+		# Hide container once completely invisible
+		title_tween.tween_callback(notifications_container.hide)
 
 func hide_notification(fade_duration: float = 0.5) -> void:
 	if not notifications_container or not notifications_container.visible:

@@ -89,11 +89,10 @@ func check_level_up() -> bool:
 		upgrade_points_changed.emit(upgrade_points)
 
 		if ui_manager:
-			# 1. Ustawiamy nowy, większy limit paska
 			ui_manager.extend_experience_bar(experience_needed)
-			# 2. Resetujemy wartość na sztywno BEZ ANIMACJI i zabijamy stary Tween!
 			ui_manager.update_experience_bar(experience, false)
 			ui_manager.update_upgrade_points_label(upgrade_points)
+			ui_manager.show_notification("[color=cyan]LEVEL UP![/color]", "[color=gray]You reached level " + str(level) + "![/color]", 1.0)
 
 	return leveled_up
 

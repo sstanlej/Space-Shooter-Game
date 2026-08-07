@@ -175,7 +175,7 @@ func finish_wave() -> void:
 		else:
 			subtitle_text = "[color=gray]Press [/color][color=gold][B][/color][color=gray] to open Shop![/color]"
 
-		ui_manager.show_notification("[color=gold]WAVE FINISHED![/color]", subtitle_text, 3.5)
+		ui_manager.show_notification("[color=gold]WAVE FINISHED![/color]", subtitle_text, 1.5)
 
 	if spawner and spawner.has_method("stop_spawning"):
 		spawner.stop_spawning()
@@ -204,7 +204,7 @@ func start_wave() -> void:
 		if ui_manager.has_method("hide_start_game_label"): ui_manager.hide_start_game_label()
 		if ui_manager.has_method("show_hud"): ui_manager.show_hud()
 		if ui_manager.has_method("show_notification"):
-			ui_manager.show_notification("[color=gold]WAVE " + str(current_wave) + "[/color]", "[color=gray]Shoot them up![/color]", 2.0)
+			ui_manager.show_notification("[color=gold]WAVE " + str(current_wave) + "[/color]", "[color=gray]Shoot them up![/color]", 1.0)
 	change_state(GameState.IN_WAVE)
 	wave_started.emit(current_wave)
 
