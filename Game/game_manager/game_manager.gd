@@ -260,10 +260,27 @@ func toggle_pause() -> void:
 func game_over() -> void:
 	is_player_alive = false
 	change_state(GameState.GAME_OVER)
+
 	if spawner and spawner.has_method("pause_timers"):
-			spawner.pause_timers(true)
-	if ui_manager and ui_manager.has_method("show_notification"):
-		ui_manager.show_notification("[color=red]GAME OVER[/color]", "[color=gray]Press [/color][color=gold][R][/color][color=gray] to Restart[/color]", 0.0)
+		spawner.pause_timers(true)
+
+	if ui_manager:
+		var score: float = 0.0
+		var distance: float = 0.0
+		ui_manager.hide_hud()
+
+		if progression_manager:
+			if progression_manager.get("score"): score = progression_manager.get_score()
+			if progression_manager.get("distance"): distance = progression_manager.get_distance()
+
+		if ui_manager.has_method("update_game_over_stats"):
+			ui_manager.update_game_over_stats(current_wave, score, distance)
+
+		if ui_manager.has_method("show_game_over_screen"):
+			ui_manager.show_game_over_screen()
+
+		if ui_manager.has_method("show_notification"):
+			ui_manager.show_notification("[color=red]GAME OVER[/color]", "[color=gray]Press [/color][color=gold][R][/color][color=gray] to Restart[/color]", 0.0)
 
 func reload_scene() -> void:
 	get_tree().reload_current_scene()

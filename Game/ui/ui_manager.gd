@@ -34,6 +34,11 @@ class_name UIManager extends CanvasLayer
 @export var health_bar: TextureProgressBar
 @export var damage_bar: TextureProgressBar
 
+@export_group("Game Over Displays")
+@export var final_wave_label: RichTextLabel
+@export var final_score_label: RichTextLabel
+@export var final_distance_label: RichTextLabel
+
 var health_tween: Tween
 var damage_tween: Tween
 var xp_tween: Tween
@@ -60,6 +65,9 @@ func hide_start_game_label() -> void:
 func show_hud() -> void:
 	if start_game_panel: start_game_panel.hide()
 	if hud_panel: hud_panel.show()
+
+func hide_hud() -> void:
+	if hud_panel: hud_panel.hide()
 
 func show_intermission_prompt(value: bool) -> void:
 	if intermission_panel:
@@ -179,7 +187,6 @@ func show_notification(title_text: String, subtitle_text: String = "", duration:
 	if subtitle_label:
 		subtitle_label.text = "[center]" + subtitle_text + "[/center]"
 
-	# Kill ANY previous animation and timers completely
 	if title_tween:
 		title_tween.kill()
 
@@ -190,24 +197,18 @@ func show_notification(title_text: String, subtitle_text: String = "", duration:
 	notifications_container.scale = Vector2(1.25, 1.25)
 	notifications_container.show()
 
-	# --- 1. APPEAR ANIMATION (Parallel Fade-In + Punch Scale) ---
 	var appear_tween = title_tween.parallel()
 	appear_tween.tween_property(notifications_container, "modulate:a", 1.0, 0.3)
 	appear_tween.tween_property(notifications_container, "scale", Vector2.ONE, 0.5)\
 		.set_trans(Tween.TRANS_BACK)\
 		.set_ease(Tween.EASE_OUT)
 
-	# --- 2. FADE OUT ANIMATION (Sequential after duration) ---
 	if duration > 0.0:
-		# Wait for the display duration
 		title_tween.tween_interval(duration)
-
-		# Smoothly fade out transparency
 		title_tween.tween_property(notifications_container, "modulate:a", 0.0, 0.5)\
 			.set_trans(Tween.TRANS_SINE)\
 			.set_ease(Tween.EASE_IN_OUT)
 
-		# Hide container once completely invisible
 		title_tween.tween_callback(notifications_container.hide)
 
 func hide_notification(fade_duration: float = 0.5) -> void:
@@ -220,3 +221,11 @@ func hide_notification(fade_duration: float = 0.5) -> void:
 	title_tween = create_tween()
 	title_tween.tween_property(notifications_container, "modulate:a", 0.0, fade_duration)
 	title_tween.tween_callback(notifications_container.hide)
+
+func update_game_over_stats(wave: int, score: float, distance: float) -> void:
+	if final_wave_label:
+		final_wave_label.text = "[center][color=gray]Reached Wave: [/color][color=gold]" + str(wave) + "[/color][/center]"
+	if final_score_label:
+		final_score_label.text = "[center][color=gray]Final Score: [/color][color=gold]" + str(int(score)) + "[/color][/center]"
+	if final_distance_label:
+		final_distance_label.text = "[center][color=gray]Distance: [/color][color=gold]" + str(int(distance)) + " km[/color][/center]"

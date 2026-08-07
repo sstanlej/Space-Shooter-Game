@@ -88,7 +88,7 @@ ui_manager = NodePath("../UILayer")
 [node name="WaveCooldownTimer" type="Timer" parent="Timers"]
 wait_time = 5.0
 
-[node name="UILayer" type="CanvasLayer" parent="." node_paths=PackedStringArray("hud_panel", "intermission_panel", "shop_ui", "start_game_panel", "game_over_panel", "pause_panel", "score_label", "experience_bar", "damage_label", "movement_speed_label", "attack_speed_label", "hearts_container", "notifications_container", "title_label", "subtitle_label", "health_bar", "damage_bar")]
+[node name="UILayer" type="CanvasLayer" parent="." node_paths=PackedStringArray("hud_panel", "intermission_panel", "shop_ui", "start_game_panel", "game_over_panel", "pause_panel", "score_label", "experience_bar", "damage_label", "movement_speed_label", "attack_speed_label", "hearts_container", "notifications_container", "title_label", "subtitle_label", "health_bar", "damage_bar", "final_wave_label", "final_score_label", "final_distance_label")]
 process_mode = 3
 script = ExtResource("6_heyl7")
 hud_panel = NodePath("HUD")
@@ -110,6 +110,9 @@ title_label = NodePath("NotificationsUI/MessageContainer/TitleLabel")
 subtitle_label = NodePath("NotificationsUI/MessageContainer/SubtitleLabel")
 health_bar = NodePath("HUD/HealthBar")
 damage_bar = NodePath("HUD/DamageBar")
+final_wave_label = NodePath("GameOverUI/VBoxContainer/FinalWaveLabel")
+final_score_label = NodePath("GameOverUI/VBoxContainer/FinalScoreLabel")
+final_distance_label = NodePath("GameOverUI/VBoxContainer/FinalDistanceLabel")
 
 [node name="HUD" type="Control" parent="UILayer"]
 process_mode = 3
@@ -308,18 +311,51 @@ text = "GAME PAUSED"
 fit_content = true
 
 [node name="GameOverUI" type="Control" parent="UILayer"]
-visible = false
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="GameOverLabel" type="RichTextLabel" parent="UILayer/GameOverUI"]
-layout_mode = 0
-offset_top = 23.0
-offset_right = 204.0
-offset_bottom = 94.0
-text = "GAME OVER
+[node name="VBoxContainer" type="VBoxContainer" parent="UILayer/GameOverUI"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -60.0
+offset_top = -67.5
+offset_right = 60.0
+offset_bottom = -7.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="FinalWaveLabel" type="RichTextLabel" parent="UILayer/GameOverUI/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("9_46ugy")
+theme_override_font_sizes/normal_font_size = 5
+bbcode_enabled = true
+text = "[center]Wave reached:
+"
+fit_content = true
+
+[node name="FinalScoreLabel" type="RichTextLabel" parent="UILayer/GameOverUI/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("9_46ugy")
+theme_override_font_sizes/normal_font_size = 5
+bbcode_enabled = true
+text = "[center]Score:
+"
+fit_content = true
+
+[node name="FinalDistanceLabel" type="RichTextLabel" parent="UILayer/GameOverUI/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("9_46ugy")
+theme_override_font_sizes/normal_font_size = 5
+bbcode_enabled = true
+text = "[center]Distance:
 "
 fit_content = true
 
