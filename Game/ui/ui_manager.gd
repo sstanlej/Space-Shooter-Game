@@ -33,9 +33,10 @@ class_name UIManager extends CanvasLayer
 @export_group("Health System")
 @export var health_bar: TextureProgressBar
 @export var damage_bar: TextureProgressBar
+
 var health_tween: Tween
 var damage_tween: Tween
-
+var xp_tween: Tween
 var title_tween: Tween
 
 var hearts: Array = []
@@ -131,11 +132,22 @@ func set_max_health(new_max_hp: int) -> void:
 
 # --- PROGRESJA, DYSTANS I WYNIK ---
 
-func update_experience_bar(current_xp: int) -> void:
-	if experience_bar:
+func update_experience_bar(current_xp: float, animate: bool = true) -> void:
+	if not experience_bar:
+		return
+
+	if xp_tween:
+		xp_tween.kill()
+
+	if animate:
+		xp_tween = create_tween()
+		xp_tween.tween_property(experience_bar, "value", current_xp, 0.3)\
+			.set_trans(Tween.TRANS_CUBIC)\
+			.set_ease(Tween.EASE_OUT)
+	else:
 		experience_bar.value = current_xp
 
-func extend_experience_bar(max_xp: int) -> void:
+func extend_experience_bar(max_xp: float) -> void:
 	if experience_bar:
 		experience_bar.max_value = max_xp
 

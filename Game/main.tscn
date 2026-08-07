@@ -190,6 +190,7 @@ offset_left = 92.0
 offset_top = 131.0
 offset_right = 146.0
 offset_bottom = 134.0
+step = 0.01
 value = 5.0
 texture_under = ExtResource("10_nfa4e")
 texture_progress = ExtResource("11_kmckd")

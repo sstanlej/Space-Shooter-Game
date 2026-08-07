@@ -63,33 +63,39 @@ func add_enemy_reward(points: float, xp: float) -> void:
 func add_experience(amount: int) -> void:
 	experience += amount
 
-	# Najpierw aktualizujemy pasek o zdobyte XP
-	if ui_manager:
-		ui_manager.update_experience_bar(experience)
+	# Najpierw przeliczamy czy nastąpił level up
+	var did_level_up = check_level_up()
 
-	# Dopiero potem sprawdzamy, czy przekroczyliśmy próg i robimy awans
-	check_level_up()
+	# Jeśli NIE BYŁO level-upa – po prostu płynnie animujemy do nowej wartości
+	if not did_level_up:
+		if ui_manager:
+			ui_manager.update_experience_bar(experience, true)
 
 	experience_updated.emit(experience, experience_needed)
 
-func check_level_up() -> void:
+func check_level_up() -> bool:
+	var leveled_up: bool = false
+
 	while experience >= experience_needed:
 		experience -= experience_needed
 		level += 1
 		experience_needed = int(experience_needed * experience_needed_modifier)
-
 		upgrade_points += 1
+		leveled_up = true
 
-		print("[ProgressionManager] LEVEL UP! Nowy poziom: ", level, " | Punkty ulepszeń: ", upgrade_points)
+		print("[ProgressionManager] LEVEL UP! Nowy poziom: ", level)
 
 		level_up_occurred.emit(level, upgrade_points)
 		upgrade_points_changed.emit(upgrade_points)
 
 		if ui_manager:
-			# Przy awansie zwiększamy max_value i zerujemy/dostosowujemy pasek
+			# 1. Ustawiamy nowy, większy limit paska
 			ui_manager.extend_experience_bar(experience_needed)
-			ui_manager.update_experience_bar(experience)
+			# 2. Resetujemy wartość na sztywno BEZ ANIMACJI i zabijamy stary Tween!
+			ui_manager.update_experience_bar(experience, false)
 			ui_manager.update_upgrade_points_label(upgrade_points)
+
+	return leveled_up
 
 func spend_upgrade_point() -> bool:
 	if upgrade_points > 0:
