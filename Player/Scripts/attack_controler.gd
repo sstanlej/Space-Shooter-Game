@@ -11,6 +11,8 @@ var cooldown: float = 0.33
 @onready var cooldown_timer: Timer = $CooldownTimer
 @export var bullet_scene: PackedScene
 
+@export var projectiles_container: Node2D
+
 func _ready() -> void:
 	player = $".."
 	damage = original_damage
@@ -21,7 +23,10 @@ func _process(_delta: float) -> void:
 	if player.is_attacking and is_ready:
 		if bullet_scene:
 			var bullet_instance = bullet_scene.instantiate() as Projectile
-			get_tree().current_scene.add_child(bullet_instance)
+			if projectiles_container:
+				projectiles_container.add_child(bullet_instance)
+			else:
+				get_tree().current_scene.add_child(bullet_instance) # Fallback
 			bullet_instance.global_position = player.global_position
 			bullet_instance.setup(damage, bullet_speed, Vector2.RIGHT)
 		GlobalAudio.play_laser()

@@ -48,6 +48,8 @@ func _ready() -> void:
 			player.player_damage_taken.connect(_on_player_damage_taken)
 		if player.has_signal("player_died"):
 			player.player_died.connect(_on_player_died)
+		if player.get("attack_controler") and spawner:
+			player.attack_controler.projectiles_container = spawner.projectiles_container
 
 	# Wejście w stan początkowy
 	wait_to_start()
