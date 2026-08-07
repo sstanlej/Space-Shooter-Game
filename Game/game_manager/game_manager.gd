@@ -130,15 +130,22 @@ func wait_to_start() -> void:
 	if camera_frame:
 		camera_frame.move_to_menu_view()
 
+	if ui_manager and ui_manager.has_method("show_notification"):
+		ui_manager.show_notification("[color=red]SPACE SHOOTER[/color]", "PRESS SPACE TO START", 0.0)
+
 func start_game() -> void:
 	is_player_alive = true
 	current_wave = 1
 	change_state(GameState.TRANSITIONING)
+
+	# Płynnie chowamy napis początkowy
+	if ui_manager and ui_manager.has_method("hide_notification"):
+		ui_manager.hide_notification(0.4)
+
 	if progression_manager and progression_manager.has_method("reset_progress"):
 		progression_manager.reset_progress()
 
 	if ui_manager:
-		if ui_manager.has_method("hide_start_game_label"): ui_manager.hide_start_game_label()
 		if ui_manager.has_method("show_hud"): ui_manager.show_hud()
 		if player and player.has_method("get_health_component"):
 			var player_hp = int(player.get_health_component().get_health())
@@ -151,6 +158,33 @@ func start_game() -> void:
 
 	await play_start_animation()
 	start_wave()
+
+func finish_wave() -> void:
+	wave_ended.emit(current_wave)
+	change_state(GameState.BETWEEN_WAVES)
+
+	if ui_manager and ui_manager.has_method("show_notification"):
+		var points: int = 0
+		if progression_manager and progression_manager.has_method("get_upgrade_points"):
+			points = progression_manager.get_upgrade_points()
+
+		var subtitle_text: String = ""
+		if points > 0:
+			subtitle_text = "[color=gray]Spend [color=gold]" + str(points) + "[/color] [color=gray]upgrade point(s) in the Shop! [color=cyan][B][/color]"
+		else:
+			subtitle_text = "[color=gray]Press [color=cyan][B][/color] to open Shop![/color]"
+
+		ui_manager.show_notification("WAVE COMPLETED!", subtitle_text, 3.5)
+
+	if spawner and spawner.has_method("stop_spawning"):
+		spawner.stop_spawning()
+
+	if location_manager and location_manager.has_method("transition_to_next_location"):
+		location_manager.advance_to_wave(current_wave + 1)
+		location_manager.transition_to_next_location()
+
+	if wave_cooldown_timer:
+		wave_cooldown_timer.start()
 
 func play_start_animation() -> void:
 	var camera_tween
@@ -168,25 +202,13 @@ func start_wave() -> void:
 	if ui_manager:
 		if ui_manager.has_method("hide_start_game_label"): ui_manager.hide_start_game_label()
 		if ui_manager.has_method("show_hud"): ui_manager.show_hud()
+		if ui_manager.has_method("show_notification"):
+			ui_manager.show_notification("WAVE " + str(current_wave), "[color=gray]Shoot them up![/color]", 2.0)
 	change_state(GameState.IN_WAVE)
 	wave_started.emit(current_wave)
 
 	if spawner and spawner.has_method("start_spawning"):
 		spawner.start_spawning()
-
-func finish_wave() -> void:
-	wave_ended.emit(current_wave)
-	change_state(GameState.BETWEEN_WAVES)
-
-	if spawner and spawner.has_method("stop_spawning"):
-		spawner.stop_spawning()
-
-	if location_manager and location_manager.has_method("transition_to_next_location"):
-		location_manager.advance_to_wave(current_wave+1)
-		location_manager.transition_to_next_location()
-
-	if wave_cooldown_timer:
-		wave_cooldown_timer.start()
 
 func start_next_wave() -> void:
 	current_wave += 1
@@ -217,8 +239,10 @@ func toggle_pause() -> void:
 			spawner.pause_timers(true)
 
 		change_state(GameState.PAUSED)
-		if ui_manager and ui_manager.has_method("show_pause_menu"):
-			ui_manager.show_pause_menu()
+		# if ui_manager and ui_manager.has_method("show_pause_menu"):
+		# 	ui_manager.show_pause_menu()
+		if ui_manager and ui_manager.has_method("show_notification"):
+			ui_manager.show_notification("PAUSED", "Press ESC to Resume", 0.0)
 
 	elif current_state == GameState.PAUSED:
 		change_state(state_before_pause)
@@ -229,16 +253,20 @@ func toggle_pause() -> void:
 		if spawner and spawner.has_method("pause_timers"):
 			spawner.pause_timers(false)
 
-		if ui_manager and ui_manager.has_method("hide_pause_menu"):
-			ui_manager.hide_pause_menu()
+		# if ui_manager and ui_manager.has_method("hide_pause_menu"):
+		# 	ui_manager.hide_pause_menu()
+		if ui_manager and ui_manager.has_method("hide_notification"):
+			ui_manager.hide_notification(0.4)
 
 func game_over() -> void:
 	is_player_alive = false
 	change_state(GameState.GAME_OVER)
 	if spawner and spawner.has_method("pause_timers"):
 			spawner.pause_timers(true)
-	if ui_manager and ui_manager.has_method("show_game_over_screen"):
-		ui_manager.show_game_over_screen()
+	# if ui_manager and ui_manager.has_method("show_game_over_screen"):
+	# 	ui_manager.show_game_over_screen()
+	if ui_manager and ui_manager.has_method("show_notification"):
+		ui_manager.show_notification("GAME OVER", "Press R to Restart", 0.0)
 
 func reload_scene() -> void:
 	get_tree().reload_current_scene()

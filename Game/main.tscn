@@ -84,7 +84,7 @@ ui_manager = NodePath("../UILayer")
 [node name="WaveCooldownTimer" type="Timer" parent="Timers"]
 wait_time = 10.0
 
-[node name="UILayer" type="CanvasLayer" parent="." node_paths=PackedStringArray("hud_panel", "intermission_panel", "shop_ui", "start_game_panel", "game_over_panel", "pause_panel", "score_label", "experience_bar", "damage_label", "movement_speed_label", "attack_speed_label", "hearts_container")]
+[node name="UILayer" type="CanvasLayer" parent="." node_paths=PackedStringArray("hud_panel", "intermission_panel", "shop_ui", "start_game_panel", "game_over_panel", "pause_panel", "score_label", "experience_bar", "damage_label", "movement_speed_label", "attack_speed_label", "hearts_container", "notifications_container", "title_label", "subtitle_label")]
 process_mode = 3
 script = ExtResource("6_heyl7")
 hud_panel = NodePath("HUD")
@@ -101,6 +101,9 @@ attack_speed_label = NodePath("HUD/StatsPanel/AttackSpeedLabel")
 hearts_container = NodePath("HUD/HeartStartPosition")
 health_full_sprite = ExtResource("7_gcygt")
 health_empty_sprite = ExtResource("8_2dyge")
+notifications_container = NodePath("NotificationsUI")
+title_label = NodePath("NotificationsUI/MessageContainer/TitleLabel")
+subtitle_label = NodePath("NotificationsUI/MessageContainer/SubtitleLabel")
 
 [node name="HUD" type="Control" parent="UILayer"]
 process_mode = 3
@@ -193,9 +196,13 @@ offset_bottom = 40.0
 
 [node name="ShopUI" type="Control" parent="UILayer" node_paths=PackedStringArray("game_manager", "progression_manager", "player", "description_label", "selected_icon", "options_container")]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -137.0
+offset_bottom = -137.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("15_46ugy")
 game_manager = NodePath("../..")
 progression_manager = NodePath("../../ProgressionManager")
@@ -257,6 +264,7 @@ text = "[center][Upgrade description here]"
 fit_content = true
 
 [node name="PauseMenuUI" type="Control" parent="UILayer"]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -270,6 +278,7 @@ text = "GAME PAUSED"
 fit_content = true
 
 [node name="GameOverUI" type="Control" parent="UILayer"]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -285,6 +294,7 @@ text = "GAME OVER
 fit_content = true
 
 [node name="StartGameUI" type="Control" parent="UILayer"]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -296,4 +306,37 @@ offset_top = 48.0
 offset_right = 204.0
 offset_bottom = 119.0
 text = "PRESS SPACE TO START"
+fit_content = true
+
+[node name="NotificationsUI" type="Control" parent="UILayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MessageContainer" type="VBoxContainer" parent="UILayer/NotificationsUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="TitleLabel" type="RichTextLabel" parent="UILayer/NotificationsUI/MessageContainer"]
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("9_46ugy")
+theme_override_font_sizes/normal_font_size = 15
+bbcode_enabled = true
+text = "[center][TITLE]"
+fit_content = true
+
+[node name="SubtitleLabel" type="RichTextLabel" parent="UILayer/NotificationsUI/MessageContainer"]
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("9_46ugy")
+theme_override_font_sizes/normal_font_size = 5
+bbcode_enabled = true
+text = "[center][SUBTITLE]"
 fit_content = true

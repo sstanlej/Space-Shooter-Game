@@ -20,10 +20,17 @@ class_name UIManager extends CanvasLayer
 @export var attack_speed_label: RichTextLabel
 
 @export_group("Health / Hearts System")
-@export var hearts_container: Node2D # Dawne HeartStartPosition
+@export var hearts_container: Node2D
 @export var health_full_sprite: Texture2D
 @export var health_empty_sprite: Texture2D
 @export var heart_sprite_offset: int = 12
+
+@export_group("Notifications System")
+@export var notifications_container: Control
+@export var title_label: RichTextLabel
+@export var subtitle_label: RichTextLabel
+
+var title_tween: Tween
 
 var hearts: Array = []
 var max_health: int = 0
@@ -34,11 +41,11 @@ func _ready() -> void:
 # --- ZARZĄDZANIE PANE LAMI ---
 
 func show_start_screen() -> void:
-	if start_game_panel: start_game_panel.show()
 	if hud_panel: hud_panel.hide()
 	if intermission_panel: intermission_panel.hide()
 	if game_over_panel: game_over_panel.hide()
 	if pause_panel: pause_panel.hide()
+	if notifications_container: notifications_container.hide()
 
 func hide_start_game_label() -> void:
 	if start_game_panel: start_game_panel.hide()
@@ -116,3 +123,53 @@ func update_stats_label(damage: int, movement_speed: int, attack_speed: int) -> 
 	if damage_label: damage_label.text = str(damage)
 	if movement_speed_label: movement_speed_label.text = str(movement_speed)
 	if attack_speed_label: attack_speed_label.text = str(attack_speed)
+
+
+# --- TITLE / SUBTITLE ---
+
+func show_notification(title_text: String, subtitle_text: String = "", duration: float = 2.5) -> void:
+	if not notifications_container or not title_label:
+		return
+
+	title_label.text = "[center]" + title_text + "[/center]"
+	if subtitle_label:
+		subtitle_label.text = "[center]" + subtitle_text + "[/center]"
+
+	if title_tween:
+		title_tween.kill()
+
+	title_tween = create_tween().set_parallel(true) # Wykonujemy animacje równolegle!
+
+	# Ustawiamy punkt pivota na środek do skalowania
+	notifications_container.pivot_offset = notifications_container.size / 2.0
+
+	# Reset do początkowych wartości
+	notifications_container.modulate.a = 0.0
+	notifications_container.scale = Vector2(1.25, 1.25) # Lekkie powiększenie na start!
+	notifications_container.show()
+
+	# 1. Płynne pojawianie się (Fade In)
+	title_tween.tween_property(notifications_container, "modulate:a", 1.0, 0.3)
+
+	# 2. Efekt "Punch": Zmniejszenie ze skali 1.25 do 1.0 z efektem wyhamowania
+	title_tween.tween_property(notifications_container, "scale", Vector2.ONE, 0.5)\
+		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+
+	# Sekwencja znikania (po zakończeniu powiększania)
+	if duration > 0.0:
+		var fade_out_tween = create_tween()
+		fade_out_tween.tween_interval(duration)
+		fade_out_tween.tween_property(notifications_container, "modulate:a", 0.0, 0.5)
+		fade_out_tween.tween_callback(notifications_container.hide)
+
+
+func hide_notification(fade_duration: float = 0.5) -> void:
+	if not notifications_container or not notifications_container.visible:
+		return
+
+	if title_tween:
+		title_tween.kill()
+
+	title_tween = create_tween()
+	title_tween.tween_property(notifications_container, "modulate:a", 0.0, fade_duration)
+	title_tween.tween_callback(notifications_container.hide)
