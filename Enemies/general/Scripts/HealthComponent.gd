@@ -15,6 +15,9 @@ func set_health(new_health: int) -> void:
 	current_health = new_health
 	health_changed.emit(current_health, max_health)
 
+func get_max_health() -> int:
+	return max_health
+
 func get_health() -> int:
 	return current_health
 

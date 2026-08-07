@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://ctolyotyjbqwg"]
+[gd_scene load_steps=27 format=3 uid="uid://ctolyotyjbqwg"]
 
 [ext_resource type="Script" uid="uid://dm1jlaqpgu05" path="res://Game/game_manager/game_manager.gd" id="1_anis7"]
 [ext_resource type="PackedScene" uid="uid://qoymek85ecx7" path="res://Game/locations/location_manager.tscn" id="1_ebmr7"]
@@ -17,7 +17,10 @@
 [ext_resource type="Texture2D" uid="uid://dugump0ukmep5" path="res://Collectables/Sprites/selected.png" id="12_flq8k"]
 [ext_resource type="Texture2D" uid="uid://cpbex4mtdoatj" path="res://Game/locations/Sprites/earth.png" id="15_6g3sl"]
 [ext_resource type="Script" uid="uid://byxu7j2uos8l8" path="res://Game/shop/shop_ui.gd" id="15_46ugy"]
+[ext_resource type="Texture2D" uid="uid://8vr2ywyir05q" path="res://Game/ui/Sprites/health_bar_under.png" id="15_kmckd"]
+[ext_resource type="Texture2D" uid="uid://dpfe0j6dei725" path="res://Game/ui/Sprites/damage_bar_progess.png" id="15_uvvyr"]
 [ext_resource type="Texture2D" uid="uid://cyhla4dmpvmef" path="res://Upgrades/Sprites/attack_speed_upgrade.png" id="16_heyl7"]
+[ext_resource type="Texture2D" uid="uid://dj4w1hidatk1h" path="res://Game/ui/Sprites/health_bar_progess.png" id="16_uvvyr"]
 [ext_resource type="Script" uid="uid://1p2rxeli25vm" path="res://Upgrades/Scripts/attack_speed_upgrade.gd" id="17_gcygt"]
 [ext_resource type="Texture2D" uid="uid://f0t1hbuev73m" path="res://Upgrades/Sprites/movement_speed_upgrade.png" id="18_2dyge"]
 [ext_resource type="Script" uid="uid://bets534mmwdhy" path="res://Upgrades/Scripts/movement_speed_upgrade.gd" id="19_46ugy"]
@@ -77,6 +80,7 @@ wait_time = 10.0
 
 [node name="ProgressionManager" type="Node" parent="." node_paths=PackedStringArray("ui_manager")]
 script = ExtResource("7_anis7")
+experience_needed = 50
 ui_manager = NodePath("../UILayer")
 
 [node name="Timers" type="Node" parent="."]
@@ -84,7 +88,7 @@ ui_manager = NodePath("../UILayer")
 [node name="WaveCooldownTimer" type="Timer" parent="Timers"]
 wait_time = 10.0
 
-[node name="UILayer" type="CanvasLayer" parent="." node_paths=PackedStringArray("hud_panel", "intermission_panel", "shop_ui", "start_game_panel", "game_over_panel", "pause_panel", "score_label", "experience_bar", "damage_label", "movement_speed_label", "attack_speed_label", "hearts_container", "notifications_container", "title_label", "subtitle_label")]
+[node name="UILayer" type="CanvasLayer" parent="." node_paths=PackedStringArray("hud_panel", "intermission_panel", "shop_ui", "start_game_panel", "game_over_panel", "pause_panel", "score_label", "experience_bar", "damage_label", "movement_speed_label", "attack_speed_label", "hearts_container", "notifications_container", "title_label", "subtitle_label", "health_bar", "damage_bar")]
 process_mode = 3
 script = ExtResource("6_heyl7")
 hud_panel = NodePath("HUD")
@@ -104,6 +108,8 @@ health_empty_sprite = ExtResource("8_2dyge")
 notifications_container = NodePath("NotificationsUI")
 title_label = NodePath("NotificationsUI/MessageContainer/TitleLabel")
 subtitle_label = NodePath("NotificationsUI/MessageContainer/SubtitleLabel")
+health_bar = NodePath("HUD/HealthBar")
+damage_bar = NodePath("HUD/DamageBar")
 
 [node name="HUD" type="Control" parent="UILayer"]
 process_mode = 3
@@ -187,6 +193,29 @@ offset_bottom = 134.0
 value = 5.0
 texture_under = ExtResource("10_nfa4e")
 texture_progress = ExtResource("11_kmckd")
+
+[node name="DamageBar" type="TextureProgressBar" parent="UILayer/HUD"]
+process_mode = 3
+layout_mode = 0
+offset_left = 92.0
+offset_top = 124.0
+offset_right = 156.0
+offset_bottom = 132.0
+step = 0.01
+value = 10.0
+texture_progress = ExtResource("15_uvvyr")
+
+[node name="HealthBar" type="TextureProgressBar" parent="UILayer/HUD"]
+process_mode = 3
+layout_mode = 0
+offset_left = 92.0
+offset_top = 124.0
+offset_right = 156.0
+offset_bottom = 132.0
+step = 0.01
+value = 3.0
+texture_under = ExtResource("15_kmckd")
+texture_progress = ExtResource("16_uvvyr")
 
 [node name="IntermissionUI" type="Control" parent="UILayer"]
 layout_mode = 3

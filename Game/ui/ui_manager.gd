@@ -30,6 +30,12 @@ class_name UIManager extends CanvasLayer
 @export var title_label: RichTextLabel
 @export var subtitle_label: RichTextLabel
 
+@export_group("Health System")
+@export var health_bar: TextureProgressBar
+@export var damage_bar: TextureProgressBar
+var health_tween: Tween
+var damage_tween: Tween
+
 var title_tween: Tween
 
 var hearts: Array = []
@@ -71,31 +77,57 @@ func hide_pause_menu() -> void:
 
 # --- SYSTEM SERDUSZEK (CZYSZCZONY I ZOPTYMALIZOWANY) ---
 
-func setup_hearts(initial_max_hp: int) -> void:
-	max_health = initial_max_hp
+# --- SYSTEM PASEKA ZDROWIA (HP BAR) ---
 
-	# Czyszczenie starych serduszek, jeśli restartujemy grę
-	for child in hearts_container.get_children():
-		child.queue_free()
-	hearts.clear()
-
-	Heart.set_textures(health_full_sprite, health_empty_sprite)
-
-	var pixel_offset: int = 0
-	for i in range(max_health):
-		var heart_instance = Heart.spawn_heart()
-		hearts_container.add_child(heart_instance)
-		heart_instance.position.x = pixel_offset
-		heart_instance.set_on(true) # Domyślnie pełne
-		hearts.append(heart_instance)
-		pixel_offset += heart_sprite_offset
+func setup_health_bar(max_hp: int, current_hp: int) -> void:
+	if health_bar:
+		health_bar.max_value = max_hp
+		health_bar.value = current_hp
+	if damage_bar:
+		damage_bar.max_value = max_hp
+		damage_bar.value = current_hp
 
 func update_health_bar(current_hp: int) -> void:
-	# Banalnie prosta i czysta logika:
-	# Wszystkie serduszka z indeksem mniejszym niż current_hp są włączone (pełne), reszta wyłączona (puste)!
-	for i in range(hearts.size()):
-		var is_full = i < current_hp
-		hearts[i].set_on(is_full)
+	if not health_bar:
+		return
+
+	# 1. Główny pasek płynnie ubywa NATYCHMIAST (czas: 0.25s)
+	if health_tween:
+		health_tween.kill()
+
+	health_tween = create_tween()
+	health_tween.tween_property(health_bar, "value", current_hp, 0.25)\
+		.set_trans(Tween.TRANS_SINE)\
+		.set_ease(Tween.EASE_OUT)
+
+	# 2. Pasek obrażeń (czerwony) czeka 0.2s i zjeżdża powoli za zielonym (czas: 0.4s)
+	if damage_bar:
+		if damage_tween:
+			damage_tween.kill()
+
+		damage_tween = create_tween()
+		damage_tween.tween_interval(0.2)
+		damage_tween.tween_property(damage_bar, "value", current_hp, 0.8)\
+			.set_trans(Tween.TRANS_CUBIC)\
+			.set_ease(Tween.EASE_OUT)
+
+	shake_health_bar()
+
+func shake_health_bar() -> void:
+	if not health_bar or not damage_bar:
+		return
+
+	var original_pos = health_bar.position
+	var shake_tween = create_tween()
+
+	shake_tween.tween_property(health_bar, "position", original_pos + Vector2(-3, 0), 0.05)
+	shake_tween.tween_property(health_bar, "position", original_pos + Vector2(3, 0), 0.075)
+	shake_tween.tween_property(health_bar, "position", original_pos + Vector2(-1, 0), 0.1)
+	shake_tween.tween_property(health_bar, "position", original_pos, 0.075)
+
+func set_max_health(new_max_hp: int) -> void:
+	if health_bar:
+		health_bar.max_value = new_max_hp
 
 # --- PROGRESJA, DYSTANS I WYNIK ---
 
@@ -138,24 +170,19 @@ func show_notification(title_text: String, subtitle_text: String = "", duration:
 	if title_tween:
 		title_tween.kill()
 
-	title_tween = create_tween().set_parallel(true) # Wykonujemy animacje równolegle!
+	title_tween = create_tween().set_parallel(true)
 
-	# Ustawiamy punkt pivota na środek do skalowania
 	notifications_container.pivot_offset = notifications_container.size / 2.0
 
-	# Reset do początkowych wartości
 	notifications_container.modulate.a = 0.0
-	notifications_container.scale = Vector2(1.25, 1.25) # Lekkie powiększenie na start!
+	notifications_container.scale = Vector2(1.25, 1.25)
 	notifications_container.show()
 
-	# 1. Płynne pojawianie się (Fade In)
 	title_tween.tween_property(notifications_container, "modulate:a", 1.0, 0.3)
 
-	# 2. Efekt "Punch": Zmniejszenie ze skali 1.25 do 1.0 z efektem wyhamowania
 	title_tween.tween_property(notifications_container, "scale", Vector2.ONE, 0.5)\
 		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
-	# Sekwencja znikania (po zakończeniu powiększania)
 	if duration > 0.0:
 		var fade_out_tween = create_tween()
 		fade_out_tween.tween_interval(duration)

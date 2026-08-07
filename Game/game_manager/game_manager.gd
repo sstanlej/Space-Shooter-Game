@@ -148,8 +148,11 @@ func start_game() -> void:
 	if ui_manager:
 		if ui_manager.has_method("show_hud"): ui_manager.show_hud()
 		if player and player.has_method("get_health_component"):
-			var player_hp = int(player.get_health_component().get_health())
-			ui_manager.setup_hearts(player_hp)
+			var player_hc = player.get_health_component()
+			var max_hp = int(player_hc.get_max_health()) if player_hc.has_method("get_max_health") else 100
+			var current_hp = int(player_hc.get_health())
+
+			ui_manager.setup_health_bar(max_hp, current_hp)
 
 			var player_damage: int = int(player.get_attack_controler().get_damage())
 			var player_attack_speed: int = int(player.get_attack_controler().get_attack_speed())
