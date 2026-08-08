@@ -1,81 +1,16 @@
 [gd_scene load_steps=14 format=3 uid="uid://b5gn1svcnnf7a"]
 
+[ext_resource type="Script" uid="uid://dmeq4l4ygdf52" path="res://src/entities/player/player.gd" id="1_n7e5a"]
 [ext_resource type="Texture2D" uid="uid://c6krctq5xg7w6" path="res://src/entities/player/sprites/rocket.png" id="2_fhl08"]
 [ext_resource type="Script" uid="uid://cmxkc1l3uevq1" path="res://src/entities/enemies/components/HealthComponent.gd" id="3_00tjw"]
 [ext_resource type="Script" uid="uid://dp7p1gm25paid" path="res://src/entities/player/states/player_state_machine.gd" id="3_btcbx"]
 [ext_resource type="Script" uid="uid://b47q42sws0vwe" path="res://src/entities/player/states/state_idle.gd" id="4_gwnis"]
 [ext_resource type="Script" uid="uid://d2tyhxaj6xq0n" path="res://src/entities/player/states/state_walk.gd" id="5_k53q1"]
-[ext_resource type="Script" uid="uid://bwfse1k7q36pc" path="res://src/entities/player/attack_controler.gd" id="6_fhl08"]
+[ext_resource type="Script" uid="uid://bwfse1k7q36pc" path="res://src/entities/player/attack_cntroller.gd" id="6_fhl08"]
 [ext_resource type="Script" uid="uid://dqihe208dt14r" path="res://src/entities/enemies/components/hitbox.gd" id="8_00tjw"]
 [ext_resource type="PackedScene" uid="uid://cr6xe4o73h8ol" path="res://src/entities/projectiles/player_projectile.tscn" id="8_apopc"]
 [ext_resource type="AudioStream" uid="uid://tkgndh2r3xbw" path="res://assets/audio/laser-312360.mp3" id="9_00tjw"]
 [ext_resource type="PackedScene" uid="uid://d2608o6gxf224" path="res://src/vfx/particles/fire_trail.tscn" id="10_x3vf3"]
-
-[sub_resource type="GDScript" id="GDScript_x3vf3"]
-script/source = "class_name Player extends CharacterBody2D
-
-var direction : Vector2 = Vector2.ZERO
-var is_attacking : bool = false
-signal player_died
-signal player_damage_taken
-@onready var state_machine : PlayerStateMachine = $StateMachine
-@onready var attack_controler: AttackControler = $AttackControler
-@onready var health_component: HealthComponent = $HealthComponent
-@export var movement_speed: float = 5
-
-var menu_pos_x: float = -240
-var game_pos_x: float = 30
-var tween: Tween
-
-func _ready() -> void:
-	state_machine.Initialize(self)
-	health_component.died.connect(_on_player_died)
-
-func _process(_delta: float) -> void:
-	if not Input.is_key_pressed(KEY_SHIFT):
-		direction.x = Input.get_action_strength(\"right\") - Input.get_action_strength(\"left\")
-		direction.y = Input.get_action_strength(\"down\") - Input.get_action_strength(\"up\")
-
-func _physics_process(_delta: float) -> void:
-	move_and_slide()
-
-func move_to_game_view() -> Tween:
-	var tw = create_tween()
-	tw.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	tw.tween_property(self, \"position:x\", game_pos_x, 2)
-	return tw
-
-func set_is_attacking(value: bool) -> void:
-	is_attacking = value
-
-func get_health_component() -> HealthComponent:
-	return health_component
-
-func get_movement_speed() -> float:
-	return movement_speed
-
-func set_movement_speed(new_movement_speed: float) -> void:
-	movement_speed = new_movement_speed
-
-func add_movement_speed(value: float) -> void:
-	movement_speed += value
-
-func get_attack_controler() -> AttackControler:
-	return attack_controler
-
-func _on_player_died() -> void:
-	player_died.emit()
-	queue_free()
-
-func _on_health_component_damage_taken() -> void:
-	player_damage_taken.emit()
-
-func reset_tween() -> void:
-	if tween:
-		tween.kill()
-	tween = get_tree().create_tween()
-	tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
-"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fhl08"]
 size = Vector2(14, 6)
@@ -85,7 +20,7 @@ size = Vector2(20, 12)
 
 [node name="Player" type="CharacterBody2D"]
 collision_mask = 0
-script = SubResource("GDScript_x3vf3")
+script = ExtResource("1_n7e5a")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(1, 0)
