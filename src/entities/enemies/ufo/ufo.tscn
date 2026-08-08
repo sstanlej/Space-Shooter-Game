@@ -1,0 +1,50 @@
+[gd_scene load_steps=8 format=3 uid="uid://c3awanfc1db0g"]
+
+[ext_resource type="Script" uid="uid://c4hlcp4cghp20" path="res://src/entities/enemies/components/OscillatingEnemy.gd" id="1_irrii"]
+[ext_resource type="Texture2D" uid="uid://cv5m8dh0jyoem" path="res://src/entities/enemies/ufo/ufo.png" id="2_qgf0o"]
+[ext_resource type="Script" uid="uid://cmxkc1l3uevq1" path="res://src/entities/enemies/components/HealthComponent.gd" id="3_i8qp5"]
+[ext_resource type="Script" uid="uid://dqihe208dt14r" path="res://src/entities/enemies/components/hitbox.gd" id="4_m625d"]
+[ext_resource type="PackedScene" uid="uid://d2608o6gxf224" path="res://src/vfx/particles/fire_trail.tscn" id="5_irrii"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ft8ul"]
+radius = 5.0
+height = 16.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_c2qve"]
+radius = 5.0
+height = 16.0
+
+[node name="Ufo" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1_irrii")
+sine_amplitude = 30.0
+
+[node name="GPUParticles2D" parent="." instance=ExtResource("5_irrii")]
+position = Vector2(8, 3)
+rotation = 3.1415925
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_qgf0o")
+
+[node name="HealthComponent" type="Node2D" parent="."]
+script = ExtResource("3_i8qp5")
+
+[node name="Area2D" type="Area2D" parent="." node_paths=PackedStringArray("health_component")]
+collision_layer = 2
+collision_mask = 5
+script = ExtResource("4_m625d")
+health_component = NodePath("../HealthComponent")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, 2)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_ft8ul")
+
+[node name="CollisionHitbox" type="CollisionShape2D" parent="."]
+position = Vector2(0, 2)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_c2qve")
+
+[connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

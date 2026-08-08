@@ -1,0 +1,115 @@
+[gd_scene load_steps=5 format=3 uid="uid://cs1ajgmp67y01"]
+
+[ext_resource type="Script" uid="uid://dm1jlaqpgu05" path="res://src/core/game_manager.gd" id="1_qqcev"]
+[ext_resource type="FontFile" uid="uid://bvlhnv4ultuef" path="res://assets/fonts/Pixeled.ttf" id="2_p2a7g"]
+[ext_resource type="PackedScene" uid="uid://cn7m0yjbprdtk" path="res://src/systems/spawner/spawner.tscn" id="3_8yi26"]
+[ext_resource type="Script" path="res://Game/game_manager/label_manager.gd" id="3_p2a7g"]
+
+[node name="GameManager" type="Node2D" node_paths=PackedStringArray("wave_cooldown_timer") groups=["game_maneger"]]
+z_index = 5
+script = ExtResource("1_qqcev")
+wave_cooldown_timer = NodePath("WaveCooldownTimer")
+wave_duration = 20
+
+[node name="Spawner" parent="." instance=ExtResource("3_8yi26")]
+z_index = 5
+position = Vector2(-1, 0)
+
+[node name="LabelManager" type="Node2D" parent="."]
+z_index = 10
+script = ExtResource("3_p2a7g")
+
+[node name="TimeLeftLabel" type="RichTextLabel" parent="LabelManager"]
+visible = false
+offset_left = 220.0
+offset_top = -1.0
+offset_right = 241.0
+offset_bottom = 15.0
+theme_override_fonts/normal_font = ExtResource("2_p2a7g")
+theme_override_font_sizes/normal_font_size = 5
+text = "0.00"
+
+[node name="WaveLabel" type="RichTextLabel" parent="LabelManager"]
+visible = false
+offset_left = 48.0
+offset_top = 9.0
+offset_right = 208.0
+offset_bottom = 51.0
+theme_override_fonts/normal_font = ExtResource("2_p2a7g")
+theme_override_font_sizes/normal_font_size = 15
+bbcode_enabled = true
+text = "[center]Wave X"
+
+[node name="WaveLabelTimer" type="Timer" parent="LabelManager"]
+wait_time = 2.0
+
+[node name="EscapedLabel" type="RichTextLabel" parent="LabelManager"]
+visible = false
+offset_left = 54.0
+offset_top = 81.0
+offset_right = 193.0
+offset_bottom = 98.0
+theme_override_fonts/normal_font = ExtResource("2_p2a7g")
+theme_override_font_sizes/normal_font_size = 5
+bbcode_enabled = true
+text = "[center]Enemies escaped:"
+
+[node name="PlayAgainLabel" type="RichTextLabel" parent="LabelManager"]
+visible = false
+offset_left = 76.0
+offset_top = 100.0
+offset_right = 175.0
+offset_bottom = 117.0
+theme_override_fonts/normal_font = ExtResource("2_p2a7g")
+theme_override_font_sizes/normal_font_size = 5
+bbcode_enabled = true
+text = "[center]Press 'R' to restart"
+
+[node name="FinalScoreLabel" type="RichTextLabel" parent="LabelManager"]
+visible = false
+offset_left = 55.0
+offset_top = 58.0
+offset_right = 200.0
+offset_bottom = 88.0
+theme_override_fonts/normal_font = ExtResource("2_p2a7g")
+theme_override_font_sizes/normal_font_size = 10
+bbcode_enabled = true
+text = "[center]SCORE:"
+
+[node name="GameOverLabel" type="RichTextLabel" parent="LabelManager"]
+visible = false
+offset_left = 48.0
+offset_top = 31.0
+offset_right = 208.0
+offset_bottom = 73.0
+theme_override_fonts/normal_font = ExtResource("2_p2a7g")
+theme_override_font_sizes/normal_font_size = 15
+bbcode_enabled = true
+text = "[center]GAME OVER !"
+
+[node name="HealthLabel" type="RichTextLabel" parent="LabelManager"]
+visible = false
+offset_left = 3.0
+offset_top = 119.0
+offset_right = 58.0
+offset_bottom = 135.0
+theme_override_fonts/normal_font = ExtResource("2_p2a7g")
+theme_override_font_sizes/normal_font_size = 5
+text = "Health: 0"
+
+[node name="ScoreLabel" type="RichTextLabel" parent="LabelManager"]
+visible = false
+offset_left = 185.0
+offset_top = 119.0
+offset_right = 240.0
+offset_bottom = 135.0
+theme_override_fonts/normal_font = ExtResource("2_p2a7g")
+theme_override_font_sizes/normal_font_size = 5
+text = "Score: 0"
+
+[node name="WaveCooldownTimer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
+[connection signal="timeout" from="LabelManager/WaveLabelTimer" to="LabelManager" method="_on_wave_label_timer_timeout"]
+[connection signal="timeout" from="WaveCooldownTimer" to="." method="_on_wave_cooldown_timer_timeout"]

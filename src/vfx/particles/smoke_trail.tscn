@@ -1,0 +1,29 @@
+[gd_scene load_steps=7 format=3 uid="uid://df7720odkejuq"]
+
+[ext_resource type="Texture2D" uid="uid://clpj4lsnwgc5u" path="res://src/vfx/particles/smoke_particle.png" id="1_bkdnf"]
+
+[sub_resource type="Gradient" id="Gradient_ql8tn"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ha4r5"]
+gradient = SubResource("Gradient_ql8tn")
+
+[sub_resource type="Curve" id="Curve_r0g16"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_mprk4"]
+curve = SubResource("Curve_r0g16")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_aoojs"]
+particle_flag_disable_z = true
+spread = 15.0
+initial_velocity_min = 20.0
+initial_velocity_max = 50.0
+gravity = Vector3(0, 0, 0)
+scale_curve = SubResource("CurveTexture_mprk4")
+color_ramp = SubResource("GradientTexture1D_ha4r5")
+
+[node name="SmokeParticleTrail" type="GPUParticles2D"]
+texture = ExtResource("1_bkdnf")
+process_material = SubResource("ParticleProcessMaterial_aoojs")

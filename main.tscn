@@ -1,0 +1,410 @@
+[gd_scene load_steps=27 format=3 uid="uid://ctolyotyjbqwg"]
+
+[ext_resource type="Script" uid="uid://dm1jlaqpgu05" path="res://src/core/game_manager.gd" id="1_lswn8"]
+[ext_resource type="PackedScene" uid="uid://qoymek85ecx7" path="res://src/systems/locations/location_manager.tscn" id="2_a6jrf"]
+[ext_resource type="PackedScene" uid="uid://b5gn1svcnnf7a" path="res://src/entities/player/player.tscn" id="3_xuqvo"]
+[ext_resource type="Script" uid="uid://bvscfifqg2eho" path="res://src/core/camera_movement.gd" id="4_qsp4k"]
+[ext_resource type="Texture2D" uid="uid://cpbex4mtdoatj" path="res://src/systems/locations/sprites/misc/earth.png" id="5_kq58d"]
+[ext_resource type="Script" uid="uid://dga8epmke5iyx" path="res://src/systems/spawner/spawner.gd" id="6_seu75"]
+[ext_resource type="Script" uid="uid://dw38kr6168wir" path="res://src/core/progression_manager.gd" id="7_htxhm"]
+[ext_resource type="Script" uid="uid://ceksi56kybfsk" path="res://src/ui/ui_manager.gd" id="8_jq2sk"]
+[ext_resource type="Texture2D" uid="uid://ee48briuh3x5" path="res://src/ui/sprites/health_full.png" id="9_4k2k6"]
+[ext_resource type="Texture2D" uid="uid://di4dto3ibdtf3" path="res://src/ui/sprites/health_empty.png" id="10_0rl1p"]
+[ext_resource type="Texture2D" uid="uid://caubnil2iehm" path="res://src/ui/sprites/game_overlay.png" id="11_ok6jj"]
+[ext_resource type="FontFile" uid="uid://bvlhnv4ultuef" path="res://assets/fonts/Pixeled.ttf" id="12_facbu"]
+[ext_resource type="Texture2D" uid="uid://c16xy12030r1n" path="res://src/ui/sprites/experience_bar_under.png" id="13_b1qrp"]
+[ext_resource type="Texture2D" uid="uid://to23gur3vo1e" path="res://src/ui/sprites/experience_bar_progress.png" id="14_come4"]
+[ext_resource type="Texture2D" uid="uid://dpfe0j6dei725" path="res://src/ui/sprites/damage_bar_progess.png" id="15_h8e4i"]
+[ext_resource type="Texture2D" uid="uid://8vr2ywyir05q" path="res://src/ui/sprites/health_bar_under.png" id="16_4lmeg"]
+[ext_resource type="Texture2D" uid="uid://dj4w1hidatk1h" path="res://src/ui/sprites/health_bar_progess.png" id="17_0cp0l"]
+[ext_resource type="Script" uid="uid://byxu7j2uos8l8" path="res://src/systems/shop/shop_ui.gd" id="18_d2t1y"]
+[ext_resource type="Texture2D" uid="uid://b3v7jgas4mstk" path="res://src/ui/sprites/shop_panel.png" id="19_gngh3"]
+[ext_resource type="Texture2D" uid="uid://cyhla4dmpvmef" path="res://src/systems/shop/upgrades/sprites/attack_speed_upgrade.png" id="20_0n3wm"]
+[ext_resource type="Script" uid="uid://1p2rxeli25vm" path="res://src/systems/shop/upgrades/attack_speed_upgrade.gd" id="21_qnost"]
+[ext_resource type="Texture2D" uid="uid://f0t1hbuev73m" path="res://src/systems/shop/upgrades/sprites/movement_speed_upgrade.png" id="22_wnkbs"]
+[ext_resource type="Script" uid="uid://bets534mmwdhy" path="res://src/systems/shop/upgrades/movement_speed_upgrade.gd" id="23_f6a44"]
+[ext_resource type="Texture2D" uid="uid://r50hjrws6do8" path="res://src/systems/shop/upgrades/sprites/attack_damage_upgrade.png" id="24_0cbny"]
+[ext_resource type="Script" uid="uid://cqpyjajhkcr0s" path="res://src/systems/shop/upgrades/attack_damage_upgrade.gd" id="25_hrvbo"]
+[ext_resource type="Texture2D" uid="uid://dugump0ukmep5" path="res://src/ui/sprites/selected.png" id="26_uypp3"]
+
+[node name="Main" type="Node2D" node_paths=PackedStringArray("world", "location_manager", "progression_manager", "spawner", "ui_manager", "shop_ui", "player", "camera_frame", "wave_cooldown_timer")]
+script = ExtResource("1_lswn8")
+world = NodePath("World")
+location_manager = NodePath("World/LocationManager")
+progression_manager = NodePath("ProgressionManager")
+spawner = NodePath("Spawner")
+ui_manager = NodePath("UILayer")
+shop_ui = NodePath("UILayer/ShopUI")
+player = NodePath("World/Player")
+camera_frame = NodePath("World/CameraFrame")
+wave_cooldown_timer = NodePath("Timers/WaveCooldownTimer")
+
+[node name="World" type="Node2D" parent="."]
+
+[node name="LocationManager" parent="World" instance=ExtResource("2_a6jrf")]
+
+[node name="Player" parent="World" instance=ExtResource("3_xuqvo")]
+position = Vector2(-120, 65)
+
+[node name="CameraFrame" type="Node2D" parent="World"]
+process_mode = 3
+position = Vector2(-240, 0)
+script = ExtResource("4_qsp4k")
+
+[node name="Camera2D" type="Camera2D" parent="World/CameraFrame"]
+process_mode = 3
+offset = Vector2(120, 67)
+
+[node name="EnemiesContainer" type="Node2D" parent="World"]
+
+[node name="ProjectilesContainer" type="Node2D" parent="World"]
+
+[node name="Earth" type="Sprite2D" parent="World"]
+z_index = 5
+position = Vector2(-120, 67)
+texture = ExtResource("5_kq58d")
+
+[node name="Spawner" type="Node" parent="." node_paths=PackedStringArray("game_manager", "progression_manager", "location_manager", "enemies_container", "projectiles_container") groups=["spawner"]]
+script = ExtResource("6_seu75")
+game_manager = NodePath("..")
+progression_manager = NodePath("../ProgressionManager")
+location_manager = NodePath("../World/LocationManager")
+enemies_container = NodePath("../World/EnemiesContainer")
+projectiles_container = NodePath("../World/ProjectilesContainer")
+wave_duration = 10.0
+
+[node name="WaveTimer" type="Timer" parent="Spawner"]
+wait_time = 10.0
+
+[node name="SpawnTimer" type="Timer" parent="Spawner"]
+
+[node name="ProgressionManager" type="Node" parent="." node_paths=PackedStringArray("ui_manager")]
+script = ExtResource("7_htxhm")
+experience_needed = 50
+ui_manager = NodePath("../UILayer")
+
+[node name="Timers" type="Node" parent="."]
+
+[node name="WaveCooldownTimer" type="Timer" parent="Timers"]
+wait_time = 5.0
+
+[node name="UILayer" type="CanvasLayer" parent="." node_paths=PackedStringArray("hud_panel", "intermission_panel", "shop_ui", "start_game_panel", "game_over_panel", "pause_panel", "score_label", "experience_bar", "damage_label", "movement_speed_label", "attack_speed_label", "hearts_container", "notifications_container", "title_label", "subtitle_label", "health_bar", "damage_bar", "final_wave_label", "final_score_label", "final_distance_label")]
+process_mode = 3
+script = ExtResource("8_jq2sk")
+hud_panel = NodePath("HUD")
+intermission_panel = NodePath("IntermissionUI")
+shop_ui = NodePath("ShopUI")
+start_game_panel = NodePath("StartGameUI")
+game_over_panel = NodePath("GameOverUI")
+pause_panel = NodePath("PauseMenuUI")
+score_label = NodePath("HUD/ScoreLabel")
+experience_bar = NodePath("HUD/ExperienceBar")
+damage_label = NodePath("HUD/StatsPanel/DamageLabel")
+movement_speed_label = NodePath("HUD/StatsPanel/MoveSpeedLabel")
+attack_speed_label = NodePath("HUD/StatsPanel/AttackSpeedLabel")
+hearts_container = NodePath("HUD/HeartStartPosition")
+health_full_sprite = ExtResource("9_4k2k6")
+health_empty_sprite = ExtResource("10_0rl1p")
+notifications_container = NodePath("NotificationsUI")
+title_label = NodePath("NotificationsUI/MessageContainer/TitleLabel")
+subtitle_label = NodePath("NotificationsUI/MessageContainer/SubtitleLabel")
+health_bar = NodePath("HUD/HealthBar")
+damage_bar = NodePath("HUD/DamageBar")
+final_wave_label = NodePath("GameOverUI/VBoxContainer/FinalWaveLabel")
+final_score_label = NodePath("GameOverUI/VBoxContainer/FinalScoreLabel")
+final_distance_label = NodePath("GameOverUI/VBoxContainer/FinalDistanceLabel")
+
+[node name="HUD" type="Control" parent="UILayer"]
+process_mode = 3
+layout_mode = 3
+anchor_right = 0.8375
+anchor_bottom = 0.6962963
+offset_right = 40.0
+offset_bottom = 40.0
+metadata/_edit_use_anchors_ = true
+
+[node name="HUDTexture" type="TextureRect" parent="UILayer/HUD"]
+process_mode = 3
+layout_mode = 0
+offset_right = 240.0
+offset_bottom = 135.0
+texture = ExtResource("11_ok6jj")
+
+[node name="StatsPanel" type="HBoxContainer" parent="UILayer/HUD"]
+layout_mode = 0
+offset_left = 37.0
+offset_top = 121.0
+offset_right = 79.0
+offset_bottom = 138.0
+
+[node name="DamageLabel" type="RichTextLabel" parent="UILayer/HUD/StatsPanel"]
+process_mode = 3
+texture_filter = 1
+custom_minimum_size = Vector2(11, 10)
+layout_mode = 2
+theme_override_colors/default_color = Color(0.75686276, 0.9019608, 0.7294118, 1)
+theme_override_fonts/normal_font = ExtResource("12_facbu")
+theme_override_font_sizes/normal_font_size = 5
+text = "0"
+fit_content = true
+
+[node name="MoveSpeedLabel" type="RichTextLabel" parent="UILayer/HUD/StatsPanel"]
+process_mode = 3
+custom_minimum_size = Vector2(12, 10)
+layout_mode = 2
+theme_override_colors/default_color = Color(0.75686276, 0.9019608, 0.7294118, 1)
+theme_override_fonts/normal_font = ExtResource("12_facbu")
+theme_override_font_sizes/normal_font_size = 5
+text = "0"
+fit_content = true
+
+[node name="AttackSpeedLabel" type="RichTextLabel" parent="UILayer/HUD/StatsPanel"]
+process_mode = 3
+custom_minimum_size = Vector2(11, 10)
+layout_mode = 2
+theme_override_colors/default_color = Color(0.75686276, 0.9019608, 0.7294118, 1)
+theme_override_fonts/normal_font = ExtResource("12_facbu")
+theme_override_font_sizes/normal_font_size = 5
+text = "0"
+fit_content = true
+
+[node name="ScoreLabel" type="RichTextLabel" parent="UILayer/HUD"]
+process_mode = 3
+layout_mode = 0
+offset_left = 142.0
+offset_top = 121.0
+offset_right = 235.0
+offset_bottom = 142.0
+theme_override_colors/default_color = Color(0.75686276, 0.9019608, 0.7294118, 1)
+theme_override_fonts/normal_font = ExtResource("12_facbu")
+theme_override_font_sizes/normal_font_size = 5
+bbcode_enabled = true
+text = "[center][ SCORE ]"
+fit_content = true
+
+[node name="HeartStartPosition" type="Node2D" parent="UILayer/HUD"]
+process_mode = 3
+position = Vector2(93, 119)
+
+[node name="ExperienceBar" type="TextureProgressBar" parent="UILayer/HUD"]
+process_mode = 3
+layout_mode = 0
+offset_left = 92.0
+offset_top = 131.0
+offset_right = 146.0
+offset_bottom = 134.0
+step = 0.01
+value = 5.0
+texture_under = ExtResource("13_b1qrp")
+texture_progress = ExtResource("14_come4")
+
+[node name="DamageBar" type="TextureProgressBar" parent="UILayer/HUD"]
+process_mode = 3
+layout_mode = 0
+offset_left = 92.0
+offset_top = 124.0
+offset_right = 156.0
+offset_bottom = 132.0
+step = 0.01
+value = 10.0
+texture_progress = ExtResource("15_h8e4i")
+
+[node name="HealthBar" type="TextureProgressBar" parent="UILayer/HUD"]
+process_mode = 3
+layout_mode = 0
+offset_left = 92.0
+offset_top = 124.0
+offset_right = 156.0
+offset_bottom = 132.0
+step = 0.01
+value = 3.0
+texture_under = ExtResource("16_4lmeg")
+texture_progress = ExtResource("17_0cp0l")
+
+[node name="IntermissionUI" type="Control" parent="UILayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ShopUI" type="Control" parent="UILayer" node_paths=PackedStringArray("game_manager", "progression_manager", "player", "description_label", "selected_icon", "options_container")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -137.0
+offset_bottom = -137.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("18_d2t1y")
+game_manager = NodePath("../..")
+progression_manager = NodePath("../../ProgressionManager")
+player = NodePath("../../World/Player")
+description_label = NodePath("DescriptionLabel")
+selected_icon = NodePath("SelectedIcon")
+options_container = NodePath("ShopOptions")
+
+[node name="ShopBackground" type="TextureRect" parent="UILayer/ShopUI"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("19_gngh3")
+
+[node name="ShopOptions" type="HBoxContainer" parent="UILayer/ShopUI"]
+layout_mode = 0
+offset_left = 47.0
+offset_top = 80.0
+offset_right = 115.0
+offset_bottom = 96.0
+
+[node name="AttackSpeedUpgrade" type="Sprite2D" parent="UILayer/ShopUI/ShopOptions"]
+position = Vector2(8, 8)
+texture = ExtResource("20_0n3wm")
+script = ExtResource("21_qnost")
+metadata/_custom_type_script = "uid://1p2rxeli25vm"
+
+[node name="MovementSpeedUpgrade" type="Sprite2D" parent="UILayer/ShopUI/ShopOptions"]
+position = Vector2(34, 8)
+texture = ExtResource("22_wnkbs")
+script = ExtResource("23_f6a44")
+metadata/_custom_type_script = "uid://bets534mmwdhy"
+
+[node name="AttackDamageUpgrade" type="Sprite2D" parent="UILayer/ShopUI/ShopOptions"]
+position = Vector2(59, 8)
+texture = ExtResource("24_0cbny")
+script = ExtResource("25_hrvbo")
+metadata/_custom_type_script = "uid://cqpyjajhkcr0s"
+
+[node name="SelectedIcon" type="Sprite2D" parent="UILayer/ShopUI"]
+modulate = Color(0.75686276, 0.9019608, 0.7294118, 1)
+position = Vector2(55, 88)
+texture = ExtResource("26_uypp3")
+
+[node name="DescriptionLabel" type="RichTextLabel" parent="UILayer/ShopUI"]
+layout_mode = 0
+offset_left = 131.0
+offset_top = 42.0
+offset_right = 201.0
+offset_bottom = 101.0
+theme_override_colors/default_color = Color(0.75686276, 0.9019608, 0.7294118, 1)
+theme_override_constants/line_separation = -7
+theme_override_constants/underline_alpha = 50
+theme_override_constants/strikethrough_alpha = 50
+theme_override_fonts/normal_font = ExtResource("12_facbu")
+theme_override_font_sizes/normal_font_size = 5
+bbcode_enabled = true
+text = "[center][Upgrade description here]"
+fit_content = true
+
+[node name="PauseMenuUI" type="Control" parent="UILayer"]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="GamePausedLabel" type="RichTextLabel" parent="UILayer/PauseMenuUI"]
+layout_mode = 0
+offset_right = 204.0
+offset_bottom = 71.0
+text = "GAME PAUSED"
+fit_content = true
+
+[node name="GameOverUI" type="Control" parent="UILayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UILayer/GameOverUI"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -60.0
+offset_top = 20.5
+offset_right = 60.0
+offset_bottom = 54.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = -4
+
+[node name="FinalWaveLabel" type="RichTextLabel" parent="UILayer/GameOverUI/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("12_facbu")
+theme_override_font_sizes/normal_font_size = 5
+bbcode_enabled = true
+text = "[center]Wave reached:
+"
+fit_content = true
+
+[node name="FinalScoreLabel" type="RichTextLabel" parent="UILayer/GameOverUI/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("12_facbu")
+theme_override_font_sizes/normal_font_size = 5
+bbcode_enabled = true
+text = "[center]Score:
+"
+fit_content = true
+
+[node name="FinalDistanceLabel" type="RichTextLabel" parent="UILayer/GameOverUI/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("12_facbu")
+theme_override_font_sizes/normal_font_size = 5
+bbcode_enabled = true
+text = "[center]Distance:
+"
+fit_content = true
+
+[node name="StartGameUI" type="Control" parent="UILayer"]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="StartGameLabel" type="RichTextLabel" parent="UILayer/StartGameUI"]
+layout_mode = 0
+offset_top = 48.0
+offset_right = 204.0
+offset_bottom = 119.0
+text = "PRESS SPACE TO START"
+fit_content = true
+
+[node name="NotificationsUI" type="Control" parent="UILayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MessageContainer" type="VBoxContainer" parent="UILayer/NotificationsUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = -10
+alignment = 1
+
+[node name="TitleLabel" type="RichTextLabel" parent="UILayer/NotificationsUI/MessageContainer"]
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("12_facbu")
+theme_override_font_sizes/normal_font_size = 15
+bbcode_enabled = true
+text = "[center]SPACE SHOOTER"
+fit_content = true
+
+[node name="SubtitleLabel" type="RichTextLabel" parent="UILayer/NotificationsUI/MessageContainer"]
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("12_facbu")
+theme_override_font_sizes/normal_font_size = 5
+bbcode_enabled = true
+text = "[center]BABY"
+fit_content = true
