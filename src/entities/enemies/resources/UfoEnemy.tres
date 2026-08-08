@@ -14,6 +14,6 @@ enemy_speed = 50.0
 enemy_damage = 2
 enemy_score_reward = 20
 enemy_xp_reward = 20
-enemy_weight = 3
+spawn_cost = 4
 death_scene = ExtResource("1_nmr7t")
 metadata/_custom_type_script = "uid://c1jvipah3wjg0"

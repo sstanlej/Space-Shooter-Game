@@ -10,7 +10,7 @@ class_name EnemyData extends Resource
 @export var enemy_score_reward: int
 @export var enemy_xp_reward: int
 
-@export var enemy_weight: int
+@export var spawn_cost: int = 1
 
 @export var death_scene: PackedScene
 

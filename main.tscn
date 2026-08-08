@@ -42,6 +42,7 @@ wave_cooldown_timer = NodePath("Timers/WaveCooldownTimer")
 [node name="World" type="Node2D" parent="."]
 
 [node name="LocationManager" parent="World" instance=ExtResource("2_a6jrf")]
+transition_duration = 3.0
 
 [node name="Player" parent="World" instance=ExtResource("3_xuqvo")]
 position = Vector2(-120, 65)
@@ -71,10 +72,6 @@ progression_manager = NodePath("../ProgressionManager")
 location_manager = NodePath("../World/LocationManager")
 enemies_container = NodePath("../World/EnemiesContainer")
 projectiles_container = NodePath("../World/ProjectilesContainer")
-wave_duration = 10.0
-
-[node name="WaveTimer" type="Timer" parent="Spawner"]
-wait_time = 10.0
 
 [node name="SpawnTimer" type="Timer" parent="Spawner"]
 

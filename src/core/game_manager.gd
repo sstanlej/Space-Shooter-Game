@@ -51,6 +51,9 @@ func _ready() -> void:
 		if player.get("attack_controler") and spawner:
 			player.attack_controler.projectiles_container = spawner.projectiles_container
 
+	if spawner:
+		if spawner.has_signal("wave_completed"):
+			spawner.wave_completed.connect(finish_wave)
 	# Wejście w stan początkowy
 	wait_to_start()
 
