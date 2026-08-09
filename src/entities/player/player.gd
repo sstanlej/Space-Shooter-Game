@@ -16,6 +16,11 @@ var tween: Tween
 func _ready() -> void:
 	state_machine.Initialize(self)
 	health_component.died.connect(_on_player_died)
+	for child in get_children():
+		if child is GPUParticles2D or child is CPUParticles2D:
+			child.emitting = true
+			if child.has_method("restart"):
+				child.restart()
 
 func _process(_delta: float) -> void:
 	if not Input.is_key_pressed(KEY_SHIFT):

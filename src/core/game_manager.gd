@@ -182,6 +182,9 @@ func finish_wave() -> void:
 
 		ui_manager.show_notification("[color=gold]WAVE FINISHED![/color]", subtitle_text, 1.5)
 
+	if ui_manager.has_method("hide_enemies_left_label"):
+		ui_manager.hide_enemies_left_label(0.5)
+
 	if spawner and spawner.has_method("stop_spawning"):
 		spawner.stop_spawning()
 
@@ -208,6 +211,7 @@ func start_wave() -> void:
 	if ui_manager:
 		if ui_manager.has_method("hide_start_game_label"): ui_manager.hide_start_game_label()
 		if ui_manager.has_method("show_hud"): ui_manager.show_hud()
+		if ui_manager.has_method("show_enemies_left_label"): ui_manager.show_enemies_left_label(0.5)
 		if ui_manager.has_method("show_notification"):
 			ui_manager.show_notification("[color=gold]WAVE " + str(current_wave) + "[/color]", "[color=gray]Shoot them up![/color]", 1.0)
 	change_state(GameState.IN_WAVE)
@@ -263,6 +267,9 @@ func toggle_pause() -> void:
 func game_over() -> void:
 	is_player_alive = false
 	change_state(GameState.GAME_OVER)
+
+	if ui_manager and ui_manager.has_method("hide_enemies_left_label"):
+		ui_manager.hide_enemies_left_label(0.3)
 
 	if spawner and spawner.has_method("pause_timers"):
 		spawner.pause_timers(true)

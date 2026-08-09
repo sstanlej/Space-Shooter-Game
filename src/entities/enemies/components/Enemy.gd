@@ -21,6 +21,11 @@ func setup(enemy_data: EnemyData) -> void:
 		health_component.set_health(data.enemy_max_health)
 		if not health_component.died.is_connected(_on_health_component_died):
 			health_component.died.connect(_on_health_component_died)
+	for child in get_children():
+		if child is GPUParticles2D or child is CPUParticles2D:
+			child.emitting = true
+			if child.has_method("restart"):
+				child.restart()
 
 func _physics_process(_delta: float) -> void:
 	if position.x < -40 and not is_escaping:

@@ -22,7 +22,7 @@ var is_boosting: bool = false
 var target_y: float
 
 func _ready() -> void:
-	target_y = global_position.y
+	# target_y = global_position.y
 	schedule_next_boost()
 	schedule_next_y_change()
 

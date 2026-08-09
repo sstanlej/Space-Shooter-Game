@@ -13,6 +13,7 @@ class_name UIManager extends CanvasLayer
 @export var distance_label: RichTextLabel
 @export var upgrade_points_label: RichTextLabel
 @export var experience_bar: TextureProgressBar
+@export var enemies_left_label: RichTextLabel
 
 @export_group("Player Stats Displays")
 @export var damage_label: RichTextLabel
@@ -43,6 +44,7 @@ var health_tween: Tween
 var damage_tween: Tween
 var xp_tween: Tween
 var title_tween: Tween
+var enemies_label_tween: Tween
 
 var hearts: Array = []
 var max_health: int = 0
@@ -58,6 +60,9 @@ func show_start_screen() -> void:
 	if game_over_panel: game_over_panel.hide()
 	if pause_panel: pause_panel.hide()
 	if notifications_container: notifications_container.hide()
+	if enemies_left_label:
+		enemies_left_label.modulate.a = 0.0
+		enemies_left_label.hide()
 
 func hide_start_game_label() -> void:
 	if start_game_panel: start_game_panel.hide()
@@ -229,3 +234,33 @@ func update_game_over_stats(wave: int, score: float, distance: float) -> void:
 		final_score_label.text = "[center][color=gray]Final Score: [/color][color=gold]" + str(int(score)) + "[/color][/center]"
 	if final_distance_label:
 		final_distance_label.text = "[center][color=gray]Distance: [/color][color=gold]" + str(int(distance)) + " km[/color][/center]"
+
+func update_enemies_left_label(count: int) -> void:
+	if enemies_left_label:
+		enemies_left_label.text = "[center]ENEMIES LEFT: [color=gold]" + str(count) + "[/color][/center]"
+
+func show_enemies_left_label(fade_duration: float = 0.4) -> void:
+	if not enemies_left_label:
+		return
+
+	if enemies_label_tween:
+		enemies_label_tween.kill()
+
+	enemies_left_label.show()
+	enemies_label_tween = create_tween()
+	enemies_label_tween.tween_property(enemies_left_label, "modulate:a", 1.0, fade_duration)\
+		.set_trans(Tween.TRANS_SINE)\
+		.set_ease(Tween.EASE_OUT)
+
+func hide_enemies_left_label(fade_duration: float = 0.4) -> void:
+	if not enemies_left_label:
+		return
+
+	if enemies_label_tween:
+		enemies_label_tween.kill()
+
+	enemies_label_tween = create_tween()
+	enemies_label_tween.tween_property(enemies_left_label, "modulate:a", 0.0, fade_duration)\
+		.set_trans(Tween.TRANS_SINE)\
+		.set_ease(Tween.EASE_IN)
+	enemies_label_tween.tween_callback(enemies_left_label.hide)

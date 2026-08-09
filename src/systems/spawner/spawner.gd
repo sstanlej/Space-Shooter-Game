@@ -24,6 +24,8 @@ var is_spawning: bool = false
 var current_wave_budget: int = 0
 var active_enemies_count: int = 0
 
+var unspawned_enemies: Array[EnemyData] = []
+
 func _ready() -> void:
 	setup_timer()
 
@@ -45,9 +47,38 @@ func start_spawning() -> void:
 	current_wave_budget = base_wave_budget + (wave_num - 1) * budget_growth_per_wave
 	active_enemies_count = 0
 
+	build_wave_queue(current_wave_budget)
+
 	print("[Spawner] Start fali ", wave_num, " | Budżet: ", current_wave_budget)
 
 	schedule_next_spawn(0.2)
+
+func build_wave_queue(budget: int) -> void:
+	unspawned_enemies.clear()
+
+	if not location_manager:
+		return
+
+	var current_location: LocationData = location_manager.get_current_location()
+	if not current_location or current_location.spawnable_enemies.size() == 0:
+		return
+
+	var temp_budget = budget
+
+	while temp_budget > 0:
+		var affordable_enemies: Array[EnemyData] = []
+		for enemy_data in current_location.spawnable_enemies:
+			if enemy_data and enemy_data.spawn_cost <= temp_budget:
+				affordable_enemies.append(enemy_data)
+
+		if affordable_enemies.size() == 0:
+			break # Brak wrogów mieścacych się w resztce budżetu
+
+		var picked_enemy = affordable_enemies.pick_random()
+		unspawned_enemies.append(picked_enemy)
+		temp_budget -= picked_enemy.spawn_cost
+
+	update_ui_enemies_left()
 
 func stop_spawning() -> void:
 	is_spawning = false
@@ -71,43 +102,26 @@ func _on_spawn_timer_timeout() -> void:
 	if not is_spawning:
 		return
 
-	if current_wave_budget > 0:
-		var spawned = spawn_random_enemy_from_location()
+	if unspawned_enemies.size() > 0:
+		var spawned = spawn_next_enemy_from_queue()
 		if spawned:
 			schedule_next_spawn()
 		else:
 			schedule_next_spawn(1.0)
 
-func spawn_random_enemy_from_location() -> bool:
-	if not location_manager:
-		return false
-
-	var current_location: LocationData = location_manager.get_current_location()
-	if not current_location or current_location.spawnable_enemies.size() == 0:
-		return false
-
-	var affordable_enemies: Array[EnemyData] = []
-	for enemy_data in current_location.spawnable_enemies:
-		if enemy_data and enemy_data.spawn_cost <= current_wave_budget:
-			affordable_enemies.append(enemy_data)
-
-	if affordable_enemies.size() == 0:
-		current_wave_budget = 0
+func spawn_next_enemy_from_queue() -> bool:
+	if unspawned_enemies.size() == 0:
 		check_wave_completion()
 		return false
 
-	var selected_enemy_data: EnemyData = affordable_enemies.pick_random()
+	var selected_enemy_data: EnemyData = unspawned_enemies.pop_front()
 
 	var viewport_rect = get_viewport().get_visible_rect()
 	var spawn_x = viewport_rect.size.x + 40.0
 	var spawn_y = randf_range(30.0, viewport_rect.size.y - 30.0)
 
 	var enemy = spawn_enemy(Vector2(spawn_x, spawn_y), selected_enemy_data)
-	if enemy:
-		current_wave_budget -= selected_enemy_data.spawn_cost
-		return true
-
-	return false
+	return enemy != null
 
 func spawn_enemy(spawn_position: Vector2, enemy_data: EnemyData) -> Enemy:
 	if not enemy_data or not enemy_data.enemy_scene:
@@ -117,18 +131,18 @@ func spawn_enemy(spawn_position: Vector2, enemy_data: EnemyData) -> Enemy:
 	if not enemy_instance:
 		return null
 
-	enemy_instance.global_position = spawn_position
-
 	if enemies_container:
 		enemies_container.add_child(enemy_instance)
 	else:
 		add_child(enemy_instance)
 
+	enemy_instance.global_position = spawn_position
 
 	if enemy_instance.has_method("setup"):
 		enemy_instance.setup(enemy_data)
 
 	active_enemies_count += 1
+	update_ui_enemies_left()
 
 	if enemy_instance.has_signal("enemy_died"):
 		enemy_instance.enemy_died.connect(_on_enemy_died)
@@ -153,10 +167,11 @@ func _on_enemy_escaped() -> void:
 
 func _on_enemy_removed() -> void:
 	active_enemies_count = max(0, active_enemies_count - 1)
+	update_ui_enemies_left()
 	check_wave_completion()
 
 func check_wave_completion() -> void:
-	if current_wave_budget <= 0 and active_enemies_count == 0 and is_spawning:
+	if unspawned_enemies.size() == 0 and active_enemies_count == 0 and is_spawning and game_manager.is_player_alive:
 		stop_spawning()
 		print("[Spawner] Fala ukończona!")
 		wave_completed.emit()
@@ -166,3 +181,11 @@ func kill_all_enemies() -> void:
 	if enemies_container:
 		for enemy in enemies_container.get_children():
 			enemy.queue_free()
+
+func get_total_remaining_enemies() -> int:
+	return active_enemies_count + unspawned_enemies.size()
+
+func update_ui_enemies_left() -> void:
+	if game_manager and game_manager.ui_manager:
+		if game_manager.ui_manager.has_method("update_enemies_left_label"):
+			game_manager.ui_manager.update_enemies_left_label(get_total_remaining_enemies())

@@ -25,5 +25,6 @@ scale_curve = SubResource("CurveTexture_mprk4")
 color_ramp = SubResource("GradientTexture1D_ha4r5")
 
 [node name="SmokeParticleTrail" type="GPUParticles2D"]
+emitting = false
 texture = ExtResource("1_bkdnf")
 process_material = SubResource("ParticleProcessMaterial_aoojs")
