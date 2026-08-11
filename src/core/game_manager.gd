@@ -48,8 +48,8 @@ func _ready() -> void:
 			player.player_damage_taken.connect(_on_player_damage_taken)
 		if player.has_signal("player_died"):
 			player.player_died.connect(_on_player_died)
-		if player.get("attack_controler") and spawner:
-			player.attack_controler.projectiles_container = spawner.projectiles_container
+		if player.get("attack_controller") and spawner:
+			player.attack_controller.projectiles_container = spawner.projectiles_container
 
 	if spawner:
 		if spawner.has_signal("wave_completed"):
@@ -150,20 +150,31 @@ func start_game() -> void:
 
 	if ui_manager:
 		if ui_manager.has_method("show_hud"): ui_manager.show_hud()
-		if player and player.has_method("get_health_component"):
-			var player_hc = player.get_health_component()
+		if player and player.health_component:
+			var player_hc = player.health_component
 			var max_hp = int(player_hc.get_max_health()) if player_hc.has_method("get_max_health") else 100
-			var current_hp = int(player_hc.get_health())
+			var current_hp = int(player_hc.get_health()) if player_hc.has_method("get_health") else 100
 
 			ui_manager.setup_health_bar(max_hp, current_hp)
 
-			var player_damage: int = int(player.get_attack_controler().get_damage())
-			var player_attack_speed: int = int(player.get_attack_controler().get_attack_speed())
-			var player_speed: int = int(player.get_movement_speed())
+			var stats = player.stats_component
+			var atk_ctrl = player.attack_controller
+			var base_dmg = atk_ctrl.equipped_weapon.base_damage if atk_ctrl and atk_ctrl.equipped_weapon else 1.0
+			var base_atk_spd = atk_ctrl.equipped_weapon.base_attack_speed if atk_ctrl and atk_ctrl.equipped_weapon else 3.0
+
+			var player_damage: int = int(stats.get_final_damage(base_dmg)) if stats else int(base_dmg)
+			var player_attack_speed: int = int(stats.get_final_attack_speed(base_atk_spd)) if stats else int(base_atk_spd)
+			var player_speed: int = int(stats.get_final_movement_speed()) if stats else 200
+
 			ui_manager.update_stats_label(player_damage, player_speed, player_attack_speed)
 
 	await play_start_animation()
 	start_wave()
+
+func _on_player_damage_taken() -> void:
+	if ui_manager and player and player.health_component:
+		var current_hp = int(player.health_component.get_health())
+		ui_manager.update_health_bar(current_hp)
 
 func finish_wave() -> void:
 	wave_ended.emit(current_wave)
@@ -196,11 +207,11 @@ func finish_wave() -> void:
 		wave_cooldown_timer.start()
 
 func play_start_animation() -> void:
-	var camera_tween
+	var _camera_tween
 	var player_tween
 
 	if camera_frame:
-		camera_tween = camera_frame.move_to_game_view()
+		_camera_tween = camera_frame.move_to_game_view()
 	if player:
 		player_tween = player.move_to_game_view()
 
@@ -299,8 +310,8 @@ func set_player_input_enabled(enabled: bool) -> void:
 	if player:
 		player.set_process(enabled)
 		player.set_physics_process(enabled)
-		if player.get("attack_controler"):
-			player.attack_controler.set_process(enabled)
+		if player.get("attack_controller"):
+			player.attack_controller.set_process(enabled)
 
 # --- Sygnały i Timery ---
 
@@ -310,8 +321,3 @@ func _on_wave_cooldown_timer_timeout() -> void:
 
 func _on_player_died() -> void:
 	game_over()
-
-func _on_player_damage_taken() -> void:
-	if ui_manager and player:
-		var current_hp = int(player.get_health_component().get_health())
-		ui_manager.update_health_bar(current_hp)

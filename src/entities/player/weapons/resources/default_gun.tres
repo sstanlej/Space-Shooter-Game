@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="WeaponData" load_steps=3 format=3 uid="uid://dlunv304ggqdy"]
+
+[ext_resource type="PackedScene" uid="uid://cr6xe4o73h8ol" path="res://src/entities/projectiles/player_projectile.tscn" id="1_d7545"]
+[ext_resource type="Script" uid="uid://b4pj3fdnorw4e" path="res://src/entities/player/weapons/weapon_data.gd" id="1_gb64c"]
+
+[resource]
+script = ExtResource("1_gb64c")
+weapon_id = "default_gun"
+bullet_scene = ExtResource("1_d7545")
+base_damage = 1.0
+base_bullet_speed = 300.0
+metadata/_custom_type_script = "uid://b4pj3fdnorw4e"

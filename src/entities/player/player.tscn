@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://b5gn1svcnnf7a"]
+[gd_scene load_steps=15 format=3 uid="uid://b5gn1svcnnf7a"]
 
 [ext_resource type="Script" uid="uid://dmeq4l4ygdf52" path="res://src/entities/player/player.gd" id="1_n7e5a"]
 [ext_resource type="Texture2D" uid="uid://c6krctq5xg7w6" path="res://src/entities/player/sprites/rocket.png" id="2_fhl08"]
@@ -6,9 +6,10 @@
 [ext_resource type="Script" uid="uid://dp7p1gm25paid" path="res://src/entities/player/states/player_state_machine.gd" id="3_btcbx"]
 [ext_resource type="Script" uid="uid://b47q42sws0vwe" path="res://src/entities/player/states/state_idle.gd" id="4_gwnis"]
 [ext_resource type="Script" uid="uid://d2tyhxaj6xq0n" path="res://src/entities/player/states/state_walk.gd" id="5_k53q1"]
-[ext_resource type="Script" uid="uid://bwfse1k7q36pc" path="res://src/entities/player/attack_cntroller.gd" id="6_fhl08"]
+[ext_resource type="Script" uid="uid://bwfse1k7q36pc" path="res://src/entities/player/attack_controller.gd" id="6_fhl08"]
 [ext_resource type="Script" uid="uid://dqihe208dt14r" path="res://src/entities/enemies/components/hitbox.gd" id="8_00tjw"]
-[ext_resource type="PackedScene" uid="uid://cr6xe4o73h8ol" path="res://src/entities/projectiles/player_projectile.tscn" id="8_apopc"]
+[ext_resource type="Resource" uid="uid://dlunv304ggqdy" path="res://src/entities/player/weapons/resources/default_gun.tres" id="8_kc3pt"]
+[ext_resource type="Script" uid="uid://dm20wluxoyelj" path="res://src/entities/player/player_stats_component.gd" id="8_n7e5a"]
 [ext_resource type="AudioStream" uid="uid://tkgndh2r3xbw" path="res://assets/audio/laser-312360.mp3" id="9_00tjw"]
 [ext_resource type="PackedScene" uid="uid://d2608o6gxf224" path="res://src/vfx/particles/fire_trail.tscn" id="10_x3vf3"]
 
@@ -43,13 +44,18 @@ script = ExtResource("4_gwnis")
 [node name="Walk" type="Node" parent="StateMachine"]
 script = ExtResource("5_k53q1")
 
-[node name="AttackControler" type="Node" parent="."]
+[node name="AttackController" type="Node" parent="."]
 script = ExtResource("6_fhl08")
-bullet_scene = ExtResource("8_apopc")
+equipped_weapon = ExtResource("8_kc3pt")
 
-[node name="CooldownTimer" type="Timer" parent="AttackControler"]
+[node name="CooldownTimer" type="Timer" parent="AttackController"]
 wait_time = 0.33
 one_shot = true
+
+[node name="PlayerStatsComponent" type="Node" parent="."]
+script = ExtResource("8_n7e5a")
+base_max_health = 8.0
+base_movement_speed = 60.0
 
 [node name="Area2D" type="Area2D" parent="." node_paths=PackedStringArray("health_component")]
 collision_mask = 10
@@ -68,4 +74,4 @@ position = Vector2(-5, 0)
 
 [connection signal="tree_exiting" from="." to="." method="_on_tree_exiting"]
 [connection signal="damage_taken" from="HealthComponent" to="." method="_on_health_component_damage_taken"]
-[connection signal="timeout" from="AttackControler/CooldownTimer" to="AttackControler" method="_on_cooldown_timer_timeout"]
+[connection signal="timeout" from="AttackController/CooldownTimer" to="AttackController" method="_on_cooldown_timer_timeout"]

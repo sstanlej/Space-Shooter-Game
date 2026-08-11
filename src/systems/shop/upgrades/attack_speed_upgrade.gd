@@ -5,5 +5,5 @@ func _ready() -> void:
 
 
 func apply_upgrade() -> void:
-	player_attack_controler.add_attack_speed(level)
+	player_attack_controller.add_attack_speed(level)
 	# print("I wanna increase player's attack speed")
