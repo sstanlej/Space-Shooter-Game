@@ -36,8 +36,8 @@ func _ready() -> void:
 
 func setup_map() -> void:
 	map.clear()
-	# for i in range(3):
-	# 	map.append(0)
+	for i in range(3):
+		map.append(0)
 
 	generate_map(10)
 
@@ -60,10 +60,10 @@ func generate_map(locations_amount: int) -> void:
 		last_value = new_value
 
 	for i in sequence:
-		# var duration = randi_range(2, 4)
-		# for j in range(duration):
-		#     map.append(i)
-		map.append(i)
+		var duration = randi_range(2, 4)
+		for j in range(duration):
+			map.append(i)
+		# map.append(i)
 
 	print("[LocationManager] Wygenerowano mapę: ", map)
 
