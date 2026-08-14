@@ -1,10 +1,14 @@
-[gd_scene load_steps=26 format=3 uid="uid://ctolyotyjbqwg"]
+[gd_scene load_steps=30 format=3 uid="uid://ctolyotyjbqwg"]
 
 [ext_resource type="Script" uid="uid://dm1jlaqpgu05" path="res://src/core/game_manager.gd" id="1_lswn8"]
 [ext_resource type="PackedScene" uid="uid://qoymek85ecx7" path="res://src/systems/locations/location_manager.tscn" id="2_a6jrf"]
+[ext_resource type="Resource" uid="uid://c1l3ogqv4mxp5" path="res://src/systems/locations/resources/SpaceLocation.tres" id="3_qsp4k"]
 [ext_resource type="PackedScene" uid="uid://b5gn1svcnnf7a" path="res://src/entities/player/player.tscn" id="3_xuqvo"]
+[ext_resource type="Resource" uid="uid://cnm2rj4rhv22x" path="res://src/systems/locations/resources/CityLocation.tres" id="4_kq58d"]
 [ext_resource type="Script" uid="uid://bvscfifqg2eho" path="res://src/core/camera_movement.gd" id="4_qsp4k"]
 [ext_resource type="Texture2D" uid="uid://cpbex4mtdoatj" path="res://src/systems/locations/sprites/misc/earth.png" id="5_kq58d"]
+[ext_resource type="Resource" uid="uid://c30ua1jkovq12" path="res://src/systems/locations/resources/GreenPlanetOrbitLocation.tres" id="5_seu75"]
+[ext_resource type="Resource" uid="uid://bosrctydabgot" path="res://src/systems/locations/resources/GukidLocation.tres" id="6_qsp4k"]
 [ext_resource type="Script" uid="uid://dga8epmke5iyx" path="res://src/systems/spawner/spawner.gd" id="6_seu75"]
 [ext_resource type="Script" uid="uid://dw38kr6168wir" path="res://src/core/progression_manager.gd" id="7_htxhm"]
 [ext_resource type="Script" uid="uid://ceksi56kybfsk" path="res://src/ui/ui_manager.gd" id="8_jq2sk"]
@@ -41,6 +45,7 @@ wave_cooldown_timer = NodePath("Timers/WaveCooldownTimer")
 [node name="World" type="Node2D" parent="."]
 
 [node name="LocationManager" parent="World" instance=ExtResource("2_a6jrf")]
+locations = Array[Object]([ExtResource("3_qsp4k"), ExtResource("4_kq58d"), ExtResource("5_seu75"), ExtResource("6_qsp4k")])
 transition_duration = 3.0
 
 [node name="Player" parent="World" instance=ExtResource("3_xuqvo")]

@@ -36,6 +36,7 @@ func _ready() -> void:
 
 func setup_map() -> void:
 	map.clear()
+	# Pierwsze 3 fale zawsze w pierwszej lokacji (np. Space)
 	for i in range(3):
 		map.append(0)
 
@@ -45,9 +46,10 @@ func setup_map() -> void:
 	previous_location_index = map[0]
 
 	apply_textures_to_node(get_current_location(), current_back_sprite, current_middle_sprite, current_front_sprite)
+	print_map_summary()
 
 func generate_map(locations_amount: int) -> void:
-	var sequence = []
+	var sequence: Array[int] = []
 	var max_value = locations.size() - 1
 	var min_value = 0
 	var last_value = map[map.size() - 1] if map.size() > 0 else -1
@@ -59,22 +61,47 @@ func generate_map(locations_amount: int) -> void:
 		sequence.append(new_value)
 		last_value = new_value
 
-	for i in sequence:
+	for loc_index in sequence:
 		var duration = randi_range(2, 4)
 		for j in range(duration):
-			map.append(i)
-		# map.append(i)
-
-	print("[LocationManager] Wygenerowano mapę: ", map)
+			map.append(loc_index)
 
 func advance_to_wave(wave_number: int) -> void:
 	if wave_number - 1 >= map.size() - 1:
 		generate_map(10)
+		print_map_summary()
 
-	# Zapamiętujemy poprzednią lokację przed zmianą
 	previous_location_index = current_location_index
-	# Nowa lokacja dla Spawnera wchodzi NATYCHMIAST!
 	current_location_index = map[wave_number - 1]
+
+# --- CZYTELNE LOGOWANIE MAPY ---
+
+func print_map_summary() -> void:
+	if map.is_empty():
+		print("[LocationManager] Mapa jest pusta.")
+		return
+
+	print("[LocationManager] Wygenerowano plan lokacji:")
+	var current_idx = map[0]
+	var count = 0
+
+	for idx in map:
+		if idx == current_idx:
+			count += 1
+		else:
+			var loc_name = get_location_name(current_idx)
+			print("  • %s (%d)" % [loc_name, count])
+			current_idx = idx
+			count = 1
+
+	# Wypisanie ostatniej grupy z tablicy
+	var last_loc_name = get_location_name(current_idx)
+	print("  • %s (%d)" % [last_loc_name, count])
+
+func get_location_name(index: int) -> String:
+	if index >= 0 and index < locations.size() and locations[index]:
+		return locations[index].location_name
+	return "Nieznana Lokacja (%d)" % index
 
 # --- AKTUALIZACJA TEKSTUR I TWEENOWANIE ---
 
@@ -86,7 +113,6 @@ func apply_textures_to_node(loc_data: LocationData, back_sp: Sprite2D, mid_sp: S
 	if front_sp: front_sp.texture = loc_data.front_texture
 
 func transition_to_next_location() -> void:
-	# Jeśli nowa lokacja z mapy jest taka sama jak poprzednia – brak animacji
 	if previous_location_index == current_location_index:
 		print("[LocationManager] Lokacja bez zmian: ", get_current_location().location_name)
 		return
@@ -110,7 +136,6 @@ func transition_to_next_location() -> void:
 	tween.tween_callback(_on_transition_finished)
 
 func _on_transition_finished() -> void:
-	# Po zakończeniu przechodzenia przypisujemy nową lokację na stałe na głównym węźle
 	apply_textures_to_node(get_current_location(), current_back_sprite, current_middle_sprite, current_front_sprite)
 	current_location_node.modulate.a = 1.0
 	next_location_node.modulate.a = 0.0
