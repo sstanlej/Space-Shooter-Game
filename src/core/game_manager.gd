@@ -1,36 +1,31 @@
 class_name GameManager extends Node
 
-# --- Maszyna Stanów ---
 enum GameState {
-	WAIT_TO_START, # Czekanie na wciśnięcie startu w menu/ekranie początkowym
-	TRANSITIONING, # Animacja początku gry przed pierwszą falą
-	IN_WAVE,       # Trwa fala: świat gry działa, wrogowie się spawnują
-	BETWEEN_WAVES, # Przerwa między falami: odliczanie, płynna zmiana lokacji w tle
-	IN_SHOP,       # Świat gry zamrożony, otwarte okno sklepu
-	PAUSED,        # Zwykła pauza gry
-	GAME_OVER      # Gracz przegrał (świat gry zamrożony)
+	WAIT_TO_START,
+	TRANSITIONING,
+	IN_WAVE,
+	BETWEEN_WAVES,
+	IN_SHOP,
+	PAUSED,
+	GAME_OVER
 }
 
-# --- Sygnały Zmiany Stanu ---
 signal state_changed(old_state: GameState, new_state: GameState)
 signal wave_started(wave_number: int)
 signal wave_ended(wave_number: int)
 
-# --- Zmienne Rozgrywki ---
 var current_state: GameState = GameState.WAIT_TO_START
 var state_before_pause: GameState = GameState.IN_WAVE
 var current_wave: int = 1
 var is_player_alive: bool = true
 
-# --- Referencja do Świata Gry (Nowy System Pauzy!) ---
 @export_group("World & Physics Control")
-@export var world: Node2D # Węzeł World zawierający gracza, wrogów, pociski i tło
+@export var world: Node2D
 
-# --- Referencje do Pozostałych Managerów ---
 @export_group("System Managers")
 @export var location_manager: LocationManager
 @export var progression_manager: ProgressionManager
-@export var spawner: Spawner # Nasz przyszły Spawner / Director
+@export var spawner: Spawner
 @export var ui_manager: UIManager
 @export var shop_ui: ShopUI
 
@@ -54,30 +49,25 @@ func _ready() -> void:
 	if spawner:
 		if spawner.has_signal("wave_completed"):
 			spawner.wave_completed.connect(finish_wave)
-	# Wejście w stan początkowy
+
 	wait_to_start()
 
 func _unhandled_input(event: InputEvent) -> void:
-	# Start gry po wciśnięciu przycisku ataku na ekranie startowym
 	if current_state == GameState.WAIT_TO_START and is_player_alive:
 		if event.is_action_pressed("attack"):
 			start_game()
 
-	# Otwieranie sklepu w trakcie przerwy między falami (klawisz 'shop' / np. 'B')
 	elif current_state == GameState.BETWEEN_WAVES:
 		if event.is_action_pressed("shop"):
 			open_shop()
 
-	# Zwykła pauza (ESC / P)
 	if event.is_action_pressed("pause"):
 		if current_state == GameState.IN_WAVE or current_state == GameState.BETWEEN_WAVES or current_state == GameState.PAUSED:
 			toggle_pause()
 
-	# Reset sceny (Debug / Quick Restart)
 	if event.is_action_pressed("reset"):
 		reload_scene()
 
-# --- Główna Logika Maszyny Stanów z Pauzowaniem Węzła World ---
 func change_state(new_state: GameState) -> void:
 	if current_state == new_state:
 		return
@@ -90,44 +80,38 @@ func change_state(new_state: GameState) -> void:
 		GameState.WAIT_TO_START:
 			set_world_paused(true)
 			set_player_input_enabled(false)
-			print("[GameManager] Stan: WAIT_TO_START")
 
 		GameState.TRANSITIONING:
-			set_world_paused(false) # Świat gry działa (tło płynie), gracz może latać
+			set_world_paused(false)
 			set_player_input_enabled(false)
-			print("[GameManager] Stan: TRANSITIONING")
 
 		GameState.IN_WAVE:
-			set_world_paused(false) # Świat gry działa!
+			set_world_paused(false)
 			set_player_input_enabled(true)
-			print("[GameManager] Stan: IN_WAVE (Fala: ", current_wave, ")")
 
 		GameState.BETWEEN_WAVES:
-			set_world_paused(false) # Świat gry działa (tło płynie), gracz może latać
+			set_world_paused(false)
 			set_player_input_enabled(true)
-			print("[GameManager] Stan: BETWEEN_WAVES")
+			if wave_cooldown_timer and wave_cooldown_timer.is_paused():
+				wave_cooldown_timer.paused = false
 
 		GameState.IN_SHOP:
-			set_world_paused(true) # ZAMRAŻAMY ŚWIAT GRY na czas Sklepu!
-			print("[GameManager] Stan: IN_SHOP")
+			set_world_paused(true)
+			if wave_cooldown_timer and not wave_cooldown_timer.is_stopped():
+				wave_cooldown_timer.paused = true
 
 		GameState.PAUSED:
-			set_world_paused(true) # ZAMRAŻAMY ŚWIAT GRY na czas Pauzy!
-			print("[GameManager] Stan: PAUSED")
+			set_world_paused(true)
 
 		GameState.GAME_OVER:
 			set_player_input_enabled(false)
-			print("[GameManager] Stan: GAME_OVER")
 
-# --- Funkcja Pomocnicza do Pauzowania Świata ---
 func set_world_paused(paused: bool) -> void:
 	if world:
 		if paused:
 			world.process_mode = Node.PROCESS_MODE_DISABLED
 		else:
 			world.process_mode = Node.PROCESS_MODE_INHERIT
-
-# --- Kontrola Przebiegu Gry ---
 
 func wait_to_start() -> void:
 	change_state(GameState.WAIT_TO_START)
@@ -162,7 +146,6 @@ func start_game() -> void:
 			var base_dmg = atk_ctrl.equipped_weapon.base_damage if atk_ctrl and atk_ctrl.equipped_weapon else 1.0
 			var base_atk_spd = atk_ctrl.equipped_weapon.base_attack_speed if atk_ctrl and atk_ctrl.equipped_weapon else 3.0
 
-			# W GameManager.gd wewnątrz start_game():
 			var player_damage: int = int(stats.get_final_damage(base_dmg)) if stats else int(base_dmg)
 			var player_speed: int = int(player.get_movement_speed())
 			var player_attack_speed: float = snappedf(stats.get_final_attack_speed(base_atk_spd), 0.1) if stats else base_atk_spd
@@ -171,11 +154,6 @@ func start_game() -> void:
 
 	await play_start_animation()
 	start_wave()
-
-func _on_player_damage_taken() -> void:
-	if ui_manager and player and player.health_component:
-		var current_hp = int(player.health_component.get_health())
-		ui_manager.update_health_bar(current_hp)
 
 func finish_wave() -> void:
 	wave_ended.emit(current_wave)
@@ -236,8 +214,6 @@ func start_next_wave() -> void:
 	current_wave += 1
 	start_wave()
 
-# --- Sklep i Pauza ---
-
 func open_shop() -> void:
 	if current_state == GameState.BETWEEN_WAVES:
 		change_state(GameState.IN_SHOP)
@@ -267,7 +243,7 @@ func toggle_pause() -> void:
 	elif current_state == GameState.PAUSED:
 		change_state(state_before_pause)
 
-		if wave_cooldown_timer:
+		if wave_cooldown_timer and state_before_pause == GameState.BETWEEN_WAVES:
 			wave_cooldown_timer.paused = false
 
 		if spawner and spawner.has_method("pause_timers"):
@@ -314,11 +290,14 @@ func set_player_input_enabled(enabled: bool) -> void:
 		if player.get("attack_controller"):
 			player.attack_controller.set_process(enabled)
 
-# --- Sygnały i Timery ---
-
 func _on_wave_cooldown_timer_timeout() -> void:
 	if current_state == GameState.BETWEEN_WAVES:
 		start_next_wave()
 
 func _on_player_died() -> void:
 	game_over()
+
+func _on_player_damage_taken() -> void:
+	if ui_manager and player and player.health_component:
+		var current_hp = int(player.health_component.get_health())
+		ui_manager.update_health_bar(current_hp)
