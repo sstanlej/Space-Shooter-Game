@@ -114,3 +114,6 @@ func get_movement_speed() -> float:
 	if stats_component and stats_component.has_method("get_final_movement_speed"):
 		return stats_component.get_final_movement_speed()
 	return 200.0
+
+func get_tilt_angle() -> float:
+	return sprite.rotation if sprite else 0.0

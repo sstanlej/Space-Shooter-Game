@@ -40,26 +40,32 @@ func shoot() -> void:
 
 	spawn_bullets(final_dmg, equipped_weapon.base_bullet_speed, total_bullets, equipped_weapon.spread_angle_degrees)
 
-	GlobalAudio.play_laser()
+	if typeof(GlobalAudio) != TYPE_NIL and GlobalAudio.has_method("play_laser"):
+		GlobalAudio.play_laser()
 	is_ready = false
 
 	var cooldown = 1.0 / max(0.1, final_atk_spd)
 	cooldown_timer.start(cooldown)
 
 func spawn_bullets(dmg: float, speed: float, count: int, spread_deg: float) -> void:
-	var container = projectiles_container if projectiles_container else get_tree().current_scene
+	var container = get_target_container()
+	var spawn_pos = player.global_position if player else Vector2.ZERO
+	var tilt_rad = player.get_tilt_angle() if player and player.has_method("get_tilt_angle") else 0.0
 
+	# 1. Pojedynczy pocisk pod kątem przechyłu
 	if count <= 1:
-		spawn_single_bullet(container, player.global_position, Vector2.RIGHT, dmg, speed)
+		var dir = Vector2.RIGHT.rotated(tilt_rad)
+		spawn_single_bullet(container, spawn_pos, dir, dmg, speed)
 		return
 
+	# 2. Wiele pocisków / Rozrzut (Spread) z uwzględnieniem przechyłu
 	var start_angle = -spread_deg / 2.0
 	var step = spread_deg / float(count - 1) if count > 1 else 0.0
 
 	for i in range(count):
 		var current_angle = start_angle + (i * step)
-		var direction = Vector2.RIGHT.rotated(deg_to_rad(current_angle))
-		spawn_single_bullet(container, player.global_position, direction, dmg, speed)
+		var dir = Vector2.RIGHT.rotated(tilt_rad + deg_to_rad(current_angle))
+		spawn_single_bullet(container, spawn_pos, dir, dmg, speed)
 
 func get_target_container() -> Node:
 	if projectiles_container and is_instance_valid(projectiles_container):
@@ -70,13 +76,15 @@ func get_target_container() -> Node:
 		projectiles_container = group_container
 		return projectiles_container
 
-	return get_tree().current_scene # Fallback gdyby kontener nie istniał
+	return get_tree().current_scene
 
-func spawn_single_bullet(_container: Node, pos: Vector2, dir: Vector2, dmg: float, speed: float) -> void:
-	var target_container = get_target_container()
+func spawn_single_bullet(container: Node, pos: Vector2, dir: Vector2, dmg: float, speed: float) -> void:
+	if not equipped_weapon or not equipped_weapon.bullet_scene:
+		return
+		
 	var bullet = equipped_weapon.bullet_scene.instantiate() as Projectile
 	if bullet:
-		target_container.add_child(bullet)
+		container.add_child(bullet)
 		bullet.global_position = pos
 		bullet.setup(dmg, speed, dir)
 

@@ -13,10 +13,12 @@ func setup(proj_damage: float, proj_speed: float, proj_direction: Vector2) -> vo
 	damage = proj_damage
 	speed = proj_speed
 	direction = proj_direction.normalized()
+	# Obrót pocisku w stronę, w którą leci:
+	rotation = direction.angle()
 
 func _physics_process(delta: float) -> void:
 	position += direction * speed * delta
-	if global_position.x > screen_width + 20.0 or global_position.x < -20.0:
+	if global_position.x > screen_width + 30.0 or global_position.x < -30.0 or global_position.y < -30.0 or global_position.y > get_viewport_rect().size.y + 30.0:
 		queue_free()
 
 func _on_area_entered(area: Area2D) -> void:
@@ -25,5 +27,6 @@ func _on_area_entered(area: Area2D) -> void:
 		on_hit()
 
 func on_hit() -> void:
-	GlobalAudio.play_crash()
+	if typeof(GlobalAudio) != TYPE_NIL and GlobalAudio.has_method("play_crash"):
+		GlobalAudio.play_crash()
 	queue_free()
