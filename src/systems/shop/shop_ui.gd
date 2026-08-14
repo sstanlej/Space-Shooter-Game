@@ -126,12 +126,15 @@ func confirm_selection() -> void:
 
 	var points = progression_manager.get_upgrade_points() if progression_manager else 0
 	if points <= 0:
+		GlobalAudio.play_error()
 		active = false
 		await shake_card(selected_card_ui)
 		active = true
 		return
 
 	active = false
+
+	GlobalAudio.play_upgrade()
 	
 	if progression_manager.spend_upgrade_point():
 		selected_card_ui.card_data.apply_to_player(player)

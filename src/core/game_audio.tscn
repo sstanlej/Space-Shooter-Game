@@ -1,17 +1,25 @@
-[gd_scene load_steps=4 format=3 uid="uid://dm65e3c05axaa"]
+[gd_scene load_steps=6 format=3 uid="uid://dm65e3c05axaa"]
 
 [ext_resource type="Script" uid="uid://cnand14y6nkig" path="res://src/core/game_audio.gd" id="1_ykmpt"]
-[ext_resource type="AudioStream" uid="uid://dt5c2y6kq4hji" path="res://assets/audio/car_crash.mp3" id="2_oxt5x"]
+[ext_resource type="AudioStream" uid="uid://bjyudhyqdmrbb" path="res://assets/audio/Explosion 2.wav" id="2_nm0vt"]
 [ext_resource type="AudioStream" uid="uid://tkgndh2r3xbw" path="res://assets/audio/laser-312360.mp3" id="3_jv0w2"]
+[ext_resource type="AudioStream" uid="uid://b5wl73jdtdbgr" path="res://assets/audio/upgrade_sound.wav" id="4_55iip"]
+[ext_resource type="AudioStream" uid="uid://b1h35urqshquu" path="res://assets/audio/error_sound.wav" id="5_pbdd3"]
 
 [node name="GameAudio" type="Node2D"]
 script = ExtResource("1_ykmpt")
 
 [node name="CrashSound" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("2_oxt5x")
-volume_db = -30.0
+stream = ExtResource("2_nm0vt")
+volume_db = -10.0
 
 [node name="LaserSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("3_jv0w2")
 volume_db = -30.0
 attenuation = 1.0717723
+
+[node name="UpgradeSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_55iip")
+
+[node name="ErrorSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_pbdd3")
