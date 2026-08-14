@@ -30,12 +30,22 @@ func setup(data: UpgradeCardData) -> void:
 	if icon_rect and card_data.icon:
 		icon_rect.texture = card_data.icon
 
+	update_pivot()
 	set_selected(false, true)
+
+func update_pivot() -> void:
+	if size != Vector2.ZERO:
+		pivot_offset = size / 2.0
+	elif custom_minimum_size != Vector2.ZERO:
+		pivot_offset = custom_minimum_size / 2.0
 
 func set_selected(selected: bool, immediate: bool = false) -> void:
 	is_selected = selected
-	var target_scale = Vector2(1.1, 1.1) if is_selected else Vector2(1.0, 1.0)
+	var target_scale = Vector2(1.12, 1.12) if is_selected else Vector2(1.0, 1.0)
 	var target_modulate = Color(1.0, 1.0, 1.0, 1.0) if is_selected else Color(0.65, 0.65, 0.65, 0.85)
+
+	if pivot_offset == Vector2.ZERO:
+		update_pivot()
 
 	if tween:
 		tween.kill()

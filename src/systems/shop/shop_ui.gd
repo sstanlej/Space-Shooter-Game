@@ -51,12 +51,12 @@ func show_shop() -> void:
 	selected_index = 0
 	generate_cards()
 	
-	# Czekamy klatkę na załadowanie dzieci i przeliczamy wymiary kontenera
 	await get_tree().process_frame
 	calculate_positions()
 	
 	await animate_open()
 	active = true
+	update_selection(false) # Animowany 'pop' pierwszej karty po wjeździe sklepu
 
 func hide_shop() -> void:
 	active = false
@@ -89,19 +89,13 @@ func generate_cards() -> void:
 
 	var drawn_cards: Array[UpgradeCardData] = deck_manager.get_random_cards(3, player)
 	for card_data in drawn_cards:
-		var raw_node = card_ui_scene.instantiate()
-		var card_instance = raw_node as CardUI
-		
+		var card_instance = card_ui_scene.instantiate() as CardUI
 		if not card_instance:
-			push_error("[ShopUI] Instantiated scene is not CardUI! Root node must have CardUI.gd script attached.")
-			raw_node.queue_free()
 			continue
-
+			
 		cards_container.add_child(card_instance)
 		card_instance.setup(card_data)
 		active_cards_ui.append(card_instance)
-
-	update_selection(true)
 
 func update_selection(immediate: bool = false) -> void:
 	for i in range(active_cards_ui.size()):
