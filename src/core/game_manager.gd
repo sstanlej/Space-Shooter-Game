@@ -126,6 +126,9 @@ func start_game() -> void:
 	current_wave = 1
 	change_state(GameState.TRANSITIONING)
 
+	if shop_ui and shop_ui.deck_manager:
+		shop_ui.deck_manager.reset_deck()
+
 	if ui_manager and ui_manager.has_method("hide_notification"):
 		ui_manager.hide_notification(0.4)
 
