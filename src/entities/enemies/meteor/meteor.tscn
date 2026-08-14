@@ -1,10 +1,16 @@
-[gd_scene load_steps=8 format=3 uid="uid://dtx5n23ng2cpc"]
+[gd_scene load_steps=10 format=3 uid="uid://dtx5n23ng2cpc"]
 
 [ext_resource type="Script" uid="uid://csyx4tp8pesgb" path="res://src/entities/enemies/meteor/MeteorEnemy.gd" id="1_ey0ym"]
 [ext_resource type="Texture2D" uid="uid://c48t25sg1mpjx" path="res://src/entities/enemies/meteor/meteor.png" id="2_87xaf"]
 [ext_resource type="PackedScene" uid="uid://df7720odkejuq" path="res://src/vfx/particles/smoke_trail.tscn" id="2_eqacn"]
 [ext_resource type="Script" uid="uid://cmxkc1l3uevq1" path="res://src/entities/enemies/components/HealthComponent.gd" id="3_ey0ym"]
+[ext_resource type="Shader" uid="uid://wr7raxdl2m7y" path="res://src/vfx/shaders/hit_flash.gdshader" id="3_oml58"]
 [ext_resource type="Script" uid="uid://dqihe208dt14r" path="res://src/entities/enemies/components/hitbox.gd" id="4_g7ndn"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_elnbm"]
+shader = ExtResource("3_oml58")
+shader_parameter/active = false
+shader_parameter/flash_color = Color(1, 1, 1, 1)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_qhs2c"]
 radius = 6.0827627
@@ -21,6 +27,7 @@ script = ExtResource("1_ey0ym")
 position = Vector2(4, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_elnbm")
 texture = ExtResource("2_87xaf")
 
 [node name="HealthComponent" type="Node2D" parent="."]

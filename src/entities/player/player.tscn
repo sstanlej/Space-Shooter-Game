@@ -1,6 +1,7 @@
-[gd_scene load_steps=15 format=3 uid="uid://b5gn1svcnnf7a"]
+[gd_scene load_steps=17 format=3 uid="uid://b5gn1svcnnf7a"]
 
 [ext_resource type="Script" uid="uid://dmeq4l4ygdf52" path="res://src/entities/player/player.gd" id="1_n7e5a"]
+[ext_resource type="Shader" uid="uid://wr7raxdl2m7y" path="res://src/vfx/shaders/hit_flash.gdshader" id="2_3c4mh"]
 [ext_resource type="Texture2D" uid="uid://c6krctq5xg7w6" path="res://src/entities/player/sprites/rocket.png" id="2_fhl08"]
 [ext_resource type="Script" uid="uid://cmxkc1l3uevq1" path="res://src/entities/enemies/components/HealthComponent.gd" id="3_00tjw"]
 [ext_resource type="Script" uid="uid://dp7p1gm25paid" path="res://src/entities/player/states/player_state_machine.gd" id="3_btcbx"]
@@ -16,6 +17,11 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fhl08"]
 size = Vector2(14, 6)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_p2qdy"]
+shader = ExtResource("2_3c4mh")
+shader_parameter/active = false
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_x3vf3"]
 size = Vector2(20, 12)
 
@@ -29,6 +35,7 @@ shape = SubResource("RectangleShape2D_fhl08")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = 5
+material = SubResource("ShaderMaterial_p2qdy")
 texture = ExtResource("2_fhl08")
 
 [node name="HealthComponent" type="Node2D" parent="."]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://c5ex5otmh8s32"]
+[gd_scene load_steps=14 format=3 uid="uid://c5ex5otmh8s32"]
 
 [ext_resource type="Script" uid="uid://61cyr47oiy35" path="res://src/entities/enemies/courier/courier.gd" id="1_obke8"]
 [ext_resource type="Texture2D" uid="uid://75l6ymp0dtrb" path="res://src/entities/enemies/courier/courier_slow.png" id="2_obke8"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://ddf3krjgs7u64" path="res://src/entities/enemies/courier/courier_fast.png" id="3_t4ttm"]
 [ext_resource type="Script" uid="uid://dqihe208dt14r" path="res://src/entities/enemies/components/hitbox.gd" id="4_nu2dv"]
 [ext_resource type="PackedScene" uid="uid://d2608o6gxf224" path="res://src/vfx/particles/fire_trail.tscn" id="5_obke8"]
+[ext_resource type="Shader" uid="uid://wr7raxdl2m7y" path="res://src/vfx/shaders/hit_flash.gdshader" id="5_ooofx"]
 
 [sub_resource type="Gradient" id="Gradient_lbms2"]
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
@@ -21,6 +22,11 @@ initial_velocity_min = 10.0
 initial_velocity_max = 30.0
 gravity = Vector3(0, 0, 0)
 color_ramp = SubResource("GradientTexture1D_ulkso")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_clgx3"]
+shader = ExtResource("5_ooofx")
+shader_parameter/active = false
+shader_parameter/flash_color = Color(1, 1, 1, 1)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rwfl0"]
 radius = 5.0
@@ -42,6 +48,7 @@ position = Vector2(3, 1)
 process_material = SubResource("ParticleProcessMaterial_t4ttm")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_clgx3")
 texture = ExtResource("2_obke8")
 
 [node name="HealthComponent" type="Node2D" parent="."]

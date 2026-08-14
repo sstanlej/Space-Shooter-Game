@@ -1,11 +1,17 @@
-[gd_scene load_steps=15 format=3 uid="uid://xaeitc1t4enu"]
+[gd_scene load_steps=17 format=3 uid="uid://xaeitc1t4enu"]
 
 [ext_resource type="Script" uid="uid://bbmgtknyhxvwa" path="res://src/entities/enemies/zoot/zoot.gd" id="1_18i5x"]
 [ext_resource type="Texture2D" uid="uid://dilnkx7j41cy1" path="res://src/entities/enemies/zoot/zoot_animation.png" id="2_18i5x"]
 [ext_resource type="PackedScene" uid="uid://wikdcl5aogg5" path="res://src/entities/projectiles/enemy_projectile.tscn" id="2_exglh"]
+[ext_resource type="Shader" uid="uid://wr7raxdl2m7y" path="res://src/vfx/shaders/hit_flash.gdshader" id="2_f4c1c"]
 [ext_resource type="Script" uid="uid://cmxkc1l3uevq1" path="res://src/entities/enemies/components/HealthComponent.gd" id="3_2pfxk"]
 [ext_resource type="Script" uid="uid://dqihe208dt14r" path="res://src/entities/enemies/components/hitbox.gd" id="4_jp3px"]
 [ext_resource type="Script" uid="uid://cnbwlgjmc0w46" path="res://src/entities/enemies/components/ShootingComponent.gd" id="5_exglh"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rrooj"]
+shader = ExtResource("2_f4c1c")
+shader_parameter/active = false
+shader_parameter/flash_color = Color(1, 1, 1, 1)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_exglh"]
 atlas = ExtResource("2_18i5x")
@@ -65,6 +71,7 @@ script = ExtResource("1_18i5x")
 sine_amplitude = 10.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_rrooj")
 sprite_frames = SubResource("SpriteFrames_l70hh")
 
 [node name="HealthComponent" type="Node2D" parent="."]
