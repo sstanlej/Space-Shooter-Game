@@ -28,10 +28,6 @@ func _ready() -> void:
 	if background_overlay:
 		background_overlay.modulate.a = 0.0
 	hide()
-	
-	# Gdy gracz wbija poziom, oznaczamy konieczność wylosowania nowych kart
-	if progression_manager and progression_manager.has_signal("level_up_occurred"):
-		progression_manager.level_up_occurred.connect(_on_player_level_up)
 
 func _on_player_level_up(_new_level: int, _total_points: int) -> void:
 	if deck_manager:
@@ -74,6 +70,7 @@ func show_shop() -> void:
 	await animate_open()
 	active = true
 	update_selection(false)
+
 func hide_shop() -> void:
 	active = false
 	# Jeśli karty zostały już usunięte po wyborze, ściemniamy tylko tło
@@ -135,6 +132,7 @@ func confirm_selection() -> void:
 		return
 
 	active = false
+	
 	if progression_manager.spend_upgrade_point():
 		selected_card_ui.card_data.apply_to_player(player)
 		update_player_stats_display()
@@ -142,14 +140,13 @@ func confirm_selection() -> void:
 	await animate_card_selection(selected_card_ui)
 	clear_cards()
 
-	# Jeśli zostały kolejne punkty -> losujemy nową pulę wg AKTUALNEGO stanu zdrowia
+	if deck_manager:
+		deck_manager.roll_new_offer(3, player)
+
 	if progression_manager and progression_manager.get_upgrade_points() > 0:
 		selected_index = 0
 		var viewport_size = get_viewport_rect().size
 		cards_container.position.y = viewport_size.y + 50.0
-
-		if deck_manager:
-			deck_manager.roll_new_offer(3, player)
 
 		generate_cards()
 		await get_tree().process_frame
@@ -159,10 +156,7 @@ func confirm_selection() -> void:
 		active = true
 		update_selection(false)
 	else:
-		if deck_manager:
-			deck_manager.clear_offer()
 		game_manager.close_shop()
-
 
 func shake_card(card: CardUI) -> void:
 	var original_pos_x = card.position.x
