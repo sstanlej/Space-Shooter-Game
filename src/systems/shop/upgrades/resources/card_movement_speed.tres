@@ -1,14 +1,22 @@
-[gd_resource type="Resource" script_class="UpgradeCardData" load_steps=3 format=3 uid="uid://dyhlp3gsohoqc"]
+[gd_resource type="Resource" script_class="UpgradeCardData" load_steps=6 format=3 uid="uid://dyhlp3gsohoqc"]
 
 [ext_resource type="Script" uid="uid://dvnm2k8uup30q" path="res://src/systems/shop/upgrades/upgrade_card_data.gd" id="1_74eb4"]
+[ext_resource type="Script" uid="uid://c2skcqfonnj57" path="res://src/systems/shop/upgrades/effects/card_effect.gd" id="1_303rx"]
 [ext_resource type="Texture2D" uid="uid://f0t1hbuev73m" path="res://src/systems/shop/upgrades/sprites/movement_speed_upgrade.png" id="1_anrym"]
+[ext_resource type="Script" uid="uid://fcx5ckmelfns" path="res://src/systems/shop/upgrades/effects/stat_modifier_effect.gd" id="2_6x22v"]
+
+[sub_resource type="Resource" id="Resource_qh1td"]
+script = ExtResource("2_6x22v")
+stat_type = 2
+flat_value = 10.0
+metadata/_custom_type_script = "uid://fcx5ckmelfns"
 
 [resource]
 script = ExtResource("1_74eb4")
 card_id = "stat_movement_speed"
 title = "Engine Boost"
-description = "Increases movement speed by +20"
+description = "+20 MV SPD"
 icon = ExtResource("1_anrym")
 max_level = 10
-flat_movement_speed = 20.0
+effects = Array[ExtResource("1_303rx")]([SubResource("Resource_qh1td")])
 metadata/_custom_type_script = "uid://dvnm2k8uup30q"

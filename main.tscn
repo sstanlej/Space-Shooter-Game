@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://ctolyotyjbqwg"]
+[gd_scene load_steps=26 format=3 uid="uid://ctolyotyjbqwg"]
 
 [ext_resource type="Script" uid="uid://dm1jlaqpgu05" path="res://src/core/game_manager.gd" id="1_lswn8"]
 [ext_resource type="PackedScene" uid="uid://qoymek85ecx7" path="res://src/systems/locations/location_manager.tscn" id="2_a6jrf"]
@@ -23,6 +23,7 @@
 [ext_resource type="Resource" uid="uid://l0qvd1kbdorn" path="res://src/systems/shop/upgrades/resources/card_attack_speed.tres" id="22_jq2sk"]
 [ext_resource type="Resource" uid="uid://dyhlp3gsohoqc" path="res://src/systems/shop/upgrades/resources/card_movement_speed.tres" id="23_4k2k6"]
 [ext_resource type="Resource" uid="uid://csxa4l5lisvd3" path="res://src/systems/shop/upgrades/resources/card_attack_damage.tres" id="24_0rl1p"]
+[ext_resource type="Resource" uid="uid://cc7t3pavnip0q" path="res://src/systems/shop/upgrades/resources/card_heal.tres" id="25_0odxb"]
 [ext_resource type="Script" uid="uid://cmwgjmxrs4sw4" path="res://src/systems/shop/card_deck_manager.gd" id="27_a6jrf"]
 
 [node name="Main" type="Node2D" node_paths=PackedStringArray("world", "location_manager", "progression_manager", "spawner", "ui_manager", "shop_ui", "player", "camera_frame", "wave_cooldown_timer")]
@@ -268,7 +269,7 @@ alignment = 1
 
 [node name="CardDeckManager" type="Node" parent="UILayer/ShopUI"]
 script = ExtResource("27_a6jrf")
-available_cards = Array[ExtResource("21_htxhm")]([ExtResource("22_jq2sk"), ExtResource("23_4k2k6"), ExtResource("24_0rl1p")])
+available_cards = Array[ExtResource("21_htxhm")]([ExtResource("22_jq2sk"), ExtResource("23_4k2k6"), ExtResource("24_0rl1p"), ExtResource("25_0odxb")])
 
 [node name="PauseMenuUI" type="Control" parent="UILayer"]
 visible = false

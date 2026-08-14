@@ -195,6 +195,9 @@ func update_player_stats_display() -> void:
 
 	game_manager.ui_manager.update_stats_label(player_damage, player_speed, player_attack_speed)
 
+	if player.health_component:
+		var current_hp = int(player.health_component.get_health())
+		game_manager.ui_manager.update_health_bar(current_hp)
 func clear_cards() -> void:
 	for card in active_cards_ui:
 		if is_instance_valid(card):
