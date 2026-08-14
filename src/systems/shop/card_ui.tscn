@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://k8p44qhqg6o1" path="res://src/systems/shop/upgrades/sprites/card_ui.png" id="1_6whva"]
 [ext_resource type="Script" uid="uid://d1ta1otj2epsx" path="res://src/systems/shop/upgrades/card_ui.gd" id="1_s32lx"]
 [ext_resource type="FontFile" uid="uid://bvlhnv4ultuef" path="res://assets/fonts/Pixeled.ttf" id="2_5aolw"]
-[ext_resource type="Texture2D" uid="uid://r50hjrws6do8" path="res://src/systems/shop/upgrades/sprites/attack_damage_upgrade.png" id="3_gppyy"]
+[ext_resource type="Texture2D" uid="uid://dugump0ukmep5" path="res://src/systems/shop/upgrades/sprites/empty_box.png" id="4_s32lx"]
 
 [node name="CardUI" type="Control" node_paths=PackedStringArray("title_label", "description_label", "icon_rect", "background_rect")]
 custom_minimum_size = Vector2(50, 70)
@@ -51,13 +51,13 @@ theme_override_constants/line_separation = -7
 theme_override_fonts/normal_font = ExtResource("2_5aolw")
 theme_override_font_sizes/normal_font_size = 5
 bbcode_enabled = true
-text = "[center]DAMAGE BOOST"
+text = "[center]UPGRADE CARD"
 fit_content = true
 
 [node name="IconTexture" type="TextureRect" parent="CardBackground/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
-texture = ExtResource("3_gppyy")
+texture = ExtResource("4_s32lx")
 stretch_mode = 3
 
 [node name="DescriptionLabel" type="RichTextLabel" parent="CardBackground/MarginContainer/VBoxContainer"]
@@ -70,5 +70,5 @@ theme_override_constants/shadow_offset_y = 5
 theme_override_fonts/normal_font = ExtResource("2_5aolw")
 theme_override_font_sizes/normal_font_size = 5
 bbcode_enabled = true
-text = "[center]+1 ATK"
+text = "[center]UPGRADE DESCRI-        PTION"
 fit_content = true

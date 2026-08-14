@@ -1,9 +1,9 @@
 [gd_resource type="Resource" script_class="UpgradeCardData" load_steps=6 format=3 uid="uid://cc7t3pavnip0q"]
 
 [ext_resource type="Script" uid="uid://c2skcqfonnj57" path="res://src/systems/shop/upgrades/effects/card_effect.gd" id="1_bfqx0"]
-[ext_resource type="Texture2D" uid="uid://dugump0ukmep5" path="res://src/ui/sprites/selected.png" id="2_2gtun"]
 [ext_resource type="Script" uid="uid://cxl7n2c4vtn6j" path="res://src/systems/shop/upgrades/effects/heal_effect.gd" id="2_e6k3t"]
 [ext_resource type="Script" uid="uid://dvnm2k8uup30q" path="res://src/systems/shop/upgrades/upgrade_card_data.gd" id="2_hmvhj"]
+[ext_resource type="Texture2D" uid="uid://dy1ackg2bokc" path="res://src/systems/shop/upgrades/sprites/healing_upgrade.png" id="3_2gtun"]
 
 [sub_resource type="Resource" id="Resource_xjvr3"]
 script = ExtResource("2_e6k3t")
@@ -15,7 +15,7 @@ script = ExtResource("2_hmvhj")
 card_id = "instant_heal"
 title = "Ship Repair"
 description = "+1 HP"
-icon = ExtResource("2_2gtun")
+icon = ExtResource("3_2gtun")
 rarity = 1
 max_level = 0
 effects = Array[ExtResource("1_bfqx0")]([SubResource("Resource_xjvr3")])
