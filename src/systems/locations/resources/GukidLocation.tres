@@ -1,16 +1,18 @@
-[gd_resource type="Resource" script_class="LocationData" load_steps=6 format=3 uid="uid://bosrctydabgot"]
+[gd_resource type="Resource" script_class="LocationData" load_steps=7 format=3 uid="uid://bosrctydabgot"]
 
 [ext_resource type="Script" uid="uid://4ko4pcyqo2oo" path="res://src/systems/locations/LocationData.gd" id="1_aaygm"]
 [ext_resource type="Texture2D" uid="uid://tnht2x3xbsx3" path="res://src/systems/locations/sprites/gukid/gukid_background.png" id="1_dny7g"]
 [ext_resource type="Texture2D" uid="uid://b7d0ukmo5nmtj" path="res://src/systems/locations/sprites/gukid/gukid_trees.png" id="2_42yse"]
 [ext_resource type="Script" uid="uid://c1jvipah3wjg0" path="res://src/entities/enemies/components/EnemyData.gd" id="2_53d1w"]
 [ext_resource type="Texture2D" uid="uid://ds37bgxw6xbsa" path="res://src/systems/locations/sprites/gukid/gukid_big_stars.png" id="3_42yse"]
+[ext_resource type="Resource" uid="uid://ijggyag574qh" path="res://src/entities/enemies/resources/SpectatorEnemy.tres" id="6_d7cc4"]
 
 [resource]
 script = ExtResource("1_aaygm")
 location_id = 4
 location_name = "Gukid"
 location_rarity = 3
+spawnable_enemies = Array[ExtResource("2_53d1w")]([ExtResource("6_d7cc4")])
 background_texture = ExtResource("1_dny7g")
 middle_texture = ExtResource("3_42yse")
 front_texture = ExtResource("2_42yse")

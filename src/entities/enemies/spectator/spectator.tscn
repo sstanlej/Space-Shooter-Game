@@ -1,3 +1,10 @@
-[gd_scene format=3 uid="uid://g6xrgexiv752"]
+[gd_scene load_steps=3 format=3 uid="uid://g6xrgexiv752"]
 
-[node name="Spectator" type="Area2D"]
+[ext_resource type="Texture2D" uid="uid://br5jbhmsysahu" path="res://src/entities/enemies/spectator/spectator.png" id="1_5gdag"]
+[ext_resource type="Script" uid="uid://cd6ws4kt5qj4v" path="res://src/entities/enemies/spectator/spectator.gd" id="1_jh6tf"]
+
+[node name="Spectator" type="CharacterBody2D"]
+script = ExtResource("1_jh6tf")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_5gdag")

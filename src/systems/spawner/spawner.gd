@@ -18,7 +18,11 @@ signal wave_completed
 @export var max_spawn_delay: float = 1.8
 @export var delay_multiplier_per_wave: float = 0.95
 
+@export_group("Fallback Settings")
+@export var empty_wave_duration: float = 10.0
+
 @onready var spawn_timer: Timer = $SpawnTimer
+var fallback_timer: Timer
 
 var is_spawning: bool = false
 var current_wave_budget: int = 0
@@ -27,9 +31,9 @@ var active_enemies_count: int = 0
 var unspawned_enemies: Array[EnemyData] = []
 
 func _ready() -> void:
-	setup_timer()
+	setup_timers()
 
-func setup_timer() -> void:
+func setup_timers() -> void:
 	if not spawn_timer:
 		spawn_timer = Timer.new()
 		spawn_timer.name = "SpawnTimer"
@@ -37,6 +41,13 @@ func setup_timer() -> void:
 
 	spawn_timer.one_shot = true
 	spawn_timer.timeout.connect(_on_spawn_timer_timeout)
+
+	# Timer awaryjny dla pustych lokacji (10 sekund przelotu)
+	fallback_timer = Timer.new()
+	fallback_timer.name = "FallbackWaveTimer"
+	fallback_timer.one_shot = true
+	fallback_timer.timeout.connect(_on_fallback_timer_timeout)
+	add_child(fallback_timer)
 
 # --- KONTROLA FAL I SPAWNU ---
 
@@ -51,16 +62,21 @@ func start_spawning() -> void:
 
 	print("[Spawner] Start fali ", wave_num, " | Budżet: ", current_wave_budget)
 
-	schedule_next_spawn(0.2)
+	# Jeśli kolejka jest pusta (brak wrogów), fallback_timer już został odpalony w build_wave_queue
+	if unspawned_enemies.size() > 0:
+		schedule_next_spawn(0.2)
 
 func build_wave_queue(budget: int) -> void:
 	unspawned_enemies.clear()
 
 	if not location_manager:
+		start_empty_wave_fallback()
 		return
 
 	var current_location: LocationData = location_manager.get_current_location()
-	if not current_location or current_location.spawnable_enemies.size() == 0:
+	if not current_location or current_location.spawnable_enemies.is_empty():
+		print("[Spawner] Lokacja nie posiada wrogów! Uruchamiam spokojny przelot (", empty_wave_duration, "s)...")
+		start_empty_wave_fallback()
 		return
 
 	var temp_budget = budget
@@ -71,23 +87,42 @@ func build_wave_queue(budget: int) -> void:
 			if enemy_data and enemy_data.spawn_cost <= temp_budget:
 				affordable_enemies.append(enemy_data)
 
-		if affordable_enemies.size() == 0:
-			break # Brak wrogów mieścacych się w resztce budżetu
+		if affordable_enemies.is_empty():
+			break
 
 		var picked_enemy = affordable_enemies.pick_random()
 		unspawned_enemies.append(picked_enemy)
 		temp_budget -= picked_enemy.spawn_cost
 
+	if unspawned_enemies.is_empty():
+		print("[Spawner] Brak wrogów mieszczących się w budżecie! Uruchamiam fallback...")
+		start_empty_wave_fallback()
+		return
+
 	update_ui_enemies_left()
+
+func start_empty_wave_fallback() -> void:
+	update_ui_enemies_left()
+	fallback_timer.start(empty_wave_duration)
+
+func _on_fallback_timer_timeout() -> void:
+	if is_spawning:
+		print("[Spawner] Spokojny przelot zakończony!")
+		stop_spawning()
+		wave_completed.emit()
 
 func stop_spawning() -> void:
 	is_spawning = false
 	if spawn_timer:
 		spawn_timer.stop()
+	if fallback_timer:
+		fallback_timer.stop()
 
 func pause_timers(should_pause: bool) -> void:
 	if spawn_timer:
 		spawn_timer.paused = should_pause
+	if fallback_timer:
+		fallback_timer.paused = should_pause
 
 func schedule_next_spawn(custom_delay: float = -1.0) -> void:
 	if not is_spawning or current_wave_budget <= 0:
@@ -178,6 +213,8 @@ func check_wave_completion() -> void:
 
 func kill_all_enemies() -> void:
 	active_enemies_count = 0
+	if fallback_timer:
+		fallback_timer.stop()
 	if enemies_container:
 		for enemy in enemies_container.get_children():
 			enemy.queue_free()
