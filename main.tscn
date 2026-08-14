@@ -50,6 +50,8 @@ transition_duration = 3.0
 
 [node name="Player" parent="World" instance=ExtResource("3_xuqvo")]
 position = Vector2(-120, 65)
+acceleration = 220.0
+friction = 130.0
 
 [node name="CameraFrame" type="Node2D" parent="World"]
 process_mode = 3
