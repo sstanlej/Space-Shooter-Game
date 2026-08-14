@@ -8,8 +8,11 @@ var needs_reroll: bool = true
 func mark_needs_reroll() -> void:
 	needs_reroll = true
 
+func clear_offer() -> void:
+	current_offer.clear()
+	needs_reroll = true
+
 func get_cards_for_shop(count: int, player: Player) -> Array[UpgradeCardData]:
-	# Jeśli wbiliśmy nowy level lub oferta jest pusta -> losujemy nowy zestaw
 	if needs_reroll or current_offer.is_empty():
 		roll_new_offer(count, player)
 	return current_offer
@@ -32,8 +35,7 @@ func roll_new_offer(count: int, player: Player) -> Array[UpgradeCardData]:
 	return current_offer
 
 func reset_deck() -> void:
-	current_offer.clear()
-	needs_reroll = true
+	clear_offer()
 	for card in available_cards:
 		if card:
 			card.current_level = 0

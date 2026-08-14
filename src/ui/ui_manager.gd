@@ -105,27 +105,58 @@ func update_health_bar(current_hp: int) -> void:
 	if not health_bar:
 		return
 
-	# 1. Główny pasek płynnie ubywa NATYCHMIAST (czas: 0.25s)
+	var old_hp = int(health_bar.value)
+	
+	# Jeśli zdrowie się nie zmieniło (np. wybrano ulepszenie ataku) -> nic nie robimy!
+	if current_hp == old_hp:
+		return
+
 	if health_tween:
 		health_tween.kill()
+	if damage_tween:
+		damage_tween.kill()
 
-	health_tween = create_tween()
-	health_tween.tween_property(health_bar, "value", current_hp, 0.25)\
-		.set_trans(Tween.TRANS_SINE)\
-		.set_ease(Tween.EASE_OUT)
+	if current_hp < old_hp:
+		# ==========================================
+		# OTRZYMANIE OBRAŻEŃ (DAMAGE)
+		# ==========================================
+		if damage_bar:
+			damage_bar.modulate = Color(1.0, 0.25, 0.25, 1.0) # Czerwony kolor śladu
+			damage_bar.value = old_hp
 
-	# 2. Pasek obrażeń (czerwony) czeka 0.2s i zjeżdża powoli za zielonym (czas: 0.4s)
-	if damage_bar:
-		if damage_tween:
-			damage_tween.kill()
+		# Główny pasek natychmiast ubywa
+		health_tween = create_tween()
+		health_tween.tween_property(health_bar, "value", current_hp, 0.2)\
+			.set_trans(Tween.TRANS_SINE)\
+			.set_ease(Tween.EASE_OUT)
 
-		damage_tween = create_tween()
-		damage_tween.tween_interval(0.2)
-		damage_tween.tween_property(damage_bar, "value", current_hp, 0.8)\
+		# Czerwony pasek czeka 0.2s i powoli zjeżdża za zielonym
+		if damage_bar:
+			damage_tween = create_tween()
+			damage_tween.tween_interval(0.2)
+			damage_tween.tween_property(damage_bar, "value", current_hp, 0.6)\
+				.set_trans(Tween.TRANS_CUBIC)\
+				.set_ease(Tween.EASE_OUT)
+
+		shake_health_bar()
+
+	else:
+		if damage_bar:
+			damage_bar.modulate = Color(0.3, 1.0, 0.45, 1.0) # Jasnozielony kolor leczenia
+			damage_tween = create_tween()
+			damage_tween.tween_property(damage_bar, "value", current_hp, 0.15)\
+				.set_trans(Tween.TRANS_SINE)\
+				.set_ease(Tween.EASE_OUT)
+
+		# Główny pasek płynnie dopływa do nowej wartości
+		health_tween = create_tween()
+		health_tween.tween_property(health_bar, "value", current_hp, 0.45)\
 			.set_trans(Tween.TRANS_CUBIC)\
 			.set_ease(Tween.EASE_OUT)
 
-	shake_health_bar()
+		# Po zakończeniu animacji leczenia przywracamy domyślny czerwony odcień
+		if damage_bar:
+			health_tween.tween_callback(func(): damage_bar.modulate = Color(1.0, 0.25, 0.25, 1.0))
 
 func shake_health_bar() -> void:
 	if not health_bar or not damage_bar:

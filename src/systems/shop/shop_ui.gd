@@ -56,10 +56,12 @@ func _unhandled_input(event: InputEvent) -> void:
 		game_manager.close_shop()
 
 func show_shop() -> void:
+	if not player and game_manager and game_manager.player:
+		player = game_manager.player
+
 	show()
 	selected_index = 0
 	
-	# Ustawiamy kontener pod ekranem przed generowaniem
 	var viewport_size = get_viewport_rect().size
 	if cards_container:
 		cards_container.position.y = viewport_size.y + 50.0
@@ -72,7 +74,6 @@ func show_shop() -> void:
 	await animate_open()
 	active = true
 	update_selection(false)
-
 func hide_shop() -> void:
 	active = false
 	# Jeśli karty zostały już usunięte po wyborze, ściemniamy tylko tło
@@ -141,7 +142,7 @@ func confirm_selection() -> void:
 	await animate_card_selection(selected_card_ui)
 	clear_cards()
 
-	# Po zużyciu punktu losujemy ZAWSZE nową pulę dla kolejnego punktu
+	# Jeśli zostały kolejne punkty -> losujemy nową pulę wg AKTUALNEGO stanu zdrowia
 	if progression_manager and progression_manager.get_upgrade_points() > 0:
 		selected_index = 0
 		var viewport_size = get_viewport_rect().size
@@ -158,7 +159,10 @@ func confirm_selection() -> void:
 		active = true
 		update_selection(false)
 	else:
+		if deck_manager:
+			deck_manager.clear_offer()
 		game_manager.close_shop()
+
 
 func shake_card(card: CardUI) -> void:
 	var original_pos_x = card.position.x
