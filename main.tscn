@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://ctolyotyjbqwg"]
+[gd_scene load_steps=25 format=3 uid="uid://ctolyotyjbqwg"]
 
 [ext_resource type="Script" uid="uid://dm1jlaqpgu05" path="res://src/core/game_manager.gd" id="1_lswn8"]
 [ext_resource type="PackedScene" uid="uid://qoymek85ecx7" path="res://src/systems/locations/location_manager.tscn" id="2_a6jrf"]
@@ -18,19 +18,11 @@
 [ext_resource type="Texture2D" uid="uid://8vr2ywyir05q" path="res://src/ui/sprites/health_bar_under.png" id="16_4lmeg"]
 [ext_resource type="Texture2D" uid="uid://dj4w1hidatk1h" path="res://src/ui/sprites/health_bar_progess.png" id="17_0cp0l"]
 [ext_resource type="Script" uid="uid://byxu7j2uos8l8" path="res://src/systems/shop/shop_ui.gd" id="18_d2t1y"]
-[ext_resource type="Texture2D" uid="uid://b3v7jgas4mstk" path="res://src/ui/sprites/shop_panel.png" id="19_gngh3"]
 [ext_resource type="PackedScene" uid="uid://cst1qkgkg8h8x" path="res://src/systems/shop/card_ui.tscn" id="19_xuqvo"]
-[ext_resource type="Texture2D" uid="uid://cyhla4dmpvmef" path="res://src/systems/shop/upgrades/sprites/attack_speed_upgrade.png" id="20_0n3wm"]
 [ext_resource type="Script" uid="uid://dvnm2k8uup30q" path="res://src/systems/shop/upgrades/upgrade_card_data.gd" id="21_htxhm"]
-[ext_resource type="Script" uid="uid://1p2rxeli25vm" path="res://src/systems/shop/upgrades/attack_speed_upgrade.gd" id="21_qnost"]
 [ext_resource type="Resource" uid="uid://l0qvd1kbdorn" path="res://src/systems/shop/upgrades/resources/card_attack_speed.tres" id="22_jq2sk"]
-[ext_resource type="Texture2D" uid="uid://f0t1hbuev73m" path="res://src/systems/shop/upgrades/sprites/movement_speed_upgrade.png" id="22_wnkbs"]
 [ext_resource type="Resource" uid="uid://dyhlp3gsohoqc" path="res://src/systems/shop/upgrades/resources/card_movement_speed.tres" id="23_4k2k6"]
-[ext_resource type="Script" uid="uid://bets534mmwdhy" path="res://src/systems/shop/upgrades/movement_speed_upgrade.gd" id="23_f6a44"]
-[ext_resource type="Texture2D" uid="uid://r50hjrws6do8" path="res://src/systems/shop/upgrades/sprites/attack_damage_upgrade.png" id="24_0cbny"]
 [ext_resource type="Resource" uid="uid://csxa4l5lisvd3" path="res://src/systems/shop/upgrades/resources/card_attack_damage.tres" id="24_0rl1p"]
-[ext_resource type="Script" uid="uid://cqpyjajhkcr0s" path="res://src/systems/shop/upgrades/attack_damage_upgrade.gd" id="25_hrvbo"]
-[ext_resource type="Texture2D" uid="uid://dugump0ukmep5" path="res://src/ui/sprites/selected.png" id="26_uypp3"]
 [ext_resource type="Script" uid="uid://cmwgjmxrs4sw4" path="res://src/systems/shop/card_deck_manager.gd" id="27_a6jrf"]
 
 [node name="Main" type="Node2D" node_paths=PackedStringArray("world", "location_manager", "progression_manager", "spawner", "ui_manager", "shop_ui", "player", "camera_frame", "wave_cooldown_timer")]
@@ -277,62 +269,6 @@ alignment = 1
 [node name="CardDeckManager" type="Node" parent="UILayer/ShopUI"]
 script = ExtResource("27_a6jrf")
 available_cards = Array[ExtResource("21_htxhm")]([ExtResource("22_jq2sk"), ExtResource("23_4k2k6"), ExtResource("24_0rl1p")])
-
-[node name="ShopBackground" type="TextureRect" parent="UILayer/ShopUI"]
-visible = false
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-texture = ExtResource("19_gngh3")
-
-[node name="ShopOptions" type="HBoxContainer" parent="UILayer/ShopUI"]
-visible = false
-layout_mode = 0
-offset_left = 47.0
-offset_top = 80.0
-offset_right = 115.0
-offset_bottom = 96.0
-
-[node name="AttackSpeedUpgrade" type="Sprite2D" parent="UILayer/ShopUI/ShopOptions"]
-position = Vector2(8, 8)
-texture = ExtResource("20_0n3wm")
-script = ExtResource("21_qnost")
-metadata/_custom_type_script = "uid://1p2rxeli25vm"
-
-[node name="MovementSpeedUpgrade" type="Sprite2D" parent="UILayer/ShopUI/ShopOptions"]
-position = Vector2(34, 8)
-texture = ExtResource("22_wnkbs")
-script = ExtResource("23_f6a44")
-metadata/_custom_type_script = "uid://bets534mmwdhy"
-
-[node name="AttackDamageUpgrade" type="Sprite2D" parent="UILayer/ShopUI/ShopOptions"]
-position = Vector2(59, 8)
-texture = ExtResource("24_0cbny")
-script = ExtResource("25_hrvbo")
-metadata/_custom_type_script = "uid://cqpyjajhkcr0s"
-
-[node name="SelectedIcon" type="Sprite2D" parent="UILayer/ShopUI"]
-visible = false
-modulate = Color(0.75686276, 0.9019608, 0.7294118, 1)
-position = Vector2(55, 88)
-texture = ExtResource("26_uypp3")
-
-[node name="DescriptionLabel" type="RichTextLabel" parent="UILayer/ShopUI"]
-visible = false
-layout_mode = 0
-offset_left = 131.0
-offset_top = 42.0
-offset_right = 201.0
-offset_bottom = 101.0
-theme_override_colors/default_color = Color(0.75686276, 0.9019608, 0.7294118, 1)
-theme_override_constants/line_separation = -7
-theme_override_constants/underline_alpha = 50
-theme_override_constants/strikethrough_alpha = 50
-theme_override_fonts/normal_font = ExtResource("12_facbu")
-theme_override_font_sizes/normal_font_size = 5
-bbcode_enabled = true
-text = "[center][Upgrade description here]"
-fit_content = true
 
 [node name="PauseMenuUI" type="Control" parent="UILayer"]
 visible = false
