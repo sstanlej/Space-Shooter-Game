@@ -1,5 +1,6 @@
-[gd_resource type="Resource" script_class="UpgradeCardData" load_steps=2 format=3 uid="uid://l0qvd1kbdorn"]
+[gd_resource type="Resource" script_class="UpgradeCardData" load_steps=3 format=3 uid="uid://l0qvd1kbdorn"]
 
+[ext_resource type="Texture2D" uid="uid://cyhla4dmpvmef" path="res://src/systems/shop/upgrades/sprites/attack_speed_upgrade.png" id="1_dh7bn"]
 [ext_resource type="Script" uid="uid://dvnm2k8uup30q" path="res://src/systems/shop/upgrades/upgrade_card_data.gd" id="1_o7uvf"]
 
 [resource]
@@ -7,6 +8,7 @@ script = ExtResource("1_o7uvf")
 card_id = "card_attack_speed"
 title = "Rapid Fire"
 description = "Increases attack speed by +20%"
+icon = ExtResource("1_dh7bn")
 rarity = 1
 percent_attack_speed = 0.2
 metadata/_custom_type_script = "uid://dvnm2k8uup30q"

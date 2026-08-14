@@ -1,12 +1,14 @@
-[gd_resource type="Resource" script_class="UpgradeCardData" load_steps=2 format=3 uid="uid://dyhlp3gsohoqc"]
+[gd_resource type="Resource" script_class="UpgradeCardData" load_steps=3 format=3 uid="uid://dyhlp3gsohoqc"]
 
 [ext_resource type="Script" uid="uid://dvnm2k8uup30q" path="res://src/systems/shop/upgrades/upgrade_card_data.gd" id="1_74eb4"]
+[ext_resource type="Texture2D" uid="uid://f0t1hbuev73m" path="res://src/systems/shop/upgrades/sprites/movement_speed_upgrade.png" id="1_anrym"]
 
 [resource]
 script = ExtResource("1_74eb4")
 card_id = "stat_movement_speed"
 title = "Engine Boost"
 description = "Increases movement speed by +20"
+icon = ExtResource("1_anrym")
 max_level = 10
 flat_movement_speed = 20.0
 metadata/_custom_type_script = "uid://dvnm2k8uup30q"

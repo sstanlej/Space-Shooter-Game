@@ -162,9 +162,10 @@ func start_game() -> void:
 			var base_dmg = atk_ctrl.equipped_weapon.base_damage if atk_ctrl and atk_ctrl.equipped_weapon else 1.0
 			var base_atk_spd = atk_ctrl.equipped_weapon.base_attack_speed if atk_ctrl and atk_ctrl.equipped_weapon else 3.0
 
+			# W GameManager.gd wewnątrz start_game():
 			var player_damage: int = int(stats.get_final_damage(base_dmg)) if stats else int(base_dmg)
-			var player_attack_speed: int = int(stats.get_final_attack_speed(base_atk_spd)) if stats else int(base_atk_spd)
-			var player_speed: int = int(stats.get_final_movement_speed()) if stats else 200
+			var player_speed: int = int(player.get_movement_speed())
+			var player_attack_speed: float = snappedf(stats.get_final_attack_speed(base_atk_spd), 0.1) if stats else base_atk_spd
 
 			ui_manager.update_stats_label(player_damage, player_speed, player_attack_speed)
 

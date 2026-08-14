@@ -1,5 +1,6 @@
-[gd_resource type="Resource" script_class="UpgradeCardData" load_steps=2 format=3 uid="uid://csxa4l5lisvd3"]
+[gd_resource type="Resource" script_class="UpgradeCardData" load_steps=3 format=3 uid="uid://csxa4l5lisvd3"]
 
+[ext_resource type="Texture2D" uid="uid://r50hjrws6do8" path="res://src/systems/shop/upgrades/sprites/attack_damage_upgrade.png" id="1_5vdxb"]
 [ext_resource type="Script" uid="uid://dvnm2k8uup30q" path="res://src/systems/shop/upgrades/upgrade_card_data.gd" id="1_or6yx"]
 
 [resource]
@@ -7,6 +8,7 @@ script = ExtResource("1_or6yx")
 card_id = "stat_damage"
 title = "Damage Boost"
 description = "Increases attack damage by +1."
+icon = ExtResource("1_5vdxb")
 rarity = 1
 flat_damage = 1.0
 metadata/_custom_type_script = "uid://dvnm2k8uup30q"

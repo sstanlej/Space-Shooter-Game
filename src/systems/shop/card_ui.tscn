@@ -1,0 +1,74 @@
+[gd_scene load_steps=5 format=3 uid="uid://cst1qkgkg8h8x"]
+
+[ext_resource type="Texture2D" uid="uid://k8p44qhqg6o1" path="res://src/systems/shop/upgrades/sprites/card_ui.png" id="1_6whva"]
+[ext_resource type="Script" uid="uid://d1ta1otj2epsx" path="res://src/systems/shop/upgrades/card_ui.gd" id="1_s32lx"]
+[ext_resource type="FontFile" uid="uid://bvlhnv4ultuef" path="res://assets/fonts/Pixeled.ttf" id="2_5aolw"]
+[ext_resource type="Texture2D" uid="uid://r50hjrws6do8" path="res://src/systems/shop/upgrades/sprites/attack_damage_upgrade.png" id="3_gppyy"]
+
+[node name="CardUI" type="Control" node_paths=PackedStringArray("title_label", "description_label", "icon_rect", "background_rect")]
+custom_minimum_size = Vector2(50, 70)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 50.0
+offset_bottom = 70.0
+pivot_offset = Vector2(25, 35)
+size_flags_horizontal = 4
+script = ExtResource("1_s32lx")
+title_label = NodePath("CardBackground/MarginContainer/VBoxContainer/TitleLabel")
+description_label = NodePath("CardBackground/MarginContainer/VBoxContainer/DescriptionLabel")
+icon_rect = NodePath("CardBackground/MarginContainer/VBoxContainer/IconTexture")
+background_rect = NodePath("CardBackground")
+
+[node name="CardBackground" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_6whva")
+
+[node name="MarginContainer" type="MarginContainer" parent="CardBackground"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CardBackground/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="TitleLabel" type="RichTextLabel" parent="CardBackground/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+theme_override_constants/line_separation = -7
+theme_override_fonts/normal_font = ExtResource("2_5aolw")
+theme_override_font_sizes/normal_font_size = 5
+bbcode_enabled = true
+text = "[center]DAMAGE BOOST"
+fit_content = true
+
+[node name="IconTexture" type="TextureRect" parent="CardBackground/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+texture = ExtResource("3_gppyy")
+stretch_mode = 2
+
+[node name="DescriptionLabel" type="RichTextLabel" parent="CardBackground/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 28)
+layout_mode = 2
+theme_override_constants/line_separation = -7
+theme_override_constants/shadow_outline_size = 10
+theme_override_constants/shadow_offset_x = 5
+theme_override_constants/shadow_offset_y = 5
+theme_override_fonts/normal_font = ExtResource("2_5aolw")
+theme_override_font_sizes/normal_font_size = 5
+bbcode_enabled = true
+text = "[center]+1 ATK"
+fit_content = true
