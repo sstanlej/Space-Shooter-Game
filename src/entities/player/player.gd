@@ -8,14 +8,16 @@ signal player_damage_taken
 @export var menu_pos_x: float = -120.0
 
 @export_group("Ice Movement (Poślizg)")
-@export var acceleration: float = 180.0
-@export var friction: float = 85.0
-@export var tilt_speed: float = 6.0
+@export var base_speed_reference: float = 200.0
+@export var acceleration: float = 950.0   # Było 180 (teraz natychmiastowy zryw z mikro-inercją)
+@export var friction: float = 750.0       # Było 85 (teraz szybkie wyhamowanie z krótkim dryfem)
+@export var tilt_speed: float = 8.0
+@export var base_tilt_degrees: float = 8.0
+@export var max_tilt_cap_degrees: float = 20.0
 
-@export_group("Dynamic Tilt Scaling")
-@export var base_speed_reference: float = 200.0  # Prędkość bazowa
-@export var base_tilt_degrees: float = 8      # Kąt przechyłu przy prędkości bazowej
-@export var max_tilt_cap_degrees: float = 16.0   # Górny limit przechyłu po wielu ulepszeniach speeda
+@export_group("Spectator Mode Settings")
+@export var spectator_texture: Texture2D
+@export var ghost_bullet_texture: Texture2D
 
 @export_group("Component References")
 @onready var state_machine: PlayerStateMachine = get_node_or_null("StateMachine")
@@ -27,6 +29,11 @@ signal player_damage_taken
 var direction: Vector2 = Vector2.ZERO
 var is_attacking: bool = false
 var is_in_game: bool = false
+var is_spectator: bool = false
+
+var original_texture: Texture2D
+var original_collision_layer: int = 1
+var original_collision_mask: int = 1
 
 var flash_tween: Tween
 var blink_tween: Tween
@@ -34,6 +41,11 @@ var blink_tween: Tween
 func _ready() -> void:
 	position = Vector2(menu_pos_x, 60.0)
 	is_in_game = false
+
+	if sprite:
+		original_texture = sprite.texture
+	original_collision_layer = collision_layer
+	original_collision_mask = collision_mask
 
 	if state_machine:
 		state_machine.Initialize(self)
@@ -72,12 +84,29 @@ func handle_input() -> void:
 
 func handle_movement(delta: float) -> void:
 	var max_speed = get_movement_speed()
+
+	# 1. Tryb Spectatora: natychmiastowe zatrzymanie i zero opóźnień
+	if is_spectator:
+		velocity = direction * max_speed
+		move_and_slide()
+		if is_in_game:
+			position.x = clampf(position.x, 12.0, 230.0)
+			position.y = clampf(position.y, 10.0, 110.0)
+		return
+
+	# 2. Tryb Normalny: Lekki poślizg, który staje się jeszcze ostrzejszy przy wyższym speedzie
 	var target_velocity = direction * max_speed
+	var speed_ratio = max_speed / max(base_speed_reference, 1.0)
+	
+	# Im szybszy statek, tym agresywniej reagują silniki manewrowe:
+	var agility_multiplier = pow(speed_ratio, 1.25)
+	var dynamic_accel = acceleration * agility_multiplier
+	var dynamic_friction = friction * agility_multiplier
 
 	if direction != Vector2.ZERO:
-		velocity = velocity.move_toward(target_velocity, acceleration * delta)
+		velocity = velocity.move_toward(target_velocity, dynamic_accel * delta)
 	else:
-		velocity = velocity.move_toward(Vector2.ZERO, friction * delta)
+		velocity = velocity.move_toward(Vector2.ZERO, dynamic_friction * delta)
 
 	move_and_slide()
 
@@ -90,8 +119,6 @@ func handle_visuals(delta: float) -> void:
 		return
 
 	var current_max_spd = max(get_movement_speed(), 1.0)
-	
-	# Skalowanie maksymalnego kąta przechyłu proporcjonalnie do aktualnej prędkości
 	var speed_ratio = current_max_spd / max(base_speed_reference, 1.0)
 	var dynamic_max_tilt = clampf(base_tilt_degrees * speed_ratio, 4.0, max_tilt_cap_degrees)
 
@@ -100,7 +127,51 @@ func handle_visuals(delta: float) -> void:
 	
 	sprite.rotation = lerpf(sprite.rotation, target_rotation, tilt_speed * delta)
 
-# --- PRZEJŚCIA KAMERY I MENU ---
+# --- ZAAWANSOWANY SPECTATOR MODE ---
+
+func toggle_spectator_mode() -> bool:
+	set_spectator_mode(!is_spectator)
+	return is_spectator
+
+func set_spectator_mode(enabled: bool) -> void:
+	is_spectator = enabled
+	velocity = Vector2.ZERO
+
+	# 1. Wyłączenie fizyki i kolizji z wrogami
+	collision_layer = 0 if is_spectator else original_collision_layer
+	collision_mask = 0 if is_spectator else original_collision_mask
+	set_hurtboxes_enabled(!is_spectator)
+
+	# 2. Nieśmiertelność
+	if health_component:
+		health_component.is_invincible = is_spectator
+
+	# 3. Podmiana grafiki kadłuba
+	if sprite:
+		if is_spectator:
+			if spectator_texture:
+				sprite.texture = spectator_texture
+				sprite.modulate = Color.WHITE
+			else:
+				sprite.modulate = Color(1.0, 1.0, 1.0, 0.4)
+		else:
+			sprite.texture = original_texture
+			sprite.modulate = Color.WHITE
+
+	# 4. Przekazanie stanu do AttackController (strzelanie ghost-pociskami)
+	if attack_controller:
+		if attack_controller.has_method("set_ghost_mode"):
+			attack_controller.set_ghost_mode(is_spectator, ghost_bullet_texture)
+		else:
+			attack_controller.set("is_ghost_mode", is_spectator)
+
+func set_hurtboxes_enabled(enabled: bool) -> void:
+	for child in get_children():
+		if child is Area2D:
+			child.set_deferred("monitoring", enabled)
+			child.set_deferred("monitorable", enabled)
+
+# --- PRZEJŚCIA I WIZUALIA ---
 
 func move_to_game_view() -> Tween:
 	var tw = create_tween()
@@ -114,10 +185,8 @@ func move_to_menu_view() -> void:
 	velocity = Vector2.ZERO
 	position = Vector2(menu_pos_x, 60.0)
 
-# --- WIZUALIA TRAFIEŃ I NIETYKALNOŚCI ---
-
 func trigger_hit_flash() -> void:
-	if not sprite:
+	if not sprite or is_spectator:
 		return
 
 	if flash_tween and flash_tween.is_running():
@@ -140,7 +209,7 @@ func trigger_hit_flash() -> void:
 		flash_tween.parallel().tween_property(sprite, "modulate:b", 1.0, 0.08)
 
 func _on_invincibility_started(_duration: float = 0.0) -> void:
-	if not sprite:
+	if not sprite or is_spectator:
 		return
 
 	if blink_tween and blink_tween.is_running():
@@ -153,15 +222,17 @@ func _on_invincibility_started(_duration: float = 0.0) -> void:
 func _on_invincibility_ended() -> void:
 	if blink_tween and blink_tween.is_running():
 		blink_tween.kill()
-	if sprite:
+	if sprite and not is_spectator:
 		sprite.modulate.a = 1.0
 
-# --- OBSŁUGA SYGNAŁÓW ---
+# --- SYGNAŁY I GETTERY ---
 
 func set_is_attacking(value: bool) -> void:
 	is_attacking = value
 
 func _on_player_died() -> void:
+	if is_spectator:
+		return
 	if blink_tween and blink_tween.is_running():
 		blink_tween.kill()
 	if flash_tween and flash_tween.is_running():
@@ -170,10 +241,10 @@ func _on_player_died() -> void:
 	queue_free()
 
 func _on_health_component_damage_taken(_amount: int = 0) -> void:
+	if is_spectator:
+		return
 	player_damage_taken.emit()
 	trigger_hit_flash()
-
-# --- GETTERY ---
 
 func get_health_component() -> HealthComponent:
 	return health_component
