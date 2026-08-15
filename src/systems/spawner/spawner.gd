@@ -19,7 +19,7 @@ signal wave_completed
 @export var delay_multiplier_per_wave: float = 0.95
 
 @export_group("Fallback Settings")
-@export var empty_wave_duration: float = 10.0
+@export var empty_wave_duration: float = 5.0
 
 @onready var spawn_timer: Timer = $SpawnTimer
 var fallback_timer: Timer

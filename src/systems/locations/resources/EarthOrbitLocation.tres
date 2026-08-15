@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="LocationData" load_steps=6 format=3 uid="uid://cvcji53fh485s"]
+
+[ext_resource type="Script" uid="uid://4ko4pcyqo2oo" path="res://src/systems/locations/LocationData.gd" id="1_3usuj"]
+[ext_resource type="Texture2D" uid="uid://dafc7vj4da0cf" path="res://src/systems/locations/sprites/space/space_background.png" id="1_pyns4"]
+[ext_resource type="Script" uid="uid://c1jvipah3wjg0" path="res://src/entities/enemies/components/EnemyData.gd" id="2_e08kc"]
+[ext_resource type="Texture2D" uid="uid://1y76pfdr6txr" path="res://src/systems/locations/sprites/earth_orbit/earth_orbit_parallax.png" id="2_pyns4"]
+[ext_resource type="Texture2D" uid="uid://bq5rkdyi32l6h" path="res://src/systems/locations/sprites/space/space_stars.png" id="3_vbqmk"]
+
+[resource]
+script = ExtResource("1_3usuj")
+location_id = 5
+location_name = "Earth Orbit"
+background_texture = ExtResource("1_pyns4")
+middle_texture = ExtResource("3_vbqmk")
+front_texture = ExtResource("2_pyns4")
+metadata/_custom_type_script = "uid://4ko4pcyqo2oo"
