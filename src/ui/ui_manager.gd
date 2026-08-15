@@ -207,13 +207,13 @@ func update_upgrade_points_label(points: int) -> void:
 	if upgrade_points_label:
 		upgrade_points_label.text = "Points: " + str(points)
 
-func update_stats_label(damage: int, movement_speed: int, attack_speed: float) -> void:
+func update_stats_label(damage_lvl: int, movement_speed_lvl: int, attack_speed_lvl: int) -> void:
 	if damage_label: 
-		damage_label.text = str(damage)
+		damage_label.text = str(damage_lvl)
 	if movement_speed_label: 
-		movement_speed_label.text = str(movement_speed)
+		movement_speed_label.text = str(movement_speed_lvl)
 	if attack_speed_label: 
-		attack_speed_label.text = str(snappedf(attack_speed, 0.1))
+		attack_speed_label.text = str(attack_speed_lvl)
 
 # --- TITLE / SUBTITLE ---
 

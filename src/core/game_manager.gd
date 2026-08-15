@@ -47,6 +47,8 @@ func _ready() -> void:
 			player.player_died.connect(_on_player_died)
 		if player.get("attack_controller") and spawner:
 			player.attack_controller.projectiles_container = spawner.projectiles_container
+		if player.stats_component:
+			player.stats_component.stats_changed.connect(_update_ui_stats)
 
 	if spawner:
 		if spawner.has_signal("wave_completed"):
@@ -138,24 +140,15 @@ func start_game() -> void:
 		progression_manager.reset_progress()
 
 	if ui_manager:
-		if ui_manager.has_method("show_hud"): ui_manager.show_hud()
+		if ui_manager.has_method("show_hud"): 
+			ui_manager.show_hud()
 		if player and player.health_component:
 			var player_hc = player.health_component
 			var max_hp = int(player_hc.get_max_health()) if player_hc.has_method("get_max_health") else 100
 			var current_hp = int(player_hc.get_health()) if player_hc.has_method("get_health") else 100
-
 			ui_manager.setup_health_bar(max_hp, current_hp)
 
-			var stats = player.stats_component
-			var atk_ctrl = player.attack_controller
-			var base_dmg = atk_ctrl.equipped_weapon.base_damage if atk_ctrl and atk_ctrl.equipped_weapon else 1.0
-			var base_atk_spd = atk_ctrl.equipped_weapon.base_attack_speed if atk_ctrl and atk_ctrl.equipped_weapon else 3.0
-
-			var player_damage: int = int(stats.get_final_damage(base_dmg)) if stats else int(base_dmg)
-			var player_speed: int = int(player.get_movement_speed())
-			var player_attack_speed: float = snappedf(stats.get_final_attack_speed(base_atk_spd), 0.1) if stats else base_atk_spd
-
-			ui_manager.update_stats_label(player_damage, player_speed, player_attack_speed)
+		_update_ui_stats()
 
 	anim_player.play("intro")
 	await anim_player.animation_finished
@@ -310,3 +303,14 @@ func _on_player_damage_taken() -> void:
 	if ui_manager and player and player.health_component:
 		var current_hp = int(player.health_component.get_health())
 		ui_manager.update_health_bar(current_hp)
+
+func _update_ui_stats() -> void:
+	if not ui_manager or not player or not player.stats_component:
+		return
+	
+	var stats = player.stats_component
+	ui_manager.update_stats_label(
+		stats.damage_level,
+		stats.speed_level,
+		stats.attack_speed_level
+	)

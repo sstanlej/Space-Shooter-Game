@@ -1,33 +1,32 @@
 class_name ProgressionManager extends Node
 
-# --- Sygnały do Aktualizacji UI ---
 signal experience_updated(current_xp: int, max_xp: int)
 signal level_up_occurred(new_level: int, total_upgrade_points: int)
 signal score_updated(new_score: float)
 signal distance_updated(new_distance: float)
 signal upgrade_points_changed(new_points: int)
 
-@export_group("Progression Settings")
-@export var experience_needed: int = 100
-@export var experience_needed_modifier: float = 1.2
+@export_group("Progression Tuning")
+@export var base_experience_needed: int = 100
+@export var experience_needed_modifier: float = 1.25
 
 @export_group("System References")
 @export var ui_manager: UIManager
 
 var experience: int = 0
+var experience_needed: int = 100
 var level: int = 1
 var score: float = 0.0
 var distance: float = 0.0
 var upgrade_points: int = 0
 
 func _process(delta: float) -> void:
-	# Dystans nalicza się tylko podczas gry (Gdy węzeł World działa)
 	distance += delta
 	distance_updated.emit(distance)
-	if ui_manager:
+	if ui_manager and ui_manager.has_method("update_distance_label"):
 		ui_manager.update_distance_label(distance)
 
-# --- ZARZĄDZANIE PROGRESSION / RESTART ---
+# --- RESTART / INICJALIZACJA ---
 
 func reset_progress() -> void:
 	experience = 0
@@ -35,7 +34,7 @@ func reset_progress() -> void:
 	score = 0.0
 	distance = 0.0
 	upgrade_points = 0
-	experience_needed = 100
+	experience_needed = base_experience_needed
 
 	experience_updated.emit(experience, experience_needed)
 	score_updated.emit(score)
@@ -43,35 +42,38 @@ func reset_progress() -> void:
 	upgrade_points_changed.emit(upgrade_points)
 
 	if ui_manager:
-		# KLUCZOWE: Najpierw ustawiamy max_value paska (100), a potem jego obecną wartość (0)!
-		ui_manager.extend_experience_bar(experience_needed)
-		ui_manager.update_experience_bar(experience)
-		ui_manager.update_score_label(score)
-		ui_manager.update_distance_label(distance)
-		ui_manager.update_upgrade_points_label(upgrade_points)
+		if ui_manager.has_method("extend_experience_bar"):
+			ui_manager.extend_experience_bar(experience_needed)
+		if ui_manager.has_method("update_experience_bar"):
+			ui_manager.update_experience_bar(experience, false)
+		if ui_manager.has_method("update_score_label"):
+			ui_manager.update_score_label(score)
+		if ui_manager.has_method("update_distance_label"):
+			ui_manager.update_distance_label(distance)
+		if ui_manager.has_method("update_upgrade_points_label"):
+			ui_manager.update_upgrade_points_label(upgrade_points)
 
-# --- LOGIKA DOŚWIADCZENIA I POZIOMÓW ---
+# --- EXP, WYNIK I LEVEL UP ---
 
 func add_enemy_reward(points: float, xp: float) -> void:
 	score += points
 	score_updated.emit(score)
-	if ui_manager:
+	if ui_manager and ui_manager.has_method("update_score_label"):
 		ui_manager.update_score_label(score)
 
 	add_experience(int(xp))
 
 func add_experience(amount: int) -> void:
 	experience += amount
+	var leveled_up = check_level_up()
 
-	# Najpierw przeliczamy czy nastąpił level up
-	var did_level_up = check_level_up()
-
-	# Jeśli NIE BYŁO level-upa – po prostu płynnie animujemy do nowej wartości
-	if not did_level_up:
-		if ui_manager:
-			ui_manager.update_experience_bar(experience, true)
+	if not leveled_up and ui_manager and ui_manager.has_method("update_experience_bar"):
+		ui_manager.update_experience_bar(experience, true)
 
 	experience_updated.emit(experience, experience_needed)
+
+func add_xp(amount: float) -> void:
+	add_experience(int(amount))
 
 func check_level_up() -> bool:
 	var leveled_up: bool = false
@@ -83,24 +85,34 @@ func check_level_up() -> bool:
 		upgrade_points += 1
 		leveled_up = true
 
-		print("[ProgressionManager] LEVEL UP! Nowy poziom: ", level)
+		print("[ProgressionManager] Level up: %d (Punkty: %d)" % [level, upgrade_points])
 
 		level_up_occurred.emit(level, upgrade_points)
 		upgrade_points_changed.emit(upgrade_points)
 
 		if ui_manager:
-			ui_manager.extend_experience_bar(experience_needed)
-			ui_manager.update_experience_bar(experience, false)
-			ui_manager.update_upgrade_points_label(upgrade_points)
-			ui_manager.show_notification("[color=cyan]LEVEL UP![/color]", "[color=gray]You reached level " + str(level) + "![/color]", 1.0)
+			if ui_manager.has_method("extend_experience_bar"):
+				ui_manager.extend_experience_bar(experience_needed)
+			if ui_manager.has_method("update_experience_bar"):
+				ui_manager.update_experience_bar(experience, false)
+			if ui_manager.has_method("update_upgrade_points_label"):
+				ui_manager.update_upgrade_points_label(upgrade_points)
+			if ui_manager.has_method("show_notification"):
+				ui_manager.show_notification("[color=cyan]LEVEL UP[/color]", "[color=white]Poziom %d reached![/color]" % level, 1.2)
 
 	return leveled_up
+
+func add_upgrade_points(amount: int = 1) -> void:
+	upgrade_points += amount
+	upgrade_points_changed.emit(upgrade_points)
+	if ui_manager and ui_manager.has_method("update_upgrade_points_label"):
+		ui_manager.update_upgrade_points_label(upgrade_points)
 
 func spend_upgrade_point() -> bool:
 	if upgrade_points > 0:
 		upgrade_points -= 1
 		upgrade_points_changed.emit(upgrade_points)
-		if ui_manager:
+		if ui_manager and ui_manager.has_method("update_upgrade_points_label"):
 			ui_manager.update_upgrade_points_label(upgrade_points)
 		return true
 	return false

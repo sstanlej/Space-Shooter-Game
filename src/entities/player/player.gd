@@ -7,13 +7,8 @@ signal player_damage_taken
 @export var game_pos_x: float = 30.0
 @export var menu_pos_x: float = -120.0
 
-@export_group("Ice Movement (Poślizg)")
-@export var base_speed_reference: float = 200.0
-@export var acceleration: float = 950.0   # Było 180 (teraz natychmiastowy zryw z mikro-inercją)
-@export var friction: float = 750.0       # Było 85 (teraz szybkie wyhamowanie z krótkim dryfem)
+@export_group("Visuals")
 @export var tilt_speed: float = 8.0
-@export var base_tilt_degrees: float = 8.0
-@export var max_tilt_cap_degrees: float = 20.0
 
 @export_group("Spectator Mode Settings")
 @export var spectator_texture: Texture2D
@@ -85,7 +80,7 @@ func handle_input() -> void:
 func handle_movement(delta: float) -> void:
 	var max_speed = get_movement_speed()
 
-	# 1. Tryb Spectatora: natychmiastowe zatrzymanie i zero opóźnień
+	# 1. Tryb Spectatora: natychmiastowe precyzyjne przemieszczanie
 	if is_spectator:
 		velocity = direction * max_speed
 		move_and_slide()
@@ -94,19 +89,15 @@ func handle_movement(delta: float) -> void:
 			position.y = clampf(position.y, 10.0, 110.0)
 		return
 
-	# 2. Tryb Normalny: Lekki poślizg, który staje się jeszcze ostrzejszy przy wyższym speedzie
+	# 2. Tryb Normalny: Fizyka zunifikowana w StatsComponent
 	var target_velocity = direction * max_speed
-	var speed_ratio = max_speed / max(base_speed_reference, 1.0)
-	
-	# Im szybszy statek, tym agresywniej reagują silniki manewrowe:
-	var agility_multiplier = pow(speed_ratio, 1.25)
-	var dynamic_accel = acceleration * agility_multiplier
-	var dynamic_friction = friction * agility_multiplier
+	var accel = stats_component.get_dynamic_acceleration() if stats_component else 950.0
+	var friction = stats_component.get_dynamic_friction() if stats_component else 750.0
 
 	if direction != Vector2.ZERO:
-		velocity = velocity.move_toward(target_velocity, dynamic_accel * delta)
+		velocity = velocity.move_toward(target_velocity, accel * delta)
 	else:
-		velocity = velocity.move_toward(Vector2.ZERO, dynamic_friction * delta)
+		velocity = velocity.move_toward(Vector2.ZERO, friction * delta)
 
 	move_and_slide()
 
@@ -119,15 +110,14 @@ func handle_visuals(delta: float) -> void:
 		return
 
 	var current_max_spd = max(get_movement_speed(), 1.0)
-	var speed_ratio = current_max_spd / max(base_speed_reference, 1.0)
-	var dynamic_max_tilt = clampf(base_tilt_degrees * speed_ratio, 4.0, max_tilt_cap_degrees)
+	var dynamic_max_tilt = stats_component.get_dynamic_max_tilt() if stats_component else 8.0
 
 	var current_y_ratio = clampf(velocity.y / current_max_spd, -1.0, 1.0)
 	var target_rotation = deg_to_rad(current_y_ratio * dynamic_max_tilt)
 	
 	sprite.rotation = lerpf(sprite.rotation, target_rotation, tilt_speed * delta)
 
-# --- ZAAWANSOWANY SPECTATOR MODE ---
+# --- TRYB SPECTATORA ---
 
 func toggle_spectator_mode() -> bool:
 	set_spectator_mode(!is_spectator)
@@ -137,16 +127,13 @@ func set_spectator_mode(enabled: bool) -> void:
 	is_spectator = enabled
 	velocity = Vector2.ZERO
 
-	# 1. Wyłączenie fizyki i kolizji z wrogami
 	collision_layer = 0 if is_spectator else original_collision_layer
 	collision_mask = 0 if is_spectator else original_collision_mask
 	set_hurtboxes_enabled(!is_spectator)
 
-	# 2. Nieśmiertelność
 	if health_component:
 		health_component.is_invincible = is_spectator
 
-	# 3. Podmiana grafiki kadłuba
 	if sprite:
 		if is_spectator:
 			if spectator_texture:
@@ -158,7 +145,6 @@ func set_spectator_mode(enabled: bool) -> void:
 			sprite.texture = original_texture
 			sprite.modulate = Color.WHITE
 
-	# 4. Przekazanie stanu do AttackController (strzelanie ghost-pociskami)
 	if attack_controller:
 		if attack_controller.has_method("set_ghost_mode"):
 			attack_controller.set_ghost_mode(is_spectator, ghost_bullet_texture)
@@ -253,7 +239,7 @@ func get_attack_controller() -> AttackController:
 	return attack_controller
 
 func get_movement_speed() -> float:
-	if stats_component and stats_component.has_method("get_final_movement_speed"):
+	if stats_component:
 		return stats_component.get_final_movement_speed()
 	return 200.0
 

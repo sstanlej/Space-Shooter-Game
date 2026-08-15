@@ -73,7 +73,6 @@ func show_shop() -> void:
 
 func hide_shop() -> void:
 	active = false
-	# Jeśli karty zostały już usunięte po wyborze, ściemniamy tylko tło
 	if active_cards_ui.is_empty():
 		await fade_out_overlay()
 	else:
@@ -126,7 +125,8 @@ func confirm_selection() -> void:
 
 	var points = progression_manager.get_upgrade_points() if progression_manager else 0
 	if points <= 0:
-		GlobalAudio.play_error()
+		if typeof(GlobalAudio) != TYPE_NIL and GlobalAudio.has_method("play_error"):
+			GlobalAudio.play_error()
 		active = false
 		await shake_card(selected_card_ui)
 		active = true
@@ -134,7 +134,8 @@ func confirm_selection() -> void:
 
 	active = false
 
-	GlobalAudio.play_upgrade()
+	if typeof(GlobalAudio) != TYPE_NIL and GlobalAudio.has_method("play_upgrade"):
+		GlobalAudio.play_upgrade()
 	
 	if progression_manager.spend_upgrade_point():
 		selected_card_ui.card_data.apply_to_player(player)
@@ -179,12 +180,10 @@ func animate_card_selection(chosen_card: CardUI) -> void:
 
 	for card in active_cards_ui:
 		if card == chosen_card:
-			# Wybrana karta leci w górę z powiększeniem i zanika
 			tween.tween_property(card, "position:y", -160.0, 0.25)
 			tween.tween_property(card, "scale", Vector2(1.25, 1.25), 0.25)
 			tween.tween_property(card, "modulate:a", 0.0, 0.25)
 		else:
-			# Pozostałe karty spadają w dół i zanikają
 			tween.tween_property(card, "position:y", 160.0, 0.2)
 			tween.tween_property(card, "scale", Vector2(0.8, 0.8), 0.2)
 			tween.tween_property(card, "modulate:a", 0.0, 0.2)
@@ -196,19 +195,17 @@ func update_player_stats_display() -> void:
 		return
 
 	var stats = player.stats_component
-	var atk_ctrl = player.get_attack_controller()
-	var base_dmg = atk_ctrl.equipped_weapon.base_damage if atk_ctrl and atk_ctrl.equipped_weapon else 1.0
-	var base_atk_spd = atk_ctrl.equipped_weapon.base_attack_speed if atk_ctrl and atk_ctrl.equipped_weapon else 3.0
-
-	var player_damage: int = int(stats.get_final_damage(base_dmg)) if stats else int(base_dmg)
-	var player_speed: int = int(player.get_movement_speed())
-	var player_attack_speed: float = snappedf(stats.get_final_attack_speed(base_atk_spd), 0.1) if stats else base_atk_spd
-
-	game_manager.ui_manager.update_stats_label(player_damage, player_speed, player_attack_speed)
+	if stats:
+		game_manager.ui_manager.update_stats_label(
+			stats.damage_level,
+			stats.speed_level,
+			stats.attack_speed_level
+		)
 
 	if player.health_component:
 		var current_hp = int(player.health_component.get_health())
 		game_manager.ui_manager.update_health_bar(current_hp)
+
 func clear_cards() -> void:
 	for card in active_cards_ui:
 		if is_instance_valid(card):
