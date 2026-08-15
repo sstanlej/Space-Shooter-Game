@@ -17,6 +17,7 @@ config/features=PackedStringArray("4.5", "Forward Plus")
 [autoload]
 
 GlobalAudio="*res://src/core/game_audio.tscn"
+DebugShortcuts="*res://src/systems/debug/dev_debug_shortcuts.gd"
 
 [debug]
 
