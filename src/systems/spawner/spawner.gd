@@ -60,7 +60,7 @@ func start_spawning() -> void:
 
 	build_wave_queue(current_wave_budget)
 
-	print("[Spawner] Start fali ", wave_num, " | Budżet: ", current_wave_budget)
+	log_wave_composition(wave_num, unspawned_enemies)
 
 	# Jeśli kolejka jest pusta (brak wrogów), fallback_timer już został odpalony w build_wave_queue
 	if unspawned_enemies.size() > 0:
@@ -185,6 +185,38 @@ func spawn_enemy(spawn_position: Vector2, enemy_data: EnemyData) -> Enemy:
 		enemy_instance.enemy_escaped.connect(_on_enemy_escaped)
 
 	return enemy_instance
+
+func log_wave_composition(wave_number: int, enemies_list: Array) -> void:
+	if enemies_list.is_empty():
+		print("[Spawner] Fala %d: Pusta fala (brak wrogów)" % wave_number)
+		return
+
+	var enemy_counts: Dictionary = {}
+
+	for item in enemies_list:
+		var enemy_name: String = "Wróg"
+
+		# Bezpieczne pobranie nazwy w zależności od tego, jak przechowujesz kolejkę fali:
+		if item is EnemyData and not item.enemy_name.is_empty():
+			enemy_name = item.enemy_name
+		elif item is Resource or item is PackedScene:
+			# Fallback: wyciąga nazwę pliku (np. "big_meteor.tres" -> "Big Meteor")
+			enemy_name = item.resource_path.get_file().get_basename().capitalize()
+		elif typeof(item) == TYPE_STRING:
+			enemy_name = item
+
+		enemy_counts[enemy_name] = enemy_counts.get(enemy_name, 0) + 1
+
+	# Formatowanie wpisów (np. "8x Meteor", "3x Big Meteor")
+	var formatted_parts: Array[String] = []
+	for key in enemy_counts.keys():
+		formatted_parts.append("%dx %s" % [enemy_counts[key], key])
+
+	print("[Spawner] Fala %d - %d wrogów - %s" % [
+		wave_number,
+		enemies_list.size(),
+		", ".join(formatted_parts)
+	])
 
 # --- OBSŁUGA ŚMIERCI / UCIECZKI WROGA ---
 
