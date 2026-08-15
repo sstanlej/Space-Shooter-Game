@@ -34,6 +34,8 @@ var is_player_alive: bool = true
 @export var camera_frame: CameraFrame
 @export var wave_cooldown_timer: Timer
 
+@onready var anim_player: AnimationPlayer = $AnimationPlayer
+
 func _ready() -> void:
 	if wave_cooldown_timer:
 		wave_cooldown_timer.timeout.connect(_on_wave_cooldown_timer_timeout)
@@ -155,7 +157,10 @@ func start_game() -> void:
 
 			ui_manager.update_stats_label(player_damage, player_speed, player_attack_speed)
 
-	await play_start_animation()
+	anim_player.play("intro")
+	await anim_player.animation_finished
+	if player:
+		player.is_in_game = true
 	start_wave()
 
 func finish_wave() -> void:
@@ -288,6 +293,7 @@ func reload_scene() -> void:
 
 func set_player_input_enabled(enabled: bool) -> void:
 	if player:
+		player.is_in_game = enabled # <-- Odblokowuje ruch i nakłada granice ekranu
 		player.set_process(enabled)
 		player.set_physics_process(enabled)
 		if player.get("attack_controller"):
