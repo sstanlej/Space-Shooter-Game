@@ -97,7 +97,6 @@ bullet_scene = ExtResource("2_exglh")
 bullet_speed = 150.0
 burst_count = 1
 burst_delay = 0.3
-bullet_direction = Vector2(0, 1)
 
 [connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
 [connection signal="died" from="HealthComponent" to="." method="_on_health_component_died"]

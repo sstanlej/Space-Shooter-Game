@@ -4,14 +4,18 @@ signal player_died
 signal player_damage_taken
 
 @export_group("Spawn & Intro Settings")
-@export var game_pos_x: float = 30.0      # Pozycja bojowa w grze
-@export var menu_pos_x: float = -120.0    # ŚRODEK EKRANU MENU (za grafiką Ziemi)
+@export var game_pos_x: float = 30.0
+@export var menu_pos_x: float = -120.0
 
 @export_group("Ice Movement (Poślizg)")
 @export var acceleration: float = 180.0
 @export var friction: float = 85.0
-@export var max_tilt_degrees: float = 8.0
 @export var tilt_speed: float = 6.0
+
+@export_group("Dynamic Tilt Scaling")
+@export var base_speed_reference: float = 200.0  # Prędkość bazowa
+@export var base_tilt_degrees: float = 8      # Kąt przechyłu przy prędkości bazowej
+@export var max_tilt_cap_degrees: float = 16.0   # Górny limit przechyłu po wielu ulepszeniach speeda
 
 @export_group("Component References")
 @onready var state_machine: PlayerStateMachine = get_node_or_null("StateMachine")
@@ -22,20 +26,18 @@ signal player_damage_taken
 
 var direction: Vector2 = Vector2.ZERO
 var is_attacking: bool = false
-var is_in_game: bool = false  # Blokuje sterowanie i ogranicza granice tylko podczas gry
+var is_in_game: bool = false
 
 var flash_tween: Tween
 var blink_tween: Tween
 
 func _ready() -> void:
-	# 1. Ustawienie pozycji startowej w menu (środek widoku kamery menu)
 	position = Vector2(menu_pos_x, 60.0)
 	is_in_game = false
 
 	if state_machine:
 		state_machine.Initialize(self)
 
-	# Podłączenie sygnałów z HealthComponent
 	if health_component:
 		if not health_component.died.is_connected(_on_player_died):
 			health_component.died.connect(_on_player_died)
@@ -46,7 +48,6 @@ func _ready() -> void:
 		if health_component.has_signal("invincibility_ended") and not health_component.invincibility_ended.is_connected(_on_invincibility_ended):
 			health_component.invincibility_ended.connect(_on_invincibility_ended)
 
-	# Aktywacja cząsteczek
 	for child in get_children():
 		if child is GPUParticles2D or child is CPUParticles2D:
 			child.emitting = true
@@ -80,7 +81,6 @@ func handle_movement(delta: float) -> void:
 
 	move_and_slide()
 
-	# Nieprzekraczalna ściana – działa ZAWSZE podczas właściwej rozgrywki
 	if is_in_game:
 		position.x = clampf(position.x, 12.0, 230.0)
 		position.y = clampf(position.y, 10.0, 110.0)
@@ -89,19 +89,23 @@ func handle_visuals(delta: float) -> void:
 	if not sprite:
 		return
 
-	var max_spd = max(get_movement_speed(), 1.0)
-	var current_y_ratio = clampf(velocity.y / max_spd, -1.0, 1.0)
-	var target_rotation = deg_to_rad(current_y_ratio * max_tilt_degrees)
+	var current_max_spd = max(get_movement_speed(), 1.0)
+	
+	# Skalowanie maksymalnego kąta przechyłu proporcjonalnie do aktualnej prędkości
+	var speed_ratio = current_max_spd / max(base_speed_reference, 1.0)
+	var dynamic_max_tilt = clampf(base_tilt_degrees * speed_ratio, 4.0, max_tilt_cap_degrees)
+
+	var current_y_ratio = clampf(velocity.y / current_max_spd, -1.0, 1.0)
+	var target_rotation = deg_to_rad(current_y_ratio * dynamic_max_tilt)
 	
 	sprite.rotation = lerpf(sprite.rotation, target_rotation, tilt_speed * delta)
 
-# --- PRZEJŚCIA KAMERY I GRY ---
+# --- PRZEJŚCIA KAMERY I MENU ---
 
 func move_to_game_view() -> Tween:
 	var tw = create_tween()
 	tw.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	tw.tween_property(self, "position:x", game_pos_x, 1.2)
-	# Po zakończeniu animacji wlotu aktywujemy granice gry i sterowanie:
 	tw.tween_callback(func(): is_in_game = true)
 	return tw
 
@@ -110,7 +114,7 @@ func move_to_menu_view() -> void:
 	velocity = Vector2.ZERO
 	position = Vector2(menu_pos_x, 60.0)
 
-# --- EFEKTY WIZUALNE TRAFIEŃ I NIETYKALNOŚCI ---
+# --- WIZUALIA TRAFIEŃ I NIETYKALNOŚCI ---
 
 func trigger_hit_flash() -> void:
 	if not sprite:
@@ -152,7 +156,7 @@ func _on_invincibility_ended() -> void:
 	if sprite:
 		sprite.modulate.a = 1.0
 
-# --- SYGNAŁY I METODY POMOCNICZE ---
+# --- OBSŁUGA SYGNAŁÓW ---
 
 func set_is_attacking(value: bool) -> void:
 	is_attacking = value
@@ -168,6 +172,8 @@ func _on_player_died() -> void:
 func _on_health_component_damage_taken(_amount: int = 0) -> void:
 	player_damage_taken.emit()
 	trigger_hit_flash()
+
+# --- GETTERY ---
 
 func get_health_component() -> HealthComponent:
 	return health_component

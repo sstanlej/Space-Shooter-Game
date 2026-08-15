@@ -7,7 +7,13 @@ class_name ShootingComponent extends Node
 @export var fire_rate: float = 3.0
 @export var burst_count: int = 2
 @export var burst_delay: float = 0.15
-@export var bullet_direction: Vector2 = Vector2.UP
+
+@export_group("Directions")
+## Lista kierunków wystrzału salwy (np. góra + dół)
+@export var shot_directions: Array[Vector2] = [
+	Vector2.UP,
+	Vector2.DOWN
+]
 
 var shoot_timer: Timer
 
@@ -16,6 +22,7 @@ func _ready() -> void:
 
 func setup_shoot_timer() -> void:
 	shoot_timer = Timer.new()
+	shoot_timer.name = "ShootTimer"
 	shoot_timer.wait_time = fire_rate
 	shoot_timer.autostart = true
 	shoot_timer.timeout.connect(_on_shoot_timer_timeout)
@@ -28,18 +35,39 @@ func _on_shoot_timer_timeout() -> void:
 
 func start_burst() -> void:
 	for i in range(burst_count):
-		shoot_single_bullet()
-		await get_tree().create_timer(burst_delay).timeout
+		if not is_instance_valid(owner):
+			return
+		shoot_salvo()
+		if i < burst_count - 1:
+			await get_tree().create_timer(burst_delay).timeout
 
-func shoot_single_bullet() -> void:
-	if not is_instance_valid(owner) or not bullet_scene:
+func shoot_salvo() -> void:
+	if not is_instance_valid(owner) or not bullet_scene or shot_directions.is_empty():
 		return
 
-	GlobalAudio.play_laser()
-	var bullet_instance = bullet_scene.instantiate() as Projectile
+	if typeof(GlobalAudio) != TYPE_NIL and GlobalAudio.has_method("play_laser"):
+		GlobalAudio.play_laser()
 
-	# Dodajemy pocisk do sceny głównej (Playground)
-	owner.get_parent().add_child(bullet_instance)
-	bullet_instance.global_position = owner.global_position
+	var container = get_target_container()
 
-	bullet_instance.setup(bullet_damage, bullet_speed, bullet_direction)
+	for dir in shot_directions:
+		var normalized_dir = dir.normalized()
+		if normalized_dir == Vector2.ZERO:
+			continue
+
+		var bullet = bullet_scene.instantiate() as Projectile
+		if bullet:
+			container.add_child(bullet)
+			bullet.global_position = owner.global_position
+			bullet.setup(bullet_damage, bullet_speed, normalized_dir)
+			
+			# Wymuszenie obrotu sprite'a w stronę wektora lotu
+			bullet.rotation = normalized_dir.angle()
+
+func get_target_container() -> Node:
+	var group_container = get_tree().get_first_node_in_group("projectiles_container") as Node2D
+	if group_container and is_instance_valid(group_container):
+		return group_container
+	if owner and is_instance_valid(owner) and owner.get_parent():
+		return owner.get_parent()
+	return get_tree().current_scene

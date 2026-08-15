@@ -16,6 +16,7 @@ locations = Array[Object]([ExtResource("2_xhstt"), ExtResource("3_s8p85"), ExtRe
 
 [node name="BackParallax" type="Parallax2D" parent="CurrentLocation"]
 repeat_size = Vector2(480, 135)
+autoscroll = Vector2(-5, 0)
 repeat_times = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="CurrentLocation/BackParallax"]
@@ -45,6 +46,7 @@ centered = false
 
 [node name="BackParallax" type="Parallax2D" parent="NextLocation"]
 repeat_size = Vector2(480, 135)
+autoscroll = Vector2(-5, 0)
 repeat_times = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="NextLocation/BackParallax"]
