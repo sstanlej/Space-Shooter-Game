@@ -13,19 +13,28 @@ var is_escaping: bool = false
 var is_intangible: bool = false
 
 @onready var health_component: HealthComponent = get_node_or_null("HealthComponent")
-@onready var sprite: Sprite2D = get_node_or_null("Sprite2D")
 
+var visual_nodes: Array[CanvasItem] = []
 var flash_tween: Tween
 
 func _ready() -> void:
-	# Unikalny materiał dla każdej instancji wroga (brak współdzielenia błysku)
-	if sprite and sprite.material:
-		sprite.material = sprite.material.duplicate()
+	find_visual_nodes(self)
+	for visual in visual_nodes:
+		if visual.material:
+			visual.material = visual.material.duplicate()
 
-	# Podpięcie sygnału obrażeń
 	if health_component:
 		if not health_component.damage_taken.is_connected(_on_damage_taken):
 			health_component.damage_taken.connect(_on_damage_taken)
+
+func find_visual_nodes(parent: Node) -> void:
+	for child in parent.get_children():
+		# Zbieramy zarówno zwykłe Sprite2D, jak i animowane AnimatedSprite2D
+		if child is Sprite2D or child is AnimatedSprite2D:
+			visual_nodes.append(child)
+		# Jeśli sprite jest schowany głębiej (np. w węźle Visuals / Pivot), szukamy rekurencyjnie:
+		if child.get_child_count() > 0:
+			find_visual_nodes(child)
 
 func setup(enemy_data: EnemyData) -> void:
 	if not enemy_data:
@@ -81,30 +90,33 @@ func do_movement(_delta: float) -> void:
 func _on_damage_taken(_amount: int = 0) -> void:
 	if not is_intangible:
 		trigger_hit_flash()
+		GlobalAudio.play_enemy_hit()
 
 func trigger_hit_flash() -> void:
-	if not sprite:
+	if visual_nodes.is_empty():
 		return
 
 	if flash_tween and flash_tween.is_running():
 		flash_tween.kill()
 
-	# 1. Wariant z Shaderem
-	if sprite.material and sprite.material is ShaderMaterial:
-		sprite.material.set_shader_parameter("active", true)
-		flash_tween = create_tween()
-		flash_tween.tween_interval(0.07)
-		flash_tween.tween_callback(func():
-			if sprite and sprite.material:
-				sprite.material.set_shader_parameter("active", false)
-		)
-	# 2. Fallback modulacji koloru (działa od razu bez przypisanego shadera)
-	else:
-		var original_modulate = Color.WHITE
-		sprite.modulate = Color(4.0, 4.0, 4.0, 1.0)
-		flash_tween = create_tween()
-		flash_tween.tween_property(sprite, "modulate", original_modulate, 0.07)
+	# Błysk dla WSZYSTKICH spritów wroga naraz
+	for visual in visual_nodes:
+		if visual.material and visual.material is ShaderMaterial:
+			visual.material.set_shader_parameter("active", true)
+		else:
+			visual.modulate = Color(4.0, 4.0, 4.0, 1.0)
 
+	flash_tween = create_tween()
+	flash_tween.tween_interval(0.07)
+	flash_tween.tween_callback(func():
+		for visual in visual_nodes:
+			if not is_instance_valid(visual):
+				continue
+			if visual.material and visual.material is ShaderMaterial:
+				visual.material.set_shader_parameter("active", false)
+			else:
+				visual.modulate = Color.WHITE
+	)
 # --- ŚMIERĆ, UCIECZKA I KOLIZJE ---
 
 func start_escape_sequence() -> void:

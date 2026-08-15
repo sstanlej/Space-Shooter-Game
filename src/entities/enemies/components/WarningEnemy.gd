@@ -6,6 +6,7 @@ class_name WarningEnemy extends Enemy
 var is_charging: bool = false
 
 func _ready() -> void:
+	super._ready()
 	is_charging = false
 
 func setup(enemy_data: EnemyData) -> void:
