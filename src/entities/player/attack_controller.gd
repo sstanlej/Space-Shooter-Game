@@ -5,7 +5,6 @@ class_name AttackController extends Node
 @export var projectiles_container: Node2D
 
 @export_group("Ghost Bullet Support")
-## Dedykowana scena pocisku widmowego (dla gracza w trybie Spectator oraz wrogów Spectator)
 @export var ghost_bullet_scene: PackedScene
 
 @onready var cooldown_timer: Timer = get_node_or_null("CooldownTimer")
@@ -26,6 +25,12 @@ func _ready() -> void:
 	elif not cooldown_timer.timeout.is_connected(_on_cooldown_timer_timeout):
 		cooldown_timer.timeout.connect(_on_cooldown_timer_timeout)
 
+	await get_tree().process_frame
+	if player and player.get_deck_component():
+		var deck = player.get_deck_component()
+		if deck.equipped_weapon:
+			equip_weapon(deck.equipped_weapon)
+
 func _process(_delta: float) -> void:
 	if player and player.is_attacking and is_ready and equipped_weapon:
 		shoot()
@@ -42,16 +47,16 @@ func shoot() -> void:
 	if not equipped_weapon or not equipped_weapon.bullet_scene:
 		return
 
-	var stats = player.stats_component if player else null
+	var deck = player.get_deck_component() if player else null
 	var base_dmg = equipped_weapon.base_damage
-	var final_dmg = stats.get_final_damage(base_dmg) if stats else base_dmg
+	var final_dmg = deck.get_final_damage(base_dmg) if deck else base_dmg
 
 	var base_atk_spd = equipped_weapon.base_attack_speed
-	var final_atk_spd = stats.get_final_attack_speed(base_atk_spd) if stats else base_atk_spd
+	var final_atk_spd = deck.get_final_attack_speed(base_atk_spd) if deck else base_atk_spd
 
 	var total_bullets = equipped_weapon.projectiles_per_shot
-	if stats and stats.has_method("get_final_projectiles_count"):
-		total_bullets = stats.get_final_projectiles_count(total_bullets)
+	if deck:
+		total_bullets = deck.get_final_projectiles_count(total_bullets)
 
 	spawn_bullets(final_dmg, equipped_weapon.base_bullet_speed, total_bullets, equipped_weapon.spread_angle_degrees)
 
@@ -67,13 +72,11 @@ func spawn_bullets(dmg: float, speed: float, count: int, spread_deg: float) -> v
 	var spawn_pos = player.global_position if player else Vector2.ZERO
 	var tilt_rad = player.get_tilt_angle() if player and player.has_method("get_tilt_angle") else 0.0
 
-	# 1. Pojedynczy pocisk
 	if count <= 1:
 		var dir = Vector2.RIGHT.rotated(tilt_rad)
 		spawn_single_bullet(container, spawn_pos, dir, dmg, speed)
 		return
 
-	# 2. Salwa pocisków (Spread)
 	var start_angle = -spread_deg / 2.0
 	var step = spread_deg / float(count - 1) if count > 1 else 0.0
 
@@ -83,7 +86,6 @@ func spawn_bullets(dmg: float, speed: float, count: int, spread_deg: float) -> v
 		spawn_single_bullet(container, spawn_pos, dir, dmg, speed)
 
 func spawn_single_bullet(container: Node, pos: Vector2, dir: Vector2, dmg: float, speed: float) -> void:
-	# Wybór sceny pocisku: jeśli tryb Ghost i mamy osobną scenę, bierzemy ją
 	var target_scene = equipped_weapon.bullet_scene
 	if is_ghost_mode and ghost_bullet_scene:
 		target_scene = ghost_bullet_scene
@@ -100,7 +102,6 @@ func spawn_single_bullet(container: Node, pos: Vector2, dir: Vector2, dmg: float
 	bullet.setup(dmg, speed, dir)
 	bullet.rotation = dir.angle()
 
-	# Konfiguracja właściwości widma (gdy używamy zwykłego pocisku w trybie ghost)
 	if is_ghost_mode:
 		configure_as_ghost_bullet(bullet)
 

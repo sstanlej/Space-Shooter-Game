@@ -18,7 +18,7 @@ signal player_damage_taken
 @onready var state_machine: PlayerStateMachine = get_node_or_null("StateMachine")
 @onready var attack_controller: AttackController = get_node_or_null("AttackController")
 @onready var health_component: HealthComponent = get_node_or_null("HealthComponent")
-@onready var stats_component: PlayerStatsComponent = get_node_or_null("PlayerStatsComponent")
+@onready var deck_component: PlayerDeckComponent = get_node_or_null("PlayerDeckComponent")
 @onready var sprite: Sprite2D = get_node_or_null("Sprite2D")
 
 var direction: Vector2 = Vector2.ZERO
@@ -89,10 +89,10 @@ func handle_movement(delta: float) -> void:
 			position.y = clampf(position.y, 10.0, 110.0)
 		return
 
-	# 2. Tryb Normalny: Fizyka zunifikowana w StatsComponent
+	# 2. Tryb Normalny: Fizyka zunifikowana w PlayerDeckComponent
 	var target_velocity = direction * max_speed
-	var accel = stats_component.get_dynamic_acceleration() if stats_component else 950.0
-	var friction = stats_component.get_dynamic_friction() if stats_component else 750.0
+	var accel = deck_component.get_dynamic_acceleration() if deck_component else 950.0
+	var friction = deck_component.get_dynamic_friction() if deck_component else 750.0
 
 	if direction != Vector2.ZERO:
 		velocity = velocity.move_toward(target_velocity, accel * delta)
@@ -110,11 +110,10 @@ func handle_visuals(delta: float) -> void:
 		return
 
 	var current_max_spd = max(get_movement_speed(), 1.0)
-	var dynamic_max_tilt = stats_component.get_dynamic_max_tilt() if stats_component else 8.0
+	var dynamic_max_tilt = deck_component.get_dynamic_max_tilt() if deck_component else 8.0
 
 	var current_y_ratio = clampf(velocity.y / current_max_spd, -1.0, 1.0)
 	var target_rotation = deg_to_rad(current_y_ratio * dynamic_max_tilt)
-	
 	sprite.rotation = lerpf(sprite.rotation, target_rotation, tilt_speed * delta)
 
 # --- TRYB SPECTATORA ---
@@ -146,10 +145,7 @@ func set_spectator_mode(enabled: bool) -> void:
 			sprite.modulate = Color.WHITE
 
 	if attack_controller:
-		if attack_controller.has_method("set_ghost_mode"):
-			attack_controller.set_ghost_mode(is_spectator, ghost_bullet_texture)
-		else:
-			attack_controller.set("is_ghost_mode", is_spectator)
+		attack_controller.set_ghost_mode(is_spectator, ghost_bullet_texture)
 
 func set_hurtboxes_enabled(enabled: bool) -> void:
 	for child in get_children():
@@ -238,9 +234,12 @@ func get_health_component() -> HealthComponent:
 func get_attack_controller() -> AttackController:
 	return attack_controller
 
+func get_deck_component() -> PlayerDeckComponent:
+	return deck_component
+
 func get_movement_speed() -> float:
-	if stats_component:
-		return stats_component.get_final_movement_speed()
+	if deck_component:
+		return deck_component.get_final_movement_speed()
 	return 200.0
 
 func get_tilt_angle() -> float:

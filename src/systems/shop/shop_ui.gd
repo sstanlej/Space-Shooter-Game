@@ -12,6 +12,7 @@ signal shop_closed
 @export var background_overlay: ColorRect
 @export var cards_container: HBoxContainer
 @export var card_ui_scene: PackedScene
+@export var warning_label: RichTextLabel # Etykieta pod kartami (np. ostrzeżenie o broni)
 
 @export_group("Animation Settings")
 @export var transition_duration: float = 0.35
@@ -27,11 +28,9 @@ var tween: Tween
 func _ready() -> void:
 	if background_overlay:
 		background_overlay.modulate.a = 0.0
+	if warning_label:
+		warning_label.text = ""
 	hide()
-
-func _on_player_level_up(_new_level: int, _total_points: int) -> void:
-	if deck_manager:
-		deck_manager.mark_needs_reroll()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not active:
@@ -39,10 +38,14 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	if event.is_action_pressed("right") and selected_index < active_cards_ui.size() - 1:
 		selected_index += 1
+		if typeof(GlobalAudio) != TYPE_NIL and GlobalAudio.has_method("play_select"):
+			GlobalAudio.play_select()
 		update_selection()
 
 	elif event.is_action_pressed("left") and selected_index > 0:
 		selected_index -= 1
+		if typeof(GlobalAudio) != TYPE_NIL and GlobalAudio.has_method("play_select"):
+			GlobalAudio.play_select()
 		update_selection()
 
 	elif event.is_action_pressed("attack"):
@@ -56,13 +59,17 @@ func show_shop() -> void:
 		player = game_manager.player
 
 	show()
-	selected_index = 0
 	
 	var viewport_size = get_viewport_rect().size
 	if cards_container:
 		cards_container.position.y = viewport_size.y + 50.0
 	
 	generate_cards()
+
+	if not active_cards_ui.is_empty():
+		selected_index = (active_cards_ui.size() - 1) / 2
+	else:
+		selected_index = 0
 	
 	await get_tree().process_frame
 	calculate_positions()
@@ -73,26 +80,29 @@ func show_shop() -> void:
 
 func hide_shop() -> void:
 	active = false
+	if warning_label:
+		warning_label.text = ""
+
 	if active_cards_ui.is_empty():
 		await fade_out_overlay()
 	else:
 		await animate_close()
 		clear_cards()
-		
+
 	hide()
 	shop_closed.emit()
 
 func calculate_positions() -> void:
 	if not cards_container:
 		return
-	
+
 	cards_container.reset_size()
 	var container_size = cards_container.get_combined_minimum_size()
 	var viewport_size = get_viewport_rect().size
-	
+
 	target_center_x = (viewport_size.x - container_size.x) / 2.0
 	target_center_y = (viewport_size.y - container_size.y) / 2.0
-	
+
 	cards_container.position.x = target_center_x
 	cards_container.position.y = viewport_size.y + 50.0
 
@@ -106,14 +116,43 @@ func generate_cards() -> void:
 		var card_instance = card_ui_scene.instantiate() as CardUI
 		if not card_instance:
 			continue
-			
+
 		cards_container.add_child(card_instance)
-		card_instance.setup(card_data)
+		
+		# Generujemy kontekstowy opis dla sklepu
+		var shop_desc = get_shop_description(card_data)
+		card_instance.setup_for_shop(card_data, shop_desc)
 		active_cards_ui.append(card_instance)
+
+func get_shop_description(card: UpgradeCardData) -> String:
+	return card.description
 
 func update_selection(immediate: bool = false) -> void:
 	for i in range(active_cards_ui.size()):
 		active_cards_ui[i].set_selected(i == selected_index, immediate)
+
+	update_warning_label()
+
+func update_warning_label() -> void:
+	if not warning_label:
+		return
+
+	if active_cards_ui.is_empty() or selected_index >= active_cards_ui.size():
+		warning_label.text = ""
+		return
+
+	var selected_card = active_cards_ui[selected_index].card_data
+	var deck = player.get_deck_component() if player else null
+
+	# Ostrzeżenie przy podmianie broni
+	if selected_card and selected_card.card_type == UpgradeCardData.CardType.WEAPON:
+		if deck and deck.equipped_weapon:
+			var current_name = deck.equipped_weapon.weapon_name if "weapon_name" in deck.equipped_weapon else "Podstawowa Broń"
+			warning_label.text = "[center][color=orange]⚠️ UWAGA: Zastąpi aktualną broń: %s[/color][/center]" % current_name
+		else:
+			warning_label.text = ""
+	else:
+		warning_label.text = ""
 
 func confirm_selection() -> void:
 	if not active or active_cards_ui.size() == 0 or selected_index >= active_cards_ui.size():
@@ -136,10 +175,9 @@ func confirm_selection() -> void:
 
 	if typeof(GlobalAudio) != TYPE_NIL and GlobalAudio.has_method("play_upgrade"):
 		GlobalAudio.play_upgrade()
-	
+
 	if progression_manager.spend_upgrade_point():
 		selected_card_ui.card_data.apply_to_player(player)
-		update_player_stats_display()
 
 	await animate_card_selection(selected_card_ui)
 	clear_cards()
@@ -148,11 +186,16 @@ func confirm_selection() -> void:
 		deck_manager.roll_new_offer(3, player)
 
 	if progression_manager and progression_manager.get_upgrade_points() > 0:
-		selected_index = 0
 		var viewport_size = get_viewport_rect().size
 		cards_container.position.y = viewport_size.y + 50.0
 
 		generate_cards()
+
+		if not active_cards_ui.is_empty():
+			selected_index = (active_cards_ui.size() - 1) / 2
+		else:
+			selected_index = 0
+
 		await get_tree().process_frame
 		calculate_positions()
 
@@ -189,22 +232,6 @@ func animate_card_selection(chosen_card: CardUI) -> void:
 			tween.tween_property(card, "modulate:a", 0.0, 0.2)
 
 	await tween.finished
-
-func update_player_stats_display() -> void:
-	if not player or not game_manager or not game_manager.ui_manager:
-		return
-
-	var stats = player.stats_component
-	if stats:
-		game_manager.ui_manager.update_stats_label(
-			stats.damage_level,
-			stats.speed_level,
-			stats.attack_speed_level
-		)
-
-	if player.health_component:
-		var current_hp = int(player.health_component.get_health())
-		game_manager.ui_manager.update_health_bar(current_hp)
 
 func clear_cards() -> void:
 	for card in active_cards_ui:

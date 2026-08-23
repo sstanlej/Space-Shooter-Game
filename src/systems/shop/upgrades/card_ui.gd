@@ -33,6 +33,16 @@ func setup(data: UpgradeCardData) -> void:
 	update_pivot()
 	set_selected(false, true)
 
+func setup_for_shop(data: UpgradeCardData, custom_description: String) -> void:
+	setup(data)
+	if description_label:
+		description_label.text = "[center]" + custom_description + "[/center]"
+
+func setup_as_overview_card(data: UpgradeCardData, dynamic_text: String) -> void:
+	setup(data)
+	if description_label:
+		description_label.text = "[center]" + dynamic_text + "[/center]"
+
 func update_pivot() -> void:
 	if size != Vector2.ZERO:
 		pivot_offset = size / 2.0
@@ -41,8 +51,8 @@ func update_pivot() -> void:
 
 func set_selected(selected: bool, immediate: bool = false) -> void:
 	is_selected = selected
-	var target_scale = Vector2(1.12, 1.12) if is_selected else Vector2(1.0, 1.0)
-	var target_modulate = Color(1.0, 1.0, 1.0, 1.0) if is_selected else Color(0.65, 0.65, 0.65, 0.85)
+	var target_scale = Vector2(1.1, 1.1) if is_selected else Vector2(1.0, 1.0)
+	var target_modulate = Color(1.0, 1.0, 1.0, 1.0) if is_selected else Color(0.65, 0.65, 0.65, 1.0)
 
 	if pivot_offset == Vector2.ZERO:
 		update_pivot()
@@ -59,3 +69,12 @@ func set_selected(selected: bool, immediate: bool = false) -> void:
 	tween.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	tween.tween_property(self, "scale", target_scale, 0.15)
 	tween.tween_property(self, "modulate", target_modulate, 0.15)
+func animate_fan_transform(target_pos: Vector2, target_rot_deg: float, target_scale: Vector2, duration: float = 0.22) -> void:
+	if tween and tween.is_running():
+		tween.kill()
+
+	tween = create_tween().set_parallel(true)
+	tween.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	tween.tween_property(self, "position", target_pos, duration)
+	tween.tween_property(self, "rotation_degrees", target_rot_deg, duration)
+	tween.tween_property(self, "scale", target_scale, duration)

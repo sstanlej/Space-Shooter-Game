@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://ctolyotyjbqwg"]
+[gd_scene load_steps=32 format=3 uid="uid://ctolyotyjbqwg"]
 
 [ext_resource type="Script" uid="uid://dm1jlaqpgu05" path="res://src/core/game_manager.gd" id="1_lswn8"]
 [ext_resource type="PackedScene" uid="uid://qoymek85ecx7" path="res://src/systems/locations/location_manager.tscn" id="2_a6jrf"]
@@ -12,10 +12,6 @@
 [ext_resource type="Script" uid="uid://dga8epmke5iyx" path="res://src/systems/spawner/spawner.gd" id="6_seu75"]
 [ext_resource type="Script" uid="uid://dw38kr6168wir" path="res://src/core/progression_manager.gd" id="7_htxhm"]
 [ext_resource type="Script" uid="uid://ceksi56kybfsk" path="res://src/ui/ui_manager.gd" id="8_jq2sk"]
-[ext_resource type="Texture2D" uid="uid://ee48briuh3x5" path="res://src/ui/sprites/health_full.png" id="9_4k2k6"]
-[ext_resource type="Texture2D" uid="uid://de30weaymh025" path="res://src/entities/player/sprites/ghost_rocket.png" id="9_seu75"]
-[ext_resource type="Texture2D" uid="uid://di4dto3ibdtf3" path="res://src/ui/sprites/health_empty.png" id="10_0rl1p"]
-[ext_resource type="Texture2D" uid="uid://4gs88gh60uo7" path="res://src/entities/projectiles/sprites/ghost_bullet.png" id="10_htxhm"]
 [ext_resource type="Texture2D" uid="uid://caubnil2iehm" path="res://src/ui/sprites/game_overlay.png" id="11_ok6jj"]
 [ext_resource type="FontFile" uid="uid://bvlhnv4ultuef" path="res://assets/fonts/Pixeled.ttf" id="12_facbu"]
 [ext_resource type="Texture2D" uid="uid://c16xy12030r1n" path="res://src/ui/sprites/experience_bar_under.png" id="13_b1qrp"]
@@ -31,6 +27,7 @@
 [ext_resource type="Resource" uid="uid://csxa4l5lisvd3" path="res://src/systems/shop/upgrades/resources/card_attack_damage.tres" id="24_0rl1p"]
 [ext_resource type="Resource" uid="uid://cc7t3pavnip0q" path="res://src/systems/shop/upgrades/resources/card_heal.tres" id="25_0odxb"]
 [ext_resource type="Script" uid="uid://cmwgjmxrs4sw4" path="res://src/systems/shop/card_deck_manager.gd" id="27_a6jrf"]
+[ext_resource type="PackedScene" uid="uid://dnamryfkme6fe" path="res://src/ui/DeckOverviewUI.tscn" id="32_htxhm"]
 
 [sub_resource type="Animation" id="Animation_kq58d"]
 length = 0.001
@@ -93,7 +90,7 @@ _data = {
 &"intro": SubResource("Animation_qsp4k")
 }
 
-[node name="Main" type="Node2D" node_paths=PackedStringArray("world", "location_manager", "progression_manager", "spawner", "ui_manager", "shop_ui", "player", "camera_frame", "wave_cooldown_timer")]
+[node name="Main" type="Node2D" node_paths=PackedStringArray("world", "location_manager", "progression_manager", "spawner", "ui_manager", "shop_ui", "deck_overview_ui", "player", "camera_frame", "wave_cooldown_timer")]
 script = ExtResource("1_lswn8")
 world = NodePath("World")
 location_manager = NodePath("World/LocationManager")
@@ -101,6 +98,7 @@ progression_manager = NodePath("ProgressionManager")
 spawner = NodePath("Spawner")
 ui_manager = NodePath("UILayer")
 shop_ui = NodePath("UILayer/ShopUI")
+deck_overview_ui = NodePath("UILayer/DeckOverviewUI")
 player = NodePath("World/Player")
 camera_frame = NodePath("World/CameraFrame")
 wave_cooldown_timer = NodePath("Timers/WaveCooldownTimer")
@@ -120,8 +118,6 @@ transition_duration = 3.0
 [node name="Player" parent="World" instance=ExtResource("3_xuqvo")]
 position = Vector2(-250, 65)
 menu_pos_x = -250.0
-spectator_texture = ExtResource("9_seu75")
-ghost_bullet_texture = ExtResource("10_htxhm")
 
 [node name="CameraFrame" type="Node2D" parent="World"]
 process_mode = 3
@@ -148,7 +144,6 @@ projectiles_container = NodePath("../World/ProjectilesContainer")
 
 [node name="ProgressionManager" type="Node" parent="." node_paths=PackedStringArray("ui_manager")]
 script = ExtResource("7_htxhm")
-experience_needed = 50
 ui_manager = NodePath("../UILayer")
 
 [node name="Timers" type="Node" parent="."]
@@ -156,7 +151,7 @@ ui_manager = NodePath("../UILayer")
 [node name="WaveCooldownTimer" type="Timer" parent="Timers"]
 wait_time = 5.0
 
-[node name="UILayer" type="CanvasLayer" parent="." node_paths=PackedStringArray("hud_panel", "intermission_panel", "shop_ui", "start_game_panel", "game_over_panel", "pause_panel", "score_label", "experience_bar", "enemies_left_label", "damage_label", "movement_speed_label", "attack_speed_label", "notifications_container", "title_label", "subtitle_label", "health_bar", "damage_bar", "final_wave_label", "final_score_label", "final_distance_label")]
+[node name="UILayer" type="CanvasLayer" parent="." node_paths=PackedStringArray("hud_panel", "intermission_panel", "shop_ui", "start_game_panel", "game_over_panel", "pause_panel", "score_label", "experience_bar", "enemies_left_label", "notifications_container", "title_label", "subtitle_label", "health_bar", "damage_bar", "final_wave_label", "final_score_label", "final_distance_label")]
 process_mode = 3
 script = ExtResource("8_jq2sk")
 hud_panel = NodePath("HUD")
@@ -168,11 +163,6 @@ pause_panel = NodePath("PauseMenuUI")
 score_label = NodePath("HUD/ScoreLabel")
 experience_bar = NodePath("HUD/ExperienceBar")
 enemies_left_label = NodePath("HUD/EnemiesLeftLabel")
-damage_label = NodePath("HUD/StatsPanel/DamageLabel")
-movement_speed_label = NodePath("HUD/StatsPanel/MoveSpeedLabel")
-attack_speed_label = NodePath("HUD/StatsPanel/AttackSpeedLabel")
-health_full_sprite = ExtResource("9_4k2k6")
-health_empty_sprite = ExtResource("10_0rl1p")
 notifications_container = NodePath("NotificationsUI")
 title_label = NodePath("NotificationsUI/MessageContainer/TitleLabel")
 subtitle_label = NodePath("NotificationsUI/MessageContainer/SubtitleLabel")
@@ -197,44 +187,6 @@ layout_mode = 0
 offset_right = 240.0
 offset_bottom = 135.0
 texture = ExtResource("11_ok6jj")
-
-[node name="StatsPanel" type="HBoxContainer" parent="UILayer/HUD"]
-layout_mode = 0
-offset_left = 37.0
-offset_top = 121.0
-offset_right = 79.0
-offset_bottom = 138.0
-
-[node name="DamageLabel" type="RichTextLabel" parent="UILayer/HUD/StatsPanel"]
-process_mode = 3
-texture_filter = 1
-custom_minimum_size = Vector2(11, 10)
-layout_mode = 2
-theme_override_colors/default_color = Color(0.75686276, 0.9019608, 0.7294118, 1)
-theme_override_fonts/normal_font = ExtResource("12_facbu")
-theme_override_font_sizes/normal_font_size = 5
-text = "0"
-fit_content = true
-
-[node name="MoveSpeedLabel" type="RichTextLabel" parent="UILayer/HUD/StatsPanel"]
-process_mode = 3
-custom_minimum_size = Vector2(12, 10)
-layout_mode = 2
-theme_override_colors/default_color = Color(0.75686276, 0.9019608, 0.7294118, 1)
-theme_override_fonts/normal_font = ExtResource("12_facbu")
-theme_override_font_sizes/normal_font_size = 5
-text = "0"
-fit_content = true
-
-[node name="AttackSpeedLabel" type="RichTextLabel" parent="UILayer/HUD/StatsPanel"]
-process_mode = 3
-custom_minimum_size = Vector2(22, 10)
-layout_mode = 2
-theme_override_colors/default_color = Color(0.75686276, 0.9019608, 0.7294118, 1)
-theme_override_fonts/normal_font = ExtResource("12_facbu")
-theme_override_font_sizes/normal_font_size = 5
-text = "0"
-fit_content = true
 
 [node name="ScoreLabel" type="RichTextLabel" parent="UILayer/HUD"]
 process_mode = 3
@@ -306,7 +258,7 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="ShopUI" type="Control" parent="UILayer" node_paths=PackedStringArray("game_manager", "progression_manager", "player", "deck_manager", "background_overlay", "cards_container")]
+[node name="ShopUI" type="Control" parent="UILayer" node_paths=PackedStringArray("game_manager", "progression_manager", "player", "deck_manager", "background_overlay", "cards_container", "warning_label")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -321,6 +273,7 @@ deck_manager = NodePath("CardDeckManager")
 background_overlay = NodePath("BackgroundOverlay")
 cards_container = NodePath("CardsContainer")
 card_ui_scene = ExtResource("19_xuqvo")
+warning_label = NodePath("WarningLabel")
 
 [node name="BackgroundOverlay" type="ColorRect" parent="UILayer/ShopUI"]
 layout_mode = 1
@@ -342,6 +295,21 @@ alignment = 1
 [node name="CardDeckManager" type="Node" parent="UILayer/ShopUI"]
 script = ExtResource("27_a6jrf")
 available_cards = Array[ExtResource("21_htxhm")]([ExtResource("22_jq2sk"), ExtResource("23_4k2k6"), ExtResource("24_0rl1p"), ExtResource("25_0odxb")])
+
+[node name="WarningLabel" type="RichTextLabel" parent="UILayer/ShopUI"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -14.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/normal_font = ExtResource("12_facbu")
+theme_override_font_sizes/normal_font_size = 5
+bbcode_enabled = true
+text = "[center]THIS IS THE WARNING"
+fit_content = true
 
 [node name="PauseMenuUI" type="Control" parent="UILayer"]
 visible = false
@@ -455,3 +423,10 @@ theme_override_font_sizes/normal_font_size = 5
 bbcode_enabled = true
 text = "[center]BABY"
 fit_content = true
+
+[node name="DeckOverviewUI" parent="UILayer" node_paths=PackedStringArray("game_manager", "player") instance=ExtResource("32_htxhm")]
+game_manager = NodePath("../..")
+player = NodePath("../../World/Player")
+card_spacing = 20.0
+selected_elevation_y = 30.0
+base_bottom_offset_y = 20.0

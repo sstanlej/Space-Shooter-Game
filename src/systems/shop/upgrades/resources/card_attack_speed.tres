@@ -1,15 +1,8 @@
-[gd_resource type="Resource" script_class="UpgradeCardData" load_steps=6 format=3 uid="uid://l0qvd1kbdorn"]
+[gd_resource type="Resource" script_class="UpgradeCardData" load_steps=4 format=3 uid="uid://l0qvd1kbdorn"]
 
 [ext_resource type="Texture2D" uid="uid://cyhla4dmpvmef" path="res://src/systems/shop/upgrades/sprites/attack_speed_upgrade.png" id="1_dh7bn"]
 [ext_resource type="Script" uid="uid://dvnm2k8uup30q" path="res://src/systems/shop/upgrades/upgrade_card_data.gd" id="1_o7uvf"]
 [ext_resource type="Script" uid="uid://c2skcqfonnj57" path="res://src/systems/shop/upgrades/effects/card_effect.gd" id="1_p0yib"]
-[ext_resource type="Script" uid="uid://fcx5ckmelfns" path="res://src/systems/shop/upgrades/effects/stat_modifier_effect.gd" id="2_54ix6"]
-
-[sub_resource type="Resource" id="Resource_8jlb5"]
-script = ExtResource("2_54ix6")
-stat_type = 1
-percent_value = 0.2
-metadata/_custom_type_script = "uid://fcx5ckmelfns"
 
 [resource]
 script = ExtResource("1_o7uvf")
@@ -18,5 +11,5 @@ title = "Rapid Fire"
 description = "+1 ATK SPD"
 icon = ExtResource("1_dh7bn")
 rarity = 1
-effects = Array[ExtResource("1_p0yib")]([SubResource("Resource_8jlb5")])
+stat_type = 3
 metadata/_custom_type_script = "uid://dvnm2k8uup30q"

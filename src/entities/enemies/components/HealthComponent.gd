@@ -5,21 +5,19 @@ signal damage_taken(amount: int)
 signal healed(amount: int)
 signal died
 
-# Sygnały dla tarcz i nietykalności
 signal invincibility_started(duration: float)
 signal invincibility_ended
 signal shield_hit(remaining_charges: int)
 signal shield_broken
 
 @export_group("Health Settings")
-@export var max_health: int = 10
+@export var max_health: int = 100
 var current_health: int
 
 @export_group("I-Frames & Protection")
-@export var enable_iframes_on_hit: bool = false  # Zaznacz TRUE tylko u gracza
-@export var default_iframe_duration: float = 1.0 # Czas nietykalności po oberwaniu w sekundach
+@export var enable_iframes_on_hit: bool = false
+@export var default_iframe_duration: float = 1.0
 
-# Stany ochronne
 var is_invincible: bool = false
 var is_wave_invincible: bool = false
 var shield_charges: int = 0
@@ -37,6 +35,11 @@ func setup_iframe_timer() -> void:
 	iframe_timer.timeout.connect(_on_iframe_timer_timeout)
 	add_child(iframe_timer)
 
+func set_max_health(new_max: int) -> void:
+	max_health = new_max
+	current_health = clampi(current_health, 1, max_health)
+	health_changed.emit(current_health, max_health)
+
 func set_health(new_health: int) -> void:
 	max_health = new_health
 	current_health = new_health
@@ -45,11 +48,10 @@ func set_health(new_health: int) -> void:
 func heal(amount: int) -> void:
 	if current_health >= max_health or amount <= 0:
 		return
-	
+
 	current_health = min(current_health + amount, max_health)
 	healed.emit(amount)
 	health_changed.emit(current_health, max_health)
-	print("[HealthComponent] Healed by ", amount, ". Current HP: ", current_health, "/", max_health)
 
 func get_max_health() -> int:
 	return max_health
@@ -57,25 +59,27 @@ func get_max_health() -> int:
 func get_health() -> int:
 	return current_health
 
-# --- GŁÓWNA LOGIKA OTRZYMYWANIA OBRAŻEŃ (ZGODNA ZE STARYM KODEM) ---
+# --- GŁÓWNA LOGIKA OBRAŻEŃ ---
 
 func take_damage(amount: int) -> void:
-	# 1. Zabezpieczenie przed obrażeniami w trakcie nietykalności lub śmierci
 	if current_health <= 0 or is_invincible or is_wave_invincible:
 		return
 
-	# 2. Sprawdzenie tarczy absorbującej uderzenia
+	# Sprawdzenie tarczy
 	if shield_charges > 0:
-		shield_charges -= 1
+		var player = get_parent() as Player
+		if player and player.get_deck_component():
+			shield_charges = player.get_deck_component().consume_shield_charge()
+		else:
+			shield_charges -= 1
+
 		shield_hit.emit(shield_charges)
 		if shield_charges == 0:
 			shield_broken.emit()
-		
-		# Krótki I-frame (0.3s) po zbiciu ładunku tarczy, by pociski nie skasowały dwóch ładunków w tej samej klatce
+
 		start_invincibility(0.3)
 		return
 
-	# 3. Właściwe odjęcie HP i emisja sygnałów
 	current_health -= amount
 	damage_taken.emit(amount)
 	health_changed.emit(current_health, max_health)
@@ -84,10 +88,7 @@ func take_damage(amount: int) -> void:
 		current_health = 0
 		died.emit()
 	elif enable_iframes_on_hit:
-		# Odpalamy pełną nietykalność jeśli włączona (np. u gracza)
 		start_invincibility(default_iframe_duration)
-
-# --- INTERFEJS DLA KART I ULEPSZEŃ (NOWOŚCI) ---
 
 func start_invincibility(duration: float) -> void:
 	is_invincible = true
@@ -98,10 +99,9 @@ func start_invincibility(duration: float) -> void:
 func set_wave_invincibility(active: bool) -> void:
 	is_wave_invincible = active
 	if active:
-		# Przesyłamy ujemny czas, by UI/skrypty wiedziały, że to nietykalność stała (aż do wyłączenia)
-		invincibility_started.emit(-1.0) 
+		invincibility_started.emit(-1.0)
 	else:
-		is_invincible = false # Zdejmujemy ewentualne resztki zwykłej nietykalności
+		is_invincible = false
 		invincibility_ended.emit()
 
 func add_shield_charges(charges: int) -> void:

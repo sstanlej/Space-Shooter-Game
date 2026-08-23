@@ -5,6 +5,7 @@ class_name GameAudio extends Node2D
 @onready var upgrade_sound : AudioStreamPlayer2D = $UpgradeSound
 @onready var error_sound : AudioStreamPlayer2D = $ErrorSound
 @onready var enemy_hit_sound : AudioStreamPlayer2D = $EnemyHitSound
+@onready var select_sound : AudioStreamPlayer2D = $SelectSound
 
 func play_crash() -> void:
 	crash_sound.play()
@@ -20,3 +21,6 @@ func play_error() -> void:
 
 func play_enemy_hit() -> void:
 	enemy_hit_sound.play()
+
+func play_select() -> void:
+	select_sound.play()

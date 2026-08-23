@@ -17,6 +17,7 @@ title = "Ship Repair"
 description = "+1 HP"
 icon = ExtResource("3_2gtun")
 rarity = 1
+card_type = 3
 max_level = 0
 effects = Array[ExtResource("1_bfqx0")]([SubResource("Resource_xjvr3")])
 metadata/_custom_type_script = "uid://dvnm2k8uup30q"

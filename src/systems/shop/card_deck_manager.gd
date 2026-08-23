@@ -27,6 +27,3 @@ func roll_new_offer(count: int, player: Player) -> Array[UpgradeCardData]:
 
 func reset_deck() -> void:
 	current_offer.clear()
-	for card in available_cards:
-		if card:
-			card.current_level = 0
