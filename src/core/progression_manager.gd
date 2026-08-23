@@ -98,7 +98,7 @@ func check_level_up() -> bool:
 			if ui_manager.has_method("update_upgrade_points_label"):
 				ui_manager.update_upgrade_points_label(upgrade_points)
 			if ui_manager.has_method("show_notification"):
-				ui_manager.show_notification("[color=cyan]LEVEL UP[/color]", "[color=white]Poziom %d reached![/color]" % level, 1.2)
+				ui_manager.show_notification("[color=cyan]LEVEL UP[/color]", "[color=white]Level %d reached![/color]" % level, 1.2)
 
 	return leveled_up
 

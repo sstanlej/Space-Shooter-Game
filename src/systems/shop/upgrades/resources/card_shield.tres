@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="UpgradeCardData" load_steps=4 format=3 uid="uid://1ikeutmmsl0l"]
+
+[ext_resource type="Script" uid="uid://c2skcqfonnj57" path="res://src/systems/shop/upgrades/effects/card_effect.gd" id="1_ktwnu"]
+[ext_resource type="Script" uid="uid://dvnm2k8uup30q" path="res://src/systems/shop/upgrades/upgrade_card_data.gd" id="2_b5qtl"]
+[ext_resource type="Texture2D" uid="uid://dw7ttocryjlqk" path="res://src/systems/shop/upgrades/sprites/shield_icon.png" id="2_ijsvw"]
+
+[resource]
+script = ExtResource("2_b5qtl")
+card_id = "card_shield"
+title = "Bubble Shield"
+description = "Absorbs a few enemy hits"
+icon = ExtResource("2_ijsvw")
+rarity = 1
+card_type = 2
+metadata/_custom_type_script = "uid://dvnm2k8uup30q"
