@@ -108,10 +108,10 @@ func format_card_overview_text(instance: PlayerDeckComponent.CardInstance) -> St
 
 	match card.card_type:
 		UpgradeCardData.CardType.WEAPON:
-			return "[color=cyan]EQUIPPED[/color]"
+			return "[color=cyan]EQUIPPED WEAPON[/color]"
 
 		UpgradeCardData.CardType.USABLE:
-			return "[color=aquamarine]USES LEFT: %d/%d[/color]" % [instance.charges, card.max_charges]
+			return "[color=aquamarine]CHARGES: %d/%d[/color]" % [instance.charges, card.max_charges]
 
 		UpgradeCardData.CardType.STAT:
 			match card.stat_type:
