@@ -28,7 +28,7 @@ class CardInstance:
 
 ## Prędkość statku: Lvl 1 = 60 px/s, każdy kolejny poziom daje +20 px/s (Lvl 3 = 100, Lvl 5 = 140)
 @export var base_speed: float = 40.0
-@export var speed_per_level: float = 20.0
+@export var speed_per_level: float = 10.0
 
 ## Szybkostrzelność: Lvl 1 = 1.0 (baza), każdy poziom w górę to +15% szybszy strzał
 @export var attack_speed_baseline_level: int = 1
@@ -68,8 +68,6 @@ func initialize_starting_deck() -> void:
 
 	recalculate_all_stats()
 
-# --- ZARZĄDZANIE KARTAMI (API DLA SKLEPU I EVENTÓW) ---
-
 func apply_card(card: UpgradeCardData) -> void:
 	if not card:
 		return
@@ -82,7 +80,6 @@ func apply_card(card: UpgradeCardData) -> void:
 		UpgradeCardData.CardType.USABLE:
 			_add_or_refresh_usable_card(card)
 		UpgradeCardData.CardType.INSTANT:
-			# Karty INSTANT wykonują tylko efekt i NIE trafiają do talii
 			pass
 
 	recalculate_all_stats()
@@ -98,12 +95,10 @@ func _equip_weapon_card(card: UpgradeCardData) -> void:
 	if not card.weapon_data:
 		return
 
-	# Usuwamy dotychczasową kartę broni z talii
 	for i in range(active_deck.size() - 1, -1, -1):
 		if active_deck[i].data.card_type == UpgradeCardData.CardType.WEAPON:
 			active_deck.remove_at(i)
 
-	# Dodajemy nową broń
 	var instance = CardInstance.new(card, 1)
 	instance.is_equipped = true
 	active_deck.insert(0, instance)
@@ -119,28 +114,33 @@ func _add_or_refresh_usable_card(card: UpgradeCardData) -> void:
 		existing.charges = card.max_charges
 	else:
 		active_deck.append(CardInstance.new(card, 1, card.max_charges))
-	shield_charges = card.max_charges
-	sync_shield_with_health_component()
 
-func add_or_refresh_shield(amount: int) -> void:
-	shield_charges = amount
-	sync_shield_with_health_component()
-	deck_updated.emit()
+	match card.usable_type:
+		UpgradeCardData.UsableType.SHIELD:
+			shield_charges = card.max_charges
+			sync_shield_with_health_component()
+		# UpgradeCardData.UsableType.DRONE:
+		#     drone_charges = card.max_charges
 
 func consume_shield_charge() -> int:
 	if shield_charges > 0:
 		shield_charges -= 1
 
-		# Aktualizacja instancji tarczy w talii
 		for i in range(active_deck.size() - 1, -1, -1):
-			if active_deck[i].data.card_type == UpgradeCardData.CardType.USABLE and "shield" in active_deck[i].data.title.to_lower():
+			var card_data = active_deck[i].data
+			if card_data.card_type == UpgradeCardData.CardType.USABLE and card_data.usable_type == UpgradeCardData.UsableType.SHIELD:
 				active_deck[i].charges = shield_charges
 				if shield_charges <= 0:
-					active_deck.remove_at(i) # Karta fizycznie znika z talii!
+					active_deck.remove_at(i) 
 				break
 
 		deck_updated.emit()
 	return shield_charges
+
+func add_or_refresh_shield(amount: int) -> void:
+	shield_charges = amount
+	sync_shield_with_health_component()
+	deck_updated.emit()
 
 func sync_shield_with_health_component() -> void:
 	var player = get_parent() as Player
