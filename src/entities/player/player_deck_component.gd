@@ -50,7 +50,7 @@ var equipped_weapon: WeaponData = null
 var damage_level: int = 1
 var speed_level: int = 1
 var attack_speed_level: int = 1
-var projectiles_level: int = 1
+var projectiles_level: int = 0
 var max_health_level: int = 5
 var agility_level: int = 1
 var shield_charges: int = 0
@@ -168,11 +168,10 @@ func upgrade_stat_by_type(stat: UpgradeCardData.StatType, levels: int = 1) -> vo
 # --- PRZELICZANIE STATYSTYK ---
 
 func recalculate_all_stats() -> void:
-	# Reset do poziomów bazowych
 	damage_level = 1
 	speed_level = 1
 	attack_speed_level = 1
-	projectiles_level = 1
+	projectiles_level = 0 # <-- Bazowo 0 dodatkowych pocisków bez karty
 	max_health_level = 8
 	agility_level = 1
 
@@ -193,8 +192,6 @@ func recalculate_all_stats() -> void:
 	stats_changed.emit()
 	deck_updated.emit()
 
-# --- GETTERY STATYSTYK I FIZYKI DLA KOMPONENTÓW ---
-
 func get_final_movement_speed() -> float:
 	return max(1.0, base_speed + (speed_level - 1) * speed_per_level)
 
@@ -206,7 +203,7 @@ func get_final_attack_speed(base_weapon_attack_speed: float = 1.0) -> float:
 	return max(0.1, base_weapon_attack_speed * max(0.1, multiplier))
 
 func get_final_projectiles_count(base_count: int = 1) -> int:
-	return max(1, base_count + (projectiles_level - 1))
+	return max(1, base_count + projectiles_level)
 
 func get_final_max_health() -> float:
 	return max(1.0, max_health_level * health_per_level)

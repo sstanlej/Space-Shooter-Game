@@ -11,3 +11,4 @@ class_name WeaponData extends Resource
 
 @export var projectiles_per_shot: int = 1
 @export var spread_angle_degrees: float = 0.0
+@export var parallel_bullet_spacing: float = 6.0

@@ -130,6 +130,10 @@ func format_card_overview_text(instance: PlayerDeckComponent.CardInstance) -> St
 					var hc = player.health_component
 					var hp_text = "HP: %d/%d" % [hc.get_health(), hc.get_max_health()] if hc else ""
 					return "[color=gold]LVL %d[/color]  (%s)" % [instance.level, hp_text]
+				UpgradeCardData.StatType.PROJECTILES:
+					var base_count = deck.equipped_weapon.projectiles_per_shot if deck and deck.equipped_weapon else 1
+					var total_count = deck.get_final_projectiles_count(base_count) if deck else 1
+					return "[color=gold]LVL %d[/color]  (%d bullets)" % [instance.level, total_count]
 				_:
 					return "[color=gold]LVL %d[/color]" % instance.level
 

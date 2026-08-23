@@ -3,6 +3,7 @@ class_name AttackController extends Node
 @export_group("Weapon Settings")
 @export var equipped_weapon: WeaponData
 @export var projectiles_container: Node2D
+@export var default_parallel_spacing: float = 6.0
 
 @export_group("Ghost Bullet Support")
 @export var ghost_bullet_scene: PackedScene
@@ -77,13 +78,27 @@ func spawn_bullets(dmg: float, speed: float, count: int, spread_deg: float) -> v
 		spawn_single_bullet(container, spawn_pos, dir, dmg, speed)
 		return
 
-	var start_angle = -spread_deg / 2.0
-	var step = spread_deg / float(count - 1) if count > 1 else 0.0
+	var forward_dir = Vector2.RIGHT.rotated(tilt_rad)
+	var perp_dir = Vector2.DOWN.rotated(tilt_rad)
+
+	var spacing = default_parallel_spacing
+	if equipped_weapon and "parallel_bullet_spacing" in equipped_weapon and equipped_weapon.parallel_bullet_spacing > 0.0:
+		spacing = equipped_weapon.parallel_bullet_spacing
+
+	var mid_index = (count - 1) / 2.0
 
 	for i in range(count):
-		var current_angle = start_angle + (i * step)
-		var dir = Vector2.RIGHT.rotated(tilt_rad + deg_to_rad(current_angle))
-		spawn_single_bullet(container, spawn_pos, dir, dmg, speed)
+		var offset = (i - mid_index) * spacing
+		var bullet_pos = spawn_pos + (perp_dir * offset)
+
+		var bullet_dir = forward_dir
+		if spread_deg > 0.0:
+			var start_angle = -spread_deg / 2.0
+			var step = spread_deg / float(count - 1)
+			var current_angle = start_angle + (i * step)
+			bullet_dir = Vector2.RIGHT.rotated(tilt_rad + deg_to_rad(current_angle))
+
+		spawn_single_bullet(container, bullet_pos, bullet_dir, dmg, speed)
 
 func spawn_single_bullet(container: Node, pos: Vector2, dir: Vector2, dmg: float, speed: float) -> void:
 	var target_scene = equipped_weapon.bullet_scene

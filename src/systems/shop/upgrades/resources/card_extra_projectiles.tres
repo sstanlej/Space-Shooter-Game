@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="UpgradeCardData" load_steps=4 format=3 uid="uid://qjbuoy5m0jjw"]
+
+[ext_resource type="Script" uid="uid://c2skcqfonnj57" path="res://src/systems/shop/upgrades/effects/card_effect.gd" id="1_qktk7"]
+[ext_resource type="Script" uid="uid://dvnm2k8uup30q" path="res://src/systems/shop/upgrades/upgrade_card_data.gd" id="2_1dm4n"]
+[ext_resource type="Texture2D" uid="uid://b6fcfdodq4qdw" path="res://src/systems/shop/upgrades/sprites/projectile_upgrade.png" id="2_ayyxl"]
+
+[resource]
+script = ExtResource("2_1dm4n")
+card_id = "card_extra_projectiles"
+title = "Twin Barrel"
+description = "+1 PROJECTILE"
+icon = ExtResource("2_ayyxl")
+rarity = 3
+stat_type = 4
+max_level = 3
+metadata/_custom_type_script = "uid://dvnm2k8uup30q"
