@@ -17,8 +17,9 @@ func setup(proj_damage: float, proj_speed: float, proj_direction: Vector2) -> vo
 	rotation = direction.angle()
 
 func _physics_process(delta: float) -> void:
-	position += direction * speed * delta
-	if global_position.x > screen_width + 30.0 or global_position.x < -30.0 or global_position.y < -30.0 or global_position.y > get_viewport_rect().size.y + 30.0:
+	global_position += direction * speed * delta
+
+	if global_position.x > screen_width + 4.0 or global_position.x < -20.0:
 		queue_free()
 
 func _on_area_entered(area: Area2D) -> void:
