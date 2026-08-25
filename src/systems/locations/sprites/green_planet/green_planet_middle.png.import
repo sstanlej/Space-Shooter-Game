@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b7m7j8xr11ey0"
-path="res://.godot/imported/green_planet_stars.png-6ecc60bc76c917669a951b2cecc8dd24.ctex"
+uid="uid://wbcretot0elg"
+path="res://.godot/imported/green_planet_middle.png-5db93b75c52c7f4c2ca265aee663fd44.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://src/systems/locations/sprites/green_planet/green_planet_stars.png"
-dest_files=["res://.godot/imported/green_planet_stars.png-6ecc60bc76c917669a951b2cecc8dd24.ctex"]
+source_file="res://src/systems/locations/sprites/green_planet/green_planet_middle.png"
+dest_files=["res://.godot/imported/green_planet_middle.png-5db93b75c52c7f4c2ca265aee663fd44.ctex"]
 
 [params]
 

@@ -1,9 +1,9 @@
 [gd_resource type="Resource" script_class="LocationData" load_steps=8 format=3 uid="uid://c30ua1jkovq12"]
 
-[ext_resource type="Texture2D" uid="uid://dafc7vj4da0cf" path="res://src/systems/locations/sprites/space/space_background.png" id="1_21g57"]
+[ext_resource type="Texture2D" uid="uid://dl2lg4xa6utbm" path="res://src/systems/locations/sprites/green_planet/green_planet_back.png" id="1_g3noy"]
 [ext_resource type="Script" uid="uid://4ko4pcyqo2oo" path="res://src/systems/locations/LocationData.gd" id="1_idjfq"]
-[ext_resource type="Texture2D" uid="uid://bg36f2oxrmheu" path="res://src/systems/locations/sprites/green_planet/green_planet_parallax.png" id="2_5ublm"]
-[ext_resource type="Texture2D" uid="uid://b7m7j8xr11ey0" path="res://src/systems/locations/sprites/green_planet/green_planet_stars.png" id="3_grbhw"]
+[ext_resource type="Texture2D" uid="uid://ctvul62x056sv" path="res://src/systems/locations/sprites/green_planet/green_planet_front.png" id="2_2q8xa"]
+[ext_resource type="Texture2D" uid="uid://wbcretot0elg" path="res://src/systems/locations/sprites/green_planet/green_planet_middle.png" id="3_k2dbb"]
 [ext_resource type="Script" uid="uid://c1jvipah3wjg0" path="res://src/entities/enemies/components/EnemyData.gd" id="5_grbhw"]
 [ext_resource type="Resource" uid="uid://b21uumo1tahqe" path="res://src/entities/enemies/resources/UfoEnemy.tres" id="6_g8ub3"]
 [ext_resource type="Resource" uid="uid://68yqma5ch2gt" path="res://src/entities/enemies/resources/ZootEnemy.tres" id="7_g8ub3"]
@@ -14,7 +14,7 @@ location_id = 2
 location_name = "Green Planet Orbit"
 location_rarity = 1
 spawnable_enemies = Array[ExtResource("5_grbhw")]([ExtResource("6_g8ub3"), ExtResource("7_g8ub3")])
-background_texture = ExtResource("1_21g57")
-middle_texture = ExtResource("3_grbhw")
-front_texture = ExtResource("2_5ublm")
+background_texture = ExtResource("1_g3noy")
+middle_texture = ExtResource("3_k2dbb")
+front_texture = ExtResource("2_2q8xa")
 metadata/_custom_type_script = "uid://4ko4pcyqo2oo"
