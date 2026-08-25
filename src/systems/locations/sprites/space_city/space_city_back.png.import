@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bri1fgb4cc3ge"
-path="res://.godot/imported/city_stars.png-77445f65c85df4b8836e9c3e126e3775.ctex"
+uid="uid://dl8hm2g5ljvkl"
+path="res://.godot/imported/space_city_back.png-bb1852e4f215d92a6d4501528df77346.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://src/systems/locations/sprites/space_city/city_stars.png"
-dest_files=["res://.godot/imported/city_stars.png-77445f65c85df4b8836e9c3e126e3775.ctex"]
+source_file="res://src/systems/locations/sprites/space_city/space_city_back.png"
+dest_files=["res://.godot/imported/space_city_back.png-bb1852e4f215d92a6d4501528df77346.ctex"]
 
 [params]
 

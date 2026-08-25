@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cmnod05trc720"
-path="res://.godot/imported/city_blocks.png-a8842d5fe4d19c4390d308241b589225.ctex"
+uid="uid://cln3tjrcdyha7"
+path="res://.godot/imported/space_city_front.png-6eb3ed0ad11567229c3bae0497d96842.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://src/systems/locations/sprites/space_city/city_blocks.png"
-dest_files=["res://.godot/imported/city_blocks.png-a8842d5fe4d19c4390d308241b589225.ctex"]
+source_file="res://src/systems/locations/sprites/space_city/space_city_front.png"
+dest_files=["res://.godot/imported/space_city_front.png-6eb3ed0ad11567229c3bae0497d96842.ctex"]
 
 [params]
 
