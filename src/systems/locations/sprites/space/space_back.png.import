@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://btgr316xwbgqa"
-path="res://.godot/imported/space_moon.png-b9342decbc7e490790dfc54837c14964.ctex"
+uid="uid://dodpac568wsl5"
+path="res://.godot/imported/space_back.png-111d6a5d335ec46df6ce4ce541008faf.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://src/systems/locations/sprites/space/space_moon.png"
-dest_files=["res://.godot/imported/space_moon.png-b9342decbc7e490790dfc54837c14964.ctex"]
+source_file="res://src/systems/locations/sprites/space/space_back.png"
+dest_files=["res://.godot/imported/space_back.png-111d6a5d335ec46df6ce4ce541008faf.ctex"]
 
 [params]
 
