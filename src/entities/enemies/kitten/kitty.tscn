@@ -1,0 +1,59 @@
+[gd_scene load_steps=9 format=3 uid="uid://cpdw2oawl2xk3"]
+
+[ext_resource type="Script" uid="uid://c4hlcp4cghp20" path="res://src/entities/enemies/components/OscillatingEnemy.gd" id="1_5llr8"]
+[ext_resource type="Texture2D" uid="uid://dn1o3kmc3drxn" path="res://src/entities/enemies/kitten/kitty.png" id="2_j6oyg"]
+[ext_resource type="Script" uid="uid://cmxkc1l3uevq1" path="res://src/entities/enemies/components/HealthComponent.gd" id="4_ji5u0"]
+[ext_resource type="Script" uid="uid://dqihe208dt14r" path="res://src/entities/enemies/components/hitbox.gd" id="5_3obgl"]
+[ext_resource type="Script" uid="uid://cnbwlgjmc0w46" path="res://src/entities/enemies/components/ShootingComponent.gd" id="6_o2k17"]
+[ext_resource type="PackedScene" uid="uid://wikdcl5aogg5" path="res://src/entities/projectiles/enemy_projectile.tscn" id="7_emw57"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_w2akj"]
+radius = 9.0
+height = 18.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3bkon"]
+radius = 6.0
+height = 12.0
+
+[node name="Kitty" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1_5llr8")
+sine_frequency = 1.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 1
+texture = ExtResource("2_j6oyg")
+
+[node name="HealthComponent" type="Node2D" parent="."]
+script = ExtResource("4_ji5u0")
+
+[node name="Area2D" type="Area2D" parent="." node_paths=PackedStringArray("health_component")]
+collision_layer = 2
+collision_mask = 5
+script = ExtResource("5_3obgl")
+health_component = NodePath("../HealthComponent")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(2, 0)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_w2akj")
+
+[node name="CollisionHitbox" type="CollisionShape2D" parent="."]
+position = Vector2(2, 0)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_3bkon")
+
+[node name="ShootingComponent" type="Node2D" parent="."]
+position = Vector2(-12, 0)
+script = ExtResource("6_o2k17")
+bullet_scene = ExtResource("7_emw57")
+bullet_speed = 300.0
+fire_rate = 0.3
+burst_count = 1
+burst_delay = 0.1
+shot_directions = Array[Vector2]([Vector2(-1, 0)])
+
+[connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
+[connection signal="died" from="HealthComponent" to="." method="_on_health_component_died"]
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

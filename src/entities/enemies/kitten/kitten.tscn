@@ -1,0 +1,89 @@
+[gd_scene load_steps=14 format=3 uid="uid://cibqa0xgq4v3f"]
+
+[ext_resource type="Script" uid="uid://wb7nfbmdwv62" path="res://src/entities/enemies/kitten/kitty.gd" id="1_piyax"]
+[ext_resource type="Shader" uid="uid://wr7raxdl2m7y" path="res://src/vfx/shaders/hit_flash.gdshader" id="2_um8jn"]
+[ext_resource type="Texture2D" uid="uid://dxr1e680kvgst" path="res://src/entities/enemies/kitten/kitten_animation_sheet.png" id="3_q7wrn"]
+[ext_resource type="Script" uid="uid://cmxkc1l3uevq1" path="res://src/entities/enemies/components/HealthComponent.gd" id="4_6iak6"]
+[ext_resource type="Script" uid="uid://dqihe208dt14r" path="res://src/entities/enemies/components/hitbox.gd" id="5_csvrj"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rrooj"]
+shader = ExtResource("2_um8jn")
+shader_parameter/active = false
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fe4t0"]
+atlas = ExtResource("3_q7wrn")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w6l75"]
+atlas = ExtResource("3_q7wrn")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bl4pi"]
+atlas = ExtResource("3_q7wrn")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w34fu"]
+atlas = ExtResource("3_q7wrn")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_l70hh"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fe4t0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w6l75")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bl4pi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w34fu")
+}],
+"loop": true,
+"name": &"default",
+"speed": 9.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_w2akj"]
+radius = 5.0
+height = 14.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3bkon"]
+radius = 3.0
+height = 12.0
+
+[node name="Kitten" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1_piyax")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_rrooj")
+sprite_frames = SubResource("SpriteFrames_l70hh")
+frame_progress = 0.18604802
+
+[node name="HealthComponent" type="Node2D" parent="."]
+script = ExtResource("4_6iak6")
+
+[node name="Area2D" type="Area2D" parent="." node_paths=PackedStringArray("health_component")]
+collision_layer = 2
+collision_mask = 5
+script = ExtResource("5_csvrj")
+health_component = NodePath("../HealthComponent")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, 3)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_w2akj")
+
+[node name="CollisionHitbox" type="CollisionShape2D" parent="."]
+position = Vector2(0, 3)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_3bkon")
+
+[connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
+[connection signal="died" from="HealthComponent" to="." method="_on_health_component_died"]
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

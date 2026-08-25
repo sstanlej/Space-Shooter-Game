@@ -114,6 +114,7 @@ libraries = {
 
 [node name="LocationManager" parent="World" instance=ExtResource("2_a6jrf")]
 starting_location = ExtResource("3_kq58d")
+space_location = ExtResource("3_qsp4k")
 locations = Array[Object]([ExtResource("3_qsp4k"), ExtResource("4_kq58d"), ExtResource("5_seu75"), ExtResource("6_qsp4k")])
 transition_duration = 3.0
 

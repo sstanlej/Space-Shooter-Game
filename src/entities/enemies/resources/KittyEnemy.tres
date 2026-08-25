@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=4 format=3 uid="uid://cvosf5m658nc1"]
+
+[ext_resource type="PackedScene" uid="uid://cdfbi3flgf8ko" path="res://src/vfx/explosion/explosion.tscn" id="1_3ipxj"]
+[ext_resource type="PackedScene" uid="uid://cpdw2oawl2xk3" path="res://src/entities/enemies/kitten/kitty.tscn" id="2_ig7q2"]
+[ext_resource type="Script" uid="uid://c1jvipah3wjg0" path="res://src/entities/enemies/components/EnemyData.gd" id="3_ibpda"]
+
+[resource]
+script = ExtResource("3_ibpda")
+enemy_id = 8
+enemy_name = "Kitty"
+enemy_scene = ExtResource("2_ig7q2")
+enemy_max_health = 20
+enemy_speed = 25.0
+enemy_damage = 4
+enemy_score_reward = 200
+enemy_xp_reward = 100
+death_scene = ExtResource("1_3ipxj")
+metadata/_custom_type_script = "uid://c1jvipah3wjg0"
