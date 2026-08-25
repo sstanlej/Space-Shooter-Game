@@ -18,7 +18,7 @@ height = 16.0
 collision_layer = 2
 collision_mask = 0
 script = ExtResource("1_irrii")
-sine_amplitude = 30.0
+sine_amplitude = 15.0
 
 [node name="GPUParticles2D" parent="." instance=ExtResource("5_irrii")]
 position = Vector2(8, 3)
