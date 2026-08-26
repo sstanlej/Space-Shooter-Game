@@ -288,7 +288,9 @@ func animate_close() -> void:
 func fade_out_overlay() -> void:
 	if tween:
 		tween.kill()
-	tween = create_tween()
+	tween = create_tween().set_parallel(true)
 	if background_overlay:
 		tween.tween_property(background_overlay, "modulate:a", 0.0, transition_duration * 0.7)
-		await tween.finished
+	if choose_upgrade_label:
+		tween.tween_property(choose_upgrade_label, "modulate:a", 0.0, transition_duration * 0.75)
+	await tween.finished
