@@ -277,6 +277,7 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="ShopUI" type="Control" parent="UILayer" node_paths=PackedStringArray("game_manager", "progression_manager", "player", "deck_manager", "background_overlay", "cards_container", "warning_label", "choose_upgrade_label")]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

@@ -10,15 +10,12 @@ signal deck_overview_closed
 @export var background_overlay: ColorRect
 @export var cards_anchor: Control
 @export var card_ui_scene: PackedScene
+@export var your_deck_label: RichTextLabel
 
 @export_group("Layout & Spacing Settings")
-## Odstęp poziomy między środkami kart (np. 50-60 px sprawia, że karty lekko nachodzą na siebie)
 @export var card_spacing: float = 56.0
-## Wysokość (w px), na jaką unosi się wybrana karta
 @export var selected_elevation_y: float = 32.0
-## Pozycja całego rzędu od dolnej krawędzi ekranu
 @export var base_bottom_offset_y: float = 40.0
-## Czas trwania animacji wjazdu / zjazdu
 @export var transition_duration: float = 0.28
 
 var active_cards_ui: Array[CardUI] = []
@@ -30,6 +27,8 @@ var main_tween: Tween
 func _ready() -> void:
 	if background_overlay:
 		background_overlay.modulate.a = 0.0
+	if your_deck_label:
+		your_deck_label.modulate.a = 0.0
 	hide()
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -212,8 +211,9 @@ func animate_open() -> void:
 	main_tween.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 
 	if background_overlay:
-		# Delikatne przyciemnienie tła za kartami
 		main_tween.tween_property(background_overlay, "modulate:a", 0.75, transition_duration)
+	if your_deck_label:
+		main_tween.tween_property(your_deck_label, "modulate:a", 1.0, transition_duration)
 
 	for i in range(total):
 		var card = active_cards_ui[i]
@@ -236,6 +236,9 @@ func animate_close() -> void:
 
 	if background_overlay:
 		main_tween.tween_property(background_overlay, "modulate:a", 0.0, close_duration)
+
+	if your_deck_label:
+		main_tween.tween_property(your_deck_label, "modulate:a", 0.0, close_duration)
 
 	for i in range(total):
 		var card = active_cards_ui[i]
