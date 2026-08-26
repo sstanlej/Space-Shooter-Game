@@ -215,7 +215,7 @@ func update_game_over_stats(wave: int, score: float, distance: float) -> void:
 
 func update_enemies_left_label(count: int) -> void:
 	if enemies_left_label:
-		enemies_left_label.text = "[center]ENEMIES LEFT: [color=gold]" + str(count) + "[/color][/center]"
+		enemies_left_label.text = "[right]ENEMIES LEFT: [color=gold]" + str(count) + "[/color][/right]"
 
 func fade_in_label(label: RichTextLabel, label_tween: Tween, duration: float = 0.5) -> void:
 	if not label:

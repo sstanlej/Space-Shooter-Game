@@ -220,6 +220,8 @@ func start_next_wave() -> void:
 func open_shop() -> void:
 	if current_state == GameState.BETWEEN_WAVES:
 		change_state(GameState.IN_SHOP)
+		if ui_manager and ui_manager.has_method("fade_out_label"):
+			ui_manager.fade_out_label(ui_manager.card_controls_label, ui_manager.controls_label_tween, 0.15)
 		if shop_ui and shop_ui.has_method("show_shop"):
 			shop_ui.show_shop()
 
@@ -227,6 +229,9 @@ func close_shop() -> void:
 	if current_state == GameState.IN_SHOP:
 		if shop_ui and shop_ui.has_method("hide_shop"):
 			await shop_ui.hide_shop()
+			if ui_manager and ui_manager.has_method("fade_in_label"):
+				ui_manager.fade_in_label(ui_manager.card_controls_label, ui_manager.controls_label_tween, 0.5)
+
 		change_state(GameState.BETWEEN_WAVES)
 
 func open_deck_overview() -> void:

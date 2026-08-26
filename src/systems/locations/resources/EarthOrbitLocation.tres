@@ -6,7 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://1y76pfdr6txr" path="res://src/systems/locations/sprites/earth_orbit/earth_orbit_parallax.png" id="2_pyns4"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_pyns4"]
-load_path = "res://.godot/imported/space_stars.png-d8cafbf443a0e8da69b0834d6937c428.ctex"
 
 [resource]
 script = ExtResource("1_3usuj")

@@ -12,7 +12,8 @@ signal shop_closed
 @export var background_overlay: ColorRect
 @export var cards_container: HBoxContainer
 @export var card_ui_scene: PackedScene
-@export var warning_label: RichTextLabel # Etykieta pod kartami (np. ostrzeżenie o broni)
+@export var warning_label: RichTextLabel
+@export var choose_upgrade_label: RichTextLabel
 
 @export_group("Animation Settings")
 @export var transition_duration: float = 0.35
@@ -28,6 +29,8 @@ var tween: Tween
 func _ready() -> void:
 	if background_overlay:
 		background_overlay.modulate.a = 0.0
+	if choose_upgrade_label:
+		choose_upgrade_label.modulate.a = 0.0
 	if warning_label:
 		warning_label.text = ""
 	hide()
@@ -250,6 +253,8 @@ func animate_open() -> void:
 
 	if background_overlay:
 		tween.tween_property(background_overlay, "modulate:a", 1.0, transition_duration)
+	if choose_upgrade_label:
+		tween.tween_property(choose_upgrade_label, "modulate:a", 1.0, transition_duration)
 	if cards_container:
 		tween.tween_property(cards_container, "position:y", target_center_y, transition_duration)
 
@@ -271,6 +276,8 @@ func animate_close() -> void:
 
 	var offscreen_y = get_viewport_rect().size.y + 50.0
 
+	if choose_upgrade_label:
+		tween.tween_property(choose_upgrade_label, "modulate:a", 0.0, transition_duration * 0.75)
 	if background_overlay:
 		tween.tween_property(background_overlay, "modulate:a", 0.0, transition_duration * 0.75)
 	if cards_container:
