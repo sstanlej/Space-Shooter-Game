@@ -181,9 +181,12 @@ func finish_wave() -> void:
 		if points > 0:
 			subtitle = "[color=gold]+" + str(points) + " Pts![/color] Shop [color=gold][B][/color] | Cards [color=gold][TAB][/color]"
 		ui_manager.show_notification("[color=gold]WAVE FINISHED![/color]", subtitle, 1.5)
+	
+	if ui_manager and ui_manager.has_method("fade_out_label"):
+		ui_manager.fade_out_label(ui_manager.enemies_left_label, ui_manager.enemies_label_tween, 0.5)
 
-	if ui_manager and ui_manager.has_method("hide_enemies_left_label"):
-		ui_manager.hide_enemies_left_label(0.5)
+	if ui_manager and ui_manager.has_method("fade_in_label"):
+		ui_manager.fade_in_label(ui_manager.card_controls_label, ui_manager.controls_label_tween, 0.5)
 
 	if spawner and spawner.has_method("stop_spawning"):
 		spawner.stop_spawning()
@@ -197,9 +200,11 @@ func finish_wave() -> void:
 
 func start_wave() -> void:
 	if ui_manager:
-		if ui_manager.has_method("hide_start_game_label"): ui_manager.hide_start_game_label()
+		if ui_manager.has_method("fade_in_label"): 
+			ui_manager.fade_in_label(ui_manager.enemies_left_label, ui_manager.enemies_label_tween, 0.5)
+		if ui_manager and ui_manager.has_method("fade_out_label"):
+			ui_manager.fade_out_label(ui_manager.card_controls_label, ui_manager.controls_label_tween, 0.5)
 		if ui_manager.has_method("show_hud"): ui_manager.show_hud()
-		if ui_manager.has_method("show_enemies_left_label"): ui_manager.show_enemies_left_label(0.5)
 		if ui_manager.has_method("show_notification"):
 			ui_manager.show_notification("[color=gold]WAVE " + str(current_wave) + "[/color]", "[color=gray]Shoot them up![/color]", 1.0)
 	change_state(GameState.IN_WAVE)

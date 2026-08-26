@@ -14,6 +14,7 @@ class_name UIManager extends CanvasLayer
 @export var upgrade_points_label: RichTextLabel
 @export var experience_bar: TextureProgressBar
 @export var enemies_left_label: RichTextLabel
+@export var card_controls_label: RichTextLabel
 
 @export_group("Notifications System")
 @export var notifications_container: Control
@@ -34,6 +35,7 @@ var damage_tween: Tween
 var xp_tween: Tween
 var title_tween: Tween
 var enemies_label_tween: Tween
+var controls_label_tween: Tween
 
 func _ready() -> void:
 	show_start_screen()
@@ -47,6 +49,9 @@ func show_start_screen() -> void:
 	if enemies_left_label:
 		enemies_left_label.modulate.a = 0.0
 		enemies_left_label.hide()
+	if card_controls_label:
+		card_controls_label.modulate.a = 0.0
+		card_controls_label.hide()
 
 func hide_start_game_label() -> void:
 	if start_game_panel: start_game_panel.hide()
@@ -212,22 +217,22 @@ func update_enemies_left_label(count: int) -> void:
 	if enemies_left_label:
 		enemies_left_label.text = "[center]ENEMIES LEFT: [color=gold]" + str(count) + "[/color][/center]"
 
-func show_enemies_left_label(fade_duration: float = 0.4) -> void:
-	if not enemies_left_label:
+func fade_in_label(label: RichTextLabel, label_tween: Tween, duration: float = 0.5) -> void:
+	if not label:
 		return
-	if enemies_label_tween: enemies_label_tween.kill()
-	enemies_left_label.show()
-	enemies_label_tween = create_tween()
-	enemies_label_tween.tween_property(enemies_left_label, "modulate:a", 1.0, fade_duration)\
+	if label_tween: label_tween.kill()
+	label.show()
+	label_tween = create_tween()
+	label_tween.tween_property(label, "modulate:a", 1.0, duration)\
 		.set_trans(Tween.TRANS_SINE)\
 		.set_ease(Tween.EASE_OUT)
 
-func hide_enemies_left_label(fade_duration: float = 0.4) -> void:
-	if not enemies_left_label:
+func fade_out_label(label: RichTextLabel, label_tween: Tween, duration: float = 0.5) -> void:
+	if not label:
 		return
-	if enemies_label_tween: enemies_label_tween.kill()
-	enemies_label_tween = create_tween()
-	enemies_label_tween.tween_property(enemies_left_label, "modulate:a", 0.0, fade_duration)\
+	if label_tween: label_tween.kill()
+	label_tween = create_tween()
+	label_tween.tween_property(label, "modulate:a", 0.0, duration)\
 		.set_trans(Tween.TRANS_SINE)\
 		.set_ease(Tween.EASE_IN)
-	enemies_label_tween.tween_callback(enemies_left_label.hide)
+	label_tween.tween_callback(label.hide)
