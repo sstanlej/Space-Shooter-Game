@@ -458,6 +458,7 @@ text = "[center]BABY"
 fit_content = true
 
 [node name="DeckOverviewUI" parent="UILayer" node_paths=PackedStringArray("game_manager", "player") instance=ExtResource("32_htxhm")]
+visible = false
 game_manager = NodePath("../..")
 player = NodePath("../../World/Player")
 card_spacing = 30.0
