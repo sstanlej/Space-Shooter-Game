@@ -445,6 +445,6 @@ fit_content = true
 [node name="DeckOverviewUI" parent="UILayer" node_paths=PackedStringArray("game_manager", "player") instance=ExtResource("32_htxhm")]
 game_manager = NodePath("../..")
 player = NodePath("../../World/Player")
-card_spacing = 20.0
+card_spacing = 30.0
 selected_elevation_y = 30.0
 base_bottom_offset_y = 20.0
