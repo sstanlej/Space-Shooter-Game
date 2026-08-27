@@ -31,14 +31,20 @@ class_name UIManager extends CanvasLayer
 @export var final_distance_label: RichTextLabel
 
 var health_tween: Tween
+var shake_tween: Tween
+var health_bar_base_pos: Vector2 = Vector2.ZERO
 var damage_tween: Tween
+
 var xp_tween: Tween
 var title_tween: Tween
 var enemies_label_tween: Tween
 var controls_label_tween: Tween
 
 func _ready() -> void:
+	if health_bar:
+		health_bar_base_pos = health_bar.position
 	show_start_screen()
+	
 
 func show_start_screen() -> void:
 	if hud_panel: hud_panel.hide()
@@ -132,12 +138,20 @@ func update_health_bar(current_hp: int) -> void:
 func shake_health_bar() -> void:
 	if not health_bar:
 		return
-	var original_pos = health_bar.position
-	var shake_tween = create_tween()
-	shake_tween.tween_property(health_bar, "position", original_pos + Vector2(-3, 0), 0.05)
-	shake_tween.tween_property(health_bar, "position", original_pos + Vector2(3, 0), 0.075)
-	shake_tween.tween_property(health_bar, "position", original_pos + Vector2(-1, 0), 0.1)
-	shake_tween.tween_property(health_bar, "position", original_pos, 0.075)
+
+	if health_bar_base_pos == Vector2.ZERO:
+		health_bar_base_pos = health_bar.position
+
+	if shake_tween and shake_tween.is_running():
+		shake_tween.kill()
+
+	health_bar.position = health_bar_base_pos
+
+	shake_tween = create_tween()
+	shake_tween.tween_property(health_bar, "position", health_bar_base_pos + Vector2(-3, 0), 0.04)
+	shake_tween.tween_property(health_bar, "position", health_bar_base_pos + Vector2(3, 0), 0.06)
+	shake_tween.tween_property(health_bar, "position", health_bar_base_pos + Vector2(-1, 0), 0.06)
+	shake_tween.tween_property(health_bar, "position", health_bar_base_pos, 0.04)
 
 func update_experience_bar(current_xp: float, animate: bool = true) -> void:
 	if not experience_bar:
