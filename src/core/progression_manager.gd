@@ -46,6 +46,8 @@ func reset_progress() -> void:
 			ui_manager.extend_experience_bar(experience_needed)
 		if ui_manager.has_method("update_experience_bar"):
 			ui_manager.update_experience_bar(experience, false)
+		if ui_manager.has_method("update_experience_label"):
+			ui_manager.update_experience_label(level, experience, experience_needed)
 		if ui_manager.has_method("update_score_label"):
 			ui_manager.update_score_label(score)
 		if ui_manager.has_method("update_distance_label"):
@@ -69,6 +71,7 @@ func add_experience(amount: int) -> void:
 
 	if not leveled_up and ui_manager and ui_manager.has_method("update_experience_bar"):
 		ui_manager.update_experience_bar(experience, true)
+		ui_manager.update_experience_label(level, experience, experience_needed)
 
 	experience_updated.emit(experience, experience_needed)
 
@@ -95,6 +98,8 @@ func check_level_up() -> bool:
 				ui_manager.extend_experience_bar(experience_needed)
 			if ui_manager.has_method("update_experience_bar"):
 				ui_manager.update_experience_bar(experience, false)
+			if ui_manager.has_method("update_experience_label"):
+				ui_manager.update_experience_label(level, experience, experience_needed)
 			if ui_manager.has_method("update_upgrade_points_label"):
 				ui_manager.update_upgrade_points_label(upgrade_points)
 			if ui_manager.has_method("show_notification"):

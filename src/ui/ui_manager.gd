@@ -13,6 +13,7 @@ class_name UIManager extends CanvasLayer
 @export var distance_label: RichTextLabel
 @export var upgrade_points_label: RichTextLabel
 @export var experience_bar: TextureProgressBar
+@export var experience_label: RichTextLabel # <-- Nowy label pod paskiem EXP
 @export var enemies_left_label: RichTextLabel
 @export var card_controls_label: RichTextLabel
 
@@ -44,7 +45,6 @@ func _ready() -> void:
 	if health_bar:
 		health_bar_base_pos = health_bar.position
 	show_start_screen()
-	
 
 func show_start_screen() -> void:
 	if hud_panel: hud_panel.hide()
@@ -169,6 +169,10 @@ func update_experience_bar(current_xp: float, animate: bool = true) -> void:
 func extend_experience_bar(max_xp: float) -> void:
 	if experience_bar:
 		experience_bar.max_value = max_xp
+
+func update_experience_label(level: int, current_xp: float, max_xp: float) -> void:
+	if experience_label:
+		experience_label.text = "[center]LVL: %d    %d / %d[/center]" % [level, int(current_xp), int(max_xp)]
 
 func update_distance_label(distance: float) -> void:
 	if distance_label:

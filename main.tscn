@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://ctolyotyjbqwg"]
+[gd_scene load_steps=35 format=3 uid="uid://ctolyotyjbqwg"]
 
 [ext_resource type="Script" uid="uid://dm1jlaqpgu05" path="res://src/core/game_manager.gd" id="1_lswn8"]
 [ext_resource type="PackedScene" uid="uid://qoymek85ecx7" path="res://src/systems/locations/location_manager.tscn" id="2_a6jrf"]
@@ -16,6 +16,7 @@
 [ext_resource type="FontFile" uid="uid://bvlhnv4ultuef" path="res://assets/fonts/Pixeled.ttf" id="12_facbu"]
 [ext_resource type="Texture2D" uid="uid://c16xy12030r1n" path="res://src/ui/sprites/experience_bar_under.png" id="13_b1qrp"]
 [ext_resource type="Texture2D" uid="uid://to23gur3vo1e" path="res://src/ui/sprites/experience_bar_progress.png" id="14_come4"]
+[ext_resource type="FontFile" uid="uid://cmhoggvsfswfn" path="res://assets/fonts/Tiny5-Regular.ttf" id="14_seu75"]
 [ext_resource type="Texture2D" uid="uid://dpfe0j6dei725" path="res://src/ui/sprites/damage_bar_progess.png" id="15_h8e4i"]
 [ext_resource type="Texture2D" uid="uid://8vr2ywyir05q" path="res://src/ui/sprites/health_bar_under.png" id="16_4lmeg"]
 [ext_resource type="Texture2D" uid="uid://dj4w1hidatk1h" path="res://src/ui/sprites/health_bar_progess.png" id="17_0cp0l"]
@@ -154,7 +155,7 @@ ui_manager = NodePath("../UILayer")
 [node name="WaveCooldownTimer" type="Timer" parent="Timers"]
 wait_time = 5.0
 
-[node name="UILayer" type="CanvasLayer" parent="." node_paths=PackedStringArray("hud_panel", "intermission_panel", "shop_ui", "start_game_panel", "game_over_panel", "pause_panel", "score_label", "experience_bar", "enemies_left_label", "card_controls_label", "notifications_container", "title_label", "subtitle_label", "health_bar", "damage_bar", "final_wave_label", "final_score_label", "final_distance_label")]
+[node name="UILayer" type="CanvasLayer" parent="." node_paths=PackedStringArray("hud_panel", "intermission_panel", "shop_ui", "start_game_panel", "game_over_panel", "pause_panel", "score_label", "experience_bar", "experience_label", "enemies_left_label", "card_controls_label", "notifications_container", "title_label", "subtitle_label", "health_bar", "damage_bar", "final_wave_label", "final_score_label", "final_distance_label")]
 process_mode = 3
 script = ExtResource("8_jq2sk")
 hud_panel = NodePath("HUD")
@@ -165,6 +166,7 @@ game_over_panel = NodePath("GameOverUI")
 pause_panel = NodePath("PauseMenuUI")
 score_label = NodePath("HUD/ScoreLabel")
 experience_bar = NodePath("HUD/ExperienceBar")
+experience_label = NodePath("HUD/ExperienceLabel")
 enemies_left_label = NodePath("HUD/EnemiesLeftLabel")
 card_controls_label = NodePath("HUD/CardControlsLabel")
 notifications_container = NodePath("NotificationsUI")
@@ -194,14 +196,15 @@ texture = ExtResource("11_ok6jj")
 
 [node name="ScoreLabel" type="RichTextLabel" parent="UILayer/HUD"]
 process_mode = 3
+visible = false
 layout_mode = 0
-offset_left = 142.0
-offset_top = 121.0
-offset_right = 235.0
-offset_bottom = 142.0
+offset_left = 151.0
+offset_top = 127.0
+offset_right = 226.0
+offset_bottom = 136.0
 theme_override_colors/default_color = Color(0.75686276, 0.9019608, 0.7294118, 1)
-theme_override_fonts/normal_font = ExtResource("12_facbu")
-theme_override_font_sizes/normal_font_size = 5
+theme_override_fonts/normal_font = ExtResource("14_seu75")
+theme_override_font_sizes/normal_font_size = 8
 bbcode_enabled = true
 text = "[center][ SCORE ]"
 fit_content = true
@@ -237,10 +240,10 @@ fit_content = true
 [node name="ExperienceBar" type="TextureProgressBar" parent="UILayer/HUD"]
 process_mode = 3
 layout_mode = 0
-offset_left = 92.0
-offset_top = 131.0
-offset_right = 146.0
-offset_bottom = 134.0
+offset_left = 162.0
+offset_top = 124.0
+offset_right = 216.0
+offset_bottom = 128.0
 step = 0.01
 value = 5.0
 texture_under = ExtResource("13_b1qrp")
@@ -250,8 +253,8 @@ texture_progress = ExtResource("14_come4")
 process_mode = 3
 layout_mode = 0
 offset_left = 92.0
-offset_top = 124.0
-offset_right = 156.0
+offset_top = 126.0
+offset_right = 146.0
 offset_bottom = 132.0
 step = 0.01
 value = 10.0
@@ -262,13 +265,26 @@ tint_progress = Color(1.289, 0.13, 0, 1)
 process_mode = 3
 layout_mode = 0
 offset_left = 92.0
-offset_top = 124.0
-offset_right = 156.0
+offset_top = 126.0
+offset_right = 146.0
 offset_bottom = 132.0
 step = 0.01
 value = 3.0
 texture_under = ExtResource("16_4lmeg")
 texture_progress = ExtResource("17_0cp0l")
+
+[node name="ExperienceLabel" type="RichTextLabel" parent="UILayer/HUD"]
+layout_mode = 0
+offset_left = 150.0
+offset_top = 127.0
+offset_right = 230.0
+offset_bottom = 136.0
+theme_override_colors/default_color = Color(0.5529412, 0.6784314, 0.76862746, 1)
+theme_override_fonts/normal_font = ExtResource("14_seu75")
+theme_override_font_sizes/normal_font_size = 8
+bbcode_enabled = true
+text = "[center]LVL: X    Y / Z"
+fit_content = true
 
 [node name="IntermissionUI" type="Control" parent="UILayer"]
 layout_mode = 3
