@@ -15,8 +15,9 @@ class_name UIManager extends CanvasLayer
 @export var experience_bar: TextureProgressBar
 @export var experience_label: RichTextLabel 
 @export var enemies_left_label: RichTextLabel
-@export var card_controls_label: RichTextLabel
 @export var exp_particles: GPUParticles2D
+@export var shop_controls_label: RichTextLabel
+@export var deck_controls_label: RichTextLabel
 
 @export_group("Notifications System")
 @export var notifications_container: Control
@@ -40,7 +41,9 @@ var damage_tween: Tween
 var xp_tween: Tween
 var title_tween: Tween
 var enemies_label_tween: Tween
-var controls_label_tween: Tween
+var shop_pulse_tween: Tween
+var shop_label_tween: Tween
+var deck_label_tween: Tween
 var is_leveling_up: bool = false
 
 func _ready() -> void:
@@ -57,9 +60,12 @@ func show_start_screen() -> void:
 	if enemies_left_label:
 		enemies_left_label.modulate.a = 0.0
 		enemies_left_label.hide()
-	if card_controls_label:
-		card_controls_label.modulate.a = 0.0
-		card_controls_label.hide()
+	if shop_controls_label:
+		shop_controls_label.modulate.a = 0.0
+		shop_controls_label.hide()
+	if deck_controls_label:
+		deck_controls_label.modulate.a = 0.0
+		deck_controls_label.hide()
 
 func hide_start_game_label() -> void:
 	if start_game_panel: start_game_panel.hide()
@@ -317,6 +323,7 @@ func update_score_label(score: float) -> void:
 func update_upgrade_points_label(points: int) -> void:
 	if upgrade_points_label:
 		upgrade_points_label.text = "Points: " + str(points)
+	update_shop_controls_display(points)
 
 func show_notification(title_text: String, subtitle_text: String = "", duration: float = 2.5) -> void:
 	if not notifications_container or not title_label:
@@ -386,3 +393,47 @@ func fade_out_label(label: RichTextLabel, label_tween: Tween, duration: float = 
 		.set_trans(Tween.TRANS_SINE)\
 		.set_ease(Tween.EASE_IN)
 	label_tween.tween_callback(label.hide)
+
+# --- KONTROLA I ANIMACJA ETYKIET STEROWANIA (SHOP / DECK) ---
+
+func update_shop_controls_display(points: int) -> void:
+	if not shop_controls_label:
+		return
+
+	if points > 0:
+		shop_controls_label.text = "[left][color=gold][B][/color] SHOP [color=gold](%d)[/color][/left]" % points
+		start_shop_pulse()
+	else:
+		shop_controls_label.text = "[left][color=gold][B][/color] SHOP[/left]"
+		stop_shop_pulse()
+
+func start_shop_pulse() -> void:
+	if shop_pulse_tween and shop_pulse_tween.is_running():
+		return
+
+	shop_pulse_tween = create_tween().set_loops()
+	# Płynne pulsowanie przezroczystości tekstu (1.0 -> 0.25 -> 1.0)
+	shop_pulse_tween.tween_property(shop_controls_label, "self_modulate:a", 0.25, 0.35)\
+		.set_trans(Tween.TRANS_SINE)\
+		.set_ease(Tween.EASE_IN_OUT)
+	shop_pulse_tween.tween_property(shop_controls_label, "self_modulate:a", 1.0, 0.35)\
+		.set_trans(Tween.TRANS_SINE)\
+		.set_ease(Tween.EASE_IN_OUT)
+
+func stop_shop_pulse() -> void:
+	if shop_pulse_tween and shop_pulse_tween.is_running():
+		shop_pulse_tween.kill()
+	if shop_controls_label:
+		shop_controls_label.self_modulate.a = 1.0
+
+func show_controls_prompt() -> void:
+	if shop_controls_label:
+		fade_in_label(shop_controls_label, shop_label_tween, 0.3)
+	if deck_controls_label:
+		fade_in_label(deck_controls_label, deck_label_tween, 0.3)
+
+func hide_controls_prompt() -> void:
+	if shop_controls_label:
+		fade_out_label(shop_controls_label, shop_label_tween, 0.3)
+	if deck_controls_label:
+		fade_out_label(deck_controls_label, deck_label_tween, 0.3)

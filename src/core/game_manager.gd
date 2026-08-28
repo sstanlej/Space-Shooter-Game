@@ -175,18 +175,23 @@ func finish_wave() -> void:
 	wave_ended.emit(current_wave)
 	change_state(GameState.BETWEEN_WAVES)
 
-	if ui_manager and ui_manager.has_method("show_notification"):
-		var points: int = progression_manager.get_upgrade_points() if progression_manager else 0
-		var subtitle = "[color=gray]Shop [color=gold][B][/color] | Cards [color=gold][TAB][/color][/color]"
-		if points > 0:
-			subtitle = "[color=gold]+" + str(points) + " Pts![/color] Shop [color=gold][B][/color] | Cards [color=gold][TAB][/color]"
-		ui_manager.show_notification("[color=gold]WAVE FINISHED![/color]", subtitle, 1.5)
-	
-	if ui_manager and ui_manager.has_method("fade_out_label"):
-		ui_manager.fade_out_label(ui_manager.enemies_left_label, ui_manager.enemies_label_tween, 0.5)
+	var points: int = progression_manager.get_upgrade_points() if progression_manager else 0
 
-	if ui_manager and ui_manager.has_method("fade_in_label"):
-		ui_manager.fade_in_label(ui_manager.card_controls_label, ui_manager.controls_label_tween, 0.5)
+	if ui_manager:
+		if ui_manager.has_method("update_shop_controls_display"):
+			ui_manager.update_shop_controls_display(points)
+
+		if ui_manager.has_method("show_notification"):
+			var subtitle = ""
+			if points > 0:
+				subtitle = "Press [color=gold][B][/color] to open the SHOP!"
+			ui_manager.show_notification("[color=gold]WAVE FINISHED![/color]", subtitle, 1.5)
+
+		if ui_manager.has_method("fade_out_label"):
+			ui_manager.fade_out_label(ui_manager.enemies_left_label, ui_manager.enemies_label_tween, 0.5)
+
+		if ui_manager.has_method("show_controls_prompt"):
+			ui_manager.show_controls_prompt()
 
 	if spawner and spawner.has_method("stop_spawning"):
 		spawner.stop_spawning()
@@ -198,15 +203,21 @@ func finish_wave() -> void:
 	if wave_cooldown_timer:
 		wave_cooldown_timer.start()
 
+
 func start_wave() -> void:
 	if ui_manager:
 		if ui_manager.has_method("fade_in_label"): 
 			ui_manager.fade_in_label(ui_manager.enemies_left_label, ui_manager.enemies_label_tween, 0.5)
-		if ui_manager and ui_manager.has_method("fade_out_label"):
-			ui_manager.fade_out_label(ui_manager.card_controls_label, ui_manager.controls_label_tween, 0.5)
-		if ui_manager.has_method("show_hud"): ui_manager.show_hud()
+
+		if ui_manager.has_method("hide_controls_prompt"):
+			ui_manager.hide_controls_prompt()
+
+		if ui_manager.has_method("show_hud"): 
+			ui_manager.show_hud()
+
 		if ui_manager.has_method("show_notification"):
 			ui_manager.show_notification("[color=gold]WAVE " + str(current_wave) + "[/color]", "[color=gray]Shoot them up![/color]", 1.0)
+
 	change_state(GameState.IN_WAVE)
 	wave_started.emit(current_wave)
 
@@ -220,8 +231,8 @@ func start_next_wave() -> void:
 func open_shop() -> void:
 	if current_state == GameState.BETWEEN_WAVES:
 		change_state(GameState.IN_SHOP)
-		if ui_manager and ui_manager.has_method("fade_out_label"):
-			ui_manager.fade_out_label(ui_manager.card_controls_label, ui_manager.controls_label_tween, 0.15)
+		if ui_manager.has_method("hide_controls_prompt"):
+			ui_manager.hide_controls_prompt()
 		if shop_ui and shop_ui.has_method("show_shop"):
 			shop_ui.show_shop()
 
@@ -229,9 +240,8 @@ func close_shop() -> void:
 	if current_state == GameState.IN_SHOP:
 		if shop_ui and shop_ui.has_method("hide_shop"):
 			await shop_ui.hide_shop()
-			if ui_manager and ui_manager.has_method("fade_in_label"):
-				ui_manager.fade_in_label(ui_manager.card_controls_label, ui_manager.controls_label_tween, 0.5)
-
+			if ui_manager.has_method("show_controls_prompt"):
+				ui_manager.show_controls_prompt()
 		change_state(GameState.BETWEEN_WAVES)
 
 func open_deck_overview() -> void:

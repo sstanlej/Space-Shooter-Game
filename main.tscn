@@ -157,7 +157,7 @@ player = NodePath("../World/Player")
 [node name="WaveCooldownTimer" type="Timer" parent="Timers"]
 wait_time = 5.0
 
-[node name="UILayer" type="CanvasLayer" parent="." node_paths=PackedStringArray("hud_panel", "intermission_panel", "shop_ui", "start_game_panel", "game_over_panel", "pause_panel", "score_label", "experience_bar", "experience_label", "enemies_left_label", "card_controls_label", "exp_particles", "notifications_container", "title_label", "subtitle_label", "health_bar", "damage_bar", "final_wave_label", "final_score_label", "final_distance_label")]
+[node name="UILayer" type="CanvasLayer" parent="." node_paths=PackedStringArray("hud_panel", "intermission_panel", "shop_ui", "start_game_panel", "game_over_panel", "pause_panel", "score_label", "experience_bar", "experience_label", "enemies_left_label", "exp_particles", "shop_controls_label", "deck_controls_label", "notifications_container", "title_label", "subtitle_label", "health_bar", "damage_bar", "final_wave_label", "final_score_label", "final_distance_label")]
 process_mode = 3
 script = ExtResource("8_jq2sk")
 hud_panel = NodePath("HUD")
@@ -170,8 +170,9 @@ score_label = NodePath("HUD/ScoreLabel")
 experience_bar = NodePath("HUD/ExperienceBar")
 experience_label = NodePath("HUD/ExperienceLabel")
 enemies_left_label = NodePath("HUD/EnemiesLeftLabel")
-card_controls_label = NodePath("HUD/CardControlsLabel")
 exp_particles = NodePath("HUD/ConfettiParticles")
+shop_controls_label = NodePath("HUD/ShopControlLabel")
+deck_controls_label = NodePath("HUD/DeckControlLabel")
 notifications_container = NodePath("NotificationsUI")
 title_label = NodePath("NotificationsUI/MessageContainer/TitleLabel")
 subtitle_label = NodePath("NotificationsUI/MessageContainer/SubtitleLabel")
@@ -225,7 +226,7 @@ bbcode_enabled = true
 text = "[right]ENEMIES LEFT: [color=gold]0[/color]"
 fit_content = true
 
-[node name="CardControlsLabel" type="RichTextLabel" parent="UILayer/HUD"]
+[node name="ShopControlLabel" type="RichTextLabel" parent="UILayer/HUD"]
 process_mode = 3
 layout_mode = 0
 offset_left = 5.0
@@ -236,8 +237,22 @@ theme_override_constants/paragraph_separation = -5
 theme_override_fonts/normal_font = ExtResource("12_facbu")
 theme_override_font_sizes/normal_font_size = 5
 bbcode_enabled = true
-text = "[color=gold][B][/color] SHOP
-[color=cyan][TAB][/color] DECK"
+text = "[color=gold][B][/color] SHOP"
+fit_content = true
+
+[node name="DeckControlLabel" type="RichTextLabel" parent="UILayer/HUD"]
+process_mode = 3
+layout_mode = 0
+offset_left = 5.0
+offset_top = 7.0
+offset_right = 98.0
+offset_bottom = 28.0
+theme_override_colors/default_color = Color(0.75686276, 0.9019608, 0.7294118, 1)
+theme_override_constants/paragraph_separation = -5
+theme_override_fonts/normal_font = ExtResource("12_facbu")
+theme_override_font_sizes/normal_font_size = 5
+bbcode_enabled = true
+text = "[color=cyan][TAB][/color] DECK"
 fit_content = true
 
 [node name="ConfettiParticles" parent="UILayer/HUD" instance=ExtResource("16_htxhm")]
