@@ -44,6 +44,7 @@ var enemies_label_tween: Tween
 var shop_pulse_tween: Tween
 var shop_label_tween: Tween
 var deck_label_tween: Tween
+var hud_fade_tween: Tween
 var is_leveling_up: bool = false
 
 func _ready() -> void:
@@ -437,3 +438,25 @@ func hide_controls_prompt() -> void:
 		fade_out_label(shop_controls_label, shop_label_tween, 0.3)
 	if deck_controls_label:
 		fade_out_label(deck_controls_label, deck_label_tween, 0.3)
+
+func fade_out_hud(duration: float = 0.25) -> void:
+	if not hud_panel:
+		return
+	if hud_fade_tween and hud_fade_tween.is_running():
+		hud_fade_tween.kill()
+	hud_fade_tween = create_tween()
+	hud_fade_tween.tween_property(hud_panel, "modulate:a", 0.0, duration)\
+		.set_trans(Tween.TRANS_SINE)\
+		.set_ease(Tween.EASE_OUT)
+	hud_fade_tween.tween_callback(hud_panel.hide)
+
+func fade_in_hud(duration: float = 0.25) -> void:
+	if not hud_panel:
+		return
+	if hud_fade_tween and hud_fade_tween.is_running():
+		hud_fade_tween.kill()
+	hud_panel.show()
+	hud_fade_tween = create_tween()
+	hud_fade_tween.tween_property(hud_panel, "modulate:a", 1.0, duration)\
+		.set_trans(Tween.TRANS_SINE)\
+		.set_ease(Tween.EASE_OUT)

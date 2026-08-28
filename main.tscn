@@ -313,8 +313,7 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="ShopUI" type="Control" parent="UILayer" node_paths=PackedStringArray("game_manager", "progression_manager", "player", "deck_manager", "background_overlay", "cards_container", "warning_label", "choose_upgrade_label")]
-visible = false
+[node name="ShopUI" type="Control" parent="UILayer" node_paths=PackedStringArray("game_manager", "progression_manager", "player", "deck_manager", "ui_manager", "background_overlay", "cards_container", "warning_label", "choose_upgrade_label", "upgrades_available_label", "controls_hint_label", "maxed_out_label")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -326,11 +325,15 @@ game_manager = NodePath("../..")
 progression_manager = NodePath("../../ProgressionManager")
 player = NodePath("../../World/Player")
 deck_manager = NodePath("CardDeckManager")
+ui_manager = NodePath("..")
 background_overlay = NodePath("BackgroundOverlay")
 cards_container = NodePath("CardsContainer")
 card_ui_scene = ExtResource("19_xuqvo")
 warning_label = NodePath("WarningLabel")
 choose_upgrade_label = NodePath("ChooseUpgradeLabel")
+upgrades_available_label = NodePath("UpgradesAvailableLabel")
+controls_hint_label = NodePath("ControlsHintLabel")
+maxed_out_label = NodePath("MaxedOutLabel")
 
 [node name="BackgroundOverlay" type="ColorRect" parent="UILayer/ShopUI"]
 layout_mode = 1
@@ -353,7 +356,67 @@ alignment = 1
 script = ExtResource("27_a6jrf")
 available_cards = Array[ExtResource("21_htxhm")]([ExtResource("22_jq2sk"), ExtResource("23_4k2k6"), ExtResource("24_0rl1p"), ExtResource("25_0odxb"), ExtResource("28_qsp4k"), ExtResource("29_kq58d")])
 
+[node name="ChooseUpgradeLabel" type="RichTextLabel" parent="UILayer/ShopUI"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 28.0
+grow_horizontal = 2
+theme_override_fonts/normal_font = ExtResource("12_facbu")
+theme_override_font_sizes/normal_font_size = 10
+bbcode_enabled = true
+text = "[center][color=gold]CHOOSE THE UPGRADE:"
+fit_content = true
+
+[node name="MaxedOutLabel" type="RichTextLabel" parent="UILayer/ShopUI"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -73.0
+offset_bottom = -59.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/normal_font = ExtResource("12_facbu")
+theme_override_font_sizes/normal_font_size = 5
+bbcode_enabled = true
+text = "[center]NO UPGRADES AVAILABLE"
+fit_content = true
+
+[node name="UpgradesAvailableLabel" type="RichTextLabel" parent="UILayer/ShopUI"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -30.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/normal_font = ExtResource("12_facbu")
+theme_override_font_sizes/normal_font_size = 5
+bbcode_enabled = true
+text = "[center]UPGRADES AVAILABLE: X"
+fit_content = true
+
 [node name="WarningLabel" type="RichTextLabel" parent="UILayer/ShopUI"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -22.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/normal_font = ExtResource("12_facbu")
+theme_override_font_sizes/normal_font_size = 5
+bbcode_enabled = true
+text = "[center]THIS IS THE WARNING"
+fit_content = true
+
+[node name="ControlsHintLabel" type="RichTextLabel" parent="UILayer/ShopUI"]
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
@@ -365,19 +428,7 @@ grow_vertical = 0
 theme_override_fonts/normal_font = ExtResource("12_facbu")
 theme_override_font_sizes/normal_font_size = 5
 bbcode_enabled = true
-text = "[center]THIS IS THE WARNING"
-fit_content = true
-
-[node name="ChooseUpgradeLabel" type="RichTextLabel" parent="UILayer/ShopUI"]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_bottom = 14.0
-grow_horizontal = 2
-theme_override_fonts/normal_font = ExtResource("12_facbu")
-theme_override_font_sizes/normal_font_size = 10
-bbcode_enabled = true
-text = "[center][color=gold]CHOOSE THE UPGRADE:"
+text = "[center][color=gray]SHOP CONTROLS"
 fit_content = true
 
 [node name="PauseMenuUI" type="Control" parent="UILayer"]
@@ -461,6 +512,7 @@ text = "PRESS SPACE TO START"
 fit_content = true
 
 [node name="NotificationsUI" type="Control" parent="UILayer"]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
