@@ -12,6 +12,7 @@ signal upgrade_points_changed(new_points: int)
 
 @export_group("System References")
 @export var ui_manager: UIManager
+@export var player: Player # <-- Referencja do gracza (do pełnego leczenia)
 
 var experience: int = 0
 var experience_needed: int = 100
@@ -79,35 +80,40 @@ func add_xp(amount: float) -> void:
 	add_experience(int(amount))
 
 func check_level_up() -> bool:
-	var leveled_up: bool = false
+	if experience < experience_needed:
+		return false
 
+	var levels_gained: int = 0
+	var start_needed: int = experience_needed
+
+	# Przeliczamy wszystkie poziomy w pętli
 	while experience >= experience_needed:
 		experience -= experience_needed
 		level += 1
 		experience_needed = int(experience_needed * experience_needed_modifier)
 		upgrade_points += 1
-		leveled_up = true
+		levels_gained += 1
 
-		print("[ProgressionManager] Level up: %d (Punkty: %d)" % [level, upgrade_points])
+	print("[ProgressionManager] Level up! +%d lvl -> Aktualny Poziom: %d (Punkty: %d)" % [levels_gained, level, upgrade_points])
 
-		level_up_occurred.emit(level, upgrade_points)
-		upgrade_points_changed.emit(upgrade_points)
+	# 1. Pełne uleczenie gracza po awansie
+	if player and player.health_component:
+		player.health_component.heal(player.health_component.get_max_health())
 
-		if ui_manager:
-			if ui_manager.has_method("extend_experience_bar"):
-				ui_manager.extend_experience_bar(experience_needed)
-			if ui_manager.has_method("update_experience_bar"):
-				ui_manager.update_experience_bar(experience, false)
-			if ui_manager.has_method("update_experience_label"):
-				ui_manager.update_experience_label(level, experience, experience_needed)
-			if ui_manager.has_method("update_upgrade_points_label"):
-				ui_manager.update_upgrade_points_label(upgrade_points)
-			if ui_manager.has_method("show_notification"):
-				ui_manager.show_notification("[color=cyan]LEVEL UP[/color]", "[color=white]Level %d reached![/color]" % level, 1.2)
-			if ui_manager and ui_manager.has_method("play_level_up_effect"):
-				ui_manager.play_level_up_effect()
+	level_up_occurred.emit(level, upgrade_points)
+	upgrade_points_changed.emit(upgrade_points)
 
-	return leveled_up
+	# 2. Wywołanie animacji w UI
+	if ui_manager:
+		if ui_manager.has_method("update_upgrade_points_label"):
+			ui_manager.update_upgrade_points_label(upgrade_points)
+		if ui_manager.has_method("show_notification"):
+			var subtitle = "Level %d reached!" % level if levels_gained == 1 else "+%d Levels! Level %d reached!" % [levels_gained, level]
+			ui_manager.show_notification("[color=cyan]LEVEL UP![/color]", "[color=white]%s[/color]" % subtitle, 1.4)
+		if ui_manager.has_method("animate_level_up"):
+			ui_manager.animate_level_up(start_needed, level, experience_needed, experience, levels_gained)
+
+	return true
 
 func add_upgrade_points(amount: int = 1) -> void:
 	upgrade_points += amount

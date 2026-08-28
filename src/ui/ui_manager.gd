@@ -41,6 +41,7 @@ var xp_tween: Tween
 var title_tween: Tween
 var enemies_label_tween: Tween
 var controls_label_tween: Tween
+var is_leveling_up: bool = false
 
 func _ready() -> void:
 	if health_bar:
@@ -157,7 +158,11 @@ func shake_health_bar() -> void:
 func update_experience_bar(current_xp: float, animate: bool = true) -> void:
 	if not experience_bar:
 		return
-	if xp_tween: xp_tween.kill()
+	if is_leveling_up:
+		return
+
+	if xp_tween and xp_tween.is_running():
+		xp_tween.kill()
 
 	if animate:
 		xp_tween = create_tween()
@@ -166,6 +171,58 @@ func update_experience_bar(current_xp: float, animate: bool = true) -> void:
 			.set_ease(Tween.EASE_OUT)
 	else:
 		experience_bar.value = current_xp
+
+func animate_level_up(old_max_xp: int, new_level: int, new_max_xp: int, current_xp: int, levels_gained: int = 1) -> void:
+	if not experience_bar:
+		return
+
+	is_leveling_up = true
+	if xp_tween and xp_tween.is_running():
+		xp_tween.kill()
+
+	# Cząsteczki i SFX odpalają się natychmiast
+	play_level_up_effect()
+
+	xp_tween = create_tween()
+	experience_bar.max_value = old_max_xp
+
+	xp_tween.tween_property(experience_bar, "value", float(old_max_xp), 0.12)\
+		.set_trans(Tween.TRANS_QUAD)\
+		.set_ease(Tween.EASE_OUT)
+
+	xp_tween.tween_callback(func():
+		experience_bar.modulate = Color(2.5, 2.5, 2.5, 1.0)
+		experience_bar.pivot_offset = experience_bar.size / 2.0
+
+		var bar_pop = create_tween()
+		bar_pop.tween_property(experience_bar, "scale", Vector2(1.06, 1.16), 0.08)
+		bar_pop.tween_property(experience_bar, "scale", Vector2.ONE, 0.16)\
+			.set_trans(Tween.TRANS_BACK)\
+			.set_ease(Tween.EASE_OUT)
+
+		if experience_label:
+			experience_label.pivot_offset = experience_label.size / 2.0
+			experience_label.text = "[center]LVL: %d    0 / %d[/center]" % [new_level, new_max_xp]
+			var lbl_pop = create_tween()
+			lbl_pop.tween_property(experience_label, "scale", Vector2(1.25, 1.25), 0.08)
+			lbl_pop.tween_property(experience_label, "scale", Vector2.ONE, 0.16)\
+				.set_trans(Tween.TRANS_BACK)\
+				.set_ease(Tween.EASE_OUT)
+
+		experience_bar.max_value = new_max_xp
+		experience_bar.value = 0
+	)
+
+	xp_tween.tween_property(experience_bar, "modulate", Color.WHITE, 0.1)
+
+	xp_tween.tween_property(experience_bar, "value", float(current_xp), 0.35)\
+		.set_trans(Tween.TRANS_CUBIC)\
+		.set_ease(Tween.EASE_OUT)
+
+	xp_tween.tween_callback(func():
+		update_experience_label(new_level, current_xp, new_max_xp)
+		is_leveling_up = false
+	)
 
 func play_level_up_effect() -> void:
 	if exp_particles:
