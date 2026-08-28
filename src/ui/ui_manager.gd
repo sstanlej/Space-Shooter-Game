@@ -180,16 +180,24 @@ func animate_level_up(old_max_xp: int, new_level: int, new_max_xp: int, current_
 	if xp_tween and xp_tween.is_running():
 		xp_tween.kill()
 
-	# Cząsteczki i SFX odpalają się natychmiast
+	# Cząsteczki i dźwięk
 	play_level_up_effect()
+
+	# Odpalenie kaskady unoszących się napisów LEVEL UP!
+	for i in range(levels_gained):
+		var delay = i * 0.12
+		var offset_x = (i - (levels_gained - 1) / 2.0) * 10.0 if levels_gained > 1 else 0.0
+		spawn_floating_level_up(delay, offset_x)
 
 	xp_tween = create_tween()
 	experience_bar.max_value = old_max_xp
 
+	# FAZA 1: Dobicie do końca
 	xp_tween.tween_property(experience_bar, "value", float(old_max_xp), 0.12)\
 		.set_trans(Tween.TRANS_QUAD)\
 		.set_ease(Tween.EASE_OUT)
 
+	# FAZA 2: Kulminacja (Flash paska + Pop etykiety)
 	xp_tween.tween_callback(func():
 		experience_bar.modulate = Color(2.5, 2.5, 2.5, 1.0)
 		experience_bar.pivot_offset = experience_bar.size / 2.0
@@ -213,16 +221,74 @@ func animate_level_up(old_max_xp: int, new_level: int, new_max_xp: int, current_
 		experience_bar.value = 0
 	)
 
+	# FAZA 3: Powrót koloru do normy
 	xp_tween.tween_property(experience_bar, "modulate", Color.WHITE, 0.1)
 
+	# FAZA 4: Wlanie nadmiarowego EXP
 	xp_tween.tween_property(experience_bar, "value", float(current_xp), 0.35)\
 		.set_trans(Tween.TRANS_CUBIC)\
 		.set_ease(Tween.EASE_OUT)
 
+	# FAZA 5: Odblokowanie flagi i aktualizacja etykiety
 	xp_tween.tween_callback(func():
 		update_experience_label(new_level, current_xp, new_max_xp)
 		is_leveling_up = false
 	)
+func spawn_floating_level_up(delay: float = 0.0, offset_x: float = 0.0) -> void:
+	if not experience_bar or not hud_panel:
+		return
+
+	var label = RichTextLabel.new()
+	label.bbcode_enabled = true
+	label.fit_content = true
+	label.scroll_active = false
+	label.autowrap_mode = TextServer.AUTOWRAP_OFF
+	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+	var font_path = "res://assets/fonts/Pixeled.ttf"
+	if ResourceLoader.exists(font_path):
+		var font_res = load(font_path)
+		label.add_theme_font_override("normal_font", font_res)
+		label.add_theme_font_size_override("normal_font_size", 7)
+
+	label.text = "[center][color=#e4f1f8]LEVEL UP![/color][/center]"
+
+	var label_w: float = 64.0
+	var label_h: float = 12.0
+	label.custom_minimum_size = Vector2(label_w, label_h)
+	label.size = Vector2(label_w, label_h)
+
+	hud_panel.add_child(label)
+
+	var bar_center_x = experience_bar.position.x + (experience_bar.size.x / 2.0)
+	var start_pos = Vector2(bar_center_x - (label_w / 2.0) + offset_x, experience_bar.position.y - 2.0)
+
+	label.position = start_pos
+	label.modulate.a = 1.0
+	label.z_index = 10
+
+	var float_tween = create_tween()
+	if delay > 0.0:
+		label.modulate.a = 0.0
+		float_tween.tween_interval(delay)
+		float_tween.tween_callback(func(): label.modulate.a = 1.0)
+
+	# Wymuszamy pełny tryb równoległy dla wszystkich kolejnych właściwości:
+	float_tween.set_parallel(true)
+
+	# 1. Agresywny wystrzał i wyhamowanie
+	float_tween.tween_property(label, "position:y", start_pos.y - 24.0, 0.75)\
+		.set_trans(Tween.TRANS_EXPO)\
+		.set_ease(Tween.EASE_OUT)
+
+	# 2. Zanikanie dokładnie w trakcie lotu (znika całkowicie w 0.38s)
+	float_tween.tween_property(label, "modulate:a", 0.0, 0.5)\
+		.set_delay(0.2)\
+		.set_trans(Tween.TRANS_SINE)\
+		.set_ease(Tween.EASE_IN)
+
+	# 3. chain() czeka na zakończenie dłuższego z nich (0.48s) i bezpiecznie usuwa obiekt
+	float_tween.chain().tween_callback(label.queue_free)
 
 func play_level_up_effect() -> void:
 	if exp_particles:
@@ -238,7 +304,7 @@ func extend_experience_bar(max_xp: float) -> void:
 
 func update_experience_label(level: int, current_xp: float, max_xp: float) -> void:
 	if experience_label:
-		experience_label.text = "[center]LVL: %d    %d / %d[/center]" % [level, int(current_xp), int(max_xp)]
+		experience_label.text = "[center]LVL [color=#e4f1f8]%d[/color]    %d / %d[/center]" % [level, int(current_xp), int(max_xp)]
 
 func update_distance_label(distance: float) -> void:
 	if distance_label:

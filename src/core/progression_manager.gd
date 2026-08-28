@@ -103,13 +103,9 @@ func check_level_up() -> bool:
 	level_up_occurred.emit(level, upgrade_points)
 	upgrade_points_changed.emit(upgrade_points)
 
-	# 2. Wywołanie animacji w UI
 	if ui_manager:
 		if ui_manager.has_method("update_upgrade_points_label"):
 			ui_manager.update_upgrade_points_label(upgrade_points)
-		if ui_manager.has_method("show_notification"):
-			var subtitle = "Level %d reached!" % level if levels_gained == 1 else "+%d Levels! Level %d reached!" % [levels_gained, level]
-			ui_manager.show_notification("[color=cyan]LEVEL UP![/color]", "[color=white]%s[/color]" % subtitle, 1.4)
 		if ui_manager.has_method("animate_level_up"):
 			ui_manager.animate_level_up(start_needed, level, experience_needed, experience, levels_gained)
 
