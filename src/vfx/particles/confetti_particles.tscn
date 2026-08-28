@@ -1,0 +1,35 @@
+[gd_scene load_steps=7 format=3 uid="uid://bekh1ermcrykt"]
+
+[ext_resource type="Texture2D" uid="uid://c4cdpyxx71f8j" path="res://src/vfx/particles/star_particle.png" id="1_x4b4c"]
+
+[sub_resource type="Gradient" id="Gradient_x4b4c"]
+offsets = PackedFloat32Array(0.006302521, 0.5126051, 1)
+colors = PackedColorArray(1, 0.19607843, 0.53333336, 1, 0.8235294, 0.7607843, 0.05490196, 1, 1.1070073e-05, 0.9046593, 0.47169304, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_6hfa8"]
+gradient = SubResource("Gradient_x4b4c")
+
+[sub_resource type="Gradient" id="Gradient_6hfa8"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_xdcq2"]
+gradient = SubResource("Gradient_6hfa8")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_x4b4c"]
+particle_flag_disable_z = true
+direction = Vector3(0, -1, 0)
+spread = 55.0
+initial_velocity_min = 70.0
+initial_velocity_max = 150.0
+gravity = Vector3(0, 160, 0)
+color_ramp = SubResource("GradientTexture1D_xdcq2")
+color_initial_ramp = SubResource("GradientTexture1D_6hfa8")
+
+[node name="ConfettiParticles" type="GPUParticles2D"]
+emitting = false
+amount = 20
+texture = ExtResource("1_x4b4c")
+lifetime = 0.9
+one_shot = true
+explosiveness = 0.9
+process_material = SubResource("ParticleProcessMaterial_x4b4c")

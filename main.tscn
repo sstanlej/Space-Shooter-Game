@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://ctolyotyjbqwg"]
+[gd_scene load_steps=36 format=3 uid="uid://ctolyotyjbqwg"]
 
 [ext_resource type="Script" uid="uid://dm1jlaqpgu05" path="res://src/core/game_manager.gd" id="1_lswn8"]
 [ext_resource type="PackedScene" uid="uid://qoymek85ecx7" path="res://src/systems/locations/location_manager.tscn" id="2_a6jrf"]
@@ -19,6 +19,7 @@
 [ext_resource type="FontFile" uid="uid://cmhoggvsfswfn" path="res://assets/fonts/Tiny5-Regular.ttf" id="14_seu75"]
 [ext_resource type="Texture2D" uid="uid://dpfe0j6dei725" path="res://src/ui/sprites/damage_bar_progess.png" id="15_h8e4i"]
 [ext_resource type="Texture2D" uid="uid://8vr2ywyir05q" path="res://src/ui/sprites/health_bar_under.png" id="16_4lmeg"]
+[ext_resource type="PackedScene" uid="uid://bekh1ermcrykt" path="res://src/vfx/particles/confetti_particles.tscn" id="16_htxhm"]
 [ext_resource type="Texture2D" uid="uid://dj4w1hidatk1h" path="res://src/ui/sprites/health_bar_progess.png" id="17_0cp0l"]
 [ext_resource type="Script" uid="uid://byxu7j2uos8l8" path="res://src/systems/shop/shop_ui.gd" id="18_d2t1y"]
 [ext_resource type="PackedScene" uid="uid://cst1qkgkg8h8x" path="res://src/systems/shop/card_ui.tscn" id="19_xuqvo"]
@@ -155,7 +156,7 @@ ui_manager = NodePath("../UILayer")
 [node name="WaveCooldownTimer" type="Timer" parent="Timers"]
 wait_time = 5.0
 
-[node name="UILayer" type="CanvasLayer" parent="." node_paths=PackedStringArray("hud_panel", "intermission_panel", "shop_ui", "start_game_panel", "game_over_panel", "pause_panel", "score_label", "experience_bar", "experience_label", "enemies_left_label", "card_controls_label", "notifications_container", "title_label", "subtitle_label", "health_bar", "damage_bar", "final_wave_label", "final_score_label", "final_distance_label")]
+[node name="UILayer" type="CanvasLayer" parent="." node_paths=PackedStringArray("hud_panel", "intermission_panel", "shop_ui", "start_game_panel", "game_over_panel", "pause_panel", "score_label", "experience_bar", "experience_label", "enemies_left_label", "card_controls_label", "exp_particles", "notifications_container", "title_label", "subtitle_label", "health_bar", "damage_bar", "final_wave_label", "final_score_label", "final_distance_label")]
 process_mode = 3
 script = ExtResource("8_jq2sk")
 hud_panel = NodePath("HUD")
@@ -169,6 +170,7 @@ experience_bar = NodePath("HUD/ExperienceBar")
 experience_label = NodePath("HUD/ExperienceLabel")
 enemies_left_label = NodePath("HUD/EnemiesLeftLabel")
 card_controls_label = NodePath("HUD/CardControlsLabel")
+exp_particles = NodePath("HUD/ConfettiParticles")
 notifications_container = NodePath("NotificationsUI")
 title_label = NodePath("NotificationsUI/MessageContainer/TitleLabel")
 subtitle_label = NodePath("NotificationsUI/MessageContainer/SubtitleLabel")
@@ -236,6 +238,9 @@ bbcode_enabled = true
 text = "[color=gold][B][/color] SHOP
 [color=cyan][TAB][/color] DECK"
 fit_content = true
+
+[node name="ConfettiParticles" parent="UILayer/HUD" instance=ExtResource("16_htxhm")]
+position = Vector2(188, 126)
 
 [node name="ExperienceBar" type="TextureProgressBar" parent="UILayer/HUD"]
 process_mode = 3

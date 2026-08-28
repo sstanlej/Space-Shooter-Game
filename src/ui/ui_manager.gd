@@ -13,9 +13,10 @@ class_name UIManager extends CanvasLayer
 @export var distance_label: RichTextLabel
 @export var upgrade_points_label: RichTextLabel
 @export var experience_bar: TextureProgressBar
-@export var experience_label: RichTextLabel # <-- Nowy label pod paskiem EXP
+@export var experience_label: RichTextLabel 
 @export var enemies_left_label: RichTextLabel
 @export var card_controls_label: RichTextLabel
+@export var exp_particles: GPUParticles2D
 
 @export_group("Notifications System")
 @export var notifications_container: Control
@@ -165,6 +166,14 @@ func update_experience_bar(current_xp: float, animate: bool = true) -> void:
 			.set_ease(Tween.EASE_OUT)
 	else:
 		experience_bar.value = current_xp
+
+func play_level_up_effect() -> void:
+	if exp_particles:
+		exp_particles.restart()
+		exp_particles.emitting = true
+
+	if typeof(GlobalAudio) != TYPE_NIL and GlobalAudio.has_method("play_levelup"):
+		GlobalAudio.play_levelup()
 
 func extend_experience_bar(max_xp: float) -> void:
 	if experience_bar:
