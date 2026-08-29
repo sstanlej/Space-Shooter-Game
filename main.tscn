@@ -144,6 +144,7 @@ progression_manager = NodePath("../ProgressionManager")
 location_manager = NodePath("../World/LocationManager")
 enemies_container = NodePath("../World/EnemiesContainer")
 projectiles_container = NodePath("../World/ProjectilesContainer")
+base_wave_budget = 15
 
 [node name="SpawnTimer" type="Timer" parent="Spawner"]
 

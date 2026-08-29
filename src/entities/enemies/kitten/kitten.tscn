@@ -1,10 +1,13 @@
-[gd_scene load_steps=14 format=3 uid="uid://cibqa0xgq4v3f"]
+[gd_scene load_steps=16 format=3 uid="uid://cibqa0xgq4v3f"]
 
-[ext_resource type="Script" uid="uid://wb7nfbmdwv62" path="res://src/entities/enemies/kitten/kitty.gd" id="1_piyax"]
+[ext_resource type="Script" uid="uid://vwa6kpj4j3xy" path="res://src/entities/enemies/components/Enemy.gd" id="1_piyax"]
 [ext_resource type="Shader" uid="uid://wr7raxdl2m7y" path="res://src/vfx/shaders/hit_flash.gdshader" id="2_um8jn"]
 [ext_resource type="Texture2D" uid="uid://dxr1e680kvgst" path="res://src/entities/enemies/kitten/kitten_animation_sheet.png" id="3_q7wrn"]
 [ext_resource type="Script" uid="uid://cmxkc1l3uevq1" path="res://src/entities/enemies/components/HealthComponent.gd" id="4_6iak6"]
-[ext_resource type="Script" uid="uid://dqihe208dt14r" path="res://src/entities/enemies/components/hitbox.gd" id="5_csvrj"]
+[ext_resource type="Script" uid="uid://c0svh84qgdobm" path="res://src/entities/enemies/components/HurtboxComponent.gd" id="5_piyax"]
+[ext_resource type="Script" uid="uid://wp4r0eq4n6vp" path="res://src/entities/enemies/components/EnemyMovementComponent.gd" id="6_ec7db"]
+[ext_resource type="Script" uid="uid://cg7lkvn1vocg5" path="res://src/entities/enemies/components/SplitOnDeathComponent.gd" id="7_fe4t0"]
+[ext_resource type="Resource" uid="uid://cvosf5m658nc1" path="res://src/entities/enemies/resources/KittyEnemy.tres" id="8_w6l75"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_rrooj"]
 shader = ExtResource("2_um8jn")
@@ -51,10 +54,6 @@ animations = [{
 radius = 5.0
 height = 14.0
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3bkon"]
-radius = 3.0
-height = 12.0
-
 [node name="Kitten" type="CharacterBody2D"]
 collision_layer = 2
 collision_mask = 0
@@ -63,27 +62,35 @@ script = ExtResource("1_piyax")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_rrooj")
 sprite_frames = SubResource("SpriteFrames_l70hh")
+autoplay = "default"
 frame_progress = 0.18604802
 
 [node name="HealthComponent" type="Node2D" parent="."]
 script = ExtResource("4_6iak6")
+max_health = 1
 
-[node name="Area2D" type="Area2D" parent="." node_paths=PackedStringArray("health_component")]
+[node name="HurtboxComponent" type="Area2D" parent="." node_paths=PackedStringArray("health_component")]
 collision_layer = 2
 collision_mask = 5
-script = ExtResource("5_csvrj")
+script = ExtResource("5_piyax")
 health_component = NodePath("../HealthComponent")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent"]
 position = Vector2(0, 3)
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_w2akj")
 
-[node name="CollisionHitbox" type="CollisionShape2D" parent="."]
-position = Vector2(0, 3)
-rotation = 1.5707964
-shape = SubResource("CapsuleShape2D_3bkon")
+[node name="EnemyMovementComponent" type="Node" parent="."]
+script = ExtResource("6_ec7db")
+
+[node name="SplitOnDeathComponent" type="Node" parent="."]
+script = ExtResource("7_fe4t0")
+split_enemy_data = ExtResource("8_w6l75")
+split_count = 1
+min_radius = 0.0
+max_radius = 0.0
+suppress_death_effect = true
 
 [connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
 [connection signal="died" from="HealthComponent" to="." method="_on_health_component_died"]
-[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="area_entered" from="HurtboxComponent" to="." method="_on_area_2d_area_entered"]

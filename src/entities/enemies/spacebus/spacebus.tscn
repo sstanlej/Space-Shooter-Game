@@ -1,12 +1,15 @@
-[gd_scene load_steps=16 format=3 uid="uid://cm67hcmbqhaeq"]
+[gd_scene load_steps=18 format=3 uid="uid://cm67hcmbqhaeq"]
 
-[ext_resource type="Script" uid="uid://1y8f4jlcxmvb" path="res://src/entities/enemies/components/WarningEnemy.gd" id="1_3bkon"]
+[ext_resource type="Script" uid="uid://vwa6kpj4j3xy" path="res://src/entities/enemies/components/Enemy.gd" id="1_jebdo"]
 [ext_resource type="PackedScene" uid="uid://r52ov1nbo7ug" path="res://src/entities/misc/warning_indicator/warning_indicator.tscn" id="2_3bkon"]
 [ext_resource type="Texture2D" uid="uid://co8dukhi6ib8i" path="res://src/entities/enemies/spacebus/spacebus.png" id="2_aylx3"]
 [ext_resource type="PackedScene" uid="uid://df7720odkejuq" path="res://src/vfx/particles/smoke_trail.tscn" id="2_w2akj"]
+[ext_resource type="PackedScene" uid="uid://cdfbi3flgf8ko" path="res://src/vfx/explosion/explosion.tscn" id="2_we2ma"]
 [ext_resource type="Script" uid="uid://cmxkc1l3uevq1" path="res://src/entities/enemies/components/HealthComponent.gd" id="3_k045b"]
 [ext_resource type="Shader" uid="uid://wr7raxdl2m7y" path="res://src/vfx/shaders/hit_flash.gdshader" id="4_e54ls"]
-[ext_resource type="Script" uid="uid://dqihe208dt14r" path="res://src/entities/enemies/components/hitbox.gd" id="4_ub2ci"]
+[ext_resource type="Script" uid="uid://c0svh84qgdobm" path="res://src/entities/enemies/components/HurtboxComponent.gd" id="6_jebdo"]
+[ext_resource type="Script" uid="uid://wp4r0eq4n6vp" path="res://src/entities/enemies/components/EnemyMovementComponent.gd" id="7_e54ls"]
+[ext_resource type="Script" uid="uid://dh7k1c03428l0" path="res://src/entities/enemies/components/WarningComponent.gd" id="8_ffab7"]
 
 [sub_resource type="Gradient" id="Gradient_ql8tn"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
@@ -39,18 +42,13 @@ shader_parameter/flash_color = Color(1, 1, 1, 1)
 radius = 5.0
 height = 42.0
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3bkon"]
-radius = 4.0
-height = 42.0
-
 [node name="Spacebus" type="CharacterBody2D"]
 collision_layer = 2
 collision_mask = 0
-script = ExtResource("1_3bkon")
-warning_duration = 1.0
-warning_indicator_scene = ExtResource("2_3bkon")
+script = ExtResource("1_jebdo")
+death_scene = ExtResource("2_we2ma")
 
-[node name="SmokeParticleTrail" parent="." instance=ExtResource("2_w2akj")]
+[node name="SmokeParticles" parent="." instance=ExtResource("2_w2akj")]
 position = Vector2(19, 1)
 process_material = SubResource("ParticleProcessMaterial_3bkon")
 
@@ -60,21 +58,27 @@ texture = ExtResource("2_aylx3")
 
 [node name="HealthComponent" type="Node2D" parent="."]
 script = ExtResource("3_k045b")
+max_health = 12
 
-[node name="Area2D" type="Area2D" parent="." node_paths=PackedStringArray("health_component")]
+[node name="HurtboxComponent" type="Area2D" parent="." node_paths=PackedStringArray("health_component")]
 collision_layer = 2
 collision_mask = 5
-script = ExtResource("4_ub2ci")
+script = ExtResource("6_jebdo")
 health_component = NodePath("../HealthComponent")
+contact_damage = 2.0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent"]
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_w2akj")
 
-[node name="CollisionHitbox" type="CollisionShape2D" parent="."]
-rotation = 1.5707964
-shape = SubResource("CapsuleShape2D_3bkon")
+[node name="EnemyMovementComponent" type="Node" parent="."]
+script = ExtResource("7_e54ls")
+move_speed = 150.0
+
+[node name="WarningComponent" type="Node" parent="."]
+script = ExtResource("8_ffab7")
+warning_indicator_scene = ExtResource("2_3bkon")
 
 [connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
 [connection signal="died" from="HealthComponent" to="." method="_on_health_component_died"]
-[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="area_entered" from="HurtboxComponent" to="." method="_on_area_2d_area_entered"]

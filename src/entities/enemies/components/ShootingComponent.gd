@@ -7,9 +7,9 @@ class_name ShootingComponent extends Node
 @export var fire_rate: float = 3.0
 @export var burst_count: int = 2
 @export var burst_delay: float = 0.15
+@export var initial_delay: float = 0.0
 
 @export_group("Directions")
-## Lista kierunków wystrzału salwy (np. góra + dół)
 @export var shot_directions: Array[Vector2] = [
 	Vector2.UP,
 	Vector2.DOWN
@@ -24,9 +24,25 @@ func setup_shoot_timer() -> void:
 	shoot_timer = Timer.new()
 	shoot_timer.name = "ShootTimer"
 	shoot_timer.wait_time = fire_rate
-	shoot_timer.autostart = true
+	shoot_timer.one_shot = false
 	shoot_timer.timeout.connect(_on_shoot_timer_timeout)
 	add_child(shoot_timer)
+
+func on_enemy_setup() -> void:
+	if not is_instance_valid(owner):
+		return
+
+	if initial_delay > 0.0:
+		get_tree().create_timer(initial_delay).timeout.connect(func():
+			if is_instance_valid(owner):
+				start_burst()
+				if shoot_timer:
+					shoot_timer.start(fire_rate)
+		)
+	else:
+		start_burst()
+		if shoot_timer:
+			shoot_timer.start(fire_rate)
 
 func _on_shoot_timer_timeout() -> void:
 	if not is_instance_valid(owner):
@@ -60,8 +76,6 @@ func shoot_salvo() -> void:
 			container.add_child(bullet)
 			bullet.global_position = owner.global_position
 			bullet.setup(bullet_damage, bullet_speed, normalized_dir)
-			
-			# Wymuszenie obrotu sprite'a w stronę wektora lotu
 			bullet.rotation = normalized_dir.angle()
 
 func get_target_container() -> Node:

@@ -186,6 +186,47 @@ func spawn_enemy(spawn_position: Vector2, enemy_data: EnemyData) -> Enemy:
 
 	return enemy_instance
 
+# Dodaj te dwie metody do Spawner.gd:
+
+func spawn_split_enemy(spawn_position: Vector2, enemy_data: EnemyData) -> void:
+	# 1. Natychmiast podnosimy licznik, żeby fala się nie zamknęła:
+	active_enemies_count += 1
+	update_ui_enemies_left()
+
+	# 2. Bezpiecznie odraczamy fizyczne dodanie węzła do sceny:
+	call_deferred("_deferred_spawn_split_enemy", spawn_position, enemy_data)
+
+func _deferred_spawn_split_enemy(spawn_position: Vector2, enemy_data: EnemyData) -> Enemy:
+	if not enemy_data or not enemy_data.enemy_scene:
+		active_enemies_count = max(0, active_enemies_count - 1)
+		update_ui_enemies_left()
+		check_wave_completion()
+		return null
+
+	var enemy_instance = enemy_data.enemy_scene.instantiate() as Enemy
+	if not enemy_instance:
+		active_enemies_count = max(0, active_enemies_count - 1)
+		update_ui_enemies_left()
+		check_wave_completion()
+		return null
+
+	if enemies_container:
+		enemies_container.add_child(enemy_instance)
+	else:
+		add_child(enemy_instance)
+
+	enemy_instance.global_position = spawn_position
+
+	if enemy_instance.has_method("setup"):
+		enemy_instance.setup(enemy_data)
+
+	if enemy_instance.has_signal("enemy_died"):
+		enemy_instance.enemy_died.connect(_on_enemy_died)
+	if enemy_instance.has_signal("enemy_escaped"):
+		enemy_instance.enemy_escaped.connect(_on_enemy_escaped)
+
+	return enemy_instance
+
 func log_wave_composition(wave_number: int, enemies_list: Array) -> void:
 	if enemies_list.is_empty():
 		print("[Spawner] Fala %d: Pusta fala (brak wrogów)" % wave_number)

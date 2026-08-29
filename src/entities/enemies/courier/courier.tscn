@@ -1,12 +1,16 @@
-[gd_scene load_steps=14 format=3 uid="uid://c5ex5otmh8s32"]
+[gd_scene load_steps=17 format=3 uid="uid://c5ex5otmh8s32"]
 
-[ext_resource type="Script" uid="uid://61cyr47oiy35" path="res://src/entities/enemies/courier/courier.gd" id="1_obke8"]
+[ext_resource type="Script" uid="uid://vwa6kpj4j3xy" path="res://src/entities/enemies/components/Enemy.gd" id="1_j0q2n"]
+[ext_resource type="PackedScene" uid="uid://cdfbi3flgf8ko" path="res://src/vfx/explosion/explosion.tscn" id="2_fvxpp"]
 [ext_resource type="Texture2D" uid="uid://75l6ymp0dtrb" path="res://src/entities/enemies/courier/courier_slow.png" id="2_obke8"]
 [ext_resource type="Script" uid="uid://cmxkc1l3uevq1" path="res://src/entities/enemies/components/HealthComponent.gd" id="3_irkx7"]
 [ext_resource type="Texture2D" uid="uid://ddf3krjgs7u64" path="res://src/entities/enemies/courier/courier_fast.png" id="3_t4ttm"]
-[ext_resource type="Script" uid="uid://dqihe208dt14r" path="res://src/entities/enemies/components/hitbox.gd" id="4_nu2dv"]
 [ext_resource type="PackedScene" uid="uid://d2608o6gxf224" path="res://src/vfx/particles/fire_trail.tscn" id="5_obke8"]
 [ext_resource type="Shader" uid="uid://wr7raxdl2m7y" path="res://src/vfx/shaders/hit_flash.gdshader" id="5_ooofx"]
+[ext_resource type="Script" uid="uid://wp4r0eq4n6vp" path="res://src/entities/enemies/components/EnemyMovementComponent.gd" id="7_clgx3"]
+[ext_resource type="Script" uid="uid://c0svh84qgdobm" path="res://src/entities/enemies/components/HurtboxComponent.gd" id="7_ooofx"]
+[ext_resource type="Script" uid="uid://di82j5c51373p" path="res://src/entities/enemies/components/RandomYDriftComponent.gd" id="8_2t6dy"]
+[ext_resource type="Script" uid="uid://b0wo26d3dinat" path="res://src/entities/enemies/components/PeriodicBoostComponent.gd" id="9_chvun"]
 
 [sub_resource type="Gradient" id="Gradient_lbms2"]
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
@@ -32,18 +36,13 @@ shader_parameter/flash_color = Color(1, 1, 1, 1)
 radius = 5.0
 height = 14.0
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_obke8"]
-radius = 4.0
-height = 12.0
-
 [node name="Courier" type="CharacterBody2D"]
 collision_layer = 2
 collision_mask = 0
-script = ExtResource("1_obke8")
-normal_texture = ExtResource("2_obke8")
-boost_texture = ExtResource("3_t4ttm")
+script = ExtResource("1_j0q2n")
+death_scene = ExtResource("2_fvxpp")
 
-[node name="GPUParticles2D" parent="." instance=ExtResource("5_obke8")]
+[node name="FlameParticles" parent="." instance=ExtResource("5_obke8")]
 position = Vector2(3, 1)
 process_material = SubResource("ParticleProcessMaterial_t4ttm")
 
@@ -53,19 +52,29 @@ texture = ExtResource("2_obke8")
 
 [node name="HealthComponent" type="Node2D" parent="."]
 script = ExtResource("3_irkx7")
+max_health = 5
 
-[node name="Area2D" type="Area2D" parent="." node_paths=PackedStringArray("health_component")]
+[node name="HurtboxComponent" type="Area2D" parent="." node_paths=PackedStringArray("health_component")]
 collision_layer = 2
 collision_mask = 5
-script = ExtResource("4_nu2dv")
+script = ExtResource("7_ooofx")
 health_component = NodePath("../HealthComponent")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent"]
 shape = SubResource("CapsuleShape2D_rwfl0")
 
-[node name="CollisionHitbox" type="CollisionShape2D" parent="."]
-shape = SubResource("CapsuleShape2D_obke8")
+[node name="EnemyMovementComponent" type="Node" parent="."]
+script = ExtResource("7_clgx3")
+
+[node name="RandomYDriftComponent" type="Node" parent="."]
+script = ExtResource("8_2t6dy")
+
+[node name="PeriodicBoostComponent" type="Node" parent="." node_paths=PackedStringArray("target_sprite")]
+script = ExtResource("9_chvun")
+target_sprite = NodePath("../Sprite2D")
+normal_texture = ExtResource("2_obke8")
+boost_texture = ExtResource("3_t4ttm")
 
 [connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
 [connection signal="died" from="HealthComponent" to="." method="_on_health_component_died"]
-[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="area_entered" from="HurtboxComponent" to="." method="_on_area_2d_area_entered"]

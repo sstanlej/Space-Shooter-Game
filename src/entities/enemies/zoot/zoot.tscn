@@ -1,12 +1,14 @@
-[gd_scene load_steps=17 format=3 uid="uid://xaeitc1t4enu"]
+[gd_scene load_steps=18 format=3 uid="uid://xaeitc1t4enu"]
 
-[ext_resource type="Script" uid="uid://bbmgtknyhxvwa" path="res://src/entities/enemies/zoot/zoot.gd" id="1_18i5x"]
+[ext_resource type="Script" uid="uid://vwa6kpj4j3xy" path="res://src/entities/enemies/components/Enemy.gd" id="1_f4c1c"]
 [ext_resource type="Texture2D" uid="uid://dilnkx7j41cy1" path="res://src/entities/enemies/zoot/zoot_animation.png" id="2_18i5x"]
 [ext_resource type="PackedScene" uid="uid://wikdcl5aogg5" path="res://src/entities/projectiles/enemy_projectile.tscn" id="2_exglh"]
 [ext_resource type="Shader" uid="uid://wr7raxdl2m7y" path="res://src/vfx/shaders/hit_flash.gdshader" id="2_f4c1c"]
+[ext_resource type="PackedScene" uid="uid://cdfbi3flgf8ko" path="res://src/vfx/explosion/explosion.tscn" id="2_nub3j"]
 [ext_resource type="Script" uid="uid://cmxkc1l3uevq1" path="res://src/entities/enemies/components/HealthComponent.gd" id="3_2pfxk"]
-[ext_resource type="Script" uid="uid://dqihe208dt14r" path="res://src/entities/enemies/components/hitbox.gd" id="4_jp3px"]
 [ext_resource type="Script" uid="uid://cnbwlgjmc0w46" path="res://src/entities/enemies/components/ShootingComponent.gd" id="5_exglh"]
+[ext_resource type="Script" uid="uid://c0svh84qgdobm" path="res://src/entities/enemies/components/HurtboxComponent.gd" id="5_rrooj"]
+[ext_resource type="Script" uid="uid://wp4r0eq4n6vp" path="res://src/entities/enemies/components/EnemyMovementComponent.gd" id="8_rrooj"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_rrooj"]
 shader = ExtResource("2_f4c1c")
@@ -60,44 +62,41 @@ animations = [{
 radius = 5.0
 height = 12.0
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3bkon"]
-radius = 3.0
-height = 12.0
-
 [node name="Zoot" type="CharacterBody2D"]
 collision_layer = 2
 collision_mask = 0
-script = ExtResource("1_18i5x")
-sine_amplitude = 0.0
+script = ExtResource("1_f4c1c")
+death_scene = ExtResource("2_nub3j")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_rrooj")
 sprite_frames = SubResource("SpriteFrames_l70hh")
+autoplay = "default"
+frame_progress = 0.6162934
 
 [node name="HealthComponent" type="Node2D" parent="."]
 script = ExtResource("3_2pfxk")
+max_health = 6
 
-[node name="Area2D" type="Area2D" parent="." node_paths=PackedStringArray("health_component")]
+[node name="HurtboxComponent" type="Area2D" parent="." node_paths=PackedStringArray("health_component")]
 collision_layer = 2
 collision_mask = 5
-script = ExtResource("4_jp3px")
+script = ExtResource("5_rrooj")
 health_component = NodePath("../HealthComponent")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent"]
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_w2akj")
-
-[node name="CollisionHitbox" type="CollisionShape2D" parent="."]
-rotation = 1.5707964
-shape = SubResource("CapsuleShape2D_3bkon")
 
 [node name="ShootingComponent" type="Node2D" parent="."]
 script = ExtResource("5_exglh")
 bullet_scene = ExtResource("2_exglh")
 bullet_speed = 150.0
-burst_count = 1
-burst_delay = 0.3
+
+[node name="EnemyMovementComponent" type="Node" parent="."]
+script = ExtResource("8_rrooj")
+move_speed = 45.0
 
 [connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
 [connection signal="died" from="HealthComponent" to="." method="_on_health_component_died"]
-[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="area_entered" from="HurtboxComponent" to="." method="_on_area_2d_area_entered"]

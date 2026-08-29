@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="LocationData" load_steps=6 format=3 uid="uid://cvcji53fh485s"]
+[gd_resource type="Resource" script_class="LocationData" load_steps=7 format=3 uid="uid://cvcji53fh485s"]
 
 [ext_resource type="Script" uid="uid://4ko4pcyqo2oo" path="res://src/systems/locations/LocationData.gd" id="1_3usuj"]
 [ext_resource type="Texture2D" uid="uid://dodpac568wsl5" path="res://src/systems/locations/sprites/space/space_back.png" id="1_r0rey"]
 [ext_resource type="Script" uid="uid://c1jvipah3wjg0" path="res://src/entities/enemies/components/EnemyData.gd" id="2_e08kc"]
 [ext_resource type="Texture2D" uid="uid://1y76pfdr6txr" path="res://src/systems/locations/sprites/earth_orbit/earth_orbit_parallax.png" id="2_pyns4"]
+[ext_resource type="Resource" uid="uid://cdg48uidffuqt" path="res://src/entities/enemies/resources/KittenEnemy.tres" id="5_pyns4"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_pyns4"]
 
@@ -11,6 +12,7 @@
 script = ExtResource("1_3usuj")
 location_id = 5
 location_name = "Earth Orbit"
+spawnable_enemies = Array[ExtResource("2_e08kc")]([ExtResource("5_pyns4")])
 background_texture = ExtResource("1_r0rey")
 middle_texture = SubResource("CompressedTexture2D_pyns4")
 front_texture = ExtResource("2_pyns4")

@@ -1,11 +1,16 @@
-[gd_scene load_steps=10 format=3 uid="uid://cet664o2kh2vh"]
+[gd_scene load_steps=14 format=3 uid="uid://cet664o2kh2vh"]
 
-[ext_resource type="Script" uid="uid://cu6movlictehy" path="res://src/entities/enemies/big_meteor/BigMeteorEnemy.gd" id="1_nohey"]
+[ext_resource type="Script" uid="uid://vwa6kpj4j3xy" path="res://src/entities/enemies/components/Enemy.gd" id="1_juhrt"]
 [ext_resource type="Texture2D" uid="uid://cgdu5drmhm7dd" path="res://src/entities/enemies/big_meteor/big_meteor.png" id="2_ced25"]
+[ext_resource type="PackedScene" uid="uid://cdfbi3flgf8ko" path="res://src/vfx/explosion/explosion.tscn" id="2_ghlj2"]
 [ext_resource type="PackedScene" uid="uid://df7720odkejuq" path="res://src/vfx/particles/smoke_trail.tscn" id="2_nohey"]
 [ext_resource type="Script" uid="uid://cmxkc1l3uevq1" path="res://src/entities/enemies/components/HealthComponent.gd" id="3_4wt2a"]
 [ext_resource type="Shader" uid="uid://wr7raxdl2m7y" path="res://src/vfx/shaders/hit_flash.gdshader" id="3_juhrt"]
-[ext_resource type="Script" uid="uid://dqihe208dt14r" path="res://src/entities/enemies/components/hitbox.gd" id="4_awlgc"]
+[ext_resource type="Script" uid="uid://c0svh84qgdobm" path="res://src/entities/enemies/components/HurtboxComponent.gd" id="6_3ivwt"]
+[ext_resource type="Script" uid="uid://dsmssivreocgf" path="res://src/entities/enemies/components/RotatorComponent.gd" id="7_3ivwt"]
+[ext_resource type="Script" uid="uid://wp4r0eq4n6vp" path="res://src/entities/enemies/components/EnemyMovementComponent.gd" id="8_jew18"]
+[ext_resource type="Script" uid="uid://cg7lkvn1vocg5" path="res://src/entities/enemies/components/SplitOnDeathComponent.gd" id="9_fad10"]
+[ext_resource type="Resource" uid="uid://4abkmc58w7d" path="res://src/entities/enemies/resources/MeteorEnemy.tres" id="10_ghlj2"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3ivwt"]
 shader = ExtResource("3_juhrt")
@@ -15,15 +20,13 @@ shader_parameter/flash_color = Color(1, 1, 1, 1)
 [sub_resource type="CircleShape2D" id="CircleShape2D_qhs2c"]
 radius = 13.0
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_vgorg"]
-radius = 11.0
-
 [node name="Big Meteor" type="CharacterBody2D"]
 collision_layer = 2
 collision_mask = 0
-script = ExtResource("1_nohey")
+script = ExtResource("1_juhrt")
+death_scene = ExtResource("2_ghlj2")
 
-[node name="GPUParticles2D" parent="." instance=ExtResource("2_nohey")]
+[node name="SmokeParticles" parent="." instance=ExtResource("2_nohey")]
 position = Vector2(10, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -32,21 +35,32 @@ texture = ExtResource("2_ced25")
 
 [node name="HealthComponent" type="Node2D" parent="."]
 script = ExtResource("3_4wt2a")
+max_health = 6
 
-[node name="Area2D" type="Area2D" parent="." node_paths=PackedStringArray("health_component")]
+[node name="HurtboxComponent" type="Area2D" parent="." node_paths=PackedStringArray("health_component")]
 collision_layer = 2
 collision_mask = 5
-script = ExtResource("4_awlgc")
+script = ExtResource("6_3ivwt")
 health_component = NodePath("../HealthComponent")
+contact_damage = 2.0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent"]
 position = Vector2(-1, 0)
 shape = SubResource("CircleShape2D_qhs2c")
 
-[node name="CollisionHitbox" type="CollisionShape2D" parent="."]
-position = Vector2(-1, 0)
-shape = SubResource("CircleShape2D_vgorg")
+[node name="RotatorComponent" type="Node" parent="." node_paths=PackedStringArray("target_sprite")]
+script = ExtResource("7_3ivwt")
+target_sprite = NodePath("../Sprite2D")
+
+[node name="EnemyMovementComponent" type="Node" parent="."]
+script = ExtResource("8_jew18")
+
+[node name="SplitOnDeathComponent" type="Node" parent="."]
+script = ExtResource("9_fad10")
+split_enemy_data = ExtResource("10_ghlj2")
+min_radius = 6.0
+max_radius = 12.0
 
 [connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
 [connection signal="died" from="HealthComponent" to="." method="_on_health_component_died"]
-[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="area_entered" from="HurtboxComponent" to="." method="_on_area_2d_area_entered"]

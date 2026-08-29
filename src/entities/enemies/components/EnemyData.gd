@@ -1,18 +1,12 @@
 class_name EnemyData extends Resource
 
-@export var enemy_id: int
+@export_group("Identity")
 @export var enemy_name: String
 @export var enemy_scene: PackedScene
 
-@export var enemy_max_health: int
-@export var enemy_speed: float
-@export var enemy_damage: int
-@export var enemy_score_reward: int
-@export var enemy_xp_reward: int
-
+@export_group("Wave Director")
 @export var spawn_cost: int = 1
 
-@export var death_scene: PackedScene
-
-@export var split_enemy_data: EnemyData
-@export var split_enemy_count: int
+@export_group("Rewards")
+@export var enemy_score_reward: int = 100
+@export var enemy_xp_reward: int = 25
