@@ -1,6 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://dm65e3c05axaa"]
+[gd_scene load_steps=10 format=3 uid="uid://dm65e3c05axaa"]
 
 [ext_resource type="Script" uid="uid://cnand14y6nkig" path="res://src/core/game_audio.gd" id="1_ykmpt"]
+[ext_resource type="AudioStream" uid="uid://mg346e4fn5wy" path="res://assets/audio/background_music.mp3" id="2_fhic6"]
 [ext_resource type="AudioStream" uid="uid://bjyudhyqdmrbb" path="res://assets/audio/Explosion 2.wav" id="2_nm0vt"]
 [ext_resource type="AudioStream" uid="uid://tkgndh2r3xbw" path="res://assets/audio/laser-312360.mp3" id="3_jv0w2"]
 [ext_resource type="AudioStream" uid="uid://b5wl73jdtdbgr" path="res://assets/audio/upgrade_sound.wav" id="4_55iip"]
@@ -11,6 +12,7 @@
 
 [node name="GameAudio" type="Node2D"]
 script = ExtResource("1_ykmpt")
+background_music = ExtResource("2_fhic6")
 
 [node name="CrashSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("2_nm0vt")
