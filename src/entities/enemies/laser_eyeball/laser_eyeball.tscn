@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://but2k2jh5ixdx"]
+[gd_scene load_steps=17 format=3 uid="uid://but2k2jh5ixdx"]
 
 [ext_resource type="Script" uid="uid://vwa6kpj4j3xy" path="res://src/entities/enemies/components/Enemy.gd" id="1_vsttp"]
 [ext_resource type="PackedScene" uid="uid://cdfbi3flgf8ko" path="res://src/vfx/explosion/explosion.tscn" id="2_nsndf"]
@@ -9,6 +9,8 @@
 [ext_resource type="Script" uid="uid://wp4r0eq4n6vp" path="res://src/entities/enemies/components/EnemyMovementComponent.gd" id="7_kvsol"]
 [ext_resource type="Script" uid="uid://cnbwlgjmc0w46" path="res://src/entities/enemies/components/ShootingComponent.gd" id="8_uryps"]
 [ext_resource type="PackedScene" uid="uid://wikdcl5aogg5" path="res://src/entities/projectiles/enemy_projectile.tscn" id="9_qe4q4"]
+[ext_resource type="Script" uid="uid://cg7lkvn1vocg5" path="res://src/entities/enemies/components/SplitOnDeathComponent.gd" id="10_3frld"]
+[ext_resource type="Resource" uid="uid://cengj6o63lep3" path="res://src/entities/enemies/resources/TinyEyeballEnemy.tres" id="11_a05yh"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_coeow"]
 radius = 7.0
@@ -42,7 +44,7 @@ animations = [{
 "speed": 4.0
 }]
 
-[node name="LensEyeball" type="CharacterBody2D"]
+[node name="LaserEyeball" type="CharacterBody2D"]
 collision_layer = 2
 collision_mask = 0
 script = ExtResource("1_vsttp")
@@ -88,3 +90,12 @@ burst_count = 3
 initial_delay = 1.0
 shot_directions = Array[Vector2]([Vector2(-1, 0)])
 metadata/_custom_type_script = "uid://cnbwlgjmc0w46"
+
+[node name="SplitOnDeathComponent" type="Node" parent="."]
+script = ExtResource("10_3frld")
+split_enemy_data = ExtResource("11_a05yh")
+split_count = 1
+min_radius = 0.0
+max_radius = 0.0
+suppress_death_effect = true
+metadata/_custom_type_script = "uid://cg7lkvn1vocg5"

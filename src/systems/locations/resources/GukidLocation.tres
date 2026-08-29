@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LocationData" load_steps=9 format=3 uid="uid://bosrctydabgot"]
+[gd_resource type="Resource" script_class="LocationData" load_steps=10 format=3 uid="uid://bosrctydabgot"]
 
 [ext_resource type="Script" uid="uid://4ko4pcyqo2oo" path="res://src/systems/locations/LocationData.gd" id="1_aaygm"]
 [ext_resource type="Texture2D" uid="uid://td4bmeht5rpx" path="res://src/systems/locations/sprites/gukid/gikid_nomu_background.png" id="1_d7cc4"]
@@ -8,13 +8,14 @@
 [ext_resource type="Resource" uid="uid://cqu28t0tpfic3" path="res://src/entities/enemies/resources/LensEyeballEnemy.tres" id="7_eg6q0"]
 [ext_resource type="Resource" uid="uid://cengj6o63lep3" path="res://src/entities/enemies/resources/TinyEyeballEnemy.tres" id="8_2r14k"]
 [ext_resource type="Resource" uid="uid://cch0sfbeu0hm2" path="res://src/entities/enemies/resources/LaserEyeballEnemy.tres" id="8_sidrx"]
+[ext_resource type="Resource" uid="uid://c1coavno2oysx" path="res://src/entities/enemies/resources/MotherEyeballEnemy.tres" id="9_2r14k"]
 
 [resource]
 script = ExtResource("1_aaygm")
 location_id = 4
 location_name = "Gukid"
 location_rarity = 3
-spawnable_enemies = Array[ExtResource("2_53d1w")]([ExtResource("7_eg6q0"), ExtResource("8_sidrx"), ExtResource("8_2r14k")])
+spawnable_enemies = Array[ExtResource("2_53d1w")]([ExtResource("7_eg6q0"), ExtResource("8_sidrx"), ExtResource("8_2r14k"), ExtResource("9_2r14k")])
 background_texture = ExtResource("1_d7cc4")
 middle_texture = ExtResource("3_sidrx")
 front_texture = ExtResource("2_eg6q0")

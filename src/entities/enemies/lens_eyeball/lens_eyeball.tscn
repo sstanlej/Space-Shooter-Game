@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://bpeytugpvbes0"]
+[gd_scene load_steps=31 format=3 uid="uid://bpeytugpvbes0"]
 
 [ext_resource type="Script" uid="uid://vwa6kpj4j3xy" path="res://src/entities/enemies/components/Enemy.gd" id="1_r1d65"]
 [ext_resource type="PackedScene" uid="uid://cdfbi3flgf8ko" path="res://src/vfx/explosion/explosion.tscn" id="2_awdri"]
@@ -10,6 +10,8 @@
 [ext_resource type="Script" uid="uid://cnxt04u1u020f" path="res://src/entities/enemies/components/ArcShieldComponent.gd" id="7_mnpm8"]
 [ext_resource type="Texture2D" uid="uid://ciqtsc82o1ou6" path="res://src/entities/enemies/lens_eyeball/lens_shield_sheet.png" id="9_mnpm8"]
 [ext_resource type="Script" uid="uid://b0wo26d3dinat" path="res://src/entities/enemies/components/PeriodicBoostComponent.gd" id="10_hypsk"]
+[ext_resource type="Script" uid="uid://cg7lkvn1vocg5" path="res://src/entities/enemies/components/SplitOnDeathComponent.gd" id="11_s0aew"]
+[ext_resource type="Resource" uid="uid://cengj6o63lep3" path="res://src/entities/enemies/resources/TinyEyeballEnemy.tres" id="12_itl57"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_coeow"]
 radius = 7.0
@@ -194,3 +196,12 @@ min_boost_interval = 4.0
 max_boost_interval = 6.0
 boost_duration = 1.0
 metadata/_custom_type_script = "uid://b0wo26d3dinat"
+
+[node name="SplitOnDeathComponent" type="Node" parent="."]
+script = ExtResource("11_s0aew")
+split_enemy_data = ExtResource("12_itl57")
+split_count = 1
+min_radius = 0.0
+max_radius = 0.0
+suppress_death_effect = true
+metadata/_custom_type_script = "uid://cg7lkvn1vocg5"
