@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://bpeytugpvbes0"]
+[gd_scene load_steps=29 format=3 uid="uid://bpeytugpvbes0"]
 
 [ext_resource type="Script" uid="uid://vwa6kpj4j3xy" path="res://src/entities/enemies/components/Enemy.gd" id="1_r1d65"]
 [ext_resource type="PackedScene" uid="uid://cdfbi3flgf8ko" path="res://src/vfx/explosion/explosion.tscn" id="2_awdri"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://wp4r0eq4n6vp" path="res://src/entities/enemies/components/EnemyMovementComponent.gd" id="6_qm0mr"]
 [ext_resource type="Script" uid="uid://cnxt04u1u020f" path="res://src/entities/enemies/components/ArcShieldComponent.gd" id="7_mnpm8"]
 [ext_resource type="Texture2D" uid="uid://ciqtsc82o1ou6" path="res://src/entities/enemies/lens_eyeball/lens_shield_sheet.png" id="9_mnpm8"]
+[ext_resource type="Script" uid="uid://b0wo26d3dinat" path="res://src/entities/enemies/components/PeriodicBoostComponent.gd" id="10_hypsk"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_coeow"]
 radius = 7.0
@@ -142,6 +143,7 @@ death_scene = ExtResource("2_awdri")
 
 [node name="BloodParticles" parent="." instance=ExtResource("3_mnpm8")]
 position = Vector2(4, 0)
+emitting = false
 
 [node name="HurtboxComponent" type="Area2D" parent="."]
 collision_layer = 2
@@ -184,4 +186,11 @@ polygon = PackedVector2Array(4, -14, 1, -14, -4, -9, -6, -4, -6, 4, -4, 9, 1, 14
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="ArcShieldComponent"]
 sprite_frames = SubResource("SpriteFrames_my2so")
 autoplay = "default"
-frame_progress = 0.04677287
+frame_progress = 0.53842777
+
+[node name="PeriodicBoostComponent" type="Node" parent="."]
+script = ExtResource("10_hypsk")
+min_boost_interval = 4.0
+max_boost_interval = 6.0
+boost_duration = 1.0
+metadata/_custom_type_script = "uid://b0wo26d3dinat"

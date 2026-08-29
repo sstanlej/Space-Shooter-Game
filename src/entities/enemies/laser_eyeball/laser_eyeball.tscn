@@ -1,0 +1,90 @@
+[gd_scene load_steps=15 format=3 uid="uid://but2k2jh5ixdx"]
+
+[ext_resource type="Script" uid="uid://vwa6kpj4j3xy" path="res://src/entities/enemies/components/Enemy.gd" id="1_vsttp"]
+[ext_resource type="PackedScene" uid="uid://cdfbi3flgf8ko" path="res://src/vfx/explosion/explosion.tscn" id="2_nsndf"]
+[ext_resource type="PackedScene" uid="uid://c45gv4stiok3" path="res://src/vfx/particles/blood_trail.tscn" id="3_vgyeb"]
+[ext_resource type="Script" uid="uid://c0svh84qgdobm" path="res://src/entities/enemies/components/HurtboxComponent.gd" id="4_yev77"]
+[ext_resource type="Texture2D" uid="uid://x3wsqabnmauc" path="res://src/entities/enemies/laser_eyeball/laser_eyeball_sheet.png" id="5_mkf1p"]
+[ext_resource type="Script" uid="uid://cmxkc1l3uevq1" path="res://src/entities/enemies/components/HealthComponent.gd" id="6_vrn57"]
+[ext_resource type="Script" uid="uid://wp4r0eq4n6vp" path="res://src/entities/enemies/components/EnemyMovementComponent.gd" id="7_kvsol"]
+[ext_resource type="Script" uid="uid://cnbwlgjmc0w46" path="res://src/entities/enemies/components/ShootingComponent.gd" id="8_uryps"]
+[ext_resource type="PackedScene" uid="uid://wikdcl5aogg5" path="res://src/entities/projectiles/enemy_projectile.tscn" id="9_qe4q4"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_coeow"]
+radius = 7.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uryps"]
+atlas = ExtResource("5_mkf1p")
+region = Rect2(0, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qe4q4"]
+atlas = ExtResource("5_mkf1p")
+region = Rect2(32, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3778t"]
+atlas = ExtResource("5_mkf1p")
+region = Rect2(64, 0, 32, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_s0aew"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uryps")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qe4q4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3778t")
+}],
+"loop": true,
+"name": &"default",
+"speed": 4.0
+}]
+
+[node name="LensEyeball" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1_vsttp")
+death_scene = ExtResource("2_nsndf")
+
+[node name="BloodParticles" parent="." instance=ExtResource("3_vgyeb")]
+position = Vector2(4, 0)
+
+[node name="HurtboxComponent" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 5
+script = ExtResource("4_yev77")
+contact_damage = 1.0
+metadata/_custom_type_script = "uid://c0svh84qgdobm"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent"]
+shape = SubResource("CircleShape2D_coeow")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(8, 0)
+sprite_frames = SubResource("SpriteFrames_s0aew")
+autoplay = "default"
+frame_progress = 0.07686854
+
+[node name="HealthComponent" type="Node" parent="."]
+script = ExtResource("6_vrn57")
+max_health = 10
+metadata/_custom_type_script = "uid://cmxkc1l3uevq1"
+
+[node name="EnemyMovementComponent" type="Node" parent="."]
+script = ExtResource("7_kvsol")
+move_speed = 35.0
+sine_frequency = 1.0
+sine_amplitude = 5.0
+metadata/_custom_type_script = "uid://wp4r0eq4n6vp"
+
+[node name="ShootingComponent" type="Node" parent="."]
+script = ExtResource("8_uryps")
+bullet_scene = ExtResource("9_qe4q4")
+bullet_speed = 300.0
+fire_rate = 4.0
+burst_count = 3
+initial_delay = 1.0
+shot_directions = Array[Vector2]([Vector2(-1, 0)])
+metadata/_custom_type_script = "uid://cnbwlgjmc0w46"

@@ -5,7 +5,7 @@
 [ext_resource type="AudioStream" uid="uid://tkgndh2r3xbw" path="res://assets/audio/laser-312360.mp3" id="3_h4nqt"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_m8u5f"]
-size = Vector2(2, 12)
+size = Vector2(12, 2)
 
 [node name="EnemyProjectile" type="Area2D"]
 collision_layer = 8
