@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://day5ktqxd5q2j" path="res://src/systems/locations/sprites/gukid/gikid_towers.png" id="2_eg6q0"]
 [ext_resource type="Texture2D" uid="uid://g2qy5wvgi356" path="res://src/systems/locations/sprites/gukid/gikid_far_towers.png" id="3_sidrx"]
 [ext_resource type="Resource" uid="uid://ijggyag574qh" path="res://src/entities/enemies/resources/SpectatorEnemy.tres" id="6_d7cc4"]
-[ext_resource type="Resource" uid="uid://cdg48uidffuqt" path="res://src/entities/enemies/resources/KittenEnemy.tres" id="7_eg6q0"]
+[ext_resource type="Resource" uid="uid://cqu28t0tpfic3" path="res://src/entities/enemies/resources/LensEyeballEnemy.tres" id="7_eg6q0"]
 
 [resource]
 script = ExtResource("1_aaygm")
