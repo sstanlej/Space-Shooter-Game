@@ -217,7 +217,7 @@ func animate_level_up(old_max_xp: int, new_level: int, new_max_xp: int, current_
 
 		if experience_label:
 			experience_label.pivot_offset = experience_label.size / 2.0
-			experience_label.text = "[center]LVL: %d    0 / %d[/center]" % [new_level, new_max_xp]
+			experience_label.text = "[center]LVL [color=#e4f1f8]%d[/color]    0 / %d[/center]" % [new_level, new_max_xp]
 			var lbl_pop = create_tween()
 			lbl_pop.tween_property(experience_label, "scale", Vector2(1.25, 1.25), 0.08)
 			lbl_pop.tween_property(experience_label, "scale", Vector2.ONE, 0.16)\
