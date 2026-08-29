@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://bpeytugpvbes0"]
+[gd_scene load_steps=28 format=3 uid="uid://bpeytugpvbes0"]
 
 [ext_resource type="Script" uid="uid://vwa6kpj4j3xy" path="res://src/entities/enemies/components/Enemy.gd" id="1_r1d65"]
 [ext_resource type="PackedScene" uid="uid://cdfbi3flgf8ko" path="res://src/vfx/explosion/explosion.tscn" id="2_awdri"]
@@ -8,7 +8,10 @@
 [ext_resource type="Script" uid="uid://c0svh84qgdobm" path="res://src/entities/enemies/components/HurtboxComponent.gd" id="5_mspwa"]
 [ext_resource type="Script" uid="uid://wp4r0eq4n6vp" path="res://src/entities/enemies/components/EnemyMovementComponent.gd" id="6_qm0mr"]
 [ext_resource type="Script" uid="uid://cnxt04u1u020f" path="res://src/entities/enemies/components/ArcShieldComponent.gd" id="7_mnpm8"]
-[ext_resource type="Texture2D" uid="uid://dwhv33i604jxj" path="res://src/entities/enemies/lens_eyeball/lens_shield.png" id="8_hypsk"]
+[ext_resource type="Texture2D" uid="uid://ciqtsc82o1ou6" path="res://src/entities/enemies/lens_eyeball/lens_shield_sheet.png" id="9_mnpm8"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_coeow"]
+radius = 7.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_mnpm8"]
 atlas = ExtResource("3_qm0mr")
@@ -39,8 +42,97 @@ animations = [{
 "speed": 4.0
 }]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_coeow"]
-radius = 7.0
+[sub_resource type="AtlasTexture" id="AtlasTexture_s0aew"]
+atlas = ExtResource("9_mnpm8")
+region = Rect2(0, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_itl57"]
+atlas = ExtResource("9_mnpm8")
+region = Rect2(16, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ecqam"]
+atlas = ExtResource("9_mnpm8")
+region = Rect2(32, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n1asi"]
+atlas = ExtResource("9_mnpm8")
+region = Rect2(48, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_om0f6"]
+atlas = ExtResource("9_mnpm8")
+region = Rect2(64, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gql2t"]
+atlas = ExtResource("9_mnpm8")
+region = Rect2(80, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v5yjj"]
+atlas = ExtResource("9_mnpm8")
+region = Rect2(96, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pfg5e"]
+atlas = ExtResource("9_mnpm8")
+region = Rect2(112, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0g7tu"]
+atlas = ExtResource("9_mnpm8")
+region = Rect2(128, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6o4gh"]
+atlas = ExtResource("9_mnpm8")
+region = Rect2(144, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g1t7l"]
+atlas = ExtResource("9_mnpm8")
+region = Rect2(160, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5s3tn"]
+atlas = ExtResource("9_mnpm8")
+region = Rect2(176, 0, 16, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_my2so"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s0aew")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_itl57")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ecqam")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n1asi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_om0f6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gql2t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v5yjj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pfg5e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0g7tu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6o4gh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g1t7l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5s3tn")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
 
 [node name="LensEyeball" type="CharacterBody2D"]
 collision_layer = 2
@@ -51,17 +143,6 @@ death_scene = ExtResource("2_awdri")
 [node name="BloodParticles" parent="." instance=ExtResource("3_mnpm8")]
 position = Vector2(4, 0)
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(8, 0)
-sprite_frames = SubResource("SpriteFrames_s0aew")
-autoplay = "default"
-frame_progress = 0.3636767
-
-[node name="HealthComponent" type="Node" parent="."]
-script = ExtResource("4_tgqvp")
-max_health = 3
-metadata/_custom_type_script = "uid://cmxkc1l3uevq1"
-
 [node name="HurtboxComponent" type="Area2D" parent="."]
 collision_layer = 2
 collision_mask = 5
@@ -71,6 +152,17 @@ metadata/_custom_type_script = "uid://c0svh84qgdobm"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent"]
 shape = SubResource("CircleShape2D_coeow")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(8, 0)
+sprite_frames = SubResource("SpriteFrames_s0aew")
+autoplay = "default"
+frame_progress = 0.3636767
+
+[node name="HealthComponent" type="Node" parent="."]
+script = ExtResource("4_tgqvp")
+max_health = 10
+metadata/_custom_type_script = "uid://cmxkc1l3uevq1"
 
 [node name="EnemyMovementComponent" type="Node" parent="."]
 script = ExtResource("6_qm0mr")
@@ -84,11 +176,12 @@ position = Vector2(-7, 0)
 collision_layer = 2
 collision_mask = 0
 script = ExtResource("7_mnpm8")
-max_shield_health = 3
-shield_sprite = NodePath("Sprite2D")
-
-[node name="Sprite2D" type="Sprite2D" parent="ArcShieldComponent"]
-texture = ExtResource("8_hypsk")
+shield_sprite = NodePath("AnimatedSprite2D")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="ArcShieldComponent"]
 polygon = PackedVector2Array(4, -14, 1, -14, -4, -9, -6, -4, -6, 4, -4, 9, 1, 14, 4, 14, -3, 0)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="ArcShieldComponent"]
+sprite_frames = SubResource("SpriteFrames_my2so")
+autoplay = "default"
+frame_progress = 0.04677287

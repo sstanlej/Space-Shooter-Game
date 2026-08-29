@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://cm67hcmbqhaeq"]
+[gd_scene load_steps=13 format=3 uid="uid://cm67hcmbqhaeq"]
 
 [ext_resource type="Script" uid="uid://vwa6kpj4j3xy" path="res://src/entities/enemies/components/Enemy.gd" id="1_jebdo"]
 [ext_resource type="PackedScene" uid="uid://r52ov1nbo7ug" path="res://src/entities/misc/warning_indicator/warning_indicator.tscn" id="2_3bkon"]
@@ -10,28 +10,6 @@
 [ext_resource type="Script" uid="uid://c0svh84qgdobm" path="res://src/entities/enemies/components/HurtboxComponent.gd" id="6_jebdo"]
 [ext_resource type="Script" uid="uid://wp4r0eq4n6vp" path="res://src/entities/enemies/components/EnemyMovementComponent.gd" id="7_e54ls"]
 [ext_resource type="Script" uid="uid://dh7k1c03428l0" path="res://src/entities/enemies/components/WarningComponent.gd" id="8_ffab7"]
-
-[sub_resource type="Gradient" id="Gradient_ql8tn"]
-colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_ha4r5"]
-gradient = SubResource("Gradient_ql8tn")
-
-[sub_resource type="Curve" id="Curve_r0g16"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_mprk4"]
-curve = SubResource("Curve_r0g16")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_3bkon"]
-particle_flag_disable_z = true
-spread = 5.0
-initial_velocity_min = 20.0
-initial_velocity_max = 50.0
-gravity = Vector3(0, 0, 0)
-scale_curve = SubResource("CurveTexture_mprk4")
-color_ramp = SubResource("GradientTexture1D_ha4r5")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ffab7"]
 shader = ExtResource("4_e54ls")
@@ -50,7 +28,6 @@ death_scene = ExtResource("2_we2ma")
 
 [node name="SmokeParticles" parent="." instance=ExtResource("2_w2akj")]
 position = Vector2(19, 1)
-process_material = SubResource("ParticleProcessMaterial_3bkon")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_ffab7")

@@ -14,4 +14,5 @@ texture = ExtResource("2_rn4jl")
 [node name="EnemyMovementComponent" type="Node" parent="."]
 script = ExtResource("3_rn4jl")
 mode = 1
+move_speed = 75.0
 sine_amplitude = 15.0
