@@ -59,6 +59,7 @@ collision_layer = 2
 collision_mask = 5
 script = ExtResource("7_ooofx")
 health_component = NodePath("../HealthComponent")
+contact_damage = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent"]
 shape = SubResource("CapsuleShape2D_rwfl0")

@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://g6xrgexiv752"]
 
-[ext_resource type="Texture2D" uid="uid://br5jbhmsysahu" path="res://src/entities/enemies/spectator/spectator.png" id="1_5gdag"]
 [ext_resource type="Script" uid="uid://vwa6kpj4j3xy" path="res://src/entities/enemies/components/Enemy.gd" id="1_jh6tf"]
+[ext_resource type="Texture2D" uid="uid://g3ka0oa2tbx7" path="res://src/entities/enemies/spectator/spectator_fast.png" id="2_rn4jl"]
 [ext_resource type="Script" uid="uid://wp4r0eq4n6vp" path="res://src/entities/enemies/components/EnemyMovementComponent.gd" id="3_rn4jl"]
 
 [node name="Spectator" type="CharacterBody2D"]
@@ -9,7 +9,7 @@ script = ExtResource("1_jh6tf")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 1, 0.78431374)
-texture = ExtResource("1_5gdag")
+texture = ExtResource("2_rn4jl")
 
 [node name="EnemyMovementComponent" type="Node" parent="."]
 script = ExtResource("3_rn4jl")

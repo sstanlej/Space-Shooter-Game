@@ -22,7 +22,6 @@ var shield_tween: Tween
 @export var ghost_bullet_texture: Texture2D
 
 @export_group("Component References")
-@onready var state_machine: PlayerStateMachine = get_node_or_null("StateMachine")
 @onready var attack_controller: AttackController = get_node_or_null("AttackController")
 @onready var health_component: HealthComponent = get_node_or_null("HealthComponent")
 @onready var deck_component: PlayerDeckComponent = get_node_or_null("PlayerDeckComponent")
@@ -34,13 +33,15 @@ var is_in_game: bool = false
 var is_spectator: bool = false
 
 var original_texture: Texture2D
-var original_collision_layer: int = 1
-var original_collision_mask: int = 1
+var original_collision_layer: int = 0
+var original_collision_mask: int = 0
 
 var flash_tween: Tween
 var blink_tween: Tween
 
 func _ready() -> void:
+	collision_layer = 0
+	collision_mask = 0
 	position = Vector2(menu_pos_x, 60.0)
 	is_in_game = false
 
@@ -48,9 +49,6 @@ func _ready() -> void:
 		original_texture = sprite.texture
 	original_collision_layer = collision_layer
 	original_collision_mask = collision_mask
-
-	if state_machine:
-		state_machine.Initialize(self)
 
 	if health_component:
 		if not health_component.died.is_connected(_on_player_died):
@@ -61,8 +59,6 @@ func _ready() -> void:
 			health_component.invincibility_started.connect(_on_invincibility_started)
 		if health_component.has_signal("invincibility_ended") and not health_component.invincibility_ended.is_connected(_on_invincibility_ended):
 			health_component.invincibility_ended.connect(_on_invincibility_ended)
-
-	if health_component:
 		if not health_component.shield_hit.is_connected(_on_shield_hit):
 			health_component.shield_hit.connect(_on_shield_hit)
 		if not health_component.shield_broken.is_connected(_on_shield_broken):
@@ -90,16 +86,19 @@ func _physics_process(delta: float) -> void:
 func handle_input() -> void:
 	if not is_in_game or Input.is_key_pressed(KEY_SHIFT):
 		direction = Vector2.ZERO
+		is_attacking = false
 		return
 
 	var input_x = Input.get_action_strength("right") - Input.get_action_strength("left")
 	var input_y = Input.get_action_strength("down") - Input.get_action_strength("up")
 	direction = Vector2(input_x, input_y).normalized()
 
+	# Bezpośrednie sterowanie ogniem bez maszyny stanów:
+	is_attacking = Input.is_action_pressed("attack")
+
 func handle_movement(delta: float) -> void:
 	var max_speed = get_movement_speed()
 
-	# 1. Tryb Spectatora: natychmiastowe precyzyjne przemieszczanie
 	if is_spectator:
 		velocity = direction * max_speed
 		move_and_slide()
@@ -108,7 +107,6 @@ func handle_movement(delta: float) -> void:
 			position.y = clampf(position.y, 10.0, 110.0)
 		return
 
-	# 2. Tryb Normalny: Fizyka zunifikowana w PlayerDeckComponent
 	var target_velocity = direction * max_speed
 	var accel = deck_component.get_dynamic_acceleration() if deck_component else 950.0
 	var friction = deck_component.get_dynamic_friction() if deck_component else 750.0
@@ -264,7 +262,7 @@ func trigger_shield_impact_effect() -> void:
 
 	shield_tween = create_tween()
 	shield_sprite.scale = Vector2(1.3, 1.3)
-	shield_sprite.modulate = Color(2.5, 2.5, 2.5, 1.0) # Błysk uderzenia
+	shield_sprite.modulate = Color(2.5, 2.5, 2.5, 1.0)
 	
 	shield_tween.set_parallel(true)
 	shield_tween.tween_property(shield_sprite, "scale", Vector2.ONE, 0.2).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
