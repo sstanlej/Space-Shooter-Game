@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://1y76pfdr6txr"
-path="res://.godot/imported/earth_orbit_parallax.png-85d4a3b9a90afe8ed4e709961723cfd9.ctex"
+uid="uid://ctrexm0ep7uup"
+path="res://.godot/imported/earth_orbit_front.png-2a089d0fd8862af91aa615a8250b0bdd.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://src/systems/locations/sprites/earth_orbit/earth_orbit_parallax.png"
-dest_files=["res://.godot/imported/earth_orbit_parallax.png-85d4a3b9a90afe8ed4e709961723cfd9.ctex"]
+source_file="res://src/systems/locations/sprites/earth_orbit/earth_orbit_front.png"
+dest_files=["res://.godot/imported/earth_orbit_front.png-2a089d0fd8862af91aa615a8250b0bdd.ctex"]
 
 [params]
 

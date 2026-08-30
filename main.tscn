@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://ctolyotyjbqwg"]
+[gd_scene load_steps=36 format=3 uid="uid://ctolyotyjbqwg"]
 
 [ext_resource type="Script" uid="uid://dm1jlaqpgu05" path="res://src/core/game_manager.gd" id="1_lswn8"]
 [ext_resource type="PackedScene" uid="uid://qoymek85ecx7" path="res://src/systems/locations/location_manager.tscn" id="2_a6jrf"]
@@ -7,9 +7,11 @@
 [ext_resource type="Script" uid="uid://dga8epmke5iyx" path="res://src/systems/spawner/spawner.gd" id="6_seu75"]
 [ext_resource type="Script" uid="uid://dw38kr6168wir" path="res://src/core/progression_manager.gd" id="7_htxhm"]
 [ext_resource type="Script" uid="uid://bic7ag2qxefd7" path="res://src/systems/campaign/CampaignManager.gd" id="7_kq58d"]
+[ext_resource type="Resource" uid="uid://cg4citajjq2og" path="res://src/systems/campaign/acts/Act_2.tres" id="8_htxhm"]
 [ext_resource type="Script" uid="uid://ceksi56kybfsk" path="res://src/ui/ui_manager.gd" id="8_jq2sk"]
 [ext_resource type="Script" uid="uid://ccinpp3kgnc7v" path="res://src/systems/campaign/ActData.gd" id="8_seu75"]
 [ext_resource type="Resource" uid="uid://qq5bhde64gsn" path="res://src/systems/campaign/acts/Act_1.tres" id="9_htxhm"]
+[ext_resource type="Resource" uid="uid://c1rtgwmt1kglx" path="res://src/systems/campaign/acts/Act_3.tres" id="9_jq2sk"]
 [ext_resource type="Texture2D" uid="uid://caubnil2iehm" path="res://src/ui/sprites/game_overlay.png" id="11_ok6jj"]
 [ext_resource type="FontFile" uid="uid://bvlhnv4ultuef" path="res://assets/fonts/Pixeled.ttf" id="12_facbu"]
 [ext_resource type="Texture2D" uid="uid://c16xy12030r1n" path="res://src/ui/sprites/experience_bar_under.png" id="13_b1qrp"]
@@ -135,7 +137,7 @@ offset = Vector2(120, 67)
 
 [node name="CampaignManager" type="Node" parent="."]
 script = ExtResource("7_kq58d")
-acts = Array[ExtResource("8_seu75")]([ExtResource("9_htxhm")])
+acts = Array[ExtResource("8_seu75")]([ExtResource("9_htxhm"), ExtResource("8_htxhm"), ExtResource("9_jq2sk")])
 
 [node name="Spawner" type="Node" parent="." node_paths=PackedStringArray("game_manager", "progression_manager", "enemies_container", "projectiles_container") groups=["spawner"]]
 script = ExtResource("6_seu75")

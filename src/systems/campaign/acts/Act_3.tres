@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ActData" load_steps=6 format=3 uid="uid://c1rtgwmt1kglx"]
+
+[ext_resource type="Resource" uid="uid://c1coavno2oysx" path="res://src/entities/enemies/resources/MotherEyeballEnemy.tres" id="1_y7piw"]
+[ext_resource type="PackedScene" uid="uid://7my7tjtqvb3p" path="res://src/entities/enemies/mother_eyeball/mother_eyeball.tscn" id="2_hf7yp"]
+[ext_resource type="Script" uid="uid://4ko4pcyqo2oo" path="res://src/systems/locations/LocationData.gd" id="3_f6aqn"]
+[ext_resource type="Resource" uid="uid://bosrctydabgot" path="res://src/systems/locations/resources/GukidLocation.tres" id="4_y7piw"]
+[ext_resource type="Script" uid="uid://ccinpp3kgnc7v" path="res://src/systems/campaign/ActData.gd" id="5_45a1o"]
+
+[resource]
+script = ExtResource("5_45a1o")
+act_index = 3
+act_name = "Act III"
+locations = Array[ExtResource("3_f6aqn")]([ExtResource("4_y7piw"), ExtResource("4_y7piw"), ExtResource("4_y7piw")])
+boss_scene = ExtResource("2_hf7yp")
+boss_enemy_data = ExtResource("1_y7piw")
+metadata/_custom_type_script = "uid://ccinpp3kgnc7v"
