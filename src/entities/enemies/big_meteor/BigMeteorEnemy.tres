@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://cet664o2kh2vh" path="res://src/entities/enemies/big_meteor/big_meteor.tscn" id="1_421jr"]
 [ext_resource type="Script" uid="uid://c1jvipah3wjg0" path="res://src/entities/enemies/components/EnemyData.gd" id="1_qdbpn"]
 [ext_resource type="PackedScene" uid="uid://cdfbi3flgf8ko" path="res://src/vfx/explosion/explosion.tscn" id="1_ybfd1"]
-[ext_resource type="Resource" uid="uid://4abkmc58w7d" path="res://src/entities/enemies/resources/MeteorEnemy.tres" id="4_bbe57"]
+[ext_resource type="Resource" uid="uid://4abkmc58w7d" path="res://src/entities/enemies/meteor/MeteorEnemy.tres" id="4_bbe57"]
 
 [resource]
 script = ExtResource("1_qdbpn")

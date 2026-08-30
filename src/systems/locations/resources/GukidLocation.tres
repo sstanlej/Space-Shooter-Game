@@ -5,10 +5,10 @@
 [ext_resource type="Script" uid="uid://c1jvipah3wjg0" path="res://src/entities/enemies/components/EnemyData.gd" id="2_53d1w"]
 [ext_resource type="Texture2D" uid="uid://day5ktqxd5q2j" path="res://src/systems/locations/sprites/gukid/gikid_towers.png" id="2_eg6q0"]
 [ext_resource type="Texture2D" uid="uid://g2qy5wvgi356" path="res://src/systems/locations/sprites/gukid/gikid_far_towers.png" id="3_sidrx"]
-[ext_resource type="Resource" uid="uid://cqu28t0tpfic3" path="res://src/entities/enemies/resources/LensEyeballEnemy.tres" id="7_eg6q0"]
-[ext_resource type="Resource" uid="uid://cengj6o63lep3" path="res://src/entities/enemies/resources/TinyEyeballEnemy.tres" id="8_2r14k"]
-[ext_resource type="Resource" uid="uid://cch0sfbeu0hm2" path="res://src/entities/enemies/resources/LaserEyeballEnemy.tres" id="8_sidrx"]
-[ext_resource type="Resource" uid="uid://c1coavno2oysx" path="res://src/entities/enemies/resources/MotherEyeballEnemy.tres" id="9_2r14k"]
+[ext_resource type="Resource" uid="uid://cqu28t0tpfic3" path="res://src/entities/enemies/lens_eyeball/LensEyeballEnemy.tres" id="7_eg6q0"]
+[ext_resource type="Resource" uid="uid://cengj6o63lep3" path="res://src/entities/enemies/tiny_eyeball/TinyEyeballEnemy.tres" id="8_2r14k"]
+[ext_resource type="Resource" uid="uid://cch0sfbeu0hm2" path="res://src/entities/enemies/laser_eyeball/LaserEyeballEnemy.tres" id="8_sidrx"]
+[ext_resource type="Resource" uid="uid://c1coavno2oysx" path="res://src/entities/enemies/mother_eyeball/MotherEyeballEnemy.tres" id="9_2r14k"]
 
 [resource]
 script = ExtResource("1_aaygm")

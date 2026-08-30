@@ -10,7 +10,7 @@
 [ext_resource type="Script" uid="uid://cnbwlgjmc0w46" path="res://src/entities/enemies/components/ShootingComponent.gd" id="8_uryps"]
 [ext_resource type="PackedScene" uid="uid://wikdcl5aogg5" path="res://src/entities/projectiles/enemy_projectile.tscn" id="9_qe4q4"]
 [ext_resource type="Script" uid="uid://cg7lkvn1vocg5" path="res://src/entities/enemies/components/SplitOnDeathComponent.gd" id="10_3frld"]
-[ext_resource type="Resource" uid="uid://cengj6o63lep3" path="res://src/entities/enemies/resources/TinyEyeballEnemy.tres" id="11_a05yh"]
+[ext_resource type="Resource" uid="uid://cengj6o63lep3" path="res://src/entities/enemies/tiny_eyeball/TinyEyeballEnemy.tres" id="11_a05yh"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_coeow"]
 radius = 7.0

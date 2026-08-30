@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="ActData" load_steps=6 format=3 uid="uid://cg4citajjq2og"]
 
-[ext_resource type="Resource" uid="uid://c1coavno2oysx" path="res://src/entities/enemies/resources/MotherEyeballEnemy.tres" id="1_lrm2g"]
+[ext_resource type="Resource" uid="uid://c1coavno2oysx" path="res://src/entities/enemies/mother_eyeball/MotherEyeballEnemy.tres" id="1_lrm2g"]
 [ext_resource type="PackedScene" uid="uid://7my7tjtqvb3p" path="res://src/entities/enemies/mother_eyeball/mother_eyeball.tscn" id="2_8ifa3"]
 [ext_resource type="Script" uid="uid://4ko4pcyqo2oo" path="res://src/systems/locations/LocationData.gd" id="3_1l4kq"]
 [ext_resource type="Resource" uid="uid://cnm2rj4rhv22x" path="res://src/systems/locations/resources/CityLocation.tres" id="4_1snnb"]

@@ -5,8 +5,8 @@
 [ext_resource type="Texture2D" uid="uid://ctvul62x056sv" path="res://src/systems/locations/sprites/green_planet/green_planet_front.png" id="2_2q8xa"]
 [ext_resource type="Texture2D" uid="uid://wbcretot0elg" path="res://src/systems/locations/sprites/green_planet/green_planet_middle.png" id="3_k2dbb"]
 [ext_resource type="Script" uid="uid://c1jvipah3wjg0" path="res://src/entities/enemies/components/EnemyData.gd" id="5_grbhw"]
-[ext_resource type="Resource" uid="uid://b21uumo1tahqe" path="res://src/entities/enemies/resources/UfoEnemy.tres" id="6_g8ub3"]
-[ext_resource type="Resource" uid="uid://68yqma5ch2gt" path="res://src/entities/enemies/resources/ZootEnemy.tres" id="7_g8ub3"]
+[ext_resource type="Resource" uid="uid://b21uumo1tahqe" path="res://src/entities/enemies/ufo/UfoEnemy.tres" id="6_g8ub3"]
+[ext_resource type="Resource" uid="uid://68yqma5ch2gt" path="res://src/entities/enemies/zoot/ZootEnemy.tres" id="7_g8ub3"]
 
 [resource]
 script = ExtResource("1_idjfq")

@@ -11,7 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://ciqtsc82o1ou6" path="res://src/entities/enemies/lens_eyeball/lens_shield_sheet.png" id="9_mnpm8"]
 [ext_resource type="Script" uid="uid://b0wo26d3dinat" path="res://src/entities/enemies/components/PeriodicBoostComponent.gd" id="10_hypsk"]
 [ext_resource type="Script" uid="uid://cg7lkvn1vocg5" path="res://src/entities/enemies/components/SplitOnDeathComponent.gd" id="11_s0aew"]
-[ext_resource type="Resource" uid="uid://cengj6o63lep3" path="res://src/entities/enemies/resources/TinyEyeballEnemy.tres" id="12_itl57"]
+[ext_resource type="Resource" uid="uid://cengj6o63lep3" path="res://src/entities/enemies/tiny_eyeball/TinyEyeballEnemy.tres" id="12_itl57"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_coeow"]
 radius = 7.0

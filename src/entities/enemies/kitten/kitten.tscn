@@ -7,7 +7,7 @@
 [ext_resource type="Script" uid="uid://c0svh84qgdobm" path="res://src/entities/enemies/components/HurtboxComponent.gd" id="5_piyax"]
 [ext_resource type="Script" uid="uid://wp4r0eq4n6vp" path="res://src/entities/enemies/components/EnemyMovementComponent.gd" id="6_ec7db"]
 [ext_resource type="Script" uid="uid://cg7lkvn1vocg5" path="res://src/entities/enemies/components/SplitOnDeathComponent.gd" id="7_fe4t0"]
-[ext_resource type="Resource" uid="uid://cvosf5m658nc1" path="res://src/entities/enemies/resources/KittyEnemy.tres" id="8_w6l75"]
+[ext_resource type="Resource" uid="uid://cvosf5m658nc1" path="res://src/entities/enemies/kitten/KittyEnemy.tres" id="8_w6l75"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_rrooj"]
 shader = ExtResource("2_um8jn")

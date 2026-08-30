@@ -5,8 +5,8 @@
 [ext_resource type="Texture2D" uid="uid://cmjhjdw3nnj84" path="res://src/systems/locations/sprites/space/space_front.png" id="2_vkjrs"]
 [ext_resource type="Texture2D" uid="uid://e8xyiggiwnoj" path="res://src/systems/locations/sprites/space/space_middle.png" id="3_ubd1e"]
 [ext_resource type="Script" uid="uid://c1jvipah3wjg0" path="res://src/entities/enemies/components/EnemyData.gd" id="5_hmarg"]
-[ext_resource type="Resource" uid="uid://4abkmc58w7d" path="res://src/entities/enemies/resources/MeteorEnemy.tres" id="6_xccdj"]
-[ext_resource type="Resource" uid="uid://dsmu3iu5fdtp0" path="res://src/entities/enemies/resources/BigMeteorEnemy.tres" id="7_xccdj"]
+[ext_resource type="Resource" uid="uid://4abkmc58w7d" path="res://src/entities/enemies/meteor/MeteorEnemy.tres" id="6_xccdj"]
+[ext_resource type="Resource" uid="uid://dsmu3iu5fdtp0" path="res://src/entities/enemies/big_meteor/BigMeteorEnemy.tres" id="7_xccdj"]
 
 [resource]
 script = ExtResource("1_06t5y")
