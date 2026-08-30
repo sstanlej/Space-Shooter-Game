@@ -1,18 +1,11 @@
-[gd_resource type="Resource" script_class="EnemyData" load_steps=4 format=3 uid="uid://cdg48uidffuqt"]
+[gd_resource type="Resource" script_class="EnemyData" load_steps=3 format=3 uid="uid://cdg48uidffuqt"]
 
 [ext_resource type="PackedScene" uid="uid://cibqa0xgq4v3f" path="res://src/entities/enemies/kitten/kitten.tscn" id="1_65l84"]
 [ext_resource type="Script" uid="uid://c1jvipah3wjg0" path="res://src/entities/enemies/components/EnemyData.gd" id="1_kfwgw"]
-[ext_resource type="Resource" uid="uid://cvosf5m658nc1" path="res://src/entities/enemies/resources/KittyEnemy.tres" id="3_5v70r"]
 
 [resource]
 script = ExtResource("1_kfwgw")
-enemy_id = 7
 enemy_name = "Kitten"
 enemy_scene = ExtResource("1_65l84")
-enemy_max_health = 1
-enemy_speed = 50.0
-enemy_damage = 1
 spawn_cost = 15
-split_enemy_data = ExtResource("3_5v70r")
-split_enemy_count = 1
 metadata/_custom_type_script = "uid://c1jvipah3wjg0"

@@ -1,17 +1,15 @@
-[gd_scene load_steps=36 format=3 uid="uid://ctolyotyjbqwg"]
+[gd_scene load_steps=34 format=3 uid="uid://ctolyotyjbqwg"]
 
 [ext_resource type="Script" uid="uid://dm1jlaqpgu05" path="res://src/core/game_manager.gd" id="1_lswn8"]
 [ext_resource type="PackedScene" uid="uid://qoymek85ecx7" path="res://src/systems/locations/location_manager.tscn" id="2_a6jrf"]
-[ext_resource type="Resource" uid="uid://cvcji53fh485s" path="res://src/systems/locations/resources/EarthOrbitLocation.tres" id="3_kq58d"]
-[ext_resource type="Resource" uid="uid://c1l3ogqv4mxp5" path="res://src/systems/locations/resources/SpaceLocation.tres" id="3_qsp4k"]
 [ext_resource type="PackedScene" uid="uid://b5gn1svcnnf7a" path="res://src/entities/player/player.tscn" id="3_xuqvo"]
-[ext_resource type="Resource" uid="uid://cnm2rj4rhv22x" path="res://src/systems/locations/resources/CityLocation.tres" id="4_kq58d"]
 [ext_resource type="Script" uid="uid://bvscfifqg2eho" path="res://src/core/camera_movement.gd" id="4_qsp4k"]
-[ext_resource type="Resource" uid="uid://c30ua1jkovq12" path="res://src/systems/locations/resources/GreenPlanetOrbitLocation.tres" id="5_seu75"]
-[ext_resource type="Resource" uid="uid://bosrctydabgot" path="res://src/systems/locations/resources/GukidLocation.tres" id="6_qsp4k"]
 [ext_resource type="Script" uid="uid://dga8epmke5iyx" path="res://src/systems/spawner/spawner.gd" id="6_seu75"]
 [ext_resource type="Script" uid="uid://dw38kr6168wir" path="res://src/core/progression_manager.gd" id="7_htxhm"]
+[ext_resource type="Script" uid="uid://bic7ag2qxefd7" path="res://src/systems/campaign/CampaignManager.gd" id="7_kq58d"]
 [ext_resource type="Script" uid="uid://ceksi56kybfsk" path="res://src/ui/ui_manager.gd" id="8_jq2sk"]
+[ext_resource type="Script" uid="uid://ccinpp3kgnc7v" path="res://src/systems/campaign/ActData.gd" id="8_seu75"]
+[ext_resource type="Resource" uid="uid://qq5bhde64gsn" path="res://src/systems/campaign/acts/Act_1.tres" id="9_htxhm"]
 [ext_resource type="Texture2D" uid="uid://caubnil2iehm" path="res://src/ui/sprites/game_overlay.png" id="11_ok6jj"]
 [ext_resource type="FontFile" uid="uid://bvlhnv4ultuef" path="res://assets/fonts/Pixeled.ttf" id="12_facbu"]
 [ext_resource type="Texture2D" uid="uid://c16xy12030r1n" path="res://src/ui/sprites/experience_bar_under.png" id="13_b1qrp"]
@@ -94,9 +92,10 @@ _data = {
 &"intro": SubResource("Animation_qsp4k")
 }
 
-[node name="Main" type="Node2D" node_paths=PackedStringArray("world", "location_manager", "progression_manager", "spawner", "ui_manager", "shop_ui", "deck_overview_ui", "player", "camera_frame", "wave_cooldown_timer")]
+[node name="Main" type="Node2D" node_paths=PackedStringArray("world", "campaign_manager", "location_manager", "progression_manager", "spawner", "ui_manager", "shop_ui", "deck_overview_ui", "player", "camera_frame", "wave_cooldown_timer")]
 script = ExtResource("1_lswn8")
 world = NodePath("World")
+campaign_manager = NodePath("CampaignManager")
 location_manager = NodePath("World/LocationManager")
 progression_manager = NodePath("ProgressionManager")
 spawner = NodePath("Spawner")
@@ -115,9 +114,6 @@ libraries = {
 [node name="World" type="Node2D" parent="."]
 
 [node name="LocationManager" parent="World" instance=ExtResource("2_a6jrf")]
-starting_location = ExtResource("3_kq58d")
-space_location = ExtResource("3_qsp4k")
-locations = Array[Object]([ExtResource("3_qsp4k"), ExtResource("4_kq58d"), ExtResource("5_seu75"), ExtResource("6_qsp4k")])
 transition_duration = 3.0
 
 [node name="Player" parent="World" instance=ExtResource("3_xuqvo")]
@@ -137,14 +133,16 @@ offset = Vector2(120, 67)
 
 [node name="ProjectilesContainer" type="Node2D" parent="World" groups=["projectiles_container"]]
 
-[node name="Spawner" type="Node" parent="." node_paths=PackedStringArray("game_manager", "progression_manager", "location_manager", "enemies_container", "projectiles_container") groups=["spawner"]]
+[node name="CampaignManager" type="Node" parent="."]
+script = ExtResource("7_kq58d")
+acts = Array[ExtResource("8_seu75")]([ExtResource("9_htxhm")])
+
+[node name="Spawner" type="Node" parent="." node_paths=PackedStringArray("game_manager", "progression_manager", "enemies_container", "projectiles_container") groups=["spawner"]]
 script = ExtResource("6_seu75")
 game_manager = NodePath("..")
 progression_manager = NodePath("../ProgressionManager")
-location_manager = NodePath("../World/LocationManager")
 enemies_container = NodePath("../World/EnemiesContainer")
 projectiles_container = NodePath("../World/ProjectilesContainer")
-base_wave_budget = 15
 
 [node name="SpawnTimer" type="Timer" parent="Spawner"]
 

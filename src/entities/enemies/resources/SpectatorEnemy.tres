@@ -5,10 +5,7 @@
 
 [resource]
 script = ExtResource("1_icwbx")
-enemy_id = 6
 enemy_name = "Spectator"
 enemy_scene = ExtResource("1_vjkvt")
-enemy_max_health = -1
-enemy_speed = 50.0
 spawn_cost = 10
 metadata/_custom_type_script = "uid://c1jvipah3wjg0"

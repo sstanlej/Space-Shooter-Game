@@ -7,7 +7,6 @@
 
 [resource]
 script = ExtResource("1_3usuj")
-location_id = 5
 location_name = "Earth Orbit"
 background_texture = ExtResource("1_r0rey")
 front_texture = ExtResource("2_pyns4")

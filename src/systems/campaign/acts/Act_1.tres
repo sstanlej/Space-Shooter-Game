@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ActData" load_steps=8 format=3 uid="uid://qq5bhde64gsn"]
+
+[ext_resource type="Resource" uid="uid://c1coavno2oysx" path="res://src/entities/enemies/resources/MotherEyeballEnemy.tres" id="1_i80xl"]
+[ext_resource type="Script" uid="uid://4ko4pcyqo2oo" path="res://src/systems/locations/LocationData.gd" id="1_q4d1t"]
+[ext_resource type="Resource" uid="uid://cvcji53fh485s" path="res://src/systems/locations/resources/EarthOrbitLocation.tres" id="2_1ffhm"]
+[ext_resource type="PackedScene" uid="uid://7my7tjtqvb3p" path="res://src/entities/enemies/mother_eyeball/mother_eyeball.tscn" id="2_6vlrf"]
+[ext_resource type="Script" uid="uid://ccinpp3kgnc7v" path="res://src/systems/campaign/ActData.gd" id="2_fneui"]
+[ext_resource type="Resource" uid="uid://c1l3ogqv4mxp5" path="res://src/systems/locations/resources/SpaceLocation.tres" id="3_xkuq5"]
+[ext_resource type="Resource" uid="uid://c30ua1jkovq12" path="res://src/systems/locations/resources/GreenPlanetOrbitLocation.tres" id="4_i80xl"]
+
+[resource]
+script = ExtResource("2_fneui")
+locations = Array[ExtResource("1_q4d1t")]([ExtResource("2_1ffhm"), ExtResource("3_xkuq5"), ExtResource("4_i80xl")])
+boss_scene = ExtResource("2_6vlrf")
+boss_enemy_data = ExtResource("1_i80xl")
+metadata/_custom_type_script = "uid://ccinpp3kgnc7v"

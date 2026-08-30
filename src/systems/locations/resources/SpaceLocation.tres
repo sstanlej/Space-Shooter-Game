@@ -12,6 +12,7 @@
 script = ExtResource("1_06t5y")
 location_name = "Space"
 spawnable_enemies = Array[ExtResource("5_hmarg")]([ExtResource("6_xccdj"), ExtResource("7_xccdj")])
+available_events = Array[String](["meteor_shower"])
 background_texture = ExtResource("1_53ylf")
 middle_texture = ExtResource("3_ubd1e")
 front_texture = ExtResource("2_vkjrs")

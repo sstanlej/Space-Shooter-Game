@@ -12,7 +12,6 @@
 
 [resource]
 script = ExtResource("1_aaygm")
-location_id = 4
 location_name = "Gukid"
 location_rarity = 3
 spawnable_enemies = Array[ExtResource("2_53d1w")]([ExtResource("7_eg6q0"), ExtResource("8_sidrx"), ExtResource("8_2r14k"), ExtResource("9_2r14k")])
