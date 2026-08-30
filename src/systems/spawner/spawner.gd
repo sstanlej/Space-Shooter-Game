@@ -223,12 +223,12 @@ func spawn_enemy(spawn_position: Vector2, enemy_data: EnemyData) -> Enemy:
 	if not enemy_instance:
 		return null
 
+	enemy_instance.global_position = spawn_position
+	
 	if enemies_container:
 		enemies_container.add_child(enemy_instance)
 	else:
 		add_child(enemy_instance)
-
-	enemy_instance.global_position = spawn_position
 
 	if enemy_instance.has_method("setup"):
 		enemy_instance.setup(enemy_data)

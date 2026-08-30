@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ikgpsgquqk5y"
-path="res://.godot/imported/satelite.png-2370b711bedba9a3f483e898b2a0e537.ctex"
+path="res://.godot/imported/satellite.png-cf1d351489ee03b766f1b9d82a8ea47a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://src/entities/enemies/satelite/satelite.png"
-dest_files=["res://.godot/imported/satelite.png-2370b711bedba9a3f483e898b2a0e537.ctex"]
+source_file="res://src/entities/enemies/satelite/satellite.png"
+dest_files=["res://.godot/imported/satellite.png-cf1d351489ee03b766f1b9d82a8ea47a.ctex"]
 
 [params]
 

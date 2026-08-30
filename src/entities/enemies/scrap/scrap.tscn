@@ -1,0 +1,67 @@
+[gd_scene load_steps=13 format=3 uid="uid://cr6t465jkj0p4"]
+
+[ext_resource type="Script" uid="uid://vwa6kpj4j3xy" path="res://src/entities/enemies/components/Enemy.gd" id="1_f2nie"]
+[ext_resource type="PackedScene" uid="uid://cdfbi3flgf8ko" path="res://src/vfx/explosion/explosion.tscn" id="2_cjg42"]
+[ext_resource type="PackedScene" uid="uid://df7720odkejuq" path="res://src/vfx/particles/smoke_trail.tscn" id="3_g2jo4"]
+[ext_resource type="Texture2D" uid="uid://cunwcix1np5g6" path="res://src/entities/enemies/scrap/scrap.png" id="4_30f05"]
+[ext_resource type="Material" uid="uid://de1byru1kk04x" path="res://src/entities/enemies/scrap/scrap_particle_material.tres" id="4_qt4up"]
+[ext_resource type="Shader" uid="uid://wr7raxdl2m7y" path="res://src/vfx/shaders/hit_flash.gdshader" id="4_vonf8"]
+[ext_resource type="Script" uid="uid://cmxkc1l3uevq1" path="res://src/entities/enemies/components/HealthComponent.gd" id="6_8ygbc"]
+[ext_resource type="Script" uid="uid://c0svh84qgdobm" path="res://src/entities/enemies/components/HurtboxComponent.gd" id="7_ut8ll"]
+[ext_resource type="Script" uid="uid://wp4r0eq4n6vp" path="res://src/entities/enemies/components/EnemyMovementComponent.gd" id="8_d5bla"]
+[ext_resource type="Script" uid="uid://dsmssivreocgf" path="res://src/entities/enemies/components/RotatorComponent.gd" id="8_vey0c"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_elnbm"]
+shader = ExtResource("4_vonf8")
+shader_parameter/active = false
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_vey0c"]
+points = PackedVector2Array(-6, -2.5, -1, 6.5, 5, 3.5, 0, -5.5)
+
+[node name="Scrap" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1_f2nie")
+death_scene = ExtResource("2_cjg42")
+
+[node name="SmokeParticles" parent="." instance=ExtResource("3_g2jo4")]
+position = Vector2(1, 0)
+amount = 4
+lifetime = 2.0
+process_material = ExtResource("4_qt4up")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_elnbm")
+texture = ExtResource("4_30f05")
+
+[node name="HealthComponent" type="Node2D" parent="."]
+script = ExtResource("6_8ygbc")
+max_health = 3
+
+[node name="HurtboxComponent" type="Area2D" parent="." node_paths=PackedStringArray("health_component")]
+collision_layer = 2
+collision_mask = 5
+script = ExtResource("7_ut8ll")
+health_component = NodePath("../HealthComponent")
+contact_damage = 1.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent"]
+position = Vector2(0, -0.5)
+shape = SubResource("ConvexPolygonShape2D_vey0c")
+
+[node name="EnemyMovementComponent" type="Node" parent="."]
+script = ExtResource("8_d5bla")
+mode = 1
+move_speed = 22.0
+sine_frequency = 1.0
+sine_amplitude = 5.0
+
+[node name="RotatorComponent" type="Node" parent="."]
+script = ExtResource("8_vey0c")
+rotation_speed = 0.2
+metadata/_custom_type_script = "uid://dsmssivreocgf"
+
+[connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
+[connection signal="died" from="HealthComponent" to="." method="_on_health_component_died"]
+[connection signal="area_entered" from="HurtboxComponent" to="." method="_on_area_2d_area_entered"]

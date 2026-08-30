@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=3 format=3 uid="uid://drfmdf7npb3cv"]
+
+[ext_resource type="PackedScene" uid="uid://cr6t465jkj0p4" path="res://src/entities/enemies/scrap/scrap.tscn" id="1_klnhp"]
+[ext_resource type="Script" uid="uid://c1jvipah3wjg0" path="res://src/entities/enemies/components/EnemyData.gd" id="2_7m6mp"]
+
+[resource]
+script = ExtResource("2_7m6mp")
+enemy_name = "Scrap"
+enemy_scene = ExtResource("1_klnhp")
+spawn_cost = 2
+enemy_score_reward = 3
+enemy_xp_reward = 3
+metadata/_custom_type_script = "uid://c1jvipah3wjg0"

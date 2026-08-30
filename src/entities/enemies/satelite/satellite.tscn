@@ -1,0 +1,54 @@
+[gd_scene load_steps=11 format=3 uid="uid://by226e5fn2bir"]
+
+[ext_resource type="Script" uid="uid://vwa6kpj4j3xy" path="res://src/entities/enemies/components/Enemy.gd" id="1_6knpa"]
+[ext_resource type="PackedScene" uid="uid://cdfbi3flgf8ko" path="res://src/vfx/explosion/explosion.tscn" id="2_7xfdc"]
+[ext_resource type="PackedScene" uid="uid://df7720odkejuq" path="res://src/vfx/particles/smoke_trail.tscn" id="3_2sj85"]
+[ext_resource type="Shader" uid="uid://wr7raxdl2m7y" path="res://src/vfx/shaders/hit_flash.gdshader" id="4_byog8"]
+[ext_resource type="Texture2D" uid="uid://ikgpsgquqk5y" path="res://src/entities/enemies/satelite/satellite.png" id="5_b508n"]
+[ext_resource type="Script" uid="uid://cmxkc1l3uevq1" path="res://src/entities/enemies/components/HealthComponent.gd" id="6_nvg7j"]
+[ext_resource type="Script" uid="uid://c0svh84qgdobm" path="res://src/entities/enemies/components/HurtboxComponent.gd" id="7_3nioj"]
+[ext_resource type="Script" uid="uid://wp4r0eq4n6vp" path="res://src/entities/enemies/components/EnemyMovementComponent.gd" id="8_r6m3a"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_elnbm"]
+shader = ExtResource("4_byog8")
+shader_parameter/active = false
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qkgmc"]
+size = Vector2(16, 23)
+
+[node name="Satellite" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1_6knpa")
+death_scene = ExtResource("2_7xfdc")
+
+[node name="SmokeParticles" parent="." instance=ExtResource("3_2sj85")]
+position = Vector2(4, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_elnbm")
+texture = ExtResource("5_b508n")
+
+[node name="HealthComponent" type="Node2D" parent="."]
+script = ExtResource("6_nvg7j")
+max_health = 5
+
+[node name="HurtboxComponent" type="Area2D" parent="." node_paths=PackedStringArray("health_component")]
+collision_layer = 2
+collision_mask = 5
+script = ExtResource("7_3nioj")
+health_component = NodePath("../HealthComponent")
+contact_damage = 1.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent"]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_qkgmc")
+
+[node name="EnemyMovementComponent" type="Node" parent="."]
+script = ExtResource("8_r6m3a")
+move_speed = 15.0
+
+[connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
+[connection signal="died" from="HealthComponent" to="." method="_on_health_component_died"]
+[connection signal="area_entered" from="HurtboxComponent" to="." method="_on_area_2d_area_entered"]

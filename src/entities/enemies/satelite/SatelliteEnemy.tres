@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=3 format=3 uid="uid://bq5d8ycpebwck"]
+
+[ext_resource type="PackedScene" uid="uid://by226e5fn2bir" path="res://src/entities/enemies/satelite/satellite.tscn" id="1_65atj"]
+[ext_resource type="Script" uid="uid://c1jvipah3wjg0" path="res://src/entities/enemies/components/EnemyData.gd" id="2_aj3me"]
+
+[resource]
+script = ExtResource("2_aj3me")
+enemy_name = "Satellite"
+enemy_scene = ExtResource("1_65atj")
+spawn_cost = 3
+enemy_score_reward = 5
+enemy_xp_reward = 5
+metadata/_custom_type_script = "uid://c1jvipah3wjg0"
