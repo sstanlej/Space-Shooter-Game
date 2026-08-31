@@ -28,6 +28,8 @@ enum UsableType { NONE, SHIELD} # Rozszerzalna lista kart z ładunkami
 @export var required_weapon_id: String = ""
 @export var effects: Array[CardEffect] = []
 
+# Wewnątrz UpgradeCardData.gd w metodzie can_appear():
+
 func can_appear(player: Player) -> bool:
 	if not player:
 		return true
@@ -36,14 +38,17 @@ func can_appear(player: Player) -> bool:
 	if not deck:
 		return true
 
+	# 1. Sprawdzanie limitu poziomu karty statystyki
 	if card_type == CardType.STAT and max_level > 0:
 		if deck.get_card_level(self) >= max_level:
 			return false
 
-	if card_type == CardType.USABLE:
-		if usable_type == UsableType.SHIELD and deck.shield_charges >= max_charges:
+	# 2. Sprawdzanie tarczy (pytamy HealthComponent gracza zamiast talii)
+	if card_type == CardType.USABLE and usable_type == UsableType.SHIELD:
+		if player.health_component and player.health_component.shield_charges >= max_charges:
 			return false
 
+	# 3. Wymóg posiadania konkretnej broni
 	if not required_weapon_id.is_empty():
 		var equipped_id = ""
 		if deck.equipped_weapon:
@@ -51,6 +56,7 @@ func can_appear(player: Player) -> bool:
 		if required_weapon_id != equipped_id:
 			return false
 
+	# 4. Dodatkowe warunki z efektów
 	for effect in effects:
 		if effect and not effect.can_appear(player):
 			return false

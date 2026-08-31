@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://b5gn1svcnnf7a"]
+[gd_scene load_steps=29 format=3 uid="uid://b5gn1svcnnf7a"]
 
 [ext_resource type="Script" uid="uid://dmeq4l4ygdf52" path="res://src/entities/player/player.gd" id="1_n7e5a"]
 [ext_resource type="Shader" uid="uid://wr7raxdl2m7y" path="res://src/vfx/shaders/hit_flash.gdshader" id="2_3c4mh"]
@@ -15,7 +15,10 @@
 [ext_resource type="Resource" uid="uid://csxa4l5lisvd3" path="res://src/systems/shop/upgrades/resources/card_attack_damage.tres" id="14_a31ob"]
 [ext_resource type="Resource" uid="uid://dyhlp3gsohoqc" path="res://src/systems/shop/upgrades/resources/card_movement_speed.tres" id="15_5qgjf"]
 [ext_resource type="Resource" uid="uid://l0qvd1kbdorn" path="res://src/systems/shop/upgrades/resources/card_attack_speed.tres" id="16_fjj3i"]
+[ext_resource type="Script" uid="uid://c86ecr0gsvk8u" path="res://src/entities/player/PlayerVisualsComponent.gd" id="17_5qgjf"]
 [ext_resource type="Resource" uid="uid://qgbre6dfin8j" path="res://src/systems/shop/upgrades/resources/card_default_gun.tres" id="17_a31ob"]
+[ext_resource type="Script" uid="uid://b1abx8mcs1ju0" path="res://src/entities/player/PlayerStatsComponent.gd" id="17_ogtao"]
+[ext_resource type="Script" uid="uid://xdkqsuuhyggv" path="res://src/entities/player/PlayerMovementComponent.gd" id="18_a31ob"]
 [ext_resource type="Script" uid="uid://c0svh84qgdobm" path="res://src/entities/enemies/components/HurtboxComponent.gd" id="20_fjj3i"]
 [ext_resource type="Texture2D" uid="uid://fi17tnm6ct3k" path="res://src/entities/player/sprites/bubble_full.png" id="21_5qgjf"]
 
@@ -53,11 +56,6 @@ size = Vector2(20, 12)
 [node name="Player" type="CharacterBody2D"]
 collision_mask = 0
 script = ExtResource("1_n7e5a")
-game_pos_x = null
-menu_pos_x = null
-tilt_speed = null
-shield_texture_full = ExtResource("21_5qgjf")
-shield_texture_cracked = ExtResource("3_fjj3i")
 spectator_texture = ExtResource("2_lqdhu")
 ghost_bullet_texture = ExtResource("3_t8d2k")
 
@@ -82,16 +80,17 @@ one_shot = true
 [node name="PlayerDeckComponent" type="Node" parent="."]
 script = ExtResource("10_3c4mh")
 starting_cards = Array[ExtResource("13_ogtao")]([SubResource("Resource_3d0mj"), SubResource("Resource_dao75"), SubResource("Resource_45xpv"), SubResource("Resource_5qgjf")])
-damage_per_level = null
-base_speed = null
-speed_per_level = null
-attack_speed_baseline_level = null
-attack_speed_step_ratio = null
-health_per_level = null
-base_acceleration = null
-base_friction = null
-base_tilt_degrees = null
-max_tilt_cap_degrees = null
+
+[node name="PlayerStatsComponent" type="Node" parent="."]
+script = ExtResource("17_ogtao")
+
+[node name="PlayerMovementComponent" type="Node" parent="."]
+script = ExtResource("18_a31ob")
+
+[node name="PlayerVisualsComponent" type="Node" parent="."]
+script = ExtResource("17_5qgjf")
+shield_texture_full = ExtResource("21_5qgjf")
+shield_texture_cracked = ExtResource("3_fjj3i")
 
 [node name="HurtboxComponent" type="Area2D" parent="." node_paths=PackedStringArray("health_component")]
 collision_mask = 10

@@ -48,16 +48,16 @@ func shoot() -> void:
 	if not equipped_weapon or not equipped_weapon.bullet_scene:
 		return
 
-	var deck = player.get_deck_component() if player else null
+	var stats = player.get_stats_component() if player else null
 	var base_dmg = equipped_weapon.base_damage
-	var final_dmg = deck.get_final_damage(base_dmg) if deck else base_dmg
+	var final_dmg = stats.get_final_damage(base_dmg) if stats else base_dmg
 
 	var base_atk_spd = equipped_weapon.base_attack_speed
-	var final_atk_spd = deck.get_final_attack_speed(base_atk_spd) if deck else base_atk_spd
+	var final_atk_spd = stats.get_final_attack_speed(base_atk_spd) if stats else base_atk_spd
 
 	var total_bullets = equipped_weapon.projectiles_per_shot
-	if deck:
-		total_bullets = deck.get_final_projectiles_count(total_bullets)
+	if stats:
+		total_bullets = stats.get_final_projectiles_count(total_bullets)
 
 	spawn_bullets(final_dmg, equipped_weapon.base_bullet_speed, total_bullets, equipped_weapon.spread_angle_degrees)
 

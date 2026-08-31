@@ -12,11 +12,14 @@ var shield_charges: int = 0
 @export var enable_iframes_on_hit: bool = true
 @export var default_iframe_duration: float = 1.0
 
+var base_max_health: int = 3
 var is_invincible: bool = false
 var is_wave_invincible: bool = false
 var iframe_timer: Timer
 
+
 func _ready() -> void:
+	base_max_health = max_health
 	super._ready()
 	setup_iframe_timer()
 
@@ -73,3 +76,9 @@ func _on_iframe_timer_timeout() -> void:
 	if not is_wave_invincible:
 		is_invincible = false
 		invincibility_ended.emit()
+
+func set_max_health(new_max: int) -> void:
+	var previous_max = max_health
+	super.set_max_health(new_max)
+	if new_max > previous_max and current_health > 0:
+		heal(new_max - previous_max)
