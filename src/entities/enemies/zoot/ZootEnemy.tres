@@ -8,6 +8,5 @@ script = ExtResource("1_s2oeq")
 enemy_name = "Zoot"
 enemy_scene = ExtResource("1_mxjcx")
 spawn_cost = 2
-enemy_score_reward = 20
-enemy_xp_reward = 20
+enemy_score_reward = 25
 metadata/_custom_type_script = "uid://c1jvipah3wjg0"
