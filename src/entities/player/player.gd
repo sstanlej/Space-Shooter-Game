@@ -23,7 +23,7 @@ var shield_tween: Tween
 
 @export_group("Component References")
 @onready var attack_controller: AttackController = get_node_or_null("AttackController")
-@onready var health_component: HealthComponent = get_node_or_null("HealthComponent")
+@onready var health_component: PlayerHealthComponent = get_node_or_null("HealthComponent")
 @onready var deck_component: PlayerDeckComponent = get_node_or_null("PlayerDeckComponent")
 @onready var sprite: Sprite2D = get_node_or_null("Sprite2D")
 
@@ -67,6 +67,8 @@ func _ready() -> void:
 	if deck_component:
 		if not deck_component.deck_updated.is_connected(_sync_shield_from_deck):
 			deck_component.deck_updated.connect(_sync_shield_from_deck)
+		if not health_component.shield_hit.is_connected(deck_component.sync_shield_from_health):
+			health_component.shield_hit.connect(deck_component.sync_shield_from_health)
 
 	_sync_shield_from_deck()
 

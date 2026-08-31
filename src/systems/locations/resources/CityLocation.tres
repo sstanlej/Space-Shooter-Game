@@ -10,7 +10,6 @@
 
 [resource]
 script = ExtResource("1_a6s1b")
-location_id = 1
 location_name = "City"
 location_rarity = 1
 spawnable_enemies = Array[ExtResource("5_vxjy4")]([ExtResource("6_vxjy4"), ExtResource("7_mlh6a")])

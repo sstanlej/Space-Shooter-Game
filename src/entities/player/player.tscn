@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://dto0wfjksw0r4" path="res://src/entities/player/sprites/bubble_broken.png" id="3_fjj3i"]
 [ext_resource type="Texture2D" uid="uid://4gs88gh60uo7" path="res://src/entities/projectiles/sprites/ghost_bullet.png" id="3_t8d2k"]
 [ext_resource type="Script" uid="uid://bwfse1k7q36pc" path="res://src/entities/player/attack_controller.gd" id="6_fhl08"]
-[ext_resource type="Script" uid="uid://cmxkc1l3uevq1" path="res://src/entities/enemies/components/HealthComponent.gd" id="8_0tyfe"]
+[ext_resource type="Script" uid="uid://cwhrj25xxlasc" path="res://src/entities/player/PlayerHealthComponent.gd" id="8_0tyfe"]
 [ext_resource type="Resource" uid="uid://dlunv304ggqdy" path="res://src/entities/player/weapons/resources/default_gun.tres" id="8_kc3pt"]
 [ext_resource type="Script" uid="uid://by53yoxa3pd5v" path="res://src/entities/player/player_deck_component.gd" id="10_3c4mh"]
 [ext_resource type="PackedScene" uid="uid://d2608o6gxf224" path="res://src/vfx/particles/fire_trail.tscn" id="10_x3vf3"]
@@ -53,6 +53,9 @@ size = Vector2(20, 12)
 [node name="Player" type="CharacterBody2D"]
 collision_mask = 0
 script = ExtResource("1_n7e5a")
+game_pos_x = null
+menu_pos_x = null
+tilt_speed = null
 shield_texture_full = ExtResource("21_5qgjf")
 shield_texture_cracked = ExtResource("3_fjj3i")
 spectator_texture = ExtResource("2_lqdhu")
@@ -65,6 +68,7 @@ texture = ExtResource("2_fhl08")
 
 [node name="HealthComponent" type="Node2D" parent="."]
 script = ExtResource("8_0tyfe")
+enable_iframes_on_hit = false
 max_health = 3
 
 [node name="AttackController" type="Node" parent="."]
@@ -78,6 +82,16 @@ one_shot = true
 [node name="PlayerDeckComponent" type="Node" parent="."]
 script = ExtResource("10_3c4mh")
 starting_cards = Array[ExtResource("13_ogtao")]([SubResource("Resource_3d0mj"), SubResource("Resource_dao75"), SubResource("Resource_45xpv"), SubResource("Resource_5qgjf")])
+damage_per_level = null
+base_speed = null
+speed_per_level = null
+attack_speed_baseline_level = null
+attack_speed_step_ratio = null
+health_per_level = null
+base_acceleration = null
+base_friction = null
+base_tilt_degrees = null
+max_tilt_cap_degrees = null
 
 [node name="HurtboxComponent" type="Area2D" parent="." node_paths=PackedStringArray("health_component")]
 collision_mask = 10

@@ -256,3 +256,14 @@ func get_card_level(card_data: UpgradeCardData) -> int:
 
 func get_active_deck() -> Array[CardInstance]:
 	return active_deck
+
+func sync_shield_from_health(remaining_charges: int) -> void:
+	shield_charges = remaining_charges
+	for i in range(active_deck.size() - 1, -1, -1):
+		var card_data = active_deck[i].data
+		if card_data.card_type == UpgradeCardData.CardType.USABLE and card_data.usable_type == UpgradeCardData.UsableType.SHIELD:
+			active_deck[i].charges = remaining_charges
+			if remaining_charges <= 0:
+				active_deck.remove_at(i)
+			break
+	deck_updated.emit()

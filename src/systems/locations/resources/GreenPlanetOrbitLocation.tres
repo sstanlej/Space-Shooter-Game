@@ -10,7 +10,6 @@
 
 [resource]
 script = ExtResource("1_idjfq")
-location_id = 2
 location_name = "Green Planet Orbit"
 location_rarity = 1
 spawnable_enemies = Array[ExtResource("5_grbhw")]([ExtResource("6_g8ub3"), ExtResource("7_g8ub3")])
