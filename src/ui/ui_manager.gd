@@ -403,13 +403,17 @@ func fade_out_label(label: RichTextLabel, label_tween: Tween, duration: float = 
 
 # --- KONTROLA I ANIMACJA ETYKIET STEROWANIA (SHOP / DECK) ---
 
-func update_shop_controls_display(points: int) -> void:
+func update_shop_controls_display(points: int, is_maxed_out: bool = false) -> void:
 	if not shop_controls_label:
 		return
 
 	if points > 0:
 		shop_controls_label.text = "[left][color=gold][B][/color] SHOP [color=gold](%d)[/color][/left]" % points
-		start_shop_pulse()
+		# Jeśli gracz jest wymaksowany, nie pozwalamy na pulsowanie nawet przy posiadanych punktach
+		if is_maxed_out:
+			stop_shop_pulse()
+		else:
+			start_shop_pulse()
 	else:
 		shop_controls_label.text = "[left][color=gold][B][/color] SHOP[/left]"
 		stop_shop_pulse()

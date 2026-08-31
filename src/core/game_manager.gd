@@ -30,6 +30,7 @@ var is_player_alive: bool = true
 @export var spawner: Spawner
 @export var ui_manager: UIManager
 @export var shop_ui: ShopUI
+@export var shop_manager: ShopManager
 @export var deck_overview_ui: DeckOverviewUI
 
 @export_group("Scene References")
@@ -153,8 +154,8 @@ func start_game() -> void:
 	if campaign_manager:
 		campaign_manager.reset_campaign()
 
-	if shop_ui and shop_ui.deck_manager:
-		shop_ui.deck_manager.reset_deck()
+	if shop_manager and shop_manager.deck_manager:
+		shop_manager.deck_manager.reset_deck()
 
 	if ui_manager and ui_manager.has_method("hide_notification"):
 		ui_manager.hide_notification(0.4)
@@ -227,9 +228,14 @@ func finish_wave() -> void:
 
 	var points: int = progression_manager.get_upgrade_points() if progression_manager else 0
 
+	var is_fully_maxed = false
+	if shop_manager and player:
+		var available_cards = shop_manager.deck_manager.get_cards_for_shop(3, player) if shop_manager.deck_manager else []
+		is_fully_maxed = available_cards.is_empty()
+
 	if ui_manager:
 		if ui_manager.has_method("update_shop_controls_display"):
-			ui_manager.update_shop_controls_display(points)
+			ui_manager.update_shop_controls_display(points, is_fully_maxed)
 
 		if ui_manager.has_method("show_notification"):
 			var subtitle = "Press [color=gold][B][/color] to open the SHOP!" if points > 0 else ""

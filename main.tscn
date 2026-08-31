@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://ctolyotyjbqwg"]
+[gd_scene load_steps=37 format=3 uid="uid://ctolyotyjbqwg"]
 
 [ext_resource type="Script" uid="uid://dm1jlaqpgu05" path="res://src/core/game_manager.gd" id="1_lswn8"]
 [ext_resource type="PackedScene" uid="uid://qoymek85ecx7" path="res://src/systems/locations/location_manager.tscn" id="2_a6jrf"]
@@ -14,6 +14,7 @@
 [ext_resource type="Resource" uid="uid://c1rtgwmt1kglx" path="res://src/systems/campaign/acts/Act_3.tres" id="9_jq2sk"]
 [ext_resource type="Texture2D" uid="uid://caubnil2iehm" path="res://src/ui/sprites/game_overlay.png" id="11_ok6jj"]
 [ext_resource type="FontFile" uid="uid://bvlhnv4ultuef" path="res://assets/fonts/Pixeled.ttf" id="12_facbu"]
+[ext_resource type="Script" uid="uid://bf5l0047mdwhq" path="res://src/systems/shop/shop_manager.gd" id="12_jq2sk"]
 [ext_resource type="Texture2D" uid="uid://c16xy12030r1n" path="res://src/ui/sprites/experience_bar_under.png" id="13_b1qrp"]
 [ext_resource type="Texture2D" uid="uid://to23gur3vo1e" path="res://src/ui/sprites/experience_bar_progress.png" id="14_come4"]
 [ext_resource type="FontFile" uid="uid://cmhoggvsfswfn" path="res://assets/fonts/Tiny5-Regular.ttf" id="14_seu75"]
@@ -94,7 +95,7 @@ _data = {
 &"intro": SubResource("Animation_qsp4k")
 }
 
-[node name="Main" type="Node2D" node_paths=PackedStringArray("world", "campaign_manager", "location_manager", "progression_manager", "spawner", "ui_manager", "shop_ui", "deck_overview_ui", "player", "camera_frame", "wave_cooldown_timer")]
+[node name="Main" type="Node2D" node_paths=PackedStringArray("world", "campaign_manager", "location_manager", "progression_manager", "spawner", "ui_manager", "shop_ui", "shop_manager", "deck_overview_ui", "player", "camera_frame", "wave_cooldown_timer")]
 script = ExtResource("1_lswn8")
 world = NodePath("World")
 campaign_manager = NodePath("CampaignManager")
@@ -103,6 +104,7 @@ progression_manager = NodePath("ProgressionManager")
 spawner = NodePath("Spawner")
 ui_manager = NodePath("UILayer")
 shop_ui = NodePath("UILayer/ShopUI")
+shop_manager = NodePath("ShopManager")
 deck_overview_ui = NodePath("UILayer/DeckOverviewUI")
 player = NodePath("World/Player")
 camera_frame = NodePath("World/CameraFrame")
@@ -153,6 +155,12 @@ script = ExtResource("7_htxhm")
 base_experience_needed = 40
 ui_manager = NodePath("../UILayer")
 player = NodePath("../World/Player")
+
+[node name="ShopManager" type="Node" parent="." node_paths=PackedStringArray("progression_manager", "deck_manager")]
+script = ExtResource("12_jq2sk")
+progression_manager = NodePath("../ProgressionManager")
+deck_manager = NodePath("../UILayer/ShopUI/CardDeckManager")
+metadata/_custom_type_script = "uid://bf5l0047mdwhq"
 
 [node name="Timers" type="Node" parent="."]
 
@@ -315,7 +323,7 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="ShopUI" type="Control" parent="UILayer" node_paths=PackedStringArray("game_manager", "progression_manager", "player", "deck_manager", "ui_manager", "background_overlay", "cards_container", "warning_label", "choose_upgrade_label", "upgrades_available_label", "controls_hint_label", "maxed_out_label")]
+[node name="ShopUI" type="Control" parent="UILayer" node_paths=PackedStringArray("game_manager", "shop_manager", "player", "ui_manager", "background_overlay", "cards_container", "warning_label", "choose_upgrade_label", "upgrades_available_label", "controls_hint_label", "maxed_out_label")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -324,9 +332,8 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("18_d2t1y")
 game_manager = NodePath("../..")
-progression_manager = NodePath("../../ProgressionManager")
+shop_manager = NodePath("../../ShopManager")
 player = NodePath("../../World/Player")
-deck_manager = NodePath("CardDeckManager")
 ui_manager = NodePath("..")
 background_overlay = NodePath("BackgroundOverlay")
 cards_container = NodePath("CardsContainer")
