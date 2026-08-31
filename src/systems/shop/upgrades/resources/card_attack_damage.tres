@@ -12,4 +12,5 @@ description = "+1 ATK"
 icon = ExtResource("1_5vdxb")
 rarity = 1
 stat_type = 1
+max_level = 6
 metadata/_custom_type_script = "uid://dvnm2k8uup30q"

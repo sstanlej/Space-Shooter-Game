@@ -52,7 +52,7 @@ func _ready() -> void:
 			player.attack_controller.projectiles_container = spawner.projectiles_container
 
 		if player.health_component:
-			player.health_component.health_changed.connect(_on_player_health_changed)
+			player.health_component.health_changed.connect(func(cur, mx): ui_manager.update_health_bar(cur, mx))
 
 	if spawner:
 		if spawner.has_signal("wave_completed"):

@@ -8,8 +8,9 @@
 script = ExtResource("1_74eb4")
 card_id = "stat_movement_speed"
 title = "Engine Boost"
-description = "+20 MV SPD"
+description = "+10 MV SPD"
 icon = ExtResource("1_anrym")
 stat_type = 2
+stat_value_per_level = 10.0
 max_level = 10
 metadata/_custom_type_script = "uid://dvnm2k8uup30q"

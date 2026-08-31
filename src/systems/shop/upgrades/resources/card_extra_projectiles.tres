@@ -12,5 +12,6 @@ description = "+1 PROJECTILE"
 icon = ExtResource("2_ayyxl")
 rarity = 3
 stat_type = 4
+base_level = 0
 max_level = 3
 metadata/_custom_type_script = "uid://dvnm2k8uup30q"

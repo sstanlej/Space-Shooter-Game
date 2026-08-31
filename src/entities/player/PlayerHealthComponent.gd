@@ -78,7 +78,12 @@ func _on_iframe_timer_timeout() -> void:
 		invincibility_ended.emit()
 
 func set_max_health(new_max: int) -> void:
-	var previous_max = max_health
-	super.set_max_health(new_max)
-	if new_max > previous_max and current_health > 0:
-		heal(new_max - previous_max)
+	var diff = new_max - max_health
+	max_health = max(1, new_max)
+	
+	if diff > 0 and current_health > 0:
+		current_health += diff
+	else:
+		current_health = clampi(current_health, 1, max_health)
+		
+	health_changed.emit(current_health, max_health)

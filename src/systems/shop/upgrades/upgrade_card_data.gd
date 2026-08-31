@@ -3,7 +3,7 @@ class_name UpgradeCardData extends Resource
 enum Rarity { COMMON, RARE, EPIC, LEGENDARY }
 enum CardType { STAT, WEAPON, USABLE, INSTANT }
 enum StatType { NONE, DAMAGE, SPEED, ATTACK_SPEED, PROJECTILES, MAX_HEALTH, AGILITY }
-enum UsableType { NONE, SHIELD} # Rozszerzalna lista kart z ładunkami
+enum UsableType { NONE, SHIELD }
 
 @export_group("Card Metadata")
 @export var card_id: String
@@ -13,22 +13,25 @@ enum UsableType { NONE, SHIELD} # Rozszerzalna lista kart z ładunkami
 @export var rarity: Rarity = Rarity.COMMON
 @export var card_type: CardType = CardType.STAT
 
-@export_group("Stat Settings (Tylko dla CardType.STAT)")
+@export_group("Stat Settings")
 @export var stat_type: StatType = StatType.NONE
+@export var stat_value_per_level: float = 1.0
+@export var base_level: int = 1
 @export var max_level: int = 5
 
-@export_group("Weapon Settings (Tylko dla CardType.WEAPON)")
+@export_group("Weapon Settings")
 @export var weapon_data: WeaponData
 
-@export_group("Usable Settings (Tylko dla CardType.USABLE)")
+@export_group("Usable Settings")
 @export var usable_type: UsableType = UsableType.NONE
 @export var max_charges: int = 3
 
-@export_group("Special Effects (Tylko dla CardType.INSTANT)")
+@export_group("Special Effects")
 @export var required_weapon_id: String = ""
 @export var effects: Array[CardEffect] = []
 
-# Wewnątrz UpgradeCardData.gd w metodzie can_appear():
+func get_stat_bonus(current_level: int) -> float:
+	return maxf(0.0, float(current_level - base_level)) * stat_value_per_level
 
 func can_appear(player: Player) -> bool:
 	if not player:
@@ -38,25 +41,19 @@ func can_appear(player: Player) -> bool:
 	if not deck:
 		return true
 
-	# 1. Sprawdzanie limitu poziomu karty statystyki
 	if card_type == CardType.STAT and max_level > 0:
 		if deck.get_card_level(self) >= max_level:
 			return false
 
-	# 2. Sprawdzanie tarczy (pytamy HealthComponent gracza zamiast talii)
 	if card_type == CardType.USABLE and usable_type == UsableType.SHIELD:
 		if player.health_component and player.health_component.shield_charges >= max_charges:
 			return false
 
-	# 3. Wymóg posiadania konkretnej broni
 	if not required_weapon_id.is_empty():
-		var equipped_id = ""
-		if deck.equipped_weapon:
-			equipped_id = deck.equipped_weapon.weapon_id
+		var equipped_id = deck.equipped_weapon.weapon_id if deck.equipped_weapon else ""
 		if required_weapon_id != equipped_id:
 			return false
 
-	# 4. Dodatkowe warunki z efektów
 	for effect in effects:
 		if effect and not effect.can_appear(player):
 			return false

@@ -99,12 +99,18 @@ func setup_health_bar(max_hp: int, current_hp: int) -> void:
 		damage_bar.max_value = max_hp
 		damage_bar.value = current_hp
 
-func update_health_bar(current_hp: int) -> void:
+func update_health_bar(current_hp: int, max_hp: int = -1) -> void:
 	if not health_bar:
 		return
 
+	# Jeśli podano max_hp, aktualizujemy limit paska
+	if max_hp > 0:
+		health_bar.max_value = max_hp
+		if damage_bar:
+			damage_bar.max_value = max_hp
+
 	var old_hp = int(health_bar.value)
-	if current_hp == old_hp:
+	if current_hp == old_hp and health_bar.max_value == max_hp:
 		return
 
 	if health_tween: health_tween.kill()

@@ -27,7 +27,7 @@
 [ext_resource type="Resource" uid="uid://l0qvd1kbdorn" path="res://src/systems/shop/upgrades/resources/card_attack_speed.tres" id="22_jq2sk"]
 [ext_resource type="Resource" uid="uid://dyhlp3gsohoqc" path="res://src/systems/shop/upgrades/resources/card_movement_speed.tres" id="23_4k2k6"]
 [ext_resource type="Resource" uid="uid://csxa4l5lisvd3" path="res://src/systems/shop/upgrades/resources/card_attack_damage.tres" id="24_0rl1p"]
-[ext_resource type="Resource" uid="uid://cc7t3pavnip0q" path="res://src/systems/shop/upgrades/resources/card_heal.tres" id="25_0odxb"]
+[ext_resource type="Resource" uid="uid://cc7t3pavnip0q" path="res://src/systems/shop/upgrades/resources/card_max_health.tres" id="25_0odxb"]
 [ext_resource type="Script" uid="uid://cmwgjmxrs4sw4" path="res://src/systems/shop/card_deck_manager.gd" id="27_a6jrf"]
 [ext_resource type="Resource" uid="uid://1ikeutmmsl0l" path="res://src/systems/shop/upgrades/resources/card_shield.tres" id="28_qsp4k"]
 [ext_resource type="Resource" uid="uid://qjbuoy5m0jjw" path="res://src/systems/shop/upgrades/resources/card_extra_projectiles.tres" id="29_kq58d"]
