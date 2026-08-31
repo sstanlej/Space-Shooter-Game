@@ -65,7 +65,7 @@ texture = ExtResource("2_fhl08")
 
 [node name="HealthComponent" type="Node2D" parent="."]
 script = ExtResource("8_0tyfe")
-max_health = 8
+max_health = 3
 
 [node name="AttackController" type="Node" parent="."]
 script = ExtResource("6_fhl08")

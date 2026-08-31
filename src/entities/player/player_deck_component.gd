@@ -55,6 +55,9 @@ var max_health_level: int = 5
 var agility_level: int = 1
 var shield_charges: int = 0
 
+#temporary
+var base_max_health: int = -1
+
 func _ready() -> void:
 	initialize_starting_deck()
 
@@ -168,13 +171,24 @@ func upgrade_stat_by_type(stat: UpgradeCardData.StatType, levels: int = 1) -> vo
 # --- PRZELICZANIE STATYSTYK ---
 
 func recalculate_all_stats() -> void:
+	var player = get_parent() as Player
+
+	# 1. Pobierz bazowe HP z HealthComponent tylko raz (na starcie gry)
+	if base_max_health == -1:
+		if player and player.health_component:
+			base_max_health = int(player.health_component.max_health)
+		else:
+			base_max_health = 3
+
 	damage_level = 1
 	speed_level = 1
 	attack_speed_level = 1
-	projectiles_level = 0 # <-- Bazowo 0 dodatkowych pocisków bez karty
-	max_health_level = 8
+	projectiles_level = 0
 	agility_level = 1
+	
+	var bonus_max_health: int = 0
 
+	# 2. Zliczanie poziomów z kart
 	for instance in active_deck:
 		if instance.data.card_type == UpgradeCardData.CardType.STAT:
 			match instance.data.stat_type:
@@ -182,10 +196,13 @@ func recalculate_all_stats() -> void:
 				UpgradeCardData.StatType.SPEED: speed_level = instance.level
 				UpgradeCardData.StatType.ATTACK_SPEED: attack_speed_level = instance.level
 				UpgradeCardData.StatType.PROJECTILES: projectiles_level = instance.level
-				UpgradeCardData.StatType.MAX_HEALTH: max_health_level = instance.level
+				UpgradeCardData.StatType.MAX_HEALTH: bonus_max_health = instance.level
 				UpgradeCardData.StatType.AGILITY: agility_level = instance.level
 
-	var player = get_parent() as Player
+	# 3. Suma: baza z HealthComponent + bonus z poziomu karty
+	max_health_level = base_max_health + bonus_max_health
+
+	# 4. Zastosowanie finalnego limitu w HealthComponent
 	if player and player.health_component:
 		player.health_component.set_max_health(int(get_final_max_health()))
 
