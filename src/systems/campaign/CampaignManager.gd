@@ -1,6 +1,8 @@
 class_name CampaignManager extends Node
 
 signal campaign_completed
+signal act_changed(new_act_index: int, act_name: String)
+signal wave_advanced(new_wave: int)
 
 @export_group("Campaign Setup")
 @export var acts: Array[ActData] = []
@@ -9,6 +11,10 @@ signal campaign_completed
 @export var base_wave_budget: int = 10
 @export var budget_growth_per_wave: int = 5
 
+var current_wave: int = 1
+var current_act_index: int = 1
+var current_act_name: String = ""
+
 var _wave_cache: Dictionary = {}
 
 func _ready() -> void:
@@ -16,11 +22,36 @@ func _ready() -> void:
 
 func reset_campaign() -> void:
 	_wave_cache.clear()
+	current_wave = 1
+	current_act_index = 1
+	current_act_name = acts[0].act_name if not acts.is_empty() and acts[0] else ""
 
-# --- WAVE CONFIGURATION GENERATION ---
+func advance_wave() -> WaveConfig:
+	current_wave += 1
+	var config = get_wave_config(current_wave)
+	
+	if config.act_index != current_act_index:
+		current_act_index = config.act_index
+		current_act_name = config.act_name
+		act_changed.emit(current_act_index, current_act_name)
+		
+	wave_advanced.emit(current_wave)
+	return config
+
+func get_current_wave_config() -> WaveConfig:
+	return get_wave_config(current_wave)
+
+func get_current_act() -> int:
+	return current_act_index
+
+func get_effective_shop_act(is_between_waves: bool = false) -> int:
+	var target_wave = current_wave + 1 if is_between_waves else current_wave
+	var cfg = get_wave_config(target_wave)
+	return cfg.act_index if cfg else current_act_index
+
+# --- WAVE CONFIGURATION GENERATION (BEZ ZMIAN W LOGICE OBLICZEŃ) ---
 
 func get_wave_config(global_wave: int) -> WaveConfig:
-	# Return cached configuration if already evaluated
 	if _wave_cache.has(global_wave):
 		return _wave_cache[global_wave]
 
@@ -39,14 +70,13 @@ func get_wave_config(global_wave: int) -> WaveConfig:
 			continue
 
 		var act_loc_waves = _calculate_act_location_waves(act)
-		var act_total_waves = act_loc_waves + 1 # +1 reserved for the Act Boss wave
+		var act_total_waves = act_loc_waves + 1
 
 		if global_wave <= accumulated_waves + act_total_waves:
 			var wave_in_act = global_wave - accumulated_waves
 			config.act_index = act.act_index
 			config.act_name = act.act_name
 
-			# 1. Act Climax: Boss Battle
 			if wave_in_act == act_total_waves:
 				config.wave_type = WaveConfig.WaveType.BOSS
 				config.is_act_final = true
@@ -56,7 +86,6 @@ func get_wave_config(global_wave: int) -> WaveConfig:
 				_wave_cache[global_wave] = config
 				return config
 
-			# 2. Location Progression inside the Act
 			var loc_info = _resolve_location_for_wave(act, wave_in_act)
 			var current_loc: LocationData = loc_info["location"]
 			var wave_in_this_loc: int = loc_info["wave_in_loc"]
@@ -64,7 +93,6 @@ func get_wave_config(global_wave: int) -> WaveConfig:
 
 			config.location = current_loc
 
-			# 3. Event Wave Check
 			if current_loc and not current_loc.available_events.is_empty() and wave_in_this_loc == total_waves_in_this_loc:
 				config.wave_type = WaveConfig.WaveType.EVENT
 				config.event_id = current_loc.available_events.pick_random()
@@ -76,7 +104,6 @@ func get_wave_config(global_wave: int) -> WaveConfig:
 
 		accumulated_waves += act_total_waves
 
-	# Endless Mode when all Acts are completed
 	config = _build_endless_config(global_wave, accumulated_waves)
 	_wave_cache[global_wave] = config
 	return config
@@ -112,22 +139,20 @@ func _resolve_location_for_wave(act: ActData, wave_in_act: int) -> Dictionary:
 		"total_loc_waves": 1
 	}
 
-# --- STRUCTURED ENDLESS MODE ---
-
 func _build_endless_config(global_wave: int, campaign_waves_total: int) -> WaveConfig:
 	var config = WaveConfig.new()
 	config.wave_number = global_wave
 	config.wave_budget = base_wave_budget + (global_wave - 1) * budget_growth_per_wave
 	config.act_name = "Endless Abyss"
+	config.act_index = (acts.size() + 1)
 
 	var all_locations = _get_all_campaign_locations()
 	if all_locations.is_empty():
 		config.wave_type = WaveConfig.WaveType.STANDARD
 		return config
 
-	var endless_wave_idx = global_wave - campaign_waves_total # Wave 1, 2, 3... in Endless
+	var endless_wave_idx = global_wave - campaign_waves_total
 
-	# Boss battle every 10 waves in Endless
 	if endless_wave_idx % 10 == 0:
 		config.wave_type = WaveConfig.WaveType.BOSS
 		config.is_act_final = false
@@ -138,7 +163,6 @@ func _build_endless_config(global_wave: int, campaign_waves_total: int) -> WaveC
 			config.location = last_act.locations.back() if not last_act.locations.is_empty() else all_locations[0]
 		return config
 
-	# Sectors of 3 waves per location in Endless
 	var sector_size = 3
 	var sector_index = int((endless_wave_idx - 1) / sector_size)
 	var wave_in_sector = ((endless_wave_idx - 1) % sector_size) + 1
@@ -146,7 +170,6 @@ func _build_endless_config(global_wave: int, campaign_waves_total: int) -> WaveC
 	var active_loc = all_locations[sector_index % all_locations.size()]
 	config.location = active_loc
 
-	# 3rd wave of a sector triggers an Event if available
 	if wave_in_sector == sector_size and not active_loc.available_events.is_empty():
 		config.wave_type = WaveConfig.WaveType.EVENT
 		config.event_id = active_loc.available_events.pick_random()
@@ -164,8 +187,6 @@ func _get_all_campaign_locations() -> Array[LocationData]:
 			if loc and not result.has(loc):
 				result.append(loc)
 	return result
-
-# --- CONSOLE LOGGING ---
 
 func print_campaign_overview() -> void:
 	if acts.is_empty():

@@ -10,6 +10,7 @@ card_id = "stat_movement_speed"
 title = "Engine Boost"
 description = "+10 MV SPD"
 icon = ExtResource("1_anrym")
+cost_increase_per_level = 1
 stat_type = 2
 stat_value_per_level = 10.0
 max_level = 10

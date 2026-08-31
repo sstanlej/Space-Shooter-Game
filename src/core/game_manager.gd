@@ -17,7 +17,6 @@ signal wave_ended(wave_number: int)
 
 var current_state: GameState = GameState.WAIT_TO_START
 var state_before_pause: GameState = GameState.IN_WAVE
-var current_wave: int = 1
 var is_player_alive: bool = true
 
 @export_group("World & Physics Control")
@@ -148,7 +147,6 @@ func wait_to_start() -> void:
 func start_game() -> void:
 	print("\n=================== NEW GAME RUN STARTED ===================")
 	is_player_alive = true
-	current_wave = 1
 	change_state(GameState.TRANSITIONING)
 
 	if campaign_manager:
@@ -167,7 +165,7 @@ func start_game() -> void:
 		player.get_deck_component().initialize_starting_deck()
 
 	if campaign_manager and location_manager:
-		var initial_cfg = campaign_manager.get_wave_config(1)
+		var initial_cfg = campaign_manager.get_current_wave_config()
 		if initial_cfg and initial_cfg.location:
 			location_manager.set_initial_location(initial_cfg.location)
 
@@ -187,7 +185,8 @@ func start_game() -> void:
 	start_wave()
 
 func start_wave() -> void:
-	var cfg: WaveConfig = campaign_manager.get_wave_config(current_wave) if campaign_manager else null
+	var cfg: WaveConfig = campaign_manager.get_current_wave_config() if campaign_manager else null
+	var current_wave = campaign_manager.current_wave if campaign_manager else 1
 
 	if ui_manager:
 		if ui_manager.has_method("fade_in_label"): 
@@ -217,7 +216,8 @@ func start_wave() -> void:
 		spawner.start_spawning_wave(cfg)
 
 func finish_wave() -> void:
-	var completed_cfg: WaveConfig = campaign_manager.get_wave_config(current_wave) if campaign_manager else null
+	var completed_cfg: WaveConfig = campaign_manager.get_current_wave_config() if campaign_manager else null
+	var current_wave = campaign_manager.current_wave if campaign_manager else 1
 
 	print("[GameManager] Wave %d finished successfully.\n" % current_wave)
 	if completed_cfg and completed_cfg.is_act_final:
@@ -260,7 +260,8 @@ func finish_wave() -> void:
 		wave_cooldown_timer.start()
 
 func start_next_wave() -> void:
-	current_wave += 1
+	if campaign_manager:
+		campaign_manager.advance_wave()
 	start_wave()
 
 # --- SHOP & DECK ---
@@ -329,6 +330,7 @@ func toggle_pause() -> void:
 
 func game_over() -> void:
 	is_player_alive = false
+	var current_wave = campaign_manager.current_wave if campaign_manager else 1
 	print("\n[GameManager] GAME OVER! Player eliminated at Wave %d.\n" % current_wave)
 
 	change_state(GameState.GAME_OVER)

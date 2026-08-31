@@ -4,25 +4,25 @@ class_name CardDeckManager extends Node
 
 var current_offer: Array[UpgradeCardData] = []
 
-func has_available_upgrades(player: Player) -> bool:
+func get_cards_for_shop(count: int, player: Player, current_act: int = 1) -> Array[UpgradeCardData]:
+	if current_offer.is_empty():
+		roll_new_offer(count, player, current_act)
+	return current_offer
+
+func has_available_upgrades(player: Player, current_act: int = 1) -> bool:
 	if not player:
 		return false
 	for card in available_cards:
-		if card and card.can_appear(player):
+		if card and card.can_appear(player, current_act):
 			return true
 	return false
 
-func get_cards_for_shop(count: int, player: Player) -> Array[UpgradeCardData]:
-	if current_offer.is_empty():
-		roll_new_offer(count, player)
-	return current_offer
-
-func roll_new_offer(count: int, player: Player) -> Array[UpgradeCardData]:
+func roll_new_offer(count: int, player: Player, current_act: int = 1) -> Array[UpgradeCardData]:
 	current_offer.clear()
 
 	var valid_pool: Array[UpgradeCardData] = []
 	for card in available_cards:
-		if card and card.can_appear(player):
+		if card and card.can_appear(player, current_act):
 			valid_pool.append(card)
 
 	valid_pool.shuffle()

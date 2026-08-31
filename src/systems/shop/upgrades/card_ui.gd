@@ -4,6 +4,7 @@ class_name CardUI extends Control
 @export var description_label: RichTextLabel
 @export var icon_rect: TextureRect
 @export var background_rect: TextureRect
+@export var cost_label: RichTextLabel
 
 var card_data: UpgradeCardData
 var is_selected: bool = false
@@ -33,15 +34,29 @@ func setup(data: UpgradeCardData) -> void:
 	update_pivot()
 	set_selected(false, true)
 
-func setup_for_shop(data: UpgradeCardData, custom_description: String) -> void:
+func setup_for_shop(data: UpgradeCardData, custom_description: String, player: Player, available_points: int) -> void:
 	setup(data)
 	if description_label:
 		description_label.text = "[center]" + custom_description + "[/center]"
+	update_cost_display(player, available_points)
+
+func update_cost_display(player: Player, available_points: int) -> void:
+	if not cost_label or not card_data:
+		return
+
+	var cost: int = card_data.get_cost(player)
+	var can_afford: bool = available_points >= cost
+	var color_hex: String = "#4DFF4D" if can_afford else "#FF4D4D" # Zielony / Czerwony
+
+	cost_label.text = "[center]Cost: [color=%s]%d[/color][/center]" % [color_hex, cost]
+	cost_label.show()
 
 func setup_as_overview_card(data: UpgradeCardData, dynamic_text: String) -> void:
 	setup(data)
 	if description_label:
 		description_label.text = "[center]" + dynamic_text + "[/center]"
+	if cost_label:
+		cost_label.hide()
 
 func update_pivot() -> void:
 	if size != Vector2.ZERO:
@@ -69,6 +84,7 @@ func set_selected(selected: bool, immediate: bool = false) -> void:
 	tween.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	tween.tween_property(self, "scale", target_scale, 0.15)
 	tween.tween_property(self, "modulate", target_modulate, 0.15)
+
 func animate_fan_transform(target_pos: Vector2, target_rot_deg: float, target_scale: Vector2, duration: float = 0.22) -> void:
 	if tween and tween.is_running():
 		tween.kill()

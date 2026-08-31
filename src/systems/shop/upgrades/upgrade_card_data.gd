@@ -13,6 +13,11 @@ enum UsableType { NONE, SHIELD }
 @export var rarity: Rarity = Rarity.COMMON
 @export var card_type: CardType = CardType.STAT
 
+@export_group("Economy & Tier Settings")
+@export var required_act: int = 1
+@export var base_cost: int = 1
+@export var cost_increase_per_level: int = 0
+
 @export_group("Stat Settings")
 @export var stat_type: StatType = StatType.NONE
 @export var stat_value_per_level: float = 1.0
@@ -30,10 +35,24 @@ enum UsableType { NONE, SHIELD }
 @export var required_weapon_id: String = ""
 @export var effects: Array[CardEffect] = []
 
+func get_cost(player: Player) -> int:
+	if not player:
+		return base_cost
+	var deck = player.get_deck_component()
+	if not deck:
+		return base_cost
+
+	var current_level: int = deck.get_card_level(self)
+	var additional_cost = maxi(0, current_level - base_level) * cost_increase_per_level
+	return base_cost + additional_cost
+
 func get_stat_bonus(current_level: int) -> float:
 	return maxf(0.0, float(current_level - base_level)) * stat_value_per_level
 
-func can_appear(player: Player) -> bool:
+func can_appear(player: Player, current_act: int = 1) -> bool:
+	if current_act < required_act:
+		return false
+
 	if not player:
 		return true
 

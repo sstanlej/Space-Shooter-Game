@@ -2,10 +2,10 @@
 
 [ext_resource type="Texture2D" uid="uid://k8p44qhqg6o1" path="res://src/systems/shop/upgrades/sprites/card_ui.png" id="1_6whva"]
 [ext_resource type="Script" uid="uid://d1ta1otj2epsx" path="res://src/systems/shop/upgrades/card_ui.gd" id="1_s32lx"]
-[ext_resource type="FontFile" uid="uid://bvlhnv4ultuef" path="res://assets/fonts/Pixeled.ttf" id="2_5aolw"]
+[ext_resource type="FontFile" uid="uid://cmhoggvsfswfn" path="res://assets/fonts/Tiny5-Regular.ttf" id="3_s32lx"]
 [ext_resource type="Texture2D" uid="uid://dugump0ukmep5" path="res://src/systems/shop/upgrades/sprites/empty_box.png" id="4_s32lx"]
 
-[node name="CardUI" type="Control" node_paths=PackedStringArray("title_label", "description_label", "icon_rect", "background_rect")]
+[node name="CardUI" type="Control" node_paths=PackedStringArray("title_label", "description_label", "icon_rect", "background_rect", "cost_label")]
 custom_minimum_size = Vector2(50, 70)
 layout_mode = 3
 anchors_preset = 0
@@ -18,6 +18,7 @@ title_label = NodePath("CardBackground/MarginContainer/VBoxContainer/TitleLabel"
 description_label = NodePath("CardBackground/MarginContainer/VBoxContainer/DescriptionLabel")
 icon_rect = NodePath("CardBackground/MarginContainer/VBoxContainer/IconTexture")
 background_rect = NodePath("CardBackground")
+cost_label = NodePath("CardBackground/MarginContainer/VBoxContainer/CostLabel")
 
 [node name="CardBackground" type="TextureRect" parent="."]
 layout_mode = 1
@@ -45,11 +46,11 @@ layout_mode = 2
 theme_override_constants/separation = 0
 
 [node name="TitleLabel" type="RichTextLabel" parent="CardBackground/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(20, 20)
+custom_minimum_size = Vector2(20, 15)
 layout_mode = 2
-theme_override_constants/line_separation = -7
-theme_override_fonts/normal_font = ExtResource("2_5aolw")
-theme_override_font_sizes/normal_font_size = 5
+theme_override_constants/line_separation = -3
+theme_override_fonts/normal_font = ExtResource("3_s32lx")
+theme_override_font_sizes/normal_font_size = 8
 bbcode_enabled = true
 text = "[center]UPGRADE CARD"
 fit_content = true
@@ -61,14 +62,27 @@ texture = ExtResource("4_s32lx")
 stretch_mode = 3
 
 [node name="DescriptionLabel" type="RichTextLabel" parent="CardBackground/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 28)
+custom_minimum_size = Vector2(0, 23)
 layout_mode = 2
-theme_override_constants/line_separation = -7
+theme_override_constants/line_separation = -3
 theme_override_constants/shadow_outline_size = 10
 theme_override_constants/shadow_offset_x = 5
 theme_override_constants/shadow_offset_y = 5
-theme_override_fonts/normal_font = ExtResource("2_5aolw")
-theme_override_font_sizes/normal_font_size = 5
+theme_override_fonts/normal_font = ExtResource("3_s32lx")
+theme_override_font_sizes/normal_font_size = 8
 bbcode_enabled = true
 text = "[center]DESCRIPTION"
+fit_content = true
+
+[node name="CostLabel" type="RichTextLabel" parent="CardBackground/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+theme_override_constants/line_separation = -3
+theme_override_constants/shadow_outline_size = 10
+theme_override_constants/shadow_offset_x = 5
+theme_override_constants/shadow_offset_y = 5
+theme_override_fonts/normal_font = ExtResource("3_s32lx")
+theme_override_font_sizes/normal_font_size = 8
+bbcode_enabled = true
+text = "[center]COST: XX"
 fit_content = true

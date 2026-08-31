@@ -156,10 +156,11 @@ base_experience_needed = 40
 ui_manager = NodePath("../UILayer")
 player = NodePath("../World/Player")
 
-[node name="ShopManager" type="Node" parent="." node_paths=PackedStringArray("progression_manager", "deck_manager")]
+[node name="ShopManager" type="Node" parent="." node_paths=PackedStringArray("progression_manager", "deck_manager", "campaign_manager")]
 script = ExtResource("12_jq2sk")
 progression_manager = NodePath("../ProgressionManager")
 deck_manager = NodePath("../UILayer/ShopUI/CardDeckManager")
+campaign_manager = NodePath("../CampaignManager")
 metadata/_custom_type_script = "uid://bf5l0047mdwhq"
 
 [node name="Timers" type="Node" parent="."]

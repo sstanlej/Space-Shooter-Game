@@ -11,6 +11,7 @@ title = "Max Health Upgrade"
 description = "+1 MAX HP"
 icon = ExtResource("3_31rv2")
 rarity = 1
+cost_increase_per_level = 1
 stat_type = 5
 base_level = 0
 max_level = 8

@@ -124,11 +124,12 @@ func _on_shop_offer_ready(cards: Array[UpgradeCardData]) -> void:
 	if cards_container:
 		cards_container.position.y = get_viewport_rect().size.y + 50.0
 
+	var points = shop_manager.get_available_points() if shop_manager else 0
 	for card_data in cards:
 		var card_instance = card_ui_scene.instantiate() as CardUI
 		if card_instance:
 			cards_container.add_child(card_instance)
-			card_instance.setup_for_shop(card_data, card_data.description)
+			card_instance.setup_for_shop(card_data, card_data.description, player, points)
 			active_cards_ui.append(card_instance)
 
 	update_upgrades_available_display()
@@ -190,8 +191,8 @@ func confirm_selection() -> void:
 	if not selected_card_ui or not selected_card_ui.card_data:
 		return
 
-	# 1. Walidacja punktów ZANIM odpalimy animację zakupu
-	if shop_manager.get_available_points() <= 0:
+	var cost = selected_card_ui.card_data.get_cost(player)
+	if shop_manager.get_available_points() < cost:
 		play_error_audio()
 		active = false
 		await shake_card(selected_card_ui)
@@ -232,6 +233,10 @@ func update_upgrades_available_display() -> void:
 	else:
 		upgrades_available_label.text = "[center][color=orange]No upgrades available[/color][/center]"
 		stop_upgrades_pulse()
+
+	for card_ui in active_cards_ui:
+		if is_instance_valid(card_ui):
+			card_ui.update_cost_display(player, points)
 
 func start_upgrades_pulse() -> void:
 	if upgrades_pulse_tween and upgrades_pulse_tween.is_running(): return

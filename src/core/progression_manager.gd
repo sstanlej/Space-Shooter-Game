@@ -118,8 +118,11 @@ func add_upgrade_points(amount: int = 1) -> void:
 		ui_manager.update_upgrade_points_label(upgrade_points)
 
 func spend_upgrade_point() -> bool:
-	if upgrade_points > 0:
-		upgrade_points -= 1
+	return spend_upgrade_points(1)
+
+func spend_upgrade_points(amount: int) -> bool:
+	if upgrade_points >= amount and amount > 0:
+		upgrade_points -= amount
 		upgrade_points_changed.emit(upgrade_points)
 		if ui_manager and ui_manager.has_method("update_upgrade_points_label"):
 			ui_manager.update_upgrade_points_label(upgrade_points)
