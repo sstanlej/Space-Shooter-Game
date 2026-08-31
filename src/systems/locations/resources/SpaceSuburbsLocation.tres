@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="LocationData" load_steps=8 format=3 uid="uid://bptp4wo1dkjnr"]
+
+[ext_resource type="Texture2D" uid="uid://do8txnaf4rsn5" path="res://src/systems/locations/sprites/space_suburbs/space_suburbs_back.png" id="1_3yrt0"]
+[ext_resource type="Script" uid="uid://4ko4pcyqo2oo" path="res://src/systems/locations/LocationData.gd" id="1_16q36"]
+[ext_resource type="Texture2D" uid="uid://ds51323422o35" path="res://src/systems/locations/sprites/space_suburbs/space_suburbs_front.png" id="2_2ptrd"]
+[ext_resource type="Script" uid="uid://c1jvipah3wjg0" path="res://src/entities/enemies/components/EnemyData.gd" id="2_j74ke"]
+[ext_resource type="Texture2D" uid="uid://dlownd33svxpn" path="res://src/systems/locations/sprites/space_suburbs/space_suburbs_middle.png" id="3_aycp6"]
+[ext_resource type="Resource" uid="uid://do65qwi3adxlo" path="res://src/entities/enemies/courier/CourierEnemy.tres" id="3_d1tv0"]
+[ext_resource type="Resource" uid="uid://b0rbftdnqtvl4" path="res://src/entities/enemies/spacebus/SpacebusEnemy.tres" id="4_64gac"]
+
+[resource]
+script = ExtResource("1_16q36")
+location_id = "space_suburbs"
+location_name = "Space Suburbs"
+spawnable_enemies = Array[ExtResource("2_j74ke")]([ExtResource("3_d1tv0"), ExtResource("4_64gac")])
+background_texture = ExtResource("1_3yrt0")
+middle_texture = ExtResource("3_aycp6")
+front_texture = ExtResource("2_2ptrd")
+metadata/_custom_type_script = "uid://4ko4pcyqo2oo"

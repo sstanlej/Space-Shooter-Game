@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LocationData" load_steps=8 format=3 uid="uid://cnm2rj4rhv22x"]
+[gd_resource type="Resource" script_class="LocationData" load_steps=9 format=3 uid="uid://cnm2rj4rhv22x"]
 
 [ext_resource type="Script" uid="uid://4ko4pcyqo2oo" path="res://src/systems/locations/LocationData.gd" id="1_a6s1b"]
 [ext_resource type="Texture2D" uid="uid://dl8hm2g5ljvkl" path="res://src/systems/locations/sprites/space_city/space_city_back.png" id="1_m84dg"]
@@ -7,12 +7,13 @@
 [ext_resource type="Script" uid="uid://c1jvipah3wjg0" path="res://src/entities/enemies/components/EnemyData.gd" id="5_vxjy4"]
 [ext_resource type="Resource" uid="uid://b0rbftdnqtvl4" path="res://src/entities/enemies/spacebus/SpacebusEnemy.tres" id="6_vxjy4"]
 [ext_resource type="Resource" uid="uid://do65qwi3adxlo" path="res://src/entities/enemies/courier/CourierEnemy.tres" id="7_mlh6a"]
+[ext_resource type="Resource" uid="uid://cdg48uidffuqt" path="res://src/entities/enemies/kitten/KittenEnemy.tres" id="8_vmq32"]
 
 [resource]
 script = ExtResource("1_a6s1b")
 location_name = "City"
 location_rarity = 1
-spawnable_enemies = Array[ExtResource("5_vxjy4")]([ExtResource("6_vxjy4"), ExtResource("7_mlh6a")])
+spawnable_enemies = Array[ExtResource("5_vxjy4")]([ExtResource("6_vxjy4"), ExtResource("7_mlh6a"), ExtResource("8_vmq32")])
 background_texture = ExtResource("1_m84dg")
 middle_texture = ExtResource("3_1n8tj")
 front_texture = ExtResource("2_vmq32")
