@@ -10,13 +10,17 @@ signal maxed_out
 @export var progression_manager: ProgressionManager
 @export var deck_manager: CardDeckManager
 
+func has_available_upgrades(player: Player) -> bool:
+	if deck_manager:
+		return deck_manager.has_available_upgrades(player)
+	return false
+
 func open_shop(player: Player) -> void:
 	shop_opened.emit()
 	if not deck_manager:
 		maxed_out.emit()
 		return
 
-	# Pobieramy aktualną ofertę (lub generujemy pierwszą, jeśli bufor jest pusty)
 	var cards = deck_manager.get_cards_for_shop(3, player)
 	if cards.is_empty():
 		maxed_out.emit()
@@ -35,8 +39,7 @@ func try_purchase_card(card: UpgradeCardData, player: Player) -> bool:
 	if progression_manager.spend_upgrade_point():
 		card.apply_to_player(player)
 		purchase_successful.emit()
-		
-		# Po udanym zakupie wymuszamy NOWE losowanie oferty na kolejne zakupy
+
 		if deck_manager:
 			var next_cards = deck_manager.roll_new_offer(3, player)
 			if next_cards.is_empty():

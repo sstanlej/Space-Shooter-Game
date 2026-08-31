@@ -42,6 +42,9 @@ func setup_signals() -> void:
 	shop_manager.maxed_out.connect(_on_shop_maxed_out)
 	shop_manager.purchase_failed.connect(_on_purchase_failed)
 
+	if shop_manager.progression_manager and shop_manager.progression_manager.has_signal("upgrade_points_changed"):
+		shop_manager.progression_manager.upgrade_points_changed.connect(func(_pts): update_upgrades_available_display())
+
 func reset_visual_states() -> void:
 	if background_overlay: background_overlay.modulate.a = 0.0
 	if choose_upgrade_label: choose_upgrade_label.modulate.a = 0.0

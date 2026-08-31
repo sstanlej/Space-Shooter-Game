@@ -8,7 +8,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	match event.keycode:
 		KEY_F1:
-			add_upgrade_point()
+			level_up()
 		KEY_F2:
 			handle_wave_skip()
 		KEY_F3:
@@ -16,24 +16,19 @@ func _unhandled_input(event: InputEvent) -> void:
 		KEY_F4:
 			toggle_spectator_mode()
 
-# --- F1: +1 UPGRADE POINT ---
+func level_up() -> void:
+	var progression: ProgressionManager = get_progression_manager()
+	if not progression:
+		return
 
-func add_upgrade_point() -> void:
-	var progression = get_progression_manager()
-	var current_points: int = 0
+	var needed_xp: int = progression.experience_needed - progression.experience
+	progression.add_experience(maxi(1, needed_xp))
 
-	if progression:
-		if progression.has_method("add_upgrade_points"):
-			progression.add_upgrade_points(1)
-		elif "upgrade_points" in progression:
-			progression.upgrade_points += 1
+	var ui: UIManager = get_ui_manager()
+	if ui and ui.shop_ui and ui.shop_ui.visible:
+		ui.shop_ui.update_upgrades_available_display()
 
-		if progression.has_method("get_upgrade_points"):
-			current_points = progression.get_upgrade_points()
-		elif "upgrade_points" in progression:
-			current_points = progression.upgrade_points
-
-		show_debug_notification("+1 UPGRADE POINT (%d)" % current_points)
+	show_debug_notification("DEBUG: LEVEL UP! (LVL %d)" % progression.get_level())
 
 # --- F2: SKIP FALI / PRZEJŚCIA ---
 

@@ -227,11 +227,9 @@ func finish_wave() -> void:
 	change_state(GameState.BETWEEN_WAVES)
 
 	var points: int = progression_manager.get_upgrade_points() if progression_manager else 0
-
 	var is_fully_maxed = false
 	if shop_manager and player:
-		var available_cards = shop_manager.deck_manager.get_cards_for_shop(3, player) if shop_manager.deck_manager else []
-		is_fully_maxed = available_cards.is_empty()
+		is_fully_maxed = not shop_manager.has_available_upgrades(player)
 
 	if ui_manager:
 		if ui_manager.has_method("update_shop_controls_display"):
@@ -279,6 +277,15 @@ func close_shop() -> void:
 	if current_state == GameState.IN_SHOP:
 		if shop_ui and shop_ui.has_method("hide_shop"):
 			await shop_ui.hide_shop()
+			
+			var points: int = progression_manager.get_upgrade_points() if progression_manager else 0
+			var is_fully_maxed = false
+			if shop_manager and player:
+				is_fully_maxed = not shop_manager.has_available_upgrades(player)
+
+			if ui_manager and ui_manager.has_method("update_shop_controls_display"):
+				ui_manager.update_shop_controls_display(points, is_fully_maxed)
+
 			if ui_manager.has_method("show_controls_prompt"):
 				ui_manager.show_controls_prompt()
 		change_state(GameState.BETWEEN_WAVES)
