@@ -41,7 +41,6 @@ func _ready() -> void:
 
 	if health_component:
 		health_component.died.connect(_on_player_died)
-		health_component.damage_taken.connect(_on_health_component_damage_taken)
 
 		if deck_component:
 			health_component.shield_hit.connect(deck_component.sync_shield_from_health)
