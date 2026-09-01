@@ -153,6 +153,7 @@ projectiles_container = NodePath("../World/ProjectilesContainer")
 [node name="ProgressionManager" type="Node" parent="." node_paths=PackedStringArray("ui_manager", "player")]
 script = ExtResource("7_htxhm")
 base_experience_needed = 40
+experience_needed_modifier = 1.15
 ui_manager = NodePath("../UILayer")
 player = NodePath("../World/Player")
 
