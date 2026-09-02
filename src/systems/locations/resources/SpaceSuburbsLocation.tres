@@ -1,5 +1,6 @@
-[gd_resource type="Resource" script_class="LocationData" load_steps=8 format=3 uid="uid://bptp4wo1dkjnr"]
+[gd_resource type="Resource" script_class="LocationData" format=3 uid="uid://bptp4wo1dkjnr"]
 
+[ext_resource type="Script" uid="uid://c3u3cw50ay35x" path="res://src/systems/spawner/WaveEventData.gd" id="1_2ptrd"]
 [ext_resource type="Texture2D" uid="uid://do8txnaf4rsn5" path="res://src/systems/locations/sprites/space_suburbs/space_suburbs_back.png" id="1_3yrt0"]
 [ext_resource type="Script" uid="uid://4ko4pcyqo2oo" path="res://src/systems/locations/LocationData.gd" id="1_16q36"]
 [ext_resource type="Texture2D" uid="uid://ds51323422o35" path="res://src/systems/locations/sprites/space_suburbs/space_suburbs_front.png" id="2_2ptrd"]

@@ -11,7 +11,7 @@ var wave_type: WaveType = WaveType.STANDARD
 var wave_budget: int = 10
 
 var location: LocationData = null
-var event_id: String = ""
+var event_data: WaveEventData = null
 
 var boss_scene: PackedScene = null
 var boss_enemy_data: EnemyData = null
