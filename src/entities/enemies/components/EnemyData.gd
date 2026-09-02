@@ -1,11 +1,17 @@
 class_name EnemyData extends Resource
 
-@export_group("Identity")
-@export var enemy_name: String
-@export var enemy_scene: PackedScene
+enum SpawnOrigin {
+	RIGHT_EDGE,    
+	TOP_EDGE,      
+	BOTTOM_EDGE,   
+	RANDOM_EDGE    
+}
 
-@export_group("Wave Director")
+@export_group("Visual & Base Stats")
+@export var enemy_name: String = "Enemy"
+@export var enemy_scene: PackedScene
 @export var spawn_cost: int = 1
+@export var spawn_origin: SpawnOrigin = SpawnOrigin.RIGHT_EDGE
 
 @export_group("Rewards")
 @export var enemy_score_reward: int = 100

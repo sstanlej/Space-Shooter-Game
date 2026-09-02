@@ -11,7 +11,7 @@
 [resource]
 script = ExtResource("1_3usuj")
 location_name = "Earth Orbit"
-spawnable_enemies = Array[ExtResource("2_e08kc")]([ExtResource("6_vbqmk"), ExtResource("7_ccqd1")])
+spawnable_enemies = Array[ExtResource("2_e08kc")]([ExtResource("7_ccqd1"), ExtResource("6_vbqmk")])
 background_texture = ExtResource("1_pyns4")
 middle_texture = ExtResource("3_vbqmk")
 front_texture = ExtResource("2_vr8f1")

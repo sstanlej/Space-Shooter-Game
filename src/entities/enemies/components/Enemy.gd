@@ -6,10 +6,17 @@ signal enemy_escaped
 @export_group("Visual Effects")
 @export var death_scene: PackedScene
 
+@export_group("Screen Bounds & Despawn")
+## Margines poza ekranem (w pikselach), po przekroczeniu którego wróg ucieka/usuwa się (lewo, prawo, góra, dół)
+@export var exit_margin: float = 50.0
+## Margines wejścia – jak głęboko wróg musi wlecieć w ekran, aby uznać go za aktywnego
+@export var entry_padding: float = 10.0
+
 var data: EnemyData
 var is_escaping: bool = false
 var is_intangible: bool = false
 var suppress_death_effect: bool = false
+var has_entered_screen: bool = false
 
 @onready var health_component: HealthComponent = get_node_or_null("HealthComponent")
 @onready var movement_component: EnemyMovementComponent = get_node_or_null("EnemyMovementComponent")
@@ -42,6 +49,7 @@ func setup(enemy_data: EnemyData) -> void:
 		return
 
 	data = enemy_data
+	has_entered_screen = false
 
 	# Jeśli wróg nie posiada HealthComponent (np. Spectator), staje się nietykalny
 	is_intangible = (health_component == null)
@@ -73,10 +81,37 @@ func setup_mortal_state() -> void:
 			health_component.died.connect(_on_health_component_died)
 
 func _physics_process(delta: float) -> void:
-	if position.x < -40.0 and not is_escaping:
-		start_escape_sequence()
-	elif not is_escaping and movement_component:
+	if is_escaping:
+		return
+
+	_check_screen_bounds()
+
+	if not is_escaping and movement_component:
 		movement_component.move(delta)
+
+func _check_screen_bounds() -> void:
+	var viewport_rect = get_viewport_rect()
+
+	if not has_entered_screen:
+		# Sprawdzamy, czy wróg wleciał w widoczny obszar ekranu
+		var entry_rect = Rect2(
+			-entry_padding,
+			-entry_padding,
+			viewport_rect.size.x + (entry_padding * 2.0),
+			viewport_rect.size.y + (entry_padding * 2.0)
+		)
+		if entry_rect.has_point(global_position):
+			has_entered_screen = true
+	else:
+		# Gdy wróg był już na ekranie, sprawdzamy, czy nie wyleciał poza margines w dowolnym kierunku
+		var active_zone = Rect2(
+			-exit_margin,
+			-exit_margin,
+			viewport_rect.size.x + (exit_margin * 2.0),
+			viewport_rect.size.y + (exit_margin * 2.0)
+		)
+		if not active_zone.has_point(global_position):
+			start_escape_sequence()
 
 func _on_damage_taken(_amount: int = 0) -> void:
 	if not is_intangible:

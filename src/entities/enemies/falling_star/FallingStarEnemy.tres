@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=3 format=3 uid="uid://cs0h0yj7r222s"]
+
+[ext_resource type="Script" uid="uid://c1jvipah3wjg0" path="res://src/entities/enemies/components/EnemyData.gd" id="1_f1o2y"]
+[ext_resource type="PackedScene" uid="uid://dbl1uhws3lgyr" path="res://src/entities/enemies/falling_star/falling_star.tscn" id="1_nku22"]
+
+[resource]
+script = ExtResource("1_f1o2y")
+enemy_name = "Falling Star"
+enemy_scene = ExtResource("1_nku22")
+spawn_origin = 1
+enemy_score_reward = 10
+enemy_xp_reward = 10
+metadata/_custom_type_script = "uid://c1jvipah3wjg0"
