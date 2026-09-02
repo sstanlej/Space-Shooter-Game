@@ -12,7 +12,7 @@ enum MovementMode { LINEAR, SINE_WAVE }
 @export var screen_margin: float = 25.0
 
 var speed_multiplier: float = 1.0
-var base_y: float = 0.0
+var base_pos: Vector2 = Vector2.ZERO
 var time_passed: float = 0.0
 var effective_amplitude: float = 0.0
 var can_move: bool = true
@@ -21,21 +21,23 @@ var can_move: bool = true
 
 func _ready() -> void:
 	if body:
-		base_y = body.global_position.y
+		base_pos = body.global_position
+	direction = direction.normalized()
 	calculate_amplitude()
 
 func on_enemy_setup() -> void:
 	if body:
-		base_y = body.global_position.y
+		base_pos = body.global_position
+	direction = direction.normalized()
 
 func calculate_amplitude() -> void:
 	var screen_size = body.get_viewport_rect().size if body else Vector2(320, 180)
 	var max_allowed = (screen_size.y - (screen_margin * 2.0)) / 2.0
 	effective_amplitude = min(sine_amplitude, max_allowed)
 
-func setup_from_data(speed: float, initial_y: float) -> void:
+func setup_from_data(speed: float, initial_pos: Vector2) -> void:
 	move_speed = speed
-	base_y = initial_y
+	base_pos = initial_pos
 	calculate_amplitude()
 
 func move(delta: float) -> void:
@@ -44,32 +46,17 @@ func move(delta: float) -> void:
 
 	var current_speed = move_speed * speed_multiplier
 
-	if direction.y != 0.0:
-		base_y += direction.y * current_speed * delta
-
 	match mode:
 		MovementMode.LINEAR:
-			body.velocity.x = direction.x * current_speed
-			body.velocity.y = 0.0
-			body.global_position.y = base_y
+			body.velocity = direction * current_speed
 			body.move_and_slide()
 
 		MovementMode.SINE_WAVE:
 			time_passed += delta
-			var screen_size = body.get_viewport_rect().size
-			var min_y = screen_margin
-			var max_y = screen_size.y - screen_margin
-
-			var raw_target_y = base_y + sin(time_passed * sine_frequency) * effective_amplitude
-
-			if raw_target_y < min_y:
-				base_y += (min_y - raw_target_y) * 3.0 * delta
-			elif raw_target_y > max_y:
-				base_y -= (raw_target_y - max_y) * 3.0 * delta
-
-			var final_target_y = base_y + sin(time_passed * sine_frequency) * effective_amplitude
-
-			body.velocity.x = direction.x * current_speed
-			body.velocity.y = 0.0
-			body.global_position.y = final_target_y
-			body.move_and_slide()
+			base_pos += direction * current_speed * delta
+			
+			# Wektor prostopadły do kierunku ruchu dla fali sinusoidalnej
+			var perp = Vector2(-direction.y, direction.x)
+			var offset = perp * (sin(time_passed * sine_frequency) * effective_amplitude)
+			
+			body.global_position = base_pos + offset

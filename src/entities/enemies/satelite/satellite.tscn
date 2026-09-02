@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://by226e5fn2bir"]
+[gd_scene load_steps=12 format=3 uid="uid://by226e5fn2bir"]
 
 [ext_resource type="Script" uid="uid://vwa6kpj4j3xy" path="res://src/entities/enemies/components/Enemy.gd" id="1_6knpa"]
 [ext_resource type="PackedScene" uid="uid://cdfbi3flgf8ko" path="res://src/vfx/explosion/explosion.tscn" id="2_7xfdc"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://cmxkc1l3uevq1" path="res://src/entities/enemies/components/HealthComponent.gd" id="6_nvg7j"]
 [ext_resource type="Script" uid="uid://c0svh84qgdobm" path="res://src/entities/enemies/components/HurtboxComponent.gd" id="7_3nioj"]
 [ext_resource type="Script" uid="uid://wp4r0eq4n6vp" path="res://src/entities/enemies/components/EnemyMovementComponent.gd" id="8_r6m3a"]
+[ext_resource type="Script" uid="uid://dsmssivreocgf" path="res://src/entities/enemies/components/RotatorComponent.gd" id="9_7xfdc"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_elnbm"]
 shader = ExtResource("4_byog8")
@@ -48,6 +49,15 @@ shape = SubResource("RectangleShape2D_qkgmc")
 [node name="EnemyMovementComponent" type="Node" parent="."]
 script = ExtResource("8_r6m3a")
 move_speed = 15.0
+
+[node name="RotatorComponent" type="Node" parent="." node_paths=PackedStringArray("target_sprite")]
+script = ExtResource("9_7xfdc")
+target_sprite = NodePath("../Sprite2D")
+mode = 1
+min_interval = 3.0
+max_interval = 8.0
+step_duration = 1.0
+metadata/_custom_type_script = "uid://dsmssivreocgf"
 
 [connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
 [connection signal="died" from="HealthComponent" to="." method="_on_health_component_died"]

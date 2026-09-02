@@ -86,8 +86,7 @@ script = ExtResource("8_uryps")
 bullet_scene = ExtResource("9_qe4q4")
 bullet_speed = 300.0
 fire_rate = 4.0
-burst_count = 3
-initial_delay = 1.0
+initial_delay = 2.5
 shot_directions = Array[Vector2]([Vector2(-1, 0)])
 metadata/_custom_type_script = "uid://cnbwlgjmc0w46"
 

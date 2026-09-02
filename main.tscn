@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://ctolyotyjbqwg"]
+[gd_scene load_steps=37 format=3 uid="uid://duw63e16qsyn"]
 
 [ext_resource type="Script" uid="uid://dm1jlaqpgu05" path="res://src/core/game_manager.gd" id="1_lswn8"]
 [ext_resource type="PackedScene" uid="uid://qoymek85ecx7" path="res://src/systems/locations/location_manager.tscn" id="2_a6jrf"]
@@ -153,6 +153,7 @@ projectiles_container = NodePath("../World/ProjectilesContainer")
 [node name="ProgressionManager" type="Node" parent="." node_paths=PackedStringArray("ui_manager", "player")]
 script = ExtResource("7_htxhm")
 base_experience_needed = 40
+experience_needed_modifier = 1.15
 ui_manager = NodePath("../UILayer")
 player = NodePath("../World/Player")
 

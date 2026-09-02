@@ -1,0 +1,56 @@
+[gd_scene load_steps=11 format=3 uid="uid://dbl1uhws3lgyr"]
+
+[ext_resource type="Script" uid="uid://vwa6kpj4j3xy" path="res://src/entities/enemies/components/Enemy.gd" id="1_6dd3f"]
+[ext_resource type="PackedScene" uid="uid://cdfbi3flgf8ko" path="res://src/vfx/explosion/explosion.tscn" id="2_0wguq"]
+[ext_resource type="Shader" uid="uid://wr7raxdl2m7y" path="res://src/vfx/shaders/hit_flash.gdshader" id="4_5sv6f"]
+[ext_resource type="Texture2D" uid="uid://c4cdpyxx71f8j" path="res://src/vfx/particles/star_particle.png" id="4_xosl7"]
+[ext_resource type="Script" uid="uid://cmxkc1l3uevq1" path="res://src/entities/enemies/components/HealthComponent.gd" id="6_5y76j"]
+[ext_resource type="Script" uid="uid://c0svh84qgdobm" path="res://src/entities/enemies/components/HurtboxComponent.gd" id="7_be8i7"]
+[ext_resource type="Script" uid="uid://dsmssivreocgf" path="res://src/entities/enemies/components/RotatorComponent.gd" id="8_2gwru"]
+[ext_resource type="Script" uid="uid://wp4r0eq4n6vp" path="res://src/entities/enemies/components/EnemyMovementComponent.gd" id="9_g2gku"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_elnbm"]
+shader = ExtResource("4_5sv6f")
+shader_parameter/active = false
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_qhs2c"]
+radius = 6.0827627
+
+[node name="Falling Star" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1_6dd3f")
+death_scene = ExtResource("2_0wguq")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_elnbm")
+texture = ExtResource("4_xosl7")
+
+[node name="HealthComponent" type="Node2D" parent="."]
+script = ExtResource("6_5y76j")
+max_health = 1
+
+[node name="HurtboxComponent" type="Area2D" parent="." node_paths=PackedStringArray("health_component")]
+collision_layer = 2
+collision_mask = 5
+script = ExtResource("7_be8i7")
+health_component = NodePath("../HealthComponent")
+contact_damage = 1.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent"]
+shape = SubResource("CircleShape2D_qhs2c")
+
+[node name="RotatorComponent" type="Node" parent="." node_paths=PackedStringArray("target_sprite")]
+script = ExtResource("8_2gwru")
+target_sprite = NodePath("../Sprite2D")
+rotation_speed = 1.0
+
+[node name="EnemyMovementComponent" type="Node" parent="."]
+script = ExtResource("9_g2gku")
+move_speed = 60.0
+direction = Vector2(-0.5, 1)
+
+[connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
+[connection signal="died" from="HealthComponent" to="." method="_on_health_component_died"]
+[connection signal="area_entered" from="HurtboxComponent" to="." method="_on_area_2d_area_entered"]

@@ -1,16 +1,17 @@
-[gd_resource type="Resource" script_class="ActData" load_steps=6 format=3 uid="uid://cg4citajjq2og"]
+[gd_resource type="Resource" script_class="ActData" load_steps=7 format=3 uid="uid://cg4citajjq2og"]
 
 [ext_resource type="Resource" uid="uid://c1coavno2oysx" path="res://src/entities/enemies/mother_eyeball/MotherEyeballEnemy.tres" id="1_lrm2g"]
 [ext_resource type="PackedScene" uid="uid://7my7tjtqvb3p" path="res://src/entities/enemies/mother_eyeball/mother_eyeball.tscn" id="2_8ifa3"]
 [ext_resource type="Script" uid="uid://4ko4pcyqo2oo" path="res://src/systems/locations/LocationData.gd" id="3_1l4kq"]
 [ext_resource type="Resource" uid="uid://cnm2rj4rhv22x" path="res://src/systems/locations/resources/CityLocation.tres" id="4_1snnb"]
+[ext_resource type="Resource" uid="uid://bptp4wo1dkjnr" path="res://src/systems/locations/resources/SpaceSuburbsLocation.tres" id="4_spdmi"]
 [ext_resource type="Script" uid="uid://ccinpp3kgnc7v" path="res://src/systems/campaign/ActData.gd" id="7_mw7x1"]
 
 [resource]
 script = ExtResource("7_mw7x1")
 act_index = 2
 act_name = "Act II"
-locations = Array[ExtResource("3_1l4kq")]([ExtResource("4_1snnb"), ExtResource("4_1snnb"), ExtResource("4_1snnb")])
+locations = Array[ExtResource("3_1l4kq")]([ExtResource("4_spdmi"), ExtResource("4_1snnb"), ExtResource("4_spdmi")])
 boss_scene = ExtResource("2_8ifa3")
 boss_enemy_data = ExtResource("1_lrm2g")
 metadata/_custom_type_script = "uid://ccinpp3kgnc7v"
