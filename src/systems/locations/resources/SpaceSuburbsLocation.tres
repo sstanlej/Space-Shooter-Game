@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LocationData" format=3 uid="uid://bptp4wo1dkjnr"]
+[gd_resource type="Resource" script_class="LocationData" load_steps=0 format=3 uid="uid://bptp4wo1dkjnr"]
 
 [ext_resource type="Script" uid="uid://c3u3cw50ay35x" path="res://src/systems/spawner/WaveEventData.gd" id="1_2ptrd"]
 [ext_resource type="Texture2D" uid="uid://do8txnaf4rsn5" path="res://src/systems/locations/sprites/space_suburbs/space_suburbs_back.png" id="1_3yrt0"]
