@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://duw63e16qsyn"]
+[gd_scene format=3 uid="uid://ctolyotyjbqwg"]
 
 [ext_resource type="Script" uid="uid://dm1jlaqpgu05" path="res://src/core/game_manager.gd" id="1_lswn8"]
 [ext_resource type="PackedScene" uid="uid://qoymek85ecx7" path="res://src/systems/locations/location_manager.tscn" id="2_a6jrf"]
@@ -95,7 +95,7 @@ _data = {
 &"intro": SubResource("Animation_qsp4k")
 }
 
-[node name="Main" type="Node2D" node_paths=PackedStringArray("world", "campaign_manager", "location_manager", "progression_manager", "spawner", "ui_manager", "shop_ui", "shop_manager", "deck_overview_ui", "player", "camera_frame", "wave_cooldown_timer")]
+[node name="Main" type="Node2D" unique_id=1734570461 node_paths=PackedStringArray("world", "campaign_manager", "location_manager", "progression_manager", "spawner", "ui_manager", "shop_ui", "shop_manager", "deck_overview_ui", "player", "camera_frame", "wave_cooldown_timer")]
 script = ExtResource("1_lswn8")
 world = NodePath("World")
 campaign_manager = NodePath("CampaignManager")
@@ -110,66 +110,64 @@ player = NodePath("World/Player")
 camera_frame = NodePath("World/CameraFrame")
 wave_cooldown_timer = NodePath("Timers/WaveCooldownTimer")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_seu75")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=822707415]
+libraries/ = SubResource("AnimationLibrary_seu75")
 
-[node name="World" type="Node2D" parent="."]
+[node name="World" type="Node2D" parent="." unique_id=1961435616]
 
-[node name="LocationManager" parent="World" instance=ExtResource("2_a6jrf")]
+[node name="LocationManager" parent="World" unique_id=1097382904 instance=ExtResource("2_a6jrf")]
 transition_duration = 3.0
 
-[node name="Player" parent="World" instance=ExtResource("3_xuqvo")]
+[node name="Player" parent="World" unique_id=1064468609 instance=ExtResource("3_xuqvo")]
 position = Vector2(-250, 65)
 menu_pos_x = -250.0
 
-[node name="CameraFrame" type="Node2D" parent="World"]
+[node name="CameraFrame" type="Node2D" parent="World" unique_id=941746083]
 process_mode = 3
 position = Vector2(-240, 0)
 script = ExtResource("4_qsp4k")
 
-[node name="Camera2D" type="Camera2D" parent="World/CameraFrame"]
+[node name="Camera2D" type="Camera2D" parent="World/CameraFrame" unique_id=1957695707]
 process_mode = 3
 offset = Vector2(120, 67)
 
-[node name="EnemiesContainer" type="Node2D" parent="World"]
+[node name="EnemiesContainer" type="Node2D" parent="World" unique_id=371187631]
 
-[node name="ProjectilesContainer" type="Node2D" parent="World" groups=["projectiles_container"]]
+[node name="ProjectilesContainer" type="Node2D" parent="World" unique_id=2061267160 groups=["projectiles_container"]]
 
-[node name="CampaignManager" type="Node" parent="."]
+[node name="CampaignManager" type="Node" parent="." unique_id=1430084882]
 script = ExtResource("7_kq58d")
 acts = Array[ExtResource("8_seu75")]([ExtResource("9_htxhm"), ExtResource("8_htxhm"), ExtResource("9_jq2sk")])
 
-[node name="Spawner" type="Node" parent="." node_paths=PackedStringArray("game_manager", "progression_manager", "enemies_container", "projectiles_container") groups=["spawner"]]
+[node name="Spawner" type="Node" parent="." unique_id=405902993 node_paths=PackedStringArray("game_manager", "progression_manager", "enemies_container", "projectiles_container") groups=["spawner"]]
 script = ExtResource("6_seu75")
 game_manager = NodePath("..")
 progression_manager = NodePath("../ProgressionManager")
 enemies_container = NodePath("../World/EnemiesContainer")
 projectiles_container = NodePath("../World/ProjectilesContainer")
 
-[node name="SpawnTimer" type="Timer" parent="Spawner"]
+[node name="SpawnTimer" type="Timer" parent="Spawner" unique_id=531295512]
 
-[node name="ProgressionManager" type="Node" parent="." node_paths=PackedStringArray("ui_manager", "player")]
+[node name="ProgressionManager" type="Node" parent="." unique_id=1267307962 node_paths=PackedStringArray("ui_manager", "player")]
 script = ExtResource("7_htxhm")
 base_experience_needed = 40
 experience_needed_modifier = 1.15
 ui_manager = NodePath("../UILayer")
 player = NodePath("../World/Player")
 
-[node name="ShopManager" type="Node" parent="." node_paths=PackedStringArray("progression_manager", "deck_manager", "campaign_manager")]
+[node name="ShopManager" type="Node" parent="." unique_id=1851685832 node_paths=PackedStringArray("progression_manager", "deck_manager", "campaign_manager")]
 script = ExtResource("12_jq2sk")
 progression_manager = NodePath("../ProgressionManager")
 deck_manager = NodePath("../UILayer/ShopUI/CardDeckManager")
 campaign_manager = NodePath("../CampaignManager")
 metadata/_custom_type_script = "uid://bf5l0047mdwhq"
 
-[node name="Timers" type="Node" parent="."]
+[node name="Timers" type="Node" parent="." unique_id=1188290724]
 
-[node name="WaveCooldownTimer" type="Timer" parent="Timers"]
+[node name="WaveCooldownTimer" type="Timer" parent="Timers" unique_id=1463325579]
 wait_time = 5.0
 
-[node name="UILayer" type="CanvasLayer" parent="." node_paths=PackedStringArray("hud_panel", "intermission_panel", "shop_ui", "start_game_panel", "game_over_panel", "pause_panel", "score_label", "experience_bar", "experience_label", "enemies_left_label", "exp_particles", "shop_controls_label", "deck_controls_label", "notifications_container", "title_label", "subtitle_label", "health_bar", "damage_bar", "final_wave_label", "final_score_label", "final_distance_label")]
+[node name="UILayer" type="CanvasLayer" parent="." unique_id=2000000007 node_paths=PackedStringArray("hud_panel", "intermission_panel", "shop_ui", "start_game_panel", "game_over_panel", "pause_panel", "score_label", "experience_bar", "experience_label", "enemies_left_label", "exp_particles", "shop_controls_label", "deck_controls_label", "notifications_container", "title_label", "subtitle_label", "health_bar", "damage_bar", "final_wave_label", "final_score_label", "final_distance_label")]
 process_mode = 3
 script = ExtResource("8_jq2sk")
 hud_panel = NodePath("HUD")
@@ -194,7 +192,7 @@ final_wave_label = NodePath("GameOverUI/VBoxContainer/FinalWaveLabel")
 final_score_label = NodePath("GameOverUI/VBoxContainer/FinalScoreLabel")
 final_distance_label = NodePath("GameOverUI/VBoxContainer/FinalDistanceLabel")
 
-[node name="HUD" type="Control" parent="UILayer"]
+[node name="HUD" type="Control" parent="UILayer" unique_id=1076747271]
 process_mode = 3
 layout_mode = 3
 anchor_right = 0.8375
@@ -203,14 +201,14 @@ offset_right = 40.0
 offset_bottom = 40.0
 metadata/_edit_use_anchors_ = true
 
-[node name="HUDTexture" type="TextureRect" parent="UILayer/HUD"]
+[node name="HUDTexture" type="TextureRect" parent="UILayer/HUD" unique_id=505569863]
 process_mode = 3
 layout_mode = 0
 offset_right = 240.0
 offset_bottom = 135.0
 texture = ExtResource("11_ok6jj")
 
-[node name="ScoreLabel" type="RichTextLabel" parent="UILayer/HUD"]
+[node name="ScoreLabel" type="RichTextLabel" parent="UILayer/HUD" unique_id=172336185]
 process_mode = 3
 visible = false
 layout_mode = 0
@@ -225,7 +223,7 @@ bbcode_enabled = true
 text = "[center][ SCORE ]"
 fit_content = true
 
-[node name="EnemiesLeftLabel" type="RichTextLabel" parent="UILayer/HUD"]
+[node name="EnemiesLeftLabel" type="RichTextLabel" parent="UILayer/HUD" unique_id=509198906]
 process_mode = 3
 layout_mode = 0
 offset_left = 142.0
@@ -238,7 +236,7 @@ bbcode_enabled = true
 text = "[right]ENEMIES LEFT: [color=gold]0[/color]"
 fit_content = true
 
-[node name="ShopControlLabel" type="RichTextLabel" parent="UILayer/HUD"]
+[node name="ShopControlLabel" type="RichTextLabel" parent="UILayer/HUD" unique_id=1665557779]
 process_mode = 3
 layout_mode = 0
 offset_left = 5.0
@@ -252,7 +250,7 @@ bbcode_enabled = true
 text = "[color=gold][B][/color] SHOP"
 fit_content = true
 
-[node name="DeckControlLabel" type="RichTextLabel" parent="UILayer/HUD"]
+[node name="DeckControlLabel" type="RichTextLabel" parent="UILayer/HUD" unique_id=28217596]
 process_mode = 3
 layout_mode = 0
 offset_left = 5.0
@@ -267,10 +265,10 @@ bbcode_enabled = true
 text = "[color=cyan][TAB][/color] DECK"
 fit_content = true
 
-[node name="ConfettiParticles" parent="UILayer/HUD" instance=ExtResource("16_htxhm")]
+[node name="ConfettiParticles" parent="UILayer/HUD" unique_id=1356108420 instance=ExtResource("16_htxhm")]
 position = Vector2(188, 126)
 
-[node name="ExperienceBar" type="TextureProgressBar" parent="UILayer/HUD"]
+[node name="ExperienceBar" type="TextureProgressBar" parent="UILayer/HUD" unique_id=592807807]
 process_mode = 3
 layout_mode = 0
 offset_left = 162.0
@@ -282,7 +280,7 @@ value = 5.0
 texture_under = ExtResource("13_b1qrp")
 texture_progress = ExtResource("14_come4")
 
-[node name="DamageBar" type="TextureProgressBar" parent="UILayer/HUD"]
+[node name="DamageBar" type="TextureProgressBar" parent="UILayer/HUD" unique_id=1377316832]
 process_mode = 3
 layout_mode = 0
 offset_left = 92.0
@@ -294,7 +292,7 @@ value = 10.0
 texture_progress = ExtResource("15_h8e4i")
 tint_progress = Color(1.289, 0.13, 0, 1)
 
-[node name="HealthBar" type="TextureProgressBar" parent="UILayer/HUD"]
+[node name="HealthBar" type="TextureProgressBar" parent="UILayer/HUD" unique_id=827091880]
 process_mode = 3
 layout_mode = 0
 offset_left = 92.0
@@ -306,7 +304,7 @@ value = 3.0
 texture_under = ExtResource("16_4lmeg")
 texture_progress = ExtResource("17_0cp0l")
 
-[node name="ExperienceLabel" type="RichTextLabel" parent="UILayer/HUD"]
+[node name="ExperienceLabel" type="RichTextLabel" parent="UILayer/HUD" unique_id=824434916]
 layout_mode = 0
 offset_left = 150.0
 offset_top = 127.0
@@ -319,13 +317,13 @@ bbcode_enabled = true
 text = "[center]LVL: X    Y / Z"
 fit_content = true
 
-[node name="IntermissionUI" type="Control" parent="UILayer"]
+[node name="IntermissionUI" type="Control" parent="UILayer" unique_id=1666973326]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="ShopUI" type="Control" parent="UILayer" node_paths=PackedStringArray("game_manager", "shop_manager", "player", "ui_manager", "background_overlay", "cards_container", "warning_label", "choose_upgrade_label", "upgrades_available_label", "controls_hint_label", "maxed_out_label")]
+[node name="ShopUI" type="Control" parent="UILayer" unique_id=648343489 node_paths=PackedStringArray("game_manager", "shop_manager", "player", "ui_manager", "background_overlay", "cards_container", "warning_label", "choose_upgrade_label", "upgrades_available_label", "controls_hint_label", "maxed_out_label")]
 visible = false
 layout_mode = 3
 anchors_preset = 15
@@ -347,7 +345,7 @@ upgrades_available_label = NodePath("UpgradesAvailableLabel")
 controls_hint_label = NodePath("ControlsHintLabel")
 maxed_out_label = NodePath("MaxedOutLabel")
 
-[node name="BackgroundOverlay" type="ColorRect" parent="UILayer/ShopUI"]
+[node name="BackgroundOverlay" type="ColorRect" parent="UILayer/ShopUI" unique_id=440744111]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -356,19 +354,19 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.25490198)
 
-[node name="CardsContainer" type="HBoxContainer" parent="UILayer/ShopUI"]
+[node name="CardsContainer" type="HBoxContainer" parent="UILayer/ShopUI" unique_id=1722052328]
 custom_minimum_size = Vector2(100, 0)
-layout_direction = 4
 layout_mode = 1
 offset_right = 100.0
+layout_direction = 4
 theme_override_constants/separation = 16
 alignment = 1
 
-[node name="CardDeckManager" type="Node" parent="UILayer/ShopUI"]
+[node name="CardDeckManager" type="Node" parent="UILayer/ShopUI" unique_id=618155198]
 script = ExtResource("27_a6jrf")
 available_cards = Array[ExtResource("21_htxhm")]([ExtResource("22_jq2sk"), ExtResource("23_4k2k6"), ExtResource("24_0rl1p"), ExtResource("25_0odxb"), ExtResource("28_qsp4k"), ExtResource("29_kq58d")])
 
-[node name="ChooseUpgradeLabel" type="RichTextLabel" parent="UILayer/ShopUI"]
+[node name="ChooseUpgradeLabel" type="RichTextLabel" parent="UILayer/ShopUI" unique_id=544681841]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
@@ -380,7 +378,7 @@ bbcode_enabled = true
 text = "[center][color=gold]CHOOSE THE UPGRADE:"
 fit_content = true
 
-[node name="MaxedOutLabel" type="RichTextLabel" parent="UILayer/ShopUI"]
+[node name="MaxedOutLabel" type="RichTextLabel" parent="UILayer/ShopUI" unique_id=66295852]
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
@@ -396,7 +394,7 @@ bbcode_enabled = true
 text = "[center]NO UPGRADES AVAILABLE"
 fit_content = true
 
-[node name="UpgradesAvailableLabel" type="RichTextLabel" parent="UILayer/ShopUI"]
+[node name="UpgradesAvailableLabel" type="RichTextLabel" parent="UILayer/ShopUI" unique_id=2087607674]
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
@@ -412,7 +410,7 @@ bbcode_enabled = true
 text = "[center]UPGRADES AVAILABLE: X"
 fit_content = true
 
-[node name="WarningLabel" type="RichTextLabel" parent="UILayer/ShopUI"]
+[node name="WarningLabel" type="RichTextLabel" parent="UILayer/ShopUI" unique_id=1494027302]
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
@@ -428,7 +426,7 @@ bbcode_enabled = true
 text = "[center]THIS IS THE WARNING"
 fit_content = true
 
-[node name="ControlsHintLabel" type="RichTextLabel" parent="UILayer/ShopUI"]
+[node name="ControlsHintLabel" type="RichTextLabel" parent="UILayer/ShopUI" unique_id=1390820793]
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
@@ -443,21 +441,21 @@ bbcode_enabled = true
 text = "[center][color=gray]SHOP CONTROLS"
 fit_content = true
 
-[node name="PauseMenuUI" type="Control" parent="UILayer"]
+[node name="PauseMenuUI" type="Control" parent="UILayer" unique_id=1300139294]
 visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="GamePausedLabel" type="RichTextLabel" parent="UILayer/PauseMenuUI"]
+[node name="GamePausedLabel" type="RichTextLabel" parent="UILayer/PauseMenuUI" unique_id=1324292231]
 layout_mode = 0
 offset_right = 204.0
 offset_bottom = 71.0
 text = "GAME PAUSED"
 fit_content = true
 
-[node name="GameOverUI" type="Control" parent="UILayer"]
+[node name="GameOverUI" type="Control" parent="UILayer" unique_id=1403638645]
 visible = false
 layout_mode = 3
 anchors_preset = 15
@@ -466,7 +464,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UILayer/GameOverUI"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UILayer/GameOverUI" unique_id=1974797331]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -481,7 +479,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = -4
 
-[node name="FinalWaveLabel" type="RichTextLabel" parent="UILayer/GameOverUI/VBoxContainer"]
+[node name="FinalWaveLabel" type="RichTextLabel" parent="UILayer/GameOverUI/VBoxContainer" unique_id=510886637]
 layout_mode = 2
 theme_override_fonts/normal_font = ExtResource("12_facbu")
 theme_override_font_sizes/normal_font_size = 5
@@ -490,7 +488,7 @@ text = "[center]Wave reached:
 "
 fit_content = true
 
-[node name="FinalScoreLabel" type="RichTextLabel" parent="UILayer/GameOverUI/VBoxContainer"]
+[node name="FinalScoreLabel" type="RichTextLabel" parent="UILayer/GameOverUI/VBoxContainer" unique_id=957809465]
 layout_mode = 2
 theme_override_fonts/normal_font = ExtResource("12_facbu")
 theme_override_font_sizes/normal_font_size = 5
@@ -499,7 +497,7 @@ text = "[center]Score:
 "
 fit_content = true
 
-[node name="FinalDistanceLabel" type="RichTextLabel" parent="UILayer/GameOverUI/VBoxContainer"]
+[node name="FinalDistanceLabel" type="RichTextLabel" parent="UILayer/GameOverUI/VBoxContainer" unique_id=1595687597]
 layout_mode = 2
 theme_override_fonts/normal_font = ExtResource("12_facbu")
 theme_override_font_sizes/normal_font_size = 5
@@ -508,14 +506,14 @@ text = "[center]Distance:
 "
 fit_content = true
 
-[node name="StartGameUI" type="Control" parent="UILayer"]
+[node name="StartGameUI" type="Control" parent="UILayer" unique_id=1825688886]
 visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="StartGameLabel" type="RichTextLabel" parent="UILayer/StartGameUI"]
+[node name="StartGameLabel" type="RichTextLabel" parent="UILayer/StartGameUI" unique_id=1100112267]
 layout_mode = 0
 offset_top = 48.0
 offset_right = 204.0
@@ -523,7 +521,7 @@ offset_bottom = 119.0
 text = "PRESS SPACE TO START"
 fit_content = true
 
-[node name="NotificationsUI" type="Control" parent="UILayer"]
+[node name="NotificationsUI" type="Control" parent="UILayer" unique_id=673398426]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -531,7 +529,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MessageContainer" type="VBoxContainer" parent="UILayer/NotificationsUI"]
+[node name="MessageContainer" type="VBoxContainer" parent="UILayer/NotificationsUI" unique_id=1164818601]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -541,7 +539,7 @@ grow_vertical = 2
 theme_override_constants/separation = -10
 alignment = 1
 
-[node name="TitleLabel" type="RichTextLabel" parent="UILayer/NotificationsUI/MessageContainer"]
+[node name="TitleLabel" type="RichTextLabel" parent="UILayer/NotificationsUI/MessageContainer" unique_id=1398168189]
 layout_mode = 2
 theme_override_fonts/normal_font = ExtResource("12_facbu")
 theme_override_font_sizes/normal_font_size = 15
@@ -549,7 +547,7 @@ bbcode_enabled = true
 text = "[center]SPACE SHOOTER"
 fit_content = true
 
-[node name="SubtitleLabel" type="RichTextLabel" parent="UILayer/NotificationsUI/MessageContainer"]
+[node name="SubtitleLabel" type="RichTextLabel" parent="UILayer/NotificationsUI/MessageContainer" unique_id=1130743070]
 layout_mode = 2
 theme_override_fonts/normal_font = ExtResource("12_facbu")
 theme_override_font_sizes/normal_font_size = 5
@@ -557,7 +555,7 @@ bbcode_enabled = true
 text = "[center]BABY"
 fit_content = true
 
-[node name="DeckOverviewUI" parent="UILayer" node_paths=PackedStringArray("game_manager", "player") instance=ExtResource("32_htxhm")]
+[node name="DeckOverviewUI" parent="UILayer" unique_id=291859482 node_paths=PackedStringArray("game_manager", "player") instance=ExtResource("32_htxhm")]
 visible = false
 game_manager = NodePath("../..")
 player = NodePath("../../World/Player")

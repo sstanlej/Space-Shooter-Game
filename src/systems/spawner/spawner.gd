@@ -98,14 +98,20 @@ func build_standard_wave_queue(budget: int, location: LocationData) -> void:
 	update_ui_enemies_left()
 
 func build_event_queue(config: WaveConfig) -> void:
-	if "event_data" in config and config.event_data is WaveEventData:
-		var ev: WaveEventData = config.event_data
-		current_event_delay = ev.fixed_spawn_delay
-		for i in range(ev.spawn_count):
-			if not ev.event_enemies.is_empty():
-				unspawned_enemies.append(ev.event_enemies.pick_random())
-	else:
+	unspawned_enemies.clear()
+
+	var ev = config.event_data
+	if not ev or ev.event_enemies.is_empty():
+		print("[Spawner] Event configuration is missing or has no enemies! Starting standard fallback...")
 		build_standard_wave_queue(config.wave_budget, config.location)
+		return
+
+	current_event_delay = ev.spawn_delay
+
+	for i in range(ev.spawn_count):
+		var picked = ev.event_enemies.pick_random()
+		if picked:
+			unspawned_enemies.append(picked)
 
 	update_ui_enemies_left()
 

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ActData" load_steps=8 format=3 uid="uid://qq5bhde64gsn"]
+[gd_resource type="Resource" script_class="ActData" format=3 uid="uid://qq5bhde64gsn"]
 
 [ext_resource type="Resource" uid="uid://c1coavno2oysx" path="res://src/entities/enemies/mother_eyeball/MotherEyeballEnemy.tres" id="1_i80xl"]
 [ext_resource type="Script" uid="uid://4ko4pcyqo2oo" path="res://src/systems/locations/LocationData.gd" id="1_q4d1t"]

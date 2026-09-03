@@ -49,7 +49,7 @@ func get_effective_shop_act(is_between_waves: bool = false) -> int:
 	var cfg = get_wave_config(target_wave)
 	return cfg.act_index if cfg else current_act_index
 
-# --- WAVE CONFIGURATION GENERATION (BEZ ZMIAN W LOGICE OBLICZEŃ) ---
+# --- WAVE CONFIGURATION GENERATION ---
 
 func get_wave_config(global_wave: int) -> WaveConfig:
 	if _wave_cache.has(global_wave):
@@ -77,6 +77,7 @@ func get_wave_config(global_wave: int) -> WaveConfig:
 			config.act_index = act.act_index
 			config.act_name = act.act_name
 
+			# 1. Boss Encounter
 			if wave_in_act == act_total_waves:
 				config.wave_type = WaveConfig.WaveType.BOSS
 				config.is_act_final = true
@@ -86,6 +87,7 @@ func get_wave_config(global_wave: int) -> WaveConfig:
 				_wave_cache[global_wave] = config
 				return config
 
+			# 2. Location Progression
 			var loc_info = _resolve_location_for_wave(act, wave_in_act)
 			var current_loc: LocationData = loc_info["location"]
 			var wave_in_this_loc: int = loc_info["wave_in_loc"]
@@ -93,9 +95,10 @@ func get_wave_config(global_wave: int) -> WaveConfig:
 
 			config.location = current_loc
 
+			# 3. Wave Event Resolution
 			if current_loc and not current_loc.available_events.is_empty() and wave_in_this_loc == total_waves_in_this_loc:
 				config.wave_type = WaveConfig.WaveType.EVENT
-				config.event_id = current_loc.available_events.pick_random()
+				config.event_data = current_loc.available_events.pick_random()
 			else:
 				config.wave_type = WaveConfig.WaveType.STANDARD
 
@@ -172,7 +175,7 @@ func _build_endless_config(global_wave: int, campaign_waves_total: int) -> WaveC
 
 	if wave_in_sector == sector_size and not active_loc.available_events.is_empty():
 		config.wave_type = WaveConfig.WaveType.EVENT
-		config.event_id = active_loc.available_events.pick_random()
+		config.event_data = active_loc.available_events.pick_random()
 	else:
 		config.wave_type = WaveConfig.WaveType.STANDARD
 
@@ -219,7 +222,8 @@ func print_campaign_overview() -> void:
 			var details = ""
 
 			if cfg.wave_type == WaveConfig.WaveType.EVENT:
-				details = " [Event: %s]" % cfg.event_id
+				var ev_name = cfg.event_data.event_name if cfg.event_data else "Unknown Event"
+				details = " [Event: %s]" % ev_name
 			elif cfg.wave_type == WaveConfig.WaveType.BOSS:
 				var boss_name = cfg.boss_enemy_data.enemy_name if cfg.boss_enemy_data else "Default Boss"
 				details = " [Boss: %s]" % boss_name

@@ -203,12 +203,14 @@ func start_wave() -> void:
 				WaveConfig.WaveType.BOSS:
 					ui_manager.show_notification("[color=red]BOSS BATTLE[/color]", "[color=gold]Defeat the Boss of " + cfg.act_name + "![/color]", 2.0)
 				WaveConfig.WaveType.EVENT:
-					var event_name = cfg.event_id.replace("_", " ").to_upper()
-					ui_manager.show_notification("[color=crimson]EVENT: " + event_name + "[/color]", "[color=gold]Survive the hazard![/color]", 2.0)
+					if cfg.event_data:
+						ui_manager.show_notification(cfg.event_data.banner_title, cfg.event_data.banner_subtitle, 2.2)
+					else:
+						ui_manager.show_notification("[color=crimson]HAZARD DETECTED[/color]", "[color=gold]Survive the event![/color]", 2.0)
 				WaveConfig.WaveType.STANDARD:
 					var loc_name = cfg.location.location_name if cfg.location else "Sector"
 					ui_manager.show_notification("[color=gold]WAVE " + str(current_wave) + "[/color]", "[color=gray]" + loc_name + "[/color]", 1.2)
-
+	
 	change_state(GameState.IN_WAVE)
 	wave_started.emit(current_wave)
 

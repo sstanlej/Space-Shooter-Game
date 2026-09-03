@@ -18,7 +18,7 @@ enum Rarity {
 @export var spawnable_enemies: Array[EnemyData] = []
 
 @export_group("Events")
-@export var available_events: Array[String] = []
+@export var available_events: Array[WaveEventData] = []
 
 @export_group("Visuals (Parallax Layers)")
 @export var background_texture: Texture2D
