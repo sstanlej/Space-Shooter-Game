@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="LocationData" load_steps=8 format=3 uid="uid://cvcji53fh485s"]
+[gd_resource type="Resource" script_class="LocationData" format=3 uid="uid://cvcji53fh485s"]
 
 [ext_resource type="Script" uid="uid://4ko4pcyqo2oo" path="res://src/systems/locations/LocationData.gd" id="1_3usuj"]
+[ext_resource type="Script" uid="uid://c3u3cw50ay35x" path="res://src/systems/spawner/WaveEventData.gd" id="1_ccqd1"]
 [ext_resource type="Texture2D" uid="uid://dawx5nuq4rbc0" path="res://src/systems/locations/sprites/earth_orbit/earth_orbit_back.png" id="1_pyns4"]
 [ext_resource type="Script" uid="uid://c1jvipah3wjg0" path="res://src/entities/enemies/components/EnemyData.gd" id="2_e08kc"]
 [ext_resource type="Texture2D" uid="uid://ctrexm0ep7uup" path="res://src/systems/locations/sprites/earth_orbit/earth_orbit_front.png" id="2_vr8f1"]
@@ -11,6 +12,7 @@
 [resource]
 script = ExtResource("1_3usuj")
 location_name = "Earth Orbit"
+custom_wave_count = 1
 spawnable_enemies = Array[ExtResource("2_e08kc")]([ExtResource("7_ccqd1"), ExtResource("6_vbqmk")])
 background_texture = ExtResource("1_pyns4")
 middle_texture = ExtResource("3_vbqmk")
