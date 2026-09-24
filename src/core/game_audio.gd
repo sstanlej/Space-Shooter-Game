@@ -8,6 +8,7 @@ class_name GameAudio extends Node2D
 @onready var select_sound : AudioStreamPlayer2D = $SelectSound
 @onready var levelup_sound : AudioStreamPlayer2D = $LevelUpSound
 @onready var warning_sound : AudioStreamPlayer2D = $WarningSound
+@onready var beam_sound: AudioStreamPlayer2D = $BeamSound
 
 @export var background_music: AudioStream
 var music_player: AudioStreamPlayer
@@ -58,3 +59,6 @@ func play_levelup() -> void:
 
 func play_warning() ->void:
 	warning_sound.play()
+
+func play_beam() -> void:
+	beam_sound.play()

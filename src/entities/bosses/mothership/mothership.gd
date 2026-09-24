@@ -126,6 +126,7 @@ func _execute_spawning_phase() -> void:
 
 	if beam_visual:
 		beam_visual.visible = true
+	GlobalAudio.play_beam()
 
 	for i in range(minions_per_phase):
 		if not active_loop:

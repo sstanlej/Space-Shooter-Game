@@ -59,13 +59,10 @@ z_index = 30
 texture = ExtResource("8_p0efv")
 
 [node name="HeatSprite" type="Sprite2D" parent="." unique_id=675548935]
-visible = false
 z_index = 30
 texture = ExtResource("9_qm1ji")
 
 [node name="BeamSprite" type="Sprite2D" parent="." unique_id=606860481]
-visible = false
-z_index = 30
 position = Vector2(0, 39)
 texture = ExtResource("9_v5xjv")
 
