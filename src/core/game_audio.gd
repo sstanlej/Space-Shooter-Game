@@ -7,6 +7,7 @@ class_name GameAudio extends Node2D
 @onready var enemy_hit_sound : AudioStreamPlayer2D = $EnemyHitSound
 @onready var select_sound : AudioStreamPlayer2D = $SelectSound
 @onready var levelup_sound : AudioStreamPlayer2D = $LevelUpSound
+@onready var warning_sound : AudioStreamPlayer2D = $WarningSound
 
 @export var background_music: AudioStream
 var music_player: AudioStreamPlayer
@@ -20,8 +21,8 @@ func setup_music_player() -> void:
 	music_player.process_mode = Node.PROCESS_MODE_ALWAYS 
 	add_child(music_player)
 
-	if background_music:
-		play_music(background_music)
+	# if background_music:
+	# 	play_music(background_music)
 
 func play_music(stream: AudioStream, volume_db: float = -15.0) -> void:
 	if not stream or not music_player:
@@ -54,3 +55,6 @@ func play_select() -> void:
 
 func play_levelup() -> void:
 	levelup_sound.play()
+
+func play_warning() ->void:
+	warning_sound.play()

@@ -1,0 +1,104 @@
+[gd_scene format=3 uid="uid://5ugaqkjaiwlw"]
+
+[ext_resource type="Script" uid="uid://dpfn8coqc0psq" path="res://src/entities/bosses/mothership/mothership.gd" id="1_c0n6m"]
+[ext_resource type="PackedScene" uid="uid://wikdcl5aogg5" path="res://src/entities/projectiles/enemy_projectile.tscn" id="2_p0efv"]
+[ext_resource type="PackedScene" uid="uid://cdfbi3flgf8ko" path="res://src/vfx/explosion/explosion.tscn" id="2_q1mpd"]
+[ext_resource type="PackedScene" uid="uid://d2608o6gxf224" path="res://src/vfx/particles/fire_trail.tscn" id="3_85koq"]
+[ext_resource type="Resource" uid="uid://b21uumo1tahqe" path="res://src/entities/enemies/ufo/UfoEnemy.tres" id="3_qm1ji"]
+[ext_resource type="Script" uid="uid://cmxkc1l3uevq1" path="res://src/entities/enemies/components/HealthComponent.gd" id="5_ykhlm"]
+[ext_resource type="Script" uid="uid://c0svh84qgdobm" path="res://src/entities/enemies/components/HurtboxComponent.gd" id="6_aj4xs"]
+[ext_resource type="Script" uid="uid://dh7k1c03428l0" path="res://src/entities/enemies/components/WarningComponent.gd" id="8_b00u6"]
+[ext_resource type="Texture2D" uid="uid://dibedpc6ojavj" path="res://src/entities/bosses/mothership/mothership_default.png" id="8_p0efv"]
+[ext_resource type="PackedScene" uid="uid://r52ov1nbo7ug" path="res://src/entities/misc/warning_indicator/warning_indicator.tscn" id="9_c0n6m"]
+[ext_resource type="Texture2D" uid="uid://c5mts5uwe3p1h" path="res://src/entities/bosses/mothership/heat.png" id="9_qm1ji"]
+[ext_resource type="Texture2D" uid="uid://dq56qd3pmqx6x" path="res://src/entities/bosses/mothership/beam.png" id="9_v5xjv"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ft8ul"]
+height = 44.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fu38j"]
+radius = 15.0
+
+[node name="Mothership" type="CharacterBody2D" unique_id=2094363973 node_paths=PackedStringArray("beam_visual", "spawn_point", "fire_point", "warning_component")]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1_c0n6m")
+phase_cooldown = 1.0
+spawn_phase_y = 25.0
+intro_duration = 1.5
+projectile_scene = ExtResource("2_p0efv")
+attack_warning_scene = ExtResource("9_c0n6m")
+attack_warning_offset_x = -10.0
+min_attack_reps = 3
+max_attack_reps = 3
+projectiles_per_salvo = 12
+spread_angle_deg = 6.0
+track_duration = 1.0
+projectile_speed = 150.0
+shot_interval = 0.1
+minion_enemy_data = ExtResource("3_qm1ji")
+minion_eject_delay = 1.0
+minion_slide_distance = 30.0
+minion_slide_duration = 1.0
+beam_visual = NodePath("BeamSprite")
+spawn_point = NodePath("SpawningPoint")
+fire_point = NodePath("FirePoint")
+warning_component = NodePath("WarningComponent")
+death_scene = ExtResource("2_q1mpd")
+
+[node name="FlameParticles" parent="." unique_id=839540917 instance=ExtResource("3_85koq")]
+position = Vector2(8, 3)
+rotation = 3.1415925
+
+[node name="FirePoint" type="Marker2D" parent="." unique_id=2104143336]
+position = Vector2(-26, 9)
+gizmo_extents = 0.0
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=241991765]
+z_index = 30
+texture = ExtResource("8_p0efv")
+
+[node name="HeatSprite" type="Sprite2D" parent="." unique_id=675548935]
+visible = false
+z_index = 30
+texture = ExtResource("9_qm1ji")
+
+[node name="BeamSprite" type="Sprite2D" parent="." unique_id=606860481]
+visible = false
+z_index = 30
+position = Vector2(0, 39)
+texture = ExtResource("9_v5xjv")
+
+[node name="HealthComponent" type="Node2D" parent="." unique_id=7353179]
+script = ExtResource("5_ykhlm")
+max_health = 50
+
+[node name="HurtboxComponent" type="Area2D" parent="." unique_id=2132208559 node_paths=PackedStringArray("health_component")]
+collision_layer = 2
+collision_mask = 5
+script = ExtResource("6_aj4xs")
+health_component = NodePath("../HealthComponent")
+contact_damage = 1.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent" unique_id=1212555570]
+position = Vector2(0, 9)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_ft8ul")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="HurtboxComponent" unique_id=1523748231]
+position = Vector2(0, 1)
+rotation = 1.5707964
+shape = SubResource("CircleShape2D_fu38j")
+
+[node name="WarningComponent" type="Node" parent="." unique_id=277822766]
+script = ExtResource("8_b00u6")
+warning_duration = 2.0
+warning_indicator_scene = ExtResource("9_c0n6m")
+metadata/_custom_type_script = "uid://dh7k1c03428l0"
+
+[node name="SpawningPoint" type="Marker2D" parent="." unique_id=612713515]
+position = Vector2(0, 14)
+gizmo_extents = 0.0
+
+[connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
+[connection signal="area_entered" from="HurtboxComponent" to="." method="_on_area_2d_area_entered"]

@@ -131,7 +131,7 @@ script = ExtResource("4_qsp4k")
 process_mode = 3
 offset = Vector2(120, 67)
 
-[node name="EnemiesContainer" type="Node2D" parent="World" unique_id=329553276]
+[node name="EnemiesContainer" type="Node2D" parent="World" unique_id=329553276 groups=["enemies_container"]]
 
 [node name="ProjectilesContainer" type="Node2D" parent="World" unique_id=1948110360 groups=["projectiles_container"]]
 

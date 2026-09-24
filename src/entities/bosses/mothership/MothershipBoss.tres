@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://gaysnfpnhstq"]
+
+[ext_resource type="PackedScene" uid="uid://5ugaqkjaiwlw" path="res://src/entities/bosses/mothership/mothership.tscn" id="1_4crck"]
+[ext_resource type="Script" uid="uid://c1jvipah3wjg0" path="res://src/entities/enemies/components/EnemyData.gd" id="2_srf66"]
+
+[resource]
+script = ExtResource("2_srf66")
+enemy_name = "Mothership"
+enemy_scene = ExtResource("1_4crck")
+spawn_cost = 4
+enemy_score_reward = 50
+enemy_xp_reward = 50
+metadata/_custom_type_script = "uid://c1jvipah3wjg0"

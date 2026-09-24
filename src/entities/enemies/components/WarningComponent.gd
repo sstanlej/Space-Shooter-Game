@@ -1,5 +1,7 @@
 class_name WarningComponent extends Node
 
+signal warning_finished
+
 @export var warning_duration: float = 0.6
 @export var warning_indicator_scene: PackedScene
 
@@ -10,7 +12,6 @@ func _ready() -> void:
 	movement_comp = owner.get_node_or_null("EnemyMovementComponent")
 	hurtbox = owner.get_node_or_null("HurtboxComponent")
 
-	# Natychmiastowe zamrożenie w klatce zero
 	if movement_comp:
 		movement_comp.can_move = false
 	if hurtbox:
@@ -24,6 +25,12 @@ func on_enemy_setup() -> void:
 	var screen_w = owner.get_viewport_rect().size.x
 	owner.global_position.x = screen_w + 30.0
 
+	trigger_warning()
+
+func trigger_warning() -> void:
+	if not is_instance_valid(owner):
+		return
+	var screen_w = owner.get_viewport_rect().size.x
 	spawn_indicator(screen_w)
 	get_tree().create_timer(warning_duration).timeout.connect(_on_warning_finished)
 
@@ -44,3 +51,4 @@ func _on_warning_finished() -> void:
 	if hurtbox:
 		hurtbox.set_deferred("monitoring", true)
 		hurtbox.set_deferred("monitorable", true)
+	warning_finished.emit()

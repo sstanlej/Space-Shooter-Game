@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://b5gn1svcnnf7a"]
+[gd_scene format=3 uid="uid://b5gn1svcnnf7a"]
 
 [ext_resource type="Script" uid="uid://dmeq4l4ygdf52" path="res://src/entities/player/player.gd" id="1_n7e5a"]
 [ext_resource type="Shader" uid="uid://wr7raxdl2m7y" path="res://src/vfx/shaders/hit_flash.gdshader" id="2_3c4mh"]
@@ -53,63 +53,63 @@ size = Vector2(20, 12)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0tyfe"]
 size = Vector2(20, 12)
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D" unique_id=515279583 groups=["player"]]
 collision_mask = 0
 script = ExtResource("1_n7e5a")
 spectator_texture = ExtResource("2_lqdhu")
 ghost_bullet_texture = ExtResource("3_t8d2k")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1055721529]
 z_index = 5
 material = SubResource("ShaderMaterial_p2qdy")
 texture = ExtResource("2_fhl08")
 
-[node name="HealthComponent" type="Node2D" parent="."]
+[node name="HealthComponent" type="Node2D" parent="." unique_id=1231153933]
 script = ExtResource("8_0tyfe")
 enable_iframes_on_hit = false
 max_health = 3
 
-[node name="AttackController" type="Node" parent="."]
+[node name="AttackController" type="Node" parent="." unique_id=1637981628]
 script = ExtResource("6_fhl08")
 equipped_weapon = ExtResource("8_kc3pt")
 
-[node name="CooldownTimer" type="Timer" parent="AttackController"]
+[node name="CooldownTimer" type="Timer" parent="AttackController" unique_id=562561322]
 wait_time = 0.33
 one_shot = true
 
-[node name="PlayerDeckComponent" type="Node" parent="."]
+[node name="PlayerDeckComponent" type="Node" parent="." unique_id=2045833107]
 script = ExtResource("10_3c4mh")
 starting_cards = Array[ExtResource("13_ogtao")]([SubResource("Resource_3d0mj"), SubResource("Resource_dao75"), SubResource("Resource_45xpv"), SubResource("Resource_5qgjf")])
 
-[node name="PlayerStatsComponent" type="Node" parent="."]
+[node name="PlayerStatsComponent" type="Node" parent="." unique_id=1392817642]
 script = ExtResource("17_ogtao")
 
-[node name="PlayerMovementComponent" type="Node" parent="."]
+[node name="PlayerMovementComponent" type="Node" parent="." unique_id=744517177]
 script = ExtResource("18_a31ob")
 
-[node name="PlayerVisualsComponent" type="Node" parent="."]
+[node name="PlayerVisualsComponent" type="Node" parent="." unique_id=1508534075]
 script = ExtResource("17_5qgjf")
 shield_texture_full = ExtResource("21_5qgjf")
 shield_texture_cracked = ExtResource("3_fjj3i")
 
-[node name="HurtboxComponent" type="Area2D" parent="." node_paths=PackedStringArray("health_component")]
+[node name="HurtboxComponent" type="Area2D" parent="." unique_id=337507574 node_paths=PackedStringArray("health_component")]
 collision_mask = 10
 script = ExtResource("20_fjj3i")
 health_component = NodePath("../HealthComponent")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent" unique_id=1814498915]
 position = Vector2(-1, 0)
 shape = SubResource("RectangleShape2D_x3vf3")
 
-[node name="GPUParticles2D" parent="." instance=ExtResource("10_x3vf3")]
+[node name="GPUParticles2D" parent="." unique_id=1319085228 instance=ExtResource("10_x3vf3")]
 position = Vector2(-5, 0)
 
-[node name="ShieldSprite" type="Sprite2D" parent="."]
+[node name="ShieldSprite" type="Sprite2D" parent="." unique_id=1001504283]
 visible = false
 z_index = 12
 texture = ExtResource("21_5qgjf")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1136705051]
 position = Vector2(-1, 0)
 shape = SubResource("RectangleShape2D_0tyfe")
 
