@@ -124,9 +124,14 @@ func _execute_spawning_phase() -> void:
 	move_tween.tween_property(self, "global_position", Vector2(default_x, spawn_phase_y), 0.8)
 	await move_tween.finished
 
+	GlobalAudio.play_beam()
 	if beam_visual:
 		beam_visual.visible = true
-	GlobalAudio.play_beam()
+		beam_visual.modulate.a = 0
+		var beam_tween = create_tween()
+		beam_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+		beam_tween.tween_property(beam_visual, "modulate:a", 1, 1)
+		await beam_tween.finished
 
 	for i in range(minions_per_phase):
 		if not active_loop:
@@ -137,12 +142,16 @@ func _execute_spawning_phase() -> void:
 	await get_tree().create_timer(0.4).timeout
 
 	if beam_visual:
+		var beam_tween = create_tween()
+		beam_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+		beam_tween.tween_property(beam_visual, "modulate:a", 0, 1)
+		await beam_tween.finished
 		beam_visual.visible = false
 
-	var return_tween = create_tween()
-	return_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
-	return_tween.tween_property(self, "global_position:y", get_viewport_rect().size.y * 0.5, 0.7)
-	await return_tween.finished
+	# var return_tween = create_tween()
+	# return_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	# return_tween.tween_property(self, "global_position:y", get_viewport_rect().size.y * 0.5, 0.7)
+	# await return_tween.finished
 
 	current_phase = BossPhase.IDLE
 
