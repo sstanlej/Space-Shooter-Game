@@ -78,6 +78,8 @@ script = ExtResource("6_aj4xs")
 health_component = NodePath("../HealthComponent")
 contact_damage = 1.0
 destroy_on_contact = false
+applies_knockback = true
+knockback_duration = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent" unique_id=1212555570]
 position = Vector2(0, 9)

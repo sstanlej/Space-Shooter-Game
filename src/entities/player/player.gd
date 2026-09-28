@@ -6,6 +6,7 @@ signal player_damage_taken
 @export_group("Spawn & Intro Settings")
 @export var game_pos_x: float = 30.0
 @export var menu_pos_x: float = -120.0
+@export var screen_margin: float = 16.0
 
 @export_group("Spectator Mode Settings")
 @export var spectator_texture: Texture2D
@@ -23,6 +24,8 @@ signal player_damage_taken
 var is_attacking: bool = false
 var is_in_game: bool = false
 var is_spectator: bool = false
+var is_being_knocked_back: bool = false
+var knockback_tween: Tween
 
 var original_texture: Texture2D
 var original_collision_layer: int = 0
@@ -52,6 +55,8 @@ func _ready() -> void:
 				child.restart()
 
 func _physics_process(delta: float) -> void:
+	if is_being_knocked_back:
+		return
 	if not is_in_game or Input.is_key_pressed(KEY_SHIFT):
 		is_attacking = false
 	else:
@@ -59,6 +64,28 @@ func _physics_process(delta: float) -> void:
 
 	if movement_component:
 		movement_component.process_movement(delta)
+
+func apply_knockback(knockback_vector: Vector2, duration: float = 0.2) -> void:
+	if not is_in_game:
+		return
+
+	is_being_knocked_back = true
+
+	if knockback_tween and knockback_tween.is_valid():
+		knockback_tween.kill()
+
+	var vp_size = get_viewport_rect().size
+	var target_pos = global_position + knockback_vector
+	target_pos.x = clampf(target_pos.x, screen_margin, vp_size.x - screen_margin)
+	target_pos.y = clampf(target_pos.y, screen_margin, vp_size.y - screen_margin)
+
+	knockback_tween = create_tween()
+	knockback_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	knockback_tween.tween_property(self, "global_position", target_pos, duration)
+
+	knockback_tween.finished.connect(func():
+		is_being_knocked_back = false
+	)
 
 # --- PRZEJŚCIA KAMERY / EKRANU ---
 

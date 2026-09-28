@@ -4,6 +4,12 @@ class_name HurtboxComponent extends Area2D
 @export var contact_damage: float = 0.0
 @export var destroy_on_contact: bool = true
 
+@export_group("Knockback settings")
+@export var applies_knockback: bool = false
+@export var knockback_direction: Vector2 = Vector2.LEFT
+@export var knockback_force: float = 140.0
+@export var knockback_duration: float = 0.2
+
 func _ready() -> void:
 	if not health_component and owner:
 		health_component = owner.get_node_or_null("HealthComponent")
@@ -20,3 +26,8 @@ func _on_area_entered(area: Area2D) -> void:
 			GlobalAudio.play_crash()
 		if destroy_on_contact and owner and owner.has_method("die_by_collision"):
 			owner.die_by_collision()
+		if applies_knockback:
+			var target = area.owner
+			if target and target.has_method("apply_knockback"):
+				var final_knockback = knockback_direction.normalized() * knockback_force
+				target.apply_knockback(final_knockback, knockback_duration)
