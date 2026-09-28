@@ -231,8 +231,20 @@ func spawn_boss(boss_scene: PackedScene, boss_enemy_data: EnemyData) -> void:
 	var vp = get_viewport().get_visible_rect().size
 	var spawn_pos = Vector2(vp.x + 60.0, vp.y * 0.5)
 	var boss = spawn_enemy(spawn_pos, boss_enemy_data)
+	
 	if not boss:
 		start_empty_wave_fallback()
+
+	var ui_manager = get_tree().get_first_node_in_group("ui_manager")
+	if not ui_manager:
+		ui_manager = get_tree().root.find_child("UIManager", true, false)
+
+	if ui_manager and ui_manager.has_method("register_boss"):
+		var health_comp = boss.get_node_or_null("HealthComponent") as HealthComponent
+		var boss_name = boss_enemy_data.enemy_name if boss_enemy_data else "BOSS"
+		
+		if health_comp:
+			ui_manager.register_boss(boss_name, health_comp)
 
 # --- CYKL ŻYCIA I TIMERY ---
 

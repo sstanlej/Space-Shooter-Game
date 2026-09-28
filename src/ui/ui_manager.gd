@@ -18,6 +18,9 @@ class_name UIManager extends CanvasLayer
 @export var exp_particles: GPUParticles2D
 @export var shop_controls_label: RichTextLabel
 @export var deck_controls_label: RichTextLabel
+@export var boss_bar_container: VBoxContainer
+@export var boss_name_label: RichTextLabel
+@export var boss_progress_bar: TextureProgressBar
 
 @export_group("Notifications System")
 @export var notifications_container: Control
@@ -47,9 +50,16 @@ var deck_label_tween: Tween
 var hud_fade_tween: Tween
 var is_leveling_up: bool = false
 
+var _boss_hp_tween: Tween
+var _boss_fade_tween: Tween
+var _tracked_boss_health: HealthComponent
+
 func _ready() -> void:
 	if health_bar:
 		health_bar_base_pos = health_bar.position
+	if boss_bar_container:
+		boss_bar_container.modulate.a = 0.0
+		boss_bar_container.visible = false
 	show_start_screen()
 
 func show_start_screen() -> void:
@@ -470,3 +480,91 @@ func fade_in_hud(duration: float = 0.25) -> void:
 	hud_fade_tween.tween_property(hud_panel, "modulate:a", 1.0, duration)\
 		.set_trans(Tween.TRANS_SINE)\
 		.set_ease(Tween.EASE_OUT)
+	
+func register_boss(boss_name: String, health_comp: HealthComponent) -> void:
+	if not boss_bar_container or not boss_progress_bar or not health_comp:
+		return
+
+	_tracked_boss_health = health_comp
+
+	# Ustawienie nazwy bossa
+	if boss_name_label:
+		boss_name_label.text = "[center][color=crimson]" + boss_name
+
+	# Podpięcie pod sygnały komponentu zdrowia
+	if not health_comp.health_changed.is_connected(_on_boss_health_changed):
+		health_comp.health_changed.connect(_on_boss_health_changed)
+	if not health_comp.died.is_connected(_on_boss_defeated):
+		health_comp.died.connect(_on_boss_defeated)
+
+	# Zabezpieczenie na wypadek ucieczki bossa ze sceny
+	var boss_owner = health_comp.owner
+	if boss_owner and not boss_owner.tree_exiting.is_connected(_on_boss_exited):
+		boss_owner.tree_exiting.connect(_on_boss_exited)
+
+	_play_boss_intro_animation(health_comp.max_health, health_comp.current_health)
+
+func _play_boss_intro_animation(max_hp: int, current_hp: int) -> void:
+	if _boss_fade_tween and _boss_fade_tween.is_valid():
+		_boss_fade_tween.kill()
+	if _boss_hp_tween and _boss_hp_tween.is_valid():
+		_boss_hp_tween.kill()
+
+	boss_progress_bar.max_value = max_hp
+	boss_progress_bar.value = 0.0
+
+	boss_bar_container.visible = true
+
+	# Fade-in całego kontenera
+	_boss_fade_tween = create_tween()
+	_boss_fade_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	_boss_fade_tween.tween_property(boss_bar_container, "modulate:a", 1.0, 0.4)
+
+	# Efekt dramatycznego napełniania paska HP od 0 do aktualnego poziomu
+	_boss_hp_tween = create_tween()
+	_boss_hp_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	_boss_hp_tween.tween_property(boss_progress_bar, "value", float(current_hp), 2)
+
+func _on_boss_health_changed(current_hp: int, max_hp: int) -> void:
+	if not boss_progress_bar:
+		return
+
+	boss_progress_bar.max_value = max_hp
+
+	# Płynny spadek wartości paska przy uderzeniach
+	if _boss_hp_tween and _boss_hp_tween.is_valid():
+		_boss_hp_tween.kill()
+
+	_boss_hp_tween = create_tween()
+	_boss_hp_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	_boss_hp_tween.tween_property(boss_progress_bar, "value", float(current_hp), 0.2)
+
+func _on_boss_defeated() -> void:
+	hide_boss_bar()
+
+func _on_boss_exited() -> void:
+	hide_boss_bar()
+
+func hide_boss_bar() -> void:
+	if not boss_bar_container or not boss_bar_container.visible:
+		return
+
+	# Odpinamy sygnały, aby uniknąć wycieków lub błędów po zniszczeniu bossa
+	if is_instance_valid(_tracked_boss_health):
+		if _tracked_boss_health.health_changed.is_connected(_on_boss_health_changed):
+			_tracked_boss_health.health_changed.disconnect(_on_boss_health_changed)
+		if _tracked_boss_health.died.is_connected(_on_boss_defeated):
+			_tracked_boss_health.died.disconnect(_on_boss_defeated)
+
+	_tracked_boss_health = null
+
+	if _boss_fade_tween and _boss_fade_tween.is_valid():
+		_boss_fade_tween.kill()
+
+	# Płynne zniknięcie paska z ekranu
+	_boss_fade_tween = create_tween()
+	_boss_fade_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	_boss_fade_tween.tween_property(boss_bar_container, "modulate:a", 0.0, 0.5)
+	_boss_fade_tween.finished.connect(func():
+		boss_bar_container.visible = false
+	)

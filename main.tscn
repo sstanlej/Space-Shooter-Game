@@ -27,8 +27,11 @@
 [ext_resource type="Script" uid="uid://dvnm2k8uup30q" path="res://src/systems/shop/upgrades/upgrade_card_data.gd" id="21_htxhm"]
 [ext_resource type="Resource" uid="uid://l0qvd1kbdorn" path="res://src/systems/shop/upgrades/resources/card_attack_speed.tres" id="22_jq2sk"]
 [ext_resource type="Resource" uid="uid://dyhlp3gsohoqc" path="res://src/systems/shop/upgrades/resources/card_movement_speed.tres" id="23_4k2k6"]
+[ext_resource type="Texture2D" uid="uid://doxbn208h4l3q" path="res://src/ui/sprites/boss_bar/boss_bar_under.png" id="23_ok6jj"]
 [ext_resource type="Resource" uid="uid://csxa4l5lisvd3" path="res://src/systems/shop/upgrades/resources/card_attack_damage.tres" id="24_0rl1p"]
+[ext_resource type="Texture2D" uid="uid://dyp50gbb8h277" path="res://src/ui/sprites/boss_bar/boss_bar_overlay.png" id="24_facbu"]
 [ext_resource type="Resource" uid="uid://cc7t3pavnip0q" path="res://src/systems/shop/upgrades/resources/card_max_health.tres" id="25_0odxb"]
+[ext_resource type="Texture2D" uid="uid://bntl1ra1t4dl4" path="res://src/ui/sprites/boss_bar/boss_bar_fill.png" id="25_b1qrp"]
 [ext_resource type="Script" uid="uid://cmwgjmxrs4sw4" path="res://src/systems/shop/card_deck_manager.gd" id="27_a6jrf"]
 [ext_resource type="Resource" uid="uid://1ikeutmmsl0l" path="res://src/systems/shop/upgrades/resources/card_shield.tres" id="28_qsp4k"]
 [ext_resource type="Resource" uid="uid://qjbuoy5m0jjw" path="res://src/systems/shop/upgrades/resources/card_extra_projectiles.tres" id="29_kq58d"]
@@ -166,7 +169,7 @@ metadata/_custom_type_script = "uid://bf5l0047mdwhq"
 [node name="WaveCooldownTimer" type="Timer" parent="Timers" unique_id=1067871784]
 wait_time = 5.0
 
-[node name="UILayer" type="CanvasLayer" parent="." unique_id=1684668456 node_paths=PackedStringArray("hud_panel", "intermission_panel", "shop_ui", "start_game_panel", "game_over_panel", "pause_panel", "score_label", "experience_bar", "experience_label", "enemies_left_label", "exp_particles", "shop_controls_label", "deck_controls_label", "notifications_container", "title_label", "subtitle_label", "health_bar", "damage_bar", "final_wave_label", "final_score_label", "final_distance_label")]
+[node name="UILayer" type="CanvasLayer" parent="." unique_id=1684668456 node_paths=PackedStringArray("hud_panel", "intermission_panel", "shop_ui", "start_game_panel", "game_over_panel", "pause_panel", "score_label", "experience_bar", "experience_label", "enemies_left_label", "exp_particles", "shop_controls_label", "deck_controls_label", "boss_bar_container", "boss_name_label", "boss_progress_bar", "notifications_container", "title_label", "subtitle_label", "health_bar", "damage_bar", "final_wave_label", "final_score_label", "final_distance_label") groups=["ui_manager"]]
 process_mode = 3
 script = ExtResource("8_jq2sk")
 hud_panel = NodePath("HUD")
@@ -182,6 +185,9 @@ enemies_left_label = NodePath("HUD/EnemiesLeftLabel")
 exp_particles = NodePath("HUD/ConfettiParticles")
 shop_controls_label = NodePath("HUD/ShopControlLabel")
 deck_controls_label = NodePath("HUD/DeckControlLabel")
+boss_bar_container = NodePath("HUD/BossBarContainer")
+boss_name_label = NodePath("HUD/BossBarContainer/BossNameLabel")
+boss_progress_bar = NodePath("HUD/BossBarContainer/BossHealthBar")
 notifications_container = NodePath("NotificationsUI")
 title_label = NodePath("NotificationsUI/MessageContainer/TitleLabel")
 subtitle_label = NodePath("NotificationsUI/MessageContainer/SubtitleLabel")
@@ -316,6 +322,32 @@ bbcode_enabled = true
 text = "[center]LVL: X    Y / Z"
 fit_content = true
 
+[node name="BossBarContainer" type="VBoxContainer" parent="UILayer/HUD" unique_id=1414766718]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 23.0
+grow_horizontal = 2
+theme_override_constants/separation = -2
+
+[node name="BossNameLabel" type="RichTextLabel" parent="UILayer/HUD/BossBarContainer" unique_id=1851860535]
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("12_facbu")
+theme_override_font_sizes/normal_font_size = 5
+bbcode_enabled = true
+text = "[center][color=crimson]BOSS NAME"
+fit_content = true
+
+[node name="BossHealthBar" type="TextureProgressBar" parent="UILayer/HUD/BossBarContainer" unique_id=551921173]
+layout_mode = 2
+size_flags_horizontal = 4
+step = 0.1
+value = 50.0
+texture_under = ExtResource("23_ok6jj")
+texture_over = ExtResource("24_facbu")
+texture_progress = ExtResource("25_b1qrp")
+
 [node name="IntermissionUI" type="Control" parent="UILayer" unique_id=285720296]
 layout_mode = 3
 anchors_preset = 0
@@ -323,6 +355,7 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="ShopUI" type="Control" parent="UILayer" unique_id=1665160308 node_paths=PackedStringArray("game_manager", "shop_manager", "player", "ui_manager", "background_overlay", "cards_container", "warning_label", "choose_upgrade_label", "upgrades_available_label", "controls_hint_label", "maxed_out_label")]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
