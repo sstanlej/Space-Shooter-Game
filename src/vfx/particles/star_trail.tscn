@@ -1,6 +1,6 @@
-[gd_scene format=3 uid="uid://c45gv4stiok3"]
+[gd_scene format=3 uid="uid://butnyfef7s0f4"]
 
-[ext_resource type="Texture2D" uid="uid://1f13mqy0jc8i" path="res://src/vfx/particles/blood_particle.png" id="1_f8kh6"]
+[ext_resource type="Texture2D" uid="uid://cur22y3lgs4b5" path="res://src/vfx/particles/small_star.png" id="1_rsaqu"]
 
 [sub_resource type="Gradient" id="Gradient_ql8tn"]
 offsets = PackedFloat32Array(0.5111465, 1)
@@ -17,21 +17,24 @@ point_count = 2
 curve = SubResource("Curve_r0g16")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_aoojs"]
-lifetime_randomness = 0.75
 particle_flag_disable_z = true
+angle_min = 1.0728835e-05
+angle_max = 180.00002
+direction = Vector3(1, -1, 0)
 spread = 15.0
-initial_velocity_min = 20.0
-initial_velocity_max = 50.0
-gravity = Vector3(0, 50, 0)
+initial_velocity_min = 40.0
+initial_velocity_max = 60.0
+gravity = Vector3(0, 0, 0)
 linear_accel_min = -2.2351742e-06
 linear_accel_max = 39.999996
+scale_min = 0.5
 scale_max = 1.5
 scale_curve = SubResource("CurveTexture_mprk4")
 color_ramp = SubResource("GradientTexture1D_ha4r5")
 
-[node name="BloodParticleTrail" type="GPUParticles2D"]
-amount = 24
-texture = ExtResource("1_f8kh6")
-lifetime = 3.0
-explosiveness = 0.2
+[node name="StarTrail" type="GPUParticles2D" unique_id=1844385389]
+amount = 6
+texture = ExtResource("1_rsaqu")
+lifetime = 0.6
+randomness = 1.0
 process_material = SubResource("ParticleProcessMaterial_aoojs")
