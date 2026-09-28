@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="WaveDefinition" format=3 uid="uid://b5o26tqd3gyub"]
+
+[ext_resource type="Script" uid="uid://c1jvipah3wjg0" path="res://src/entities/enemies/components/EnemyData.gd" id="1_axj4s"]
+[ext_resource type="Resource" uid="uid://cs0h0yj7r222s" path="res://src/entities/enemies/falling_star/FallingStarEnemy.tres" id="2_jjxyk"]
+[ext_resource type="Resource" uid="uid://nooopj3ua828" path="res://src/entities/enemies/big_falling_star/BigFallingStarEnemy.tres" id="3_axj4s"]
+[ext_resource type="Script" uid="uid://cua0jrqdom70c" path="res://src/systems/campaign/WaveDefinition.gd" id="4_btlp8"]
+[ext_resource type="Resource" uid="uid://bpk1g21bkx4pr" path="res://src/entities/enemies/falling_star/GreenFallingStarEnemy.tres" id="4_dm770"]
+
+[resource]
+script = ExtResource("4_btlp8")
+enemy_count = 30
+available_enemies = Array[ExtResource("1_axj4s")]([ExtResource("2_jjxyk"), ExtResource("3_axj4s"), ExtResource("4_dm770")])
+custom_spawn_delay = 0.5
+banner_title = "[color=crimson]DANGER[/color]"
+banner_subtitle = "[color=gold]MORE STARS ARE FALLING[/color]"
+metadata/_custom_type_script = "uid://cua0jrqdom70c"

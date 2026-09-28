@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="EnemyData" load_steps=3 format=3 uid="uid://cengj6o63lep3"]
+[gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://cengj6o63lep3"]
 
 [ext_resource type="Script" uid="uid://c1jvipah3wjg0" path="res://src/entities/enemies/components/EnemyData.gd" id="1_87tmy"]
 [ext_resource type="PackedScene" uid="uid://bq47ag5rb2pdm" path="res://src/entities/enemies/tiny_eyeball/tiny_eyeball.tscn" id="1_nok58"]
@@ -7,6 +7,7 @@
 script = ExtResource("1_87tmy")
 enemy_name = "Tiny Eyeball"
 enemy_scene = ExtResource("1_nok58")
+spawn_weight = 70.0
 enemy_score_reward = 40
 enemy_xp_reward = 40
 metadata/_custom_type_script = "uid://c1jvipah3wjg0"

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="WaveDefinition" format=3 uid="uid://bo3qgnn1iawin"]
+
+[ext_resource type="Script" uid="uid://c1jvipah3wjg0" path="res://src/entities/enemies/components/EnemyData.gd" id="1_x2rsc"]
+[ext_resource type="Resource" uid="uid://drfmdf7npb3cv" path="res://src/entities/enemies/scrap/ScrapEnemy.tres" id="2_ggt6v"]
+[ext_resource type="Resource" uid="uid://bq5d8ycpebwck" path="res://src/entities/enemies/satelite/SatelliteEnemy.tres" id="3_fco1b"]
+[ext_resource type="Script" uid="uid://cua0jrqdom70c" path="res://src/systems/campaign/WaveDefinition.gd" id="4_c8fcx"]
+
+[resource]
+script = ExtResource("4_c8fcx")
+enemy_count = 5
+available_enemies = Array[ExtResource("1_x2rsc")]([ExtResource("2_ggt6v"), ExtResource("3_fco1b")])

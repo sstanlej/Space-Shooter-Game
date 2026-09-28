@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="EnemyData" load_steps=3 format=3 uid="uid://cch0sfbeu0hm2"]
+[gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://cch0sfbeu0hm2"]
 
 [ext_resource type="Script" uid="uid://c1jvipah3wjg0" path="res://src/entities/enemies/components/EnemyData.gd" id="1_4htoa"]
 [ext_resource type="PackedScene" uid="uid://but2k2jh5ixdx" path="res://src/entities/enemies/laser_eyeball/laser_eyeball.tscn" id="1_an8ht"]
@@ -7,7 +7,7 @@
 script = ExtResource("1_4htoa")
 enemy_name = "Laser Eyeball"
 enemy_scene = ExtResource("1_an8ht")
-spawn_cost = 10
+spawn_weight = 30.0
 enemy_score_reward = 150
 enemy_xp_reward = 150
 metadata/_custom_type_script = "uid://c1jvipah3wjg0"

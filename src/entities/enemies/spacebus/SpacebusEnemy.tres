@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="EnemyData" load_steps=3 format=3 uid="uid://b0rbftdnqtvl4"]
+[gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://b0rbftdnqtvl4"]
 
 [ext_resource type="PackedScene" uid="uid://cm67hcmbqhaeq" path="res://src/entities/enemies/spacebus/spacebus.tscn" id="1_0fc1g"]
 [ext_resource type="Script" uid="uid://c1jvipah3wjg0" path="res://src/entities/enemies/components/EnemyData.gd" id="1_fggfk"]
@@ -7,7 +7,7 @@
 script = ExtResource("1_fggfk")
 enemy_name = "Spacebus"
 enemy_scene = ExtResource("1_0fc1g")
-spawn_cost = 6
+spawn_weight = 30.0
 enemy_score_reward = 50
 enemy_xp_reward = 50
 metadata/_custom_type_script = "uid://c1jvipah3wjg0"

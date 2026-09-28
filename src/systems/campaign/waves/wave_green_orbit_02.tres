@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="WaveDefinition" format=3 uid="uid://cwicx06yi35c4"]
+
+[ext_resource type="Script" uid="uid://c1jvipah3wjg0" path="res://src/entities/enemies/components/EnemyData.gd" id="1_uas0p"]
+[ext_resource type="Resource" uid="uid://b21uumo1tahqe" path="res://src/entities/enemies/ufo/UfoEnemy.tres" id="2_o1ww1"]
+[ext_resource type="Resource" uid="uid://68yqma5ch2gt" path="res://src/entities/enemies/zoot/ZootEnemy.tres" id="3_o1ww1"]
+[ext_resource type="Script" uid="uid://cua0jrqdom70c" path="res://src/systems/campaign/WaveDefinition.gd" id="3_uoogy"]
+
+[resource]
+script = ExtResource("3_uoogy")
+available_enemies = Array[ExtResource("1_uas0p")]([ExtResource("2_o1ww1"), ExtResource("3_o1ww1")])
+metadata/_custom_type_script = "uid://cua0jrqdom70c"

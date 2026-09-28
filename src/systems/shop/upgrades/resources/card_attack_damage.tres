@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="UpgradeCardData" load_steps=4 format=3 uid="uid://csxa4l5lisvd3"]
+[gd_resource type="Resource" script_class="UpgradeCardData" format=3 uid="uid://csxa4l5lisvd3"]
 
 [ext_resource type="Texture2D" uid="uid://r50hjrws6do8" path="res://src/systems/shop/upgrades/sprites/attack_damage_upgrade.png" id="1_5vdxb"]
 [ext_resource type="Script" uid="uid://c2skcqfonnj57" path="res://src/systems/shop/upgrades/effects/card_effect.gd" id="1_eofyd"]

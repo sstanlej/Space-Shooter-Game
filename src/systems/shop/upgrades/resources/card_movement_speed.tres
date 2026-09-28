@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="UpgradeCardData" load_steps=4 format=3 uid="uid://dyhlp3gsohoqc"]
+[gd_resource type="Resource" script_class="UpgradeCardData" format=3 uid="uid://dyhlp3gsohoqc"]
 
 [ext_resource type="Script" uid="uid://dvnm2k8uup30q" path="res://src/systems/shop/upgrades/upgrade_card_data.gd" id="1_74eb4"]
 [ext_resource type="Script" uid="uid://c2skcqfonnj57" path="res://src/systems/shop/upgrades/effects/card_effect.gd" id="1_303rx"]

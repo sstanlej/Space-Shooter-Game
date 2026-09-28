@@ -13,9 +13,10 @@ signal maxed_out
 func get_current_act() -> int:
 	if campaign_manager:
 		if campaign_manager.has_method("get_effective_shop_act"):
-			return campaign_manager.get_effective_shop_act(true)
+			return campaign_manager.get_effective_shop_act()
 		return campaign_manager.current_act_index
 	return 1
+
 func has_available_upgrades(player: Player, current_act: int = -1) -> bool:
 	if current_act < 0:
 		current_act = get_current_act()

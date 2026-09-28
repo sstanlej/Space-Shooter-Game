@@ -165,9 +165,9 @@ func start_game() -> void:
 		player.get_deck_component().initialize_starting_deck()
 
 	if campaign_manager and location_manager:
-		var initial_cfg = campaign_manager.get_current_wave_config()
-		if initial_cfg and initial_cfg.location:
-			location_manager.set_initial_location(initial_cfg.location)
+		var initial_loc = campaign_manager.get_current_location()
+		if initial_loc:
+			location_manager.set_initial_location(initial_loc)
 
 	if ui_manager:
 		if ui_manager.has_method("show_hud"):
@@ -185,7 +185,8 @@ func start_game() -> void:
 	start_wave()
 
 func start_wave() -> void:
-	var cfg: WaveConfig = campaign_manager.get_current_wave_config() if campaign_manager else null
+	var wave_def: WaveDefinition = campaign_manager.get_current_wave_definition() if campaign_manager else null
+	var current_loc: LocationData = campaign_manager.get_current_location() if campaign_manager else null
 	var current_wave = campaign_manager.current_wave if campaign_manager else 1
 
 	if ui_manager:
@@ -198,32 +199,33 @@ func start_wave() -> void:
 		if ui_manager.has_method("show_hud"): 
 			ui_manager.show_hud()
 
-		if cfg and ui_manager.has_method("show_notification"):
-			match cfg.wave_type:
-				WaveConfig.WaveType.BOSS:
-					ui_manager.show_notification("[color=red]BOSS BATTLE[/color]", "[color=gold]Defeat the Boss of " + cfg.act_name + "![/color]", 2.0)
-				WaveConfig.WaveType.EVENT:
-					if cfg.event_data:
-						ui_manager.show_notification(cfg.event_data.banner_title, cfg.event_data.banner_subtitle, 2.2)
-					else:
-						ui_manager.show_notification("[color=crimson]HAZARD DETECTED[/color]", "[color=gold]Survive the event![/color]", 2.0)
-				WaveConfig.WaveType.STANDARD:
-					var loc_name = cfg.location.location_name if cfg.location else "Sector"
-					ui_manager.show_notification("[color=gold]WAVE " + str(current_wave) + "[/color]", "[color=gray]" + loc_name + "[/color]", 1.2)
-	
+		if wave_def and ui_manager.has_method("show_notification"):
+			if wave_def.banner_title != "":
+				# Baner zdefiniowany w fali (zastępuje dawny Hazard/Event)
+				ui_manager.show_notification(wave_def.banner_title, wave_def.banner_subtitle, 2.2)
+			elif wave_def.boss_scene != null and wave_def.enemy_count <= 0:
+				# Czysta walka z bossem
+				var b_name = wave_def.boss_enemy_data.enemy_name if wave_def.boss_enemy_data else "BOSS"
+				ui_manager.show_notification("[color=red]BOSS BATTLE[/color]", "[color=gold]" + b_name + "[/color]", 2.0)
+			else:
+				# Zwykła fala
+				var loc_name = current_loc.location_name if current_loc else "Sector"
+				ui_manager.show_notification("[color=gold]WAVE " + str(current_wave) + "[/color]", "[color=gray]" + loc_name + "[/color]", 1.2)
+
 	change_state(GameState.IN_WAVE)
 	wave_started.emit(current_wave)
 
-	if spawner and cfg:
-		spawner.start_spawning_wave(cfg)
+	if spawner and wave_def:
+		spawner.start_spawning_wave(wave_def)
 
 func finish_wave() -> void:
-	var completed_cfg: WaveConfig = campaign_manager.get_current_wave_config() if campaign_manager else null
 	var current_wave = campaign_manager.current_wave if campaign_manager else 1
+	var is_act_final = campaign_manager.is_current_wave_last_in_act() if campaign_manager else false
+	var act_name = campaign_manager.get_current_act_data().act_name if campaign_manager and campaign_manager.get_current_act_data() else ""
 
 	print("[GameManager] Wave %d finished successfully.\n" % current_wave)
-	if completed_cfg and completed_cfg.is_act_final:
-		print("[GameManager] *** %s COMPLETED! ***\n" % completed_cfg.act_name.to_upper())
+	if is_act_final:
+		print("[GameManager] *** %s COMPLETED! ***\n" % act_name.to_upper())
 
 	wave_ended.emit(current_wave)
 	change_state(GameState.BETWEEN_WAVES)
@@ -239,8 +241,8 @@ func finish_wave() -> void:
 
 		if ui_manager.has_method("show_notification"):
 			var subtitle = "Press [color=gold][B][/color] to open the SHOP!" if points > 0 else ""
-			if completed_cfg and completed_cfg.is_act_final:
-				ui_manager.show_notification("[color=gold]" + completed_cfg.act_name.to_upper() + " CLEARED![/color]", subtitle, 2.5)
+			if is_act_final:
+				ui_manager.show_notification("[color=gold]" + act_name.to_upper() + " CLEARED![/color]", subtitle, 2.5)
 			else:
 				ui_manager.show_notification("[color=gold]WAVE FINISHED![/color]", subtitle, 1.5)
 
@@ -254,9 +256,10 @@ func finish_wave() -> void:
 		spawner.stop_spawning()
 
 	if campaign_manager and location_manager:
-		var next_cfg = campaign_manager.get_wave_config(current_wave + 1)
-		if next_cfg and next_cfg.location:
-			location_manager.transition_to_location(next_cfg.location)
+		var upcoming_loc = campaign_manager.get_upcoming_location()
+		var current_loc = campaign_manager.get_current_location()
+		if upcoming_loc and upcoming_loc != current_loc:
+			location_manager.transition_to_location(upcoming_loc)
 
 	if wave_cooldown_timer:
 		wave_cooldown_timer.start()

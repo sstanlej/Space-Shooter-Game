@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="EnemyData" load_steps=3 format=3 uid="uid://4abkmc58w7d"]
+[gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://4abkmc58w7d"]
 
 [ext_resource type="PackedScene" uid="uid://dtx5n23ng2cpc" path="res://src/entities/enemies/meteor/meteor.tscn" id="1_r27r0"]
 [ext_resource type="Script" uid="uid://c1jvipah3wjg0" path="res://src/entities/enemies/components/EnemyData.gd" id="2_20uy5"]

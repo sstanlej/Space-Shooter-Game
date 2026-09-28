@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="EnemyData" load_steps=3 format=3 uid="uid://ijggyag574qh"]
+[gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://ijggyag574qh"]
 
 [ext_resource type="Script" uid="uid://c1jvipah3wjg0" path="res://src/entities/enemies/components/EnemyData.gd" id="1_icwbx"]
 [ext_resource type="PackedScene" uid="uid://g6xrgexiv752" path="res://src/entities/enemies/spectator/spectator.tscn" id="1_vjkvt"]
@@ -7,5 +7,5 @@
 script = ExtResource("1_icwbx")
 enemy_name = "Spectator"
 enemy_scene = ExtResource("1_vjkvt")
-spawn_cost = 10
+spawn_weight = 15.0
 metadata/_custom_type_script = "uid://c1jvipah3wjg0"

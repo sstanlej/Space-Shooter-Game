@@ -21,9 +21,10 @@ var fallback_timer: Timer
 
 var is_spawning: bool = false
 var active_enemies_count: int = 0
-var current_wave_config: WaveConfig = null
 var unspawned_enemies: Array[EnemyData] = []
-var current_event_delay: float = -1.0
+var current_wave_def: WaveDefinition = null
+var current_custom_delay: float = -1.0
+var _pending_boss_spawn: bool = false
 
 func _ready() -> void:
 	setup_timers()
@@ -43,79 +44,63 @@ func setup_timers() -> void:
 	fallback_timer.timeout.connect(_on_fallback_timer_timeout)
 	add_child(fallback_timer)
 
-# --- START FALI ---
-
-func start_spawning_wave(config: WaveConfig) -> void:
+func start_spawning_wave(wave_def: WaveDefinition) -> void:
 	is_spawning = true
-	current_wave_config = config
+	current_wave_def = wave_def
 	active_enemies_count = 0
 	unspawned_enemies.clear()
-	current_event_delay = -1.0
+	_pending_boss_spawn = false
+	current_custom_delay = -1.0
 
-	if not config:
+	if not wave_def:
 		start_empty_wave_fallback()
 		return
 
-	var loc_name = config.location.location_name if config.location else "None"
-	print("\n[Spawner] >>> Wave %d [%s] | Location: '%s' | Budget: %d" % [
-		config.wave_number, config.get_type_string(), loc_name, config.wave_budget
-	])
+	current_custom_delay = wave_def.custom_spawn_delay
 
-	match config.wave_type:
-		WaveConfig.WaveType.STANDARD:
-			build_standard_wave_queue(config.wave_budget, config.location)
-			_start_queue_if_ready()
+	if wave_def.boss_scene != null:
+		_pending_boss_spawn = true
 
-		WaveConfig.WaveType.EVENT:
-			build_event_queue(config)
-			_start_queue_if_ready()
+	# Jeśli fala ma tylko bossa:
+	if wave_def.enemy_count <= 0 and _pending_boss_spawn:
+		_pending_boss_spawn = false
+		spawn_boss(wave_def.boss_scene, wave_def.boss_enemy_data)
+		return
 
-		WaveConfig.WaveType.BOSS:
-			spawn_boss(config.boss_scene, config.boss_enemy_data)
+	# Budujemy kolejkę wrogów wg wag
+	build_wave_queue(wave_def)
 
-func _start_queue_if_ready() -> void:
 	if unspawned_enemies.size() > 0:
-		log_enemy_composition(unspawned_enemies)
 		schedule_next_spawn(0.3)
+	elif _pending_boss_spawn:
+		_pending_boss_spawn = false
+		spawn_boss(wave_def.boss_scene, wave_def.boss_enemy_data)
 	else:
 		start_empty_wave_fallback()
 
-# --- BUDOWANIE KOLEJEK ---
-
-func build_standard_wave_queue(budget: int, location: LocationData) -> void:
-	if not location or location.spawnable_enemies.is_empty():
-		return
-
-	var temp_budget = budget
-	while temp_budget > 0:
-		var affordable = location.spawnable_enemies.filter(func(e): return e and e.spawn_cost <= temp_budget)
-		if affordable.is_empty():
-			break
-		var picked: EnemyData = affordable.pick_random()
-		unspawned_enemies.append(picked)
-		temp_budget -= picked.spawn_cost
-
-	update_ui_enemies_left()
-
-func build_event_queue(config: WaveConfig) -> void:
+func build_wave_queue(wave_def: WaveDefinition) -> void:
 	unspawned_enemies.clear()
-
-	var ev = config.event_data
-	if not ev or ev.event_enemies.is_empty():
-		print("[Spawner] Event configuration is missing or has no enemies! Starting standard fallback...")
-		build_standard_wave_queue(config.wave_budget, config.location)
+	var pool = wave_def.available_enemies.filter(func(e): return e != null and e.enemy_scene != null)
+	if pool.is_empty():
 		return
 
-	current_event_delay = ev.spawn_delay
+	var total_weight: float = 0.0
+	for e in pool:
+		total_weight += e.spawn_weight
 
-	for i in range(ev.spawn_count):
-		var picked = ev.event_enemies.pick_random()
-		if picked:
-			unspawned_enemies.append(picked)
+	for i in range(wave_def.enemy_count):
+		var roll = randf_range(0.0, total_weight)
+		var cumulative: float = 0.0
+		var chosen: EnemyData = pool[0]
+
+		for e in pool:
+			cumulative += e.spawn_weight
+			if roll <= cumulative:
+				chosen = e
+				break
+		unspawned_enemies.append(chosen)
 
 	update_ui_enemies_left()
-
-# --- SPAWNOWANIE I POZYCJONOWANIE ---
 
 func _on_spawn_timer_timeout() -> void:
 	if not is_spawning:
@@ -125,9 +110,14 @@ func _on_spawn_timer_timeout() -> void:
 		var enemy_data = unspawned_enemies.pop_front()
 		var spawn_pos = _calculate_spawn_position(enemy_data)
 		spawn_enemy(spawn_pos, enemy_data)
-		schedule_next_spawn(current_event_delay)
+		schedule_next_spawn(current_custom_delay)
 	else:
-		check_wave_completion()
+		# Gdy wyczerpiemy miniony, sprawdzamy czy w tej fali czeka jeszcze boss
+		if _pending_boss_spawn:
+			_pending_boss_spawn = false
+			spawn_boss(current_wave_def.boss_scene, current_wave_def.boss_enemy_data)
+		else:
+			check_wave_completion()
 
 func _calculate_spawn_position(enemy_data: EnemyData) -> Vector2:
 	var vp = get_viewport().get_visible_rect().size
@@ -136,24 +126,18 @@ func _calculate_spawn_position(enemy_data: EnemyData) -> Vector2:
 	match origin:
 		EnemyData.SpawnOrigin.RIGHT_EDGE:
 			return Vector2(vp.x + 40.0, randf_range(30.0, vp.y - 30.0))
-
 		EnemyData.SpawnOrigin.TOP_EDGE:
 			return Vector2(randf_range(vp.x * 0.3, vp.x + 20.0), -40.0)
-
 		EnemyData.SpawnOrigin.BOTTOM_EDGE:
 			return Vector2(randf_range(vp.x * 0.3, vp.x + 20.0), vp.y + 40.0)
-
 		EnemyData.SpawnOrigin.RANDOM_EDGE:
-			return _calculate_spawn_position_random(vp)
+			var side = randi() % 3
+			match side:
+				0: return Vector2(vp.x + 40.0, randf_range(30.0, vp.y - 30.0))
+				1: return Vector2(randf_range(vp.x * 0.3, vp.x), -40.0)
+				_: return Vector2(randf_range(vp.x * 0.3, vp.x), vp.y + 40.0)
 
 	return Vector2(vp.x + 40.0, vp.y * 0.5)
-
-func _calculate_spawn_position_random(vp: Vector2) -> Vector2:
-	var side = randi() % 3
-	match side:
-		0: return Vector2(vp.x + 40.0, randf_range(30.0, vp.y - 30.0))
-		1: return Vector2(randf_range(vp.x * 0.3, vp.x), -40.0)
-		_: return Vector2(randf_range(vp.x * 0.3, vp.x), vp.y + 40.0)
 
 func spawn_enemy(spawn_position: Vector2, enemy_data: EnemyData) -> Enemy:
 	if not enemy_data or not enemy_data.enemy_scene:
@@ -182,8 +166,6 @@ func spawn_enemy(spawn_position: Vector2, enemy_data: EnemyData) -> Enemy:
 		enemy_instance.enemy_escaped.connect(_on_enemy_escaped)
 
 	return enemy_instance
-
-# --- ENEMY SPLITTING (SplitOnDeathComponent) ---
 
 func spawn_split_enemy(spawn_position: Vector2, enemy_data: EnemyData) -> void:
 	active_enemies_count += 1
@@ -221,8 +203,6 @@ func _deferred_spawn_split_enemy(spawn_position: Vector2, enemy_data: EnemyData)
 
 	return enemy_instance
 
-# --- BOSS SPAWN ---
-
 func spawn_boss(boss_scene: PackedScene, boss_enemy_data: EnemyData) -> void:
 	if not boss_scene:
 		start_empty_wave_fallback()
@@ -231,9 +211,10 @@ func spawn_boss(boss_scene: PackedScene, boss_enemy_data: EnemyData) -> void:
 	var vp = get_viewport().get_visible_rect().size
 	var spawn_pos = Vector2(vp.x + 60.0, vp.y * 0.5)
 	var boss = spawn_enemy(spawn_pos, boss_enemy_data)
-	
+
 	if not boss:
 		start_empty_wave_fallback()
+		return
 
 	var ui_manager = get_tree().get_first_node_in_group("ui_manager")
 	if not ui_manager:
@@ -242,20 +223,14 @@ func spawn_boss(boss_scene: PackedScene, boss_enemy_data: EnemyData) -> void:
 	if ui_manager and ui_manager.has_method("register_boss"):
 		var health_comp = boss.get_node_or_null("HealthComponent") as HealthComponent
 		var boss_name = boss_enemy_data.enemy_name if boss_enemy_data else "BOSS"
-		
 		if health_comp:
 			ui_manager.register_boss(boss_name, health_comp)
-
-# --- CYKL ŻYCIA I TIMERY ---
 
 func schedule_next_spawn(custom_delay: float = -1.0) -> void:
 	if not is_spawning:
 		return
 
-	var wave_idx = current_wave_config.wave_number if current_wave_config else 1
-	var delay_multiplier = pow(delay_multiplier_per_wave, float(wave_idx - 1))
-	var delay = custom_delay if custom_delay > 0 else randf_range(base_min_spawn_delay * delay_multiplier, max_spawn_delay)
-
+	var delay = custom_delay if custom_delay > 0.0 else randf_range(base_min_spawn_delay, max_spawn_delay)
 	spawn_timer.start(delay)
 
 func _on_enemy_died(points: float, xp: float) -> void:
@@ -274,7 +249,7 @@ func _on_enemy_removed() -> void:
 	check_wave_completion()
 
 func check_wave_completion() -> void:
-	if unspawned_enemies.is_empty() and active_enemies_count == 0 and is_spawning:
+	if unspawned_enemies.is_empty() and active_enemies_count == 0 and not _pending_boss_spawn and is_spawning:
 		if not game_manager or game_manager.is_player_alive:
 			stop_spawning()
 			print("[Spawner] Wave completed!")
@@ -301,14 +276,5 @@ func pause_timers(should_pause: bool) -> void:
 func update_ui_enemies_left() -> void:
 	if game_manager and game_manager.ui_manager:
 		if game_manager.ui_manager.has_method("update_enemies_left_label"):
-			game_manager.ui_manager.update_enemies_left_label(active_enemies_count + unspawned_enemies.size())
-
-func log_enemy_composition(enemies_list: Array) -> void:
-	var counts: Dictionary = {}
-	for item in enemies_list:
-		var e_name = item.enemy_name if (item is EnemyData and not item.enemy_name.is_empty()) else "Enemy"
-		counts[e_name] = counts.get(e_name, 0) + 1
-	var parts: Array[String] = []
-	for k in counts.keys():
-		parts.append("%dx %s" % [counts[k], k])
-	print("[Spawner] Total enemies: %d | Composition: %s" % [enemies_list.size(), ", ".join(parts)])
+			var boss_count = 1 if _pending_boss_spawn else 0
+			game_manager.ui_manager.update_enemies_left_label(active_enemies_count + unspawned_enemies.size() + boss_count)

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="WaveDefinition" format=3 uid="uid://ujvyahgti6hx"]
+
+[ext_resource type="Script" uid="uid://c1jvipah3wjg0" path="res://src/entities/enemies/components/EnemyData.gd" id="1_rje4r"]
+[ext_resource type="Resource" uid="uid://gaysnfpnhstq" path="res://src/entities/bosses/mothership/MothershipBoss.tres" id="2_5omac"]
+[ext_resource type="PackedScene" uid="uid://5ugaqkjaiwlw" path="res://src/entities/bosses/mothership/mothership.tscn" id="3_dd5pn"]
+[ext_resource type="Script" uid="uid://cua0jrqdom70c" path="res://src/systems/campaign/WaveDefinition.gd" id="3_djw6k"]
+
+[resource]
+script = ExtResource("3_djw6k")
+enemy_count = 0
+boss_scene = ExtResource("3_dd5pn")
+boss_enemy_data = ExtResource("2_5omac")
+banner_title = "[color=crimson]DANGER[/color]"
+banner_subtitle = "[color=crimson]BOSS INCOMING[/color]"
+metadata/_custom_type_script = "uid://cua0jrqdom70c"

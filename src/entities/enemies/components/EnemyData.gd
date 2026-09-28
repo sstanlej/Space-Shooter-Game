@@ -10,8 +10,8 @@ enum SpawnOrigin {
 @export_group("Visual & Base Stats")
 @export var enemy_name: String = "Enemy"
 @export var enemy_scene: PackedScene
-@export var spawn_cost: int = 1
 @export var spawn_origin: SpawnOrigin = SpawnOrigin.RIGHT_EDGE
+@export_range(0.1, 500.0, 0.1) var spawn_weight: float = 100.0
 
 @export_group("Rewards")
 @export var enemy_score_reward: int = 100

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="WaveDefinition" format=3 uid="uid://u05ddtbyt3eg"]
+
+[ext_resource type="Script" uid="uid://c1jvipah3wjg0" path="res://src/entities/enemies/components/EnemyData.gd" id="1_texw1"]
+[ext_resource type="Resource" uid="uid://cs0h0yj7r222s" path="res://src/entities/enemies/falling_star/FallingStarEnemy.tres" id="2_qrmri"]
+[ext_resource type="Resource" uid="uid://68yqma5ch2gt" path="res://src/entities/enemies/zoot/ZootEnemy.tres" id="3_l72qo"]
+[ext_resource type="Script" uid="uid://cua0jrqdom70c" path="res://src/systems/campaign/WaveDefinition.gd" id="5_ug8yg"]
+
+[resource]
+script = ExtResource("5_ug8yg")
+enemy_count = 15
+available_enemies = Array[ExtResource("1_texw1")]([ExtResource("2_qrmri"), ExtResource("3_l72qo")])
+banner_title = "[color=crimson]DANGER[/color]"
+metadata/_custom_type_script = "uid://cua0jrqdom70c"

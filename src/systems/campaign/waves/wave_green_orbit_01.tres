@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="WaveDefinition" format=3 uid="uid://dq1w20wcukj0i"]
+
+[ext_resource type="Script" uid="uid://c1jvipah3wjg0" path="res://src/entities/enemies/components/EnemyData.gd" id="1_lm683"]
+[ext_resource type="Resource" uid="uid://b21uumo1tahqe" path="res://src/entities/enemies/ufo/UfoEnemy.tres" id="2_lm683"]
+[ext_resource type="Script" uid="uid://cua0jrqdom70c" path="res://src/systems/campaign/WaveDefinition.gd" id="3_eqsea"]
+
+[resource]
+script = ExtResource("3_eqsea")
+enemy_count = 5
+available_enemies = Array[ExtResource("1_lm683")]([ExtResource("2_lm683")])
+custom_spawn_delay = 2.0
+metadata/_custom_type_script = "uid://cua0jrqdom70c"

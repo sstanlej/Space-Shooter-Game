@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="WaveDefinition" format=3 uid="uid://cylaft41778n1"]
+
+[ext_resource type="Script" uid="uid://c1jvipah3wjg0" path="res://src/entities/enemies/components/EnemyData.gd" id="1_nnkpu"]
+[ext_resource type="Script" uid="uid://cua0jrqdom70c" path="res://src/systems/campaign/WaveDefinition.gd" id="2_icmhv"]
+[ext_resource type="Resource" uid="uid://do65qwi3adxlo" path="res://src/entities/enemies/courier/CourierEnemy.tres" id="2_p53x6"]
+
+[resource]
+script = ExtResource("2_icmhv")
+enemy_count = 6
+available_enemies = Array[ExtResource("1_nnkpu")]([ExtResource("2_p53x6")])
+custom_spawn_delay = 2.0
+metadata/_custom_type_script = "uid://cua0jrqdom70c"
