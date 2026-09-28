@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="WaveEventData" format=3 uid="uid://bhj31djq0c3m7"]
+
+[ext_resource type="Script" uid="uid://c1jvipah3wjg0" path="res://src/entities/enemies/components/EnemyData.gd" id="1_amdwj"]
+[ext_resource type="Resource" uid="uid://cs0h0yj7r222s" path="res://src/entities/enemies/falling_star/FallingStarEnemy.tres" id="2_8obxq"]
+[ext_resource type="Script" uid="uid://c3u3cw50ay35x" path="res://src/systems/spawner/WaveEventData.gd" id="3_ytsiq"]
+
+[resource]
+script = ExtResource("3_ytsiq")
+event_id = "event_hard_stars"
+event_name = "FALLING STARS"
+banner_title = "[color=crimson]DANGER![/color]"
+banner_subtitle = "[color=gold]Stars are falling![/color]"
+event_enemies = Array[ExtResource("1_amdwj")]([ExtResource("2_8obxq")])
+spawn_count = 32
+batch_size = 3
+metadata/_custom_type_script = "uid://c3u3cw50ay35x"

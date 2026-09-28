@@ -12,5 +12,6 @@ banner_title = "[color=crimson]DANGER![/color]"
 banner_subtitle = "[color=gold]Stars are falling![/color]"
 event_enemies = Array[ExtResource("1_t48mq")]([ExtResource("2_ipjx1")])
 spawn_count = 16
+spawn_delay = 0.75
 batch_size = 2
 metadata/_custom_type_script = "uid://c3u3cw50ay35x"
