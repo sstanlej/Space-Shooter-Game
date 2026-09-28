@@ -5,6 +5,7 @@ enum BossPhase {
 	IDLE,
 	SPAWNING,
 	ATTACKING,
+	ESCAPING,
 	DEAD
 }
 
@@ -39,6 +40,10 @@ var current_phase: BossPhase = BossPhase.INTRO
 @export var minion_slide_distance: float = 55.0
 @export var minion_slide_duration: float = 0.6
 
+@export_group("Escape Settings")
+@export var escape_speed: float = 320.0
+@export var center_align_duration: float = 0.6
+
 @export_group("Node References")
 @export var beam_visual: CanvasItem
 @export var spawn_point: Marker2D
@@ -50,12 +55,19 @@ var spawner_ref: Spawner
 var enemies_container: Node2D
 var projectiles_container: Node2D
 var active_loop: bool = false
+var should_escape: bool = false
 var default_x: float = 0.0
 
 func _ready() -> void:
 	super._ready()
 
 	player_ref = get_tree().get_first_node_in_group("player") as Node2D
+	if is_instance_valid(player_ref):
+		var player_health = player_ref.get_node_or_null("HealthComponent")
+		if player_health and player_health.has_signal("died"):
+			player_health.died.connect(_on_player_died)
+		else:
+			player_ref.tree_exited.connect(_on_player_died)
 
 	spawner_ref = get_tree().get_first_node_in_group("spawner") as Spawner
 	if not spawner_ref:
@@ -109,10 +121,16 @@ func _run_boss_behavior_loop() -> void:
 		await _execute_attacking_phase()
 		if not active_loop:
 			break
+		if should_escape:
+			await _execute_escape_sequence()
+			break
 		await get_tree().create_timer(phase_cooldown).timeout
 
 		await _execute_spawning_phase()
 		if not active_loop:
+			break
+		if should_escape:
+			await _execute_escape_sequence()
 			break
 		await get_tree().create_timer(phase_cooldown).timeout
 
@@ -210,6 +228,9 @@ func _execute_attacking_phase() -> void:
 	for r in range(repetitions):
 		if not active_loop:
 			break
+		if should_escape:
+			await _execute_escape_sequence()
+			break
 
 		var target_y = global_position.y
 		if is_instance_valid(player_ref):
@@ -274,3 +295,42 @@ func _on_health_component_died() -> void:
 	if beam_visual:
 		beam_visual.visible = false
 	super._on_health_component_died()
+
+func _on_player_died() -> void:
+	if current_phase == BossPhase.DEAD or current_phase == BossPhase.ESCAPING:
+		return
+	should_escape = true
+
+func _execute_escape_sequence() -> void:
+	active_loop = false
+	current_phase = BossPhase.ESCAPING
+
+	if beam_visual:
+		beam_visual.visible = false
+
+	var hurtbox = get_node_or_null("HurtboxComponent") as Area2D
+	if hurtbox:
+		hurtbox.set_deferred("monitoring", false)
+		hurtbox.set_deferred("monitorable", false)
+
+	# 1. Płynny powrót/ustawienie na środku ekranu w osi Y
+	var center_y = get_viewport_rect().size.y * 0.5
+	var center_tween = create_tween()
+	center_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	center_tween.tween_property(self, "global_position:y", center_y, center_align_duration)
+	await center_tween.finished
+
+	# Krótka pauza dramatyczna przed odlotem
+	await get_tree().create_timer(0.6).timeout
+
+	# 2. Ucieczka w lewo za ekran
+	var target_x = -200.0
+	var distance = abs(global_position.x - target_x)
+	var duration = distance / escape_speed
+
+	var escape_tween = create_tween()
+	escape_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	escape_tween.tween_property(self, "global_position:x", target_x, duration)
+	await escape_tween.finished
+
+	queue_free()
