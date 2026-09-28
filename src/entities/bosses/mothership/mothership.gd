@@ -37,7 +37,8 @@ var current_phase: BossPhase = BossPhase.INTRO
 @export var minion_enemy_data: EnemyData
 @export var minions_per_phase: int = 3
 @export var minion_eject_delay: float = 0.7
-@export var minion_slide_distance: float = 55.0
+@export var min_minion_slide_distance: float = 55.0
+@export var max_minion_slide_distance: float = 55.0
 @export var minion_slide_duration: float = 0.6
 
 @export_group("Escape Settings")
@@ -151,6 +152,11 @@ func _execute_spawning_phase() -> void:
 		beam_tween.tween_property(beam_visual, "modulate:a", 1, 1)
 		await beam_tween.finished
 
+	_spawn_attack_indicator(attack_warning_duration)
+	await get_tree().create_timer(attack_warning_duration).timeout
+
+	_fire_salvo(projectiles_per_salvo * 2, shot_interval)
+
 	for i in range(minions_per_phase):
 		if not active_loop:
 			break
@@ -206,6 +212,7 @@ func _spawn_and_eject_minion() -> void:
 
 	minion.setup(minion_enemy_data)
 
+	var minion_slide_distance = randf_range(min_minion_slide_distance, max_minion_slide_distance)
 	var target_eject_pos = origin_pos + Vector2(0, minion_slide_distance)
 	var eject_tween = minion.create_tween()
 	eject_tween.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
@@ -235,23 +242,23 @@ func _execute_attacking_phase() -> void:
 		var target_y = global_position.y
 		if is_instance_valid(player_ref):
 			var vp_rect = get_viewport_rect()
-			target_y = clampf(player_ref.global_position.y, 35.0, vp_rect.size.y - 35.0)
+			target_y = clampf(player_ref.global_position.y, 5.0, vp_rect.size.y - 5.0)
 
 		var track_tween = create_tween()
 		track_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 		track_tween.tween_property(self, "global_position:y", target_y, track_duration)
 		await track_tween.finished
 
-		_spawn_attack_indicator()
+		_spawn_attack_indicator(attack_warning_duration)
 		await get_tree().create_timer(attack_warning_duration).timeout
 
-		await _fire_salvo()
+		await _fire_salvo(projectiles_per_salvo, shot_interval)
 
 		await get_tree().create_timer(salvo_interval).timeout
 
 	current_phase = BossPhase.IDLE
 
-func _spawn_attack_indicator() -> void:
+func _spawn_attack_indicator(duration: float) -> void:
 	if not attack_warning_scene or not get_parent():
 		return
 
@@ -263,13 +270,13 @@ func _spawn_attack_indicator() -> void:
 	indicator.global_position = indicator_pos
 
 	if indicator.has_method("setup"):
-		indicator.setup(attack_warning_duration, indicator_pos)
+		indicator.setup(duration, indicator_pos)
 
-func _fire_salvo() -> void:
+func _fire_salvo(projectiles_amount: int, interval: float) -> void:
 	var shoot_origin = fire_point.global_position if fire_point else global_position + Vector2(-30, 0)
 	var proj_container = spawner_ref.projectiles_container if spawner_ref and spawner_ref.projectiles_container else get_parent()
 
-	for p in range(projectiles_per_salvo):
+	for p in range(projectiles_amount):
 		if not active_loop:
 			break
 
@@ -287,7 +294,7 @@ func _fire_salvo() -> void:
 			elif "velocity" in proj:
 				proj.velocity = shoot_vector * projectile_speed
 
-		await get_tree().create_timer(shot_interval).timeout
+		await get_tree().create_timer(interval).timeout
 
 func _on_health_component_died() -> void:
 	active_loop = false
