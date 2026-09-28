@@ -2,6 +2,7 @@ class_name HurtboxComponent extends Area2D
 
 @export var health_component: HealthComponent
 @export var contact_damage: float = 0.0
+@export var destroy_on_contact: bool = true
 
 func _ready() -> void:
 	if not health_component and owner:
@@ -17,5 +18,5 @@ func _on_area_entered(area: Area2D) -> void:
 		area.damage(int(contact_damage))
 		if typeof(GlobalAudio) != TYPE_NIL and GlobalAudio.has_method("play_crash"):
 			GlobalAudio.play_crash()
-		if owner and owner.has_method("die_by_collision"):
+		if destroy_on_contact and owner and owner.has_method("die_by_collision"):
 			owner.die_by_collision()

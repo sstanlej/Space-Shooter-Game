@@ -77,6 +77,7 @@ collision_mask = 5
 script = ExtResource("6_aj4xs")
 health_component = NodePath("../HealthComponent")
 contact_damage = 1.0
+destroy_on_contact = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent" unique_id=1212555570]
 position = Vector2(0, 9)
