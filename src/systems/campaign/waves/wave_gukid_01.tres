@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="WaveDefinition" format=3 uid="uid://ce703pv54x62k"]
+
+[ext_resource type="Script" uid="uid://c1jvipah3wjg0" path="res://src/entities/enemies/components/EnemyData.gd" id="1_6jrii"]
+[ext_resource type="Script" uid="uid://cua0jrqdom70c" path="res://src/systems/campaign/WaveDefinition.gd" id="2_jpo5a"]
+[ext_resource type="Resource" uid="uid://cqu28t0tpfic3" path="res://src/entities/enemies/lens_eyeball/LensEyeballEnemy.tres" id="2_rtali"]
+[ext_resource type="Resource" uid="uid://cengj6o63lep3" path="res://src/entities/enemies/tiny_eyeball/TinyEyeballEnemy.tres" id="3_pyjou"]
+[ext_resource type="Resource" uid="uid://cch0sfbeu0hm2" path="res://src/entities/enemies/laser_eyeball/LaserEyeballEnemy.tres" id="4_y7hpa"]
+[ext_resource type="Resource" uid="uid://c1coavno2oysx" path="res://src/entities/enemies/mother_eyeball/MotherEyeballEnemy.tres" id="5_pb2iq"]
+
+[resource]
+script = ExtResource("2_jpo5a")
+enemy_count = 10
+available_enemies = Array[ExtResource("1_6jrii")]([ExtResource("2_rtali"), ExtResource("3_pyjou"), ExtResource("4_y7hpa"), ExtResource("5_pb2iq")])
+metadata/_custom_type_script = "uid://cua0jrqdom70c"

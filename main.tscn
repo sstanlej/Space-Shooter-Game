@@ -140,7 +140,11 @@ offset = Vector2(120, 67)
 
 [node name="ProjectilesContainer" type="Node2D" parent="World" unique_id=1948110360 groups=["projectiles_container"]]
 
-[node name="IntroSequence" parent="World" unique_id=1764146347 instance=ExtResource("5_facbu")]
+[node name="IntroSequence" parent="World" unique_id=1764146347 node_paths=PackedStringArray("player", "camera_frame") instance=ExtResource("5_facbu")]
+player = NodePath("../Player")
+camera_frame = NodePath("../CameraFrame")
+asteroid_flight_duration = 3.0
+player_launch_delay = 1.5
 
 [node name="CampaignManager" type="Node" parent="." unique_id=1740540753]
 script = ExtResource("7_kq58d")

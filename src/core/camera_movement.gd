@@ -2,13 +2,13 @@ class_name CameraFrame extends Node2D
 
 static var pos_game_x: float = 0.0
 static var pos_menu_x: float = -240.0
-static var pos_player_game_x: float = 20.0
+
+@export_group("Transitions")
+@export var transition_duration: float = 1.2
 
 var _shake_power: float = 0.0
 var _shake_timer: float = 0.0
 var _shake_duration: float = 0.0
-
-# Pozycja bazowa bez wstrząsu (aby tween i shake nie psuły sobie koordynatów)
 var _base_pos_x: float = pos_menu_x
 var _is_tweening: bool = false
 
@@ -24,13 +24,9 @@ func move_to_game_view() -> Tween:
 	_is_tweening = true
 	var tween = create_tween()
 	tween.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
-	# Tween animuje naszą logiczną bazową pozycję X
-	tween.tween_property(self, "_base_pos_x", pos_game_x, 1.2)
+	tween.tween_property(self, "_base_pos_x", pos_game_x, transition_duration)
 	tween.finished.connect(func(): _is_tweening = false)
 	return tween
-
-func get_game_view_player_x() -> float:
-	return pos_player_game_x
 
 func shake(intensity: float, duration: float) -> void:
 	_shake_power = intensity
@@ -50,6 +46,5 @@ func _process(delta: float) -> void:
 			randf_range(-current_intensity, current_intensity)
 		)
 
-	# Zawsze zachowujemy właściwą bazową pozycję X powiększoną o chwilowy wstrząs
 	position.x = _base_pos_x + shake_offset.x
 	position.y = shake_offset.y

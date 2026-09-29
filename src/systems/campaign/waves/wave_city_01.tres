@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="WaveDefinition" format=3 uid="uid://cf0k4obghhh8w"]
+
+[ext_resource type="Script" uid="uid://c1jvipah3wjg0" path="res://src/entities/enemies/components/EnemyData.gd" id="1_6foln"]
+[ext_resource type="Resource" uid="uid://do65qwi3adxlo" path="res://src/entities/enemies/courier/CourierEnemy.tres" id="2_e8pvd"]
+[ext_resource type="Resource" uid="uid://b0rbftdnqtvl4" path="res://src/entities/enemies/spacebus/SpacebusEnemy.tres" id="3_wchcy"]
+[ext_resource type="Script" uid="uid://cua0jrqdom70c" path="res://src/systems/campaign/WaveDefinition.gd" id="4_1f2dk"]
+[ext_resource type="Resource" uid="uid://bpk1g21bkx4pr" path="res://src/entities/enemies/falling_stars/GreenFallingStarEnemy.tres" id="4_e8pvd"]
+
+[resource]
+script = ExtResource("4_1f2dk")
+enemy_count = 20
+available_enemies = Array[ExtResource("1_6foln")]([ExtResource("2_e8pvd"), ExtResource("3_wchcy"), ExtResource("4_e8pvd")])
+custom_spawn_delay = 0.0
+metadata/_custom_type_script = "uid://cua0jrqdom70c"

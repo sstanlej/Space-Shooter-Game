@@ -5,11 +5,14 @@
 [ext_resource type="Texture2D" uid="uid://day5ktqxd5q2j" path="res://src/systems/campaign/locations/sprites/gukid/gikid_towers.png" id="2_eg6q0"]
 [ext_resource type="Texture2D" uid="uid://g2qy5wvgi356" path="res://src/systems/campaign/locations/sprites/gukid/gikid_far_towers.png" id="3_sidrx"]
 [ext_resource type="Script" uid="uid://cua0jrqdom70c" path="res://src/systems/campaign/WaveDefinition.gd" id="5_hqbxb"]
+[ext_resource type="Resource" uid="uid://ce703pv54x62k" path="res://src/systems/campaign/waves/wave_gukid_01.tres" id="6_u7rhv"]
 
 [resource]
 script = ExtResource("1_aaygm")
+location_id = "gukid"
 location_name = "Gukid"
 location_rarity = 3
+waves = Array[ExtResource("5_hqbxb")]([ExtResource("6_u7rhv")])
 background_texture = ExtResource("1_d7cc4")
 middle_texture = ExtResource("3_sidrx")
 front_texture = ExtResource("2_eg6q0")

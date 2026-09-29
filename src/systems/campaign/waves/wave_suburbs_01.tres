@@ -9,4 +9,6 @@ script = ExtResource("2_icmhv")
 enemy_count = 6
 available_enemies = Array[ExtResource("1_nnkpu")]([ExtResource("2_p53x6")])
 custom_spawn_delay = 2.0
+banner_title = "[color=crimson]WARNING[/color]"
+banner_subtitle = "[color=gold]Following content is TEMPORARY. Thanks for playing![/color]"
 metadata/_custom_type_script = "uid://cua0jrqdom70c"
