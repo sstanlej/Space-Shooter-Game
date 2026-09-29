@@ -195,7 +195,7 @@ func start_game() -> void:
 		# Rakieta wystrzeliwuje w prawo z lekkim przyspieszeniem
 		var target_player_x = camera_frame.get_game_view_player_x() # lub stała pozycja, np. 140.0
 		var player_tween = create_tween()
-		player_tween.tween_property(player, "global_position:x", target_player_x, 1.1)\
+		player_tween.tween_property(player, "global_position:x", target_player_x, 3)\
 			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
 
 	# --- KROK 3: UDERZENIE I WYBUCH ---

@@ -1,0 +1,95 @@
+[gd_scene format=3 uid="uid://cow3g7jmva3u8"]
+
+[ext_resource type="Script" uid="uid://2mpm4o2j4cpe" path="res://src/ui/intro_sequence.gd" id="1_64w4l"]
+[ext_resource type="PackedScene" uid="uid://cdfbi3flgf8ko" path="res://src/vfx/explosion/explosion.tscn" id="2_0d4sk"]
+[ext_resource type="Texture2D" uid="uid://dlh06fdcdga0b" path="res://src/ui/sprites/intro/earth_planet.png" id="3_8yi1v"]
+[ext_resource type="Texture2D" uid="uid://clpj4lsnwgc5u" path="res://src/vfx/particles/smoke_particle.png" id="4_v2hll"]
+[ext_resource type="Texture2D" uid="uid://cgdu5drmhm7dd" path="res://src/entities/enemies/big_meteor/big_meteor.png" id="5_uqc85"]
+[ext_resource type="Script" uid="uid://dsmssivreocgf" path="res://src/entities/enemies/components/RotatorComponent.gd" id="6_vfyk6"]
+[ext_resource type="Texture2D" uid="uid://dhlnkilkg6npv" path="res://src/ui/sprites/intro/earth_debris_1.png" id="7_o4pws"]
+[ext_resource type="Texture2D" uid="uid://cbonyqq7f8j2i" path="res://src/ui/sprites/intro/earth_debris_2.png" id="8_k2f7i"]
+[ext_resource type="Texture2D" uid="uid://l0i5rb74btae" path="res://src/ui/sprites/intro/earth_debris_3.png" id="9_h4khb"]
+
+[sub_resource type="Gradient" id="Gradient_gngh3"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_d4sqy"]
+gradient = SubResource("Gradient_gngh3")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_j2ttm"]
+particle_flag_disable_z = true
+angle_min = 1.0728835e-05
+angle_max = 180.00002
+direction = Vector3(0, 1, 0)
+spread = 149.393
+initial_velocity_min = 5.0
+initial_velocity_max = 50.0
+gravity = Vector3(0, 98, 0)
+scale_max = 3.0
+color_ramp = SubResource("GradientTexture1D_d4sqy")
+
+[node name="IntroSequence" type="Node2D" unique_id=1764146347 node_paths=PackedStringArray("earth_sprite", "asteroid_sprite", "debris_container", "impact_particles")]
+script = ExtResource("1_64w4l")
+earth_sprite = NodePath("EarthSprite")
+asteroid_sprite = NodePath("IncomingAsteroid")
+debris_container = NodePath("DebrisContainer")
+explosion_scene = ExtResource("2_0d4sk")
+impact_particles = NodePath("GPUParticles2D")
+
+[node name="EarthSprite" type="Sprite2D" parent="." unique_id=1390322467]
+z_index = 10
+position = Vector2(-174, 66)
+texture = ExtResource("3_8yi1v")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=2099087109]
+position = Vector2(-174, 66)
+emitting = false
+amount = 100
+texture = ExtResource("4_v2hll")
+lifetime = 2.49
+one_shot = true
+explosiveness = 0.74
+process_material = SubResource("ParticleProcessMaterial_j2ttm")
+
+[node name="IncomingAsteroid" type="Sprite2D" parent="." unique_id=1072837286]
+position = Vector2(-66, -18)
+texture = ExtResource("5_uqc85")
+
+[node name="RotatorComponent" type="Node" parent="IncomingAsteroid" unique_id=1369842774 node_paths=PackedStringArray("target_sprite")]
+script = ExtResource("6_vfyk6")
+target_sprite = NodePath("..")
+rotation_speed = 5.0
+metadata/_custom_type_script = "uid://dsmssivreocgf"
+
+[node name="DebrisContainer" type="Node2D" parent="." unique_id=1334957846]
+position = Vector2(-174, 66)
+
+[node name="EarthDebris1" type="Sprite2D" parent="DebrisContainer" unique_id=1821806933]
+visible = false
+texture = ExtResource("7_o4pws")
+
+[node name="RotatorComponent" type="Node" parent="DebrisContainer/EarthDebris1" unique_id=1640190547 node_paths=PackedStringArray("target_sprite")]
+script = ExtResource("6_vfyk6")
+target_sprite = NodePath("..")
+rotation_speed = 1.0
+metadata/_custom_type_script = "uid://dsmssivreocgf"
+
+[node name="EarthDebris2" type="Sprite2D" parent="DebrisContainer" unique_id=494903709]
+visible = false
+texture = ExtResource("8_k2f7i")
+
+[node name="RotatorComponent" type="Node" parent="DebrisContainer/EarthDebris2" unique_id=965968648 node_paths=PackedStringArray("target_sprite")]
+script = ExtResource("6_vfyk6")
+target_sprite = NodePath("..")
+rotation_speed = 1.0
+metadata/_custom_type_script = "uid://dsmssivreocgf"
+
+[node name="EarthDebris3" type="Sprite2D" parent="DebrisContainer" unique_id=387037653]
+visible = false
+texture = ExtResource("9_h4khb")
+
+[node name="RotatorComponent" type="Node" parent="DebrisContainer/EarthDebris3" unique_id=690488195 node_paths=PackedStringArray("target_sprite")]
+script = ExtResource("6_vfyk6")
+target_sprite = NodePath("..")
+rotation_speed = 1.0
+metadata/_custom_type_script = "uid://dsmssivreocgf"

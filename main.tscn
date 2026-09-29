@@ -4,30 +4,22 @@
 [ext_resource type="PackedScene" uid="uid://qoymek85ecx7" path="res://src/systems/campaign/locations/location_manager.tscn" id="2_a6jrf"]
 [ext_resource type="PackedScene" uid="uid://b5gn1svcnnf7a" path="res://src/entities/player/player.tscn" id="3_xuqvo"]
 [ext_resource type="Script" uid="uid://bvscfifqg2eho" path="res://src/core/camera_movement.gd" id="4_qsp4k"]
-[ext_resource type="Texture2D" uid="uid://dlh06fdcdga0b" path="res://src/ui/sprites/intro/earth_planet.png" id="5_facbu"]
-[ext_resource type="Script" uid="uid://2mpm4o2j4cpe" path="res://src/ui/intro_sequence.gd" id="5_gngh3"]
-[ext_resource type="PackedScene" uid="uid://cdfbi3flgf8ko" path="res://src/vfx/explosion/explosion.tscn" id="6_0n3wm"]
-[ext_resource type="Texture2D" uid="uid://cgdu5drmhm7dd" path="res://src/entities/enemies/big_meteor/big_meteor.png" id="6_b1qrp"]
+[ext_resource type="PackedScene" uid="uid://cow3g7jmva3u8" path="res://src/ui/intro_sequence.tscn" id="5_facbu"]
 [ext_resource type="Script" uid="uid://dga8epmke5iyx" path="res://src/systems/spawner/spawner.gd" id="6_seu75"]
-[ext_resource type="Script" uid="uid://dsmssivreocgf" path="res://src/entities/enemies/components/RotatorComponent.gd" id="7_come4"]
 [ext_resource type="Script" uid="uid://dw38kr6168wir" path="res://src/core/progression_manager.gd" id="7_htxhm"]
 [ext_resource type="Script" uid="uid://bic7ag2qxefd7" path="res://src/systems/campaign/CampaignManager.gd" id="7_kq58d"]
-[ext_resource type="Texture2D" uid="uid://dhlnkilkg6npv" path="res://src/ui/sprites/intro/earth_debris_1.png" id="8_0cp0l"]
 [ext_resource type="Resource" uid="uid://cg4citajjq2og" path="res://src/systems/campaign/acts/Act_2.tres" id="8_htxhm"]
 [ext_resource type="Script" uid="uid://ceksi56kybfsk" path="res://src/ui/ui_manager.gd" id="8_jq2sk"]
 [ext_resource type="Script" uid="uid://ccinpp3kgnc7v" path="res://src/systems/campaign/ActData.gd" id="8_seu75"]
-[ext_resource type="Texture2D" uid="uid://cbonyqq7f8j2i" path="res://src/ui/sprites/intro/earth_debris_2.png" id="9_d2t1y"]
 [ext_resource type="Resource" uid="uid://qq5bhde64gsn" path="res://src/systems/campaign/acts/Act_1.tres" id="9_htxhm"]
 [ext_resource type="Resource" uid="uid://c1rtgwmt1kglx" path="res://src/systems/campaign/acts/Act_3.tres" id="9_jq2sk"]
-[ext_resource type="Texture2D" uid="uid://l0i5rb74btae" path="res://src/ui/sprites/intro/earth_debris_3.png" id="10_gngh3"]
-[ext_resource type="Texture2D" uid="uid://clpj4lsnwgc5u" path="res://src/vfx/particles/smoke_particle.png" id="11_d2t1y"]
 [ext_resource type="Texture2D" uid="uid://caubnil2iehm" path="res://src/ui/sprites/game_overlay.png" id="11_ok6jj"]
 [ext_resource type="FontFile" uid="uid://bvlhnv4ultuef" path="res://assets/fonts/Pixeled.ttf" id="12_facbu"]
 [ext_resource type="Script" uid="uid://bf5l0047mdwhq" path="res://src/systems/shop/shop_manager.gd" id="12_jq2sk"]
 [ext_resource type="Texture2D" uid="uid://c16xy12030r1n" path="res://src/ui/sprites/experience_bar_under.png" id="13_b1qrp"]
 [ext_resource type="Texture2D" uid="uid://to23gur3vo1e" path="res://src/ui/sprites/experience_bar_progress.png" id="14_come4"]
 [ext_resource type="FontFile" uid="uid://cmhoggvsfswfn" path="res://assets/fonts/Tiny5-Regular.ttf" id="14_seu75"]
-[ext_resource type="Texture2D" uid="uid://dpfe0j6dei725" path="res://src/ui/sprites/damage_bar_progess.png" id="15_h8e4i"]
+[ext_resource type="Texture2D" uid="uid://dpfe0j6dei725" path="res://src/ui/sprites/health_bar/damage_bar_progess.png" id="15_h8e4i"]
 [ext_resource type="Texture2D" uid="uid://8vr2ywyir05q" path="res://src/ui/sprites/health_bar/health_bar_under.png" id="16_4lmeg"]
 [ext_resource type="PackedScene" uid="uid://bekh1ermcrykt" path="res://src/vfx/particles/confetti_particles.tscn" id="16_htxhm"]
 [ext_resource type="Texture2D" uid="uid://dj4w1hidatk1h" path="res://src/ui/sprites/health_bar/health_bar_progess.png" id="17_0cp0l"]
@@ -107,24 +99,6 @@ _data = {
 &"intro": SubResource("Animation_qsp4k")
 }
 
-[sub_resource type="Gradient" id="Gradient_gngh3"]
-colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_d4sqy"]
-gradient = SubResource("Gradient_gngh3")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_j2ttm"]
-particle_flag_disable_z = true
-angle_min = 1.0728835e-05
-angle_max = 180.00002
-direction = Vector3(0, 1, 0)
-spread = 149.393
-initial_velocity_min = 5.0
-initial_velocity_max = 50.0
-gravity = Vector3(0, 98, 0)
-scale_max = 3.0
-color_ramp = SubResource("GradientTexture1D_d4sqy")
-
 [node name="Main" type="Node2D" unique_id=1190470146 node_paths=PackedStringArray("world", "campaign_manager", "location_manager", "progression_manager", "spawner", "ui_manager", "shop_ui", "shop_manager", "deck_overview_ui", "player", "camera_frame", "wave_cooldown_timer", "intro_sequence")]
 script = ExtResource("1_lswn8")
 world = NodePath("World")
@@ -166,71 +140,7 @@ offset = Vector2(120, 67)
 
 [node name="ProjectilesContainer" type="Node2D" parent="World" unique_id=1948110360 groups=["projectiles_container"]]
 
-[node name="IntroSequence" type="Node2D" parent="World" unique_id=859607302 node_paths=PackedStringArray("earth_sprite", "asteroid_sprite", "debris_container", "impact_particles")]
-script = ExtResource("5_gngh3")
-earth_sprite = NodePath("EarthSprite")
-asteroid_sprite = NodePath("IncomingAsteroid")
-debris_container = NodePath("DebrisContainer")
-explosion_scene = ExtResource("6_0n3wm")
-impact_particles = NodePath("GPUParticles2D")
-
-[node name="EarthSprite" type="Sprite2D" parent="World/IntroSequence" unique_id=1940075726]
-z_index = 10
-position = Vector2(-174, 66)
-texture = ExtResource("5_facbu")
-
-[node name="GPUParticles2D" type="GPUParticles2D" parent="World/IntroSequence" unique_id=1157507675]
-position = Vector2(-174, 66)
-emitting = false
-amount = 100
-texture = ExtResource("11_d2t1y")
-lifetime = 2.4899999999999998
-one_shot = true
-explosiveness = 0.74
-process_material = SubResource("ParticleProcessMaterial_j2ttm")
-
-[node name="IncomingAsteroid" type="Sprite2D" parent="World/IntroSequence" unique_id=934037538]
-position = Vector2(-66, -18)
-texture = ExtResource("6_b1qrp")
-
-[node name="RotatorComponent" type="Node" parent="World/IntroSequence/IncomingAsteroid" unique_id=2121366903 node_paths=PackedStringArray("target_sprite")]
-script = ExtResource("7_come4")
-target_sprite = NodePath("..")
-rotation_speed = 5.0
-metadata/_custom_type_script = "uid://dsmssivreocgf"
-
-[node name="DebrisContainer" type="Node2D" parent="World/IntroSequence" unique_id=1467978132]
-position = Vector2(-174, 66)
-
-[node name="EarthDebris1" type="Sprite2D" parent="World/IntroSequence/DebrisContainer" unique_id=1714187059]
-visible = false
-texture = ExtResource("8_0cp0l")
-
-[node name="RotatorComponent" type="Node" parent="World/IntroSequence/DebrisContainer/EarthDebris1" unique_id=1183320208 node_paths=PackedStringArray("target_sprite")]
-script = ExtResource("7_come4")
-target_sprite = NodePath("..")
-rotation_speed = 1.0
-metadata/_custom_type_script = "uid://dsmssivreocgf"
-
-[node name="EarthDebris2" type="Sprite2D" parent="World/IntroSequence/DebrisContainer" unique_id=1786179037]
-visible = false
-texture = ExtResource("9_d2t1y")
-
-[node name="RotatorComponent" type="Node" parent="World/IntroSequence/DebrisContainer/EarthDebris2" unique_id=2060005407 node_paths=PackedStringArray("target_sprite")]
-script = ExtResource("7_come4")
-target_sprite = NodePath("..")
-rotation_speed = 1.0
-metadata/_custom_type_script = "uid://dsmssivreocgf"
-
-[node name="EarthDebris3" type="Sprite2D" parent="World/IntroSequence/DebrisContainer" unique_id=1137379318]
-visible = false
-texture = ExtResource("10_gngh3")
-
-[node name="RotatorComponent" type="Node" parent="World/IntroSequence/DebrisContainer/EarthDebris3" unique_id=1319261175 node_paths=PackedStringArray("target_sprite")]
-script = ExtResource("7_come4")
-target_sprite = NodePath("..")
-rotation_speed = 1.0
-metadata/_custom_type_script = "uid://dsmssivreocgf"
+[node name="IntroSequence" parent="World" unique_id=1764146347 instance=ExtResource("5_facbu")]
 
 [node name="CampaignManager" type="Node" parent="." unique_id=1740540753]
 script = ExtResource("7_kq58d")
@@ -386,9 +296,9 @@ texture_progress = ExtResource("14_come4")
 process_mode = 3
 layout_mode = 0
 offset_left = 92.0
-offset_top = 126.0
+offset_top = 125.0
 offset_right = 146.0
-offset_bottom = 132.0
+offset_bottom = 131.0
 step = 0.01
 value = 10.0
 texture_progress = ExtResource("15_h8e4i")
@@ -398,9 +308,9 @@ tint_progress = Color(1.289, 0.13, 0, 1)
 process_mode = 3
 layout_mode = 0
 offset_left = 92.0
-offset_top = 126.0
+offset_top = 125.0
 offset_right = 146.0
-offset_bottom = 132.0
+offset_bottom = 131.0
 step = 0.01
 value = 3.0
 texture_under = ExtResource("16_4lmeg")
