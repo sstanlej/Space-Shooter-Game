@@ -30,7 +30,7 @@ func setup_iframe_timer() -> void:
 	iframe_timer.timeout.connect(_on_iframe_timer_timeout)
 	add_child(iframe_timer)
 
-func take_damage(amount: int) -> void:
+func take_damage(amount: int, _damage_type: int = 0) -> void:
 	if current_health <= 0 or is_invincible or is_wave_invincible or amount <= 0:
 		return
 

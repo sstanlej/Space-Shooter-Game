@@ -68,6 +68,7 @@ texture = ExtResource("2_fhl08")
 script = ExtResource("8_0tyfe")
 enable_iframes_on_hit = false
 max_health = 3
+show_damage_numbers = false
 
 [node name="AttackController" type="Node" parent="." unique_id=1637981628]
 script = ExtResource("6_fhl08")
