@@ -9,6 +9,8 @@ class_name GameAudio extends Node2D
 @onready var levelup_sound : AudioStreamPlayer2D = $LevelUpSound
 @onready var warning_sound : AudioStreamPlayer2D = $WarningSound
 @onready var beam_sound: AudioStreamPlayer2D = $BeamSound
+@onready var long_explosion_sound: AudioStreamPlayer2D = $LongExplosionSound
+@onready var asteroid_flight_sound: AudioStreamPlayer2D = $AsteroidFlightSound
 
 @export var background_music: AudioStream
 var music_player: AudioStreamPlayer
@@ -62,3 +64,9 @@ func play_warning() ->void:
 
 func play_beam() -> void:
 	beam_sound.play()
+
+func play_long_explosion() -> void:
+	long_explosion_sound.play()
+
+func play_asteroid_flight() -> void:
+	asteroid_flight_sound.play()

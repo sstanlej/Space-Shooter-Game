@@ -11,7 +11,8 @@
 [ext_resource type="AudioStream" uid="uid://dr5gnjyjfnk12" path="res://assets/audio/level_up.wav" id="8_q2sf7"]
 [ext_resource type="AudioStream" uid="uid://dloeuvc3528io" path="res://assets/audio/warning_sound.wav" id="10_ncn27"]
 [ext_resource type="AudioStream" uid="uid://furya24y7siw" path="res://assets/audio/beam_sound.wav" id="11_dkyhg"]
-
+[ext_resource type="AudioStream" uid="uid://cg578sgyvj4fp" path="res://assets/audio/long_explosion.wav" id="12_0jmcd"]
+[ext_resource type="AudioStream" uid="uid://cta1bmubycfmg" path="res://assets/audio/asteroid_flight.wav" id="13_g6lvt"]
 
 [node name="GameAudio" type="Node2D" unique_id=28932176]
 script = ExtResource("1_ykmpt")
@@ -49,3 +50,11 @@ stream = ExtResource("10_ncn27")
 [node name="BeamSound" type="AudioStreamPlayer2D" parent="." unique_id=715263403]
 stream = ExtResource("11_dkyhg")
 volume_db = -16.939
+
+[node name="LongExplosionSound" type="AudioStreamPlayer2D" parent="." unique_id=1595600331]
+stream = ExtResource("12_0jmcd")
+volume_db = -5.0
+
+[node name="AsteroidFlightSound" type="AudioStreamPlayer2D" parent="." unique_id=620711537]
+stream = ExtResource("13_g6lvt")
+volume_db = -5.0

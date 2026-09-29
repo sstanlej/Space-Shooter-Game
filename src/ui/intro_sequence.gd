@@ -43,6 +43,7 @@ func launch_asteroid() -> void:
 	asteroid_sprite.visible = true
 
 	# Lot asteroidy z przyspieszeniem pod wpływem grawitacji
+	GlobalAudio.play_asteroid_flight()
 	var tween = create_tween()
 	tween.tween_property(asteroid_sprite, "position", target_pos, asteroid_flight_duration)\
 		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
@@ -55,6 +56,7 @@ func _trigger_impact() -> void:
 
 	if earth_sprite: earth_sprite.visible = false
 	if asteroid_sprite: asteroid_sprite.visible = false
+	GlobalAudio.play_long_explosion()
 
 	# 1. Kaskadowe wybuchy w miejscu kolizji
 	_spawn_cluster_explosions(earth_sprite.global_position)
