@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="WaveDefinition" format=3 uid="uid://yqyfqqwygtst"]
+
+[ext_resource type="Script" uid="uid://c1jvipah3wjg0" path="res://src/entities/enemies/components/EnemyData.gd" id="1_wrkys"]
+[ext_resource type="Resource" uid="uid://dsmu3iu5fdtp0" path="res://src/entities/enemies/big_meteor/BigMeteorEnemy.tres" id="2_skpt0"]
+[ext_resource type="Script" uid="uid://cua0jrqdom70c" path="res://src/systems/campaign/WaveDefinition.gd" id="4_o4yqr"]
+
+[resource]
+script = ExtResource("4_o4yqr")
+enemy_count = 15
+available_enemies = Array[ExtResource("1_wrkys")]([ExtResource("2_skpt0")])
+custom_spawn_delay = 0.8
+banner_title = "[color=crimson]DANGER[/color]"
+banner_subtitle = "[color=gold]METEOR SHOWER[/color]"
+metadata/_custom_type_script = "uid://cua0jrqdom70c"

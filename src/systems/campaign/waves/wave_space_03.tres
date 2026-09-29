@@ -1,8 +1,8 @@
 [gd_resource type="Resource" script_class="WaveDefinition" format=3 uid="uid://dxvtous7skgv6"]
 
 [ext_resource type="Script" uid="uid://c1jvipah3wjg0" path="res://src/entities/enemies/components/EnemyData.gd" id="1_5d3us"]
-[ext_resource type="Resource" uid="uid://cs0h0yj7r222s" path="res://src/entities/enemies/falling_star/FallingStarEnemy.tres" id="2_hknov"]
-[ext_resource type="Resource" uid="uid://nooopj3ua828" path="res://src/entities/enemies/big_falling_star/BigFallingStarEnemy.tres" id="3_5d3us"]
+[ext_resource type="Resource" uid="uid://cs0h0yj7r222s" path="res://src/entities/enemies/falling_stars/FallingStarEnemy.tres" id="2_hknov"]
+[ext_resource type="Resource" uid="uid://nooopj3ua828" path="res://src/entities/enemies/falling_stars/BigFallingStarEnemy.tres" id="3_5d3us"]
 [ext_resource type="Script" uid="uid://cua0jrqdom70c" path="res://src/systems/campaign/WaveDefinition.gd" id="4_6i57d"]
 
 [resource]

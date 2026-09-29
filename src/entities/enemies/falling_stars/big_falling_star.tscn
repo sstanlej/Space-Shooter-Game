@@ -1,0 +1,56 @@
+[gd_scene format=3 uid="uid://bsdi710fvggmc"]
+
+[ext_resource type="Script" uid="uid://vwa6kpj4j3xy" path="res://src/entities/enemies/components/Enemy.gd" id="1_505vf"]
+[ext_resource type="PackedScene" uid="uid://cdfbi3flgf8ko" path="res://src/vfx/explosion/explosion.tscn" id="2_51xkd"]
+[ext_resource type="PackedScene" uid="uid://butnyfef7s0f4" path="res://src/vfx/particles/star_trail.tscn" id="3_psmwx"]
+[ext_resource type="Shader" uid="uid://wr7raxdl2m7y" path="res://src/vfx/shaders/hit_flash.gdshader" id="4_uktg3"]
+[ext_resource type="Texture2D" uid="uid://cpek8e4nwnqip" path="res://src/entities/enemies/falling_stars/big_star.png" id="5_dfv5g"]
+[ext_resource type="Script" uid="uid://cmxkc1l3uevq1" path="res://src/entities/enemies/components/HealthComponent.gd" id="6_qwpih"]
+[ext_resource type="Script" uid="uid://c0svh84qgdobm" path="res://src/entities/enemies/components/HurtboxComponent.gd" id="7_l201w"]
+[ext_resource type="Script" uid="uid://dsmssivreocgf" path="res://src/entities/enemies/components/RotatorComponent.gd" id="8_st3s5"]
+[ext_resource type="Script" uid="uid://wp4r0eq4n6vp" path="res://src/entities/enemies/components/EnemyMovementComponent.gd" id="9_6y2ub"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_elnbm"]
+shader = ExtResource("4_uktg3")
+shader_parameter/active = false
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+
+[node name="Falling Star" type="CharacterBody2D" unique_id=1157102114]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1_505vf")
+death_scene = ExtResource("2_51xkd")
+
+[node name="StarTrail" parent="." unique_id=1844385389 instance=ExtResource("3_psmwx")]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=642445020]
+material = SubResource("ShaderMaterial_elnbm")
+texture = ExtResource("5_dfv5g")
+
+[node name="HealthComponent" type="Node2D" parent="." unique_id=1879616316]
+script = ExtResource("6_qwpih")
+max_health = 4
+
+[node name="HurtboxComponent" type="Area2D" parent="." unique_id=1073179147 node_paths=PackedStringArray("health_component")]
+collision_layer = 2
+collision_mask = 5
+script = ExtResource("7_l201w")
+health_component = NodePath("../HealthComponent")
+contact_damage = 1.0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="HurtboxComponent" unique_id=522382445]
+polygon = PackedVector2Array(-10, -2, -4, 2, -6, 10, 0, 5, 1, 5, 7, 10, 5, 2, 11, -2, 4, -2, 1, -9, 0, -9, -3, -2)
+
+[node name="RotatorComponent" type="Node" parent="." unique_id=1291625149 node_paths=PackedStringArray("target_sprite")]
+script = ExtResource("8_st3s5")
+target_sprite = NodePath("../Sprite2D")
+rotation_speed = 0.5
+
+[node name="EnemyMovementComponent" type="Node" parent="." unique_id=1876625010]
+script = ExtResource("9_6y2ub")
+move_speed = 40.0
+direction = Vector2(-0.5, 1)
+
+[connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
+[connection signal="died" from="HealthComponent" to="." method="_on_health_component_died"]
+[connection signal="area_entered" from="HurtboxComponent" to="." method="_on_area_2d_area_entered"]

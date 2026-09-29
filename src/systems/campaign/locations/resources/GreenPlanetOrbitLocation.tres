@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="LocationData" format=3 uid="uid://c30ua1jkovq12"]
+
+[ext_resource type="Texture2D" uid="uid://dl2lg4xa6utbm" path="res://src/systems/campaign/locations/sprites/green_planet/green_planet_back.png" id="1_g3noy"]
+[ext_resource type="Script" uid="uid://4ko4pcyqo2oo" path="res://src/systems/campaign/locations/LocationData.gd" id="1_idjfq"]
+[ext_resource type="Texture2D" uid="uid://ctvul62x056sv" path="res://src/systems/campaign/locations/sprites/green_planet/green_planet_front.png" id="2_2q8xa"]
+[ext_resource type="Texture2D" uid="uid://wbcretot0elg" path="res://src/systems/campaign/locations/sprites/green_planet/green_planet_middle.png" id="3_k2dbb"]
+[ext_resource type="Script" uid="uid://cua0jrqdom70c" path="res://src/systems/campaign/WaveDefinition.gd" id="5_fl1y1"]
+[ext_resource type="Resource" uid="uid://dq1w20wcukj0i" path="res://src/systems/campaign/waves/wave_green_orbit_01.tres" id="6_k2dbb"]
+[ext_resource type="Resource" uid="uid://cwicx06yi35c4" path="res://src/systems/campaign/waves/wave_green_orbit_02.tres" id="7_qtm6a"]
+[ext_resource type="Resource" uid="uid://b5o26tqd3gyub" path="res://src/systems/campaign/waves/wave_green_orbit_03.tres" id="8_n4ham"]
+[ext_resource type="Resource" uid="uid://ujvyahgti6hx" path="res://src/systems/campaign/waves/wave_green_orbit_boss.tres" id="9_ahx7k"]
+[ext_resource type="Resource" uid="uid://u05ddtbyt3eg" path="res://src/systems/campaign/waves/wave_green_orbit_04.tres" id="9_qtm6a"]
+
+[resource]
+script = ExtResource("1_idjfq")
+location_id = "green_planet_orbit"
+location_name = "Green Planet Orbit"
+location_rarity = 1
+waves = Array[ExtResource("5_fl1y1")]([ExtResource("6_k2dbb"), ExtResource("7_qtm6a"), ExtResource("8_n4ham"), ExtResource("9_qtm6a"), ExtResource("9_ahx7k")])
+background_texture = ExtResource("1_g3noy")
+middle_texture = ExtResource("3_k2dbb")
+front_texture = ExtResource("2_2q8xa")
+metadata/_custom_type_script = "uid://4ko4pcyqo2oo"

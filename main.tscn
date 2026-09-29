@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://ctolyotyjbqwg"]
 
 [ext_resource type="Script" uid="uid://dm1jlaqpgu05" path="res://src/core/game_manager.gd" id="1_lswn8"]
-[ext_resource type="PackedScene" uid="uid://qoymek85ecx7" path="res://src/systems/locations/location_manager.tscn" id="2_a6jrf"]
+[ext_resource type="PackedScene" uid="uid://qoymek85ecx7" path="res://src/systems/campaign/locations/location_manager.tscn" id="2_a6jrf"]
 [ext_resource type="PackedScene" uid="uid://b5gn1svcnnf7a" path="res://src/entities/player/player.tscn" id="3_xuqvo"]
 [ext_resource type="Script" uid="uid://bvscfifqg2eho" path="res://src/core/camera_movement.gd" id="4_qsp4k"]
 [ext_resource type="Script" uid="uid://dga8epmke5iyx" path="res://src/systems/spawner/spawner.gd" id="6_seu75"]
