@@ -4,14 +4,23 @@
 [ext_resource type="PackedScene" uid="uid://qoymek85ecx7" path="res://src/systems/campaign/locations/location_manager.tscn" id="2_a6jrf"]
 [ext_resource type="PackedScene" uid="uid://b5gn1svcnnf7a" path="res://src/entities/player/player.tscn" id="3_xuqvo"]
 [ext_resource type="Script" uid="uid://bvscfifqg2eho" path="res://src/core/camera_movement.gd" id="4_qsp4k"]
+[ext_resource type="Texture2D" uid="uid://dlh06fdcdga0b" path="res://src/ui/sprites/intro/earth_planet.png" id="5_facbu"]
+[ext_resource type="Script" uid="uid://2mpm4o2j4cpe" path="res://src/ui/intro_sequence.gd" id="5_gngh3"]
+[ext_resource type="PackedScene" uid="uid://cdfbi3flgf8ko" path="res://src/vfx/explosion/explosion.tscn" id="6_0n3wm"]
+[ext_resource type="Texture2D" uid="uid://cgdu5drmhm7dd" path="res://src/entities/enemies/big_meteor/big_meteor.png" id="6_b1qrp"]
 [ext_resource type="Script" uid="uid://dga8epmke5iyx" path="res://src/systems/spawner/spawner.gd" id="6_seu75"]
+[ext_resource type="Script" uid="uid://dsmssivreocgf" path="res://src/entities/enemies/components/RotatorComponent.gd" id="7_come4"]
 [ext_resource type="Script" uid="uid://dw38kr6168wir" path="res://src/core/progression_manager.gd" id="7_htxhm"]
 [ext_resource type="Script" uid="uid://bic7ag2qxefd7" path="res://src/systems/campaign/CampaignManager.gd" id="7_kq58d"]
+[ext_resource type="Texture2D" uid="uid://dhlnkilkg6npv" path="res://src/ui/sprites/intro/earth_debris_1.png" id="8_0cp0l"]
 [ext_resource type="Resource" uid="uid://cg4citajjq2og" path="res://src/systems/campaign/acts/Act_2.tres" id="8_htxhm"]
 [ext_resource type="Script" uid="uid://ceksi56kybfsk" path="res://src/ui/ui_manager.gd" id="8_jq2sk"]
 [ext_resource type="Script" uid="uid://ccinpp3kgnc7v" path="res://src/systems/campaign/ActData.gd" id="8_seu75"]
+[ext_resource type="Texture2D" uid="uid://cbonyqq7f8j2i" path="res://src/ui/sprites/intro/earth_debris_2.png" id="9_d2t1y"]
 [ext_resource type="Resource" uid="uid://qq5bhde64gsn" path="res://src/systems/campaign/acts/Act_1.tres" id="9_htxhm"]
 [ext_resource type="Resource" uid="uid://c1rtgwmt1kglx" path="res://src/systems/campaign/acts/Act_3.tres" id="9_jq2sk"]
+[ext_resource type="Texture2D" uid="uid://l0i5rb74btae" path="res://src/ui/sprites/intro/earth_debris_3.png" id="10_gngh3"]
+[ext_resource type="Texture2D" uid="uid://clpj4lsnwgc5u" path="res://src/vfx/particles/smoke_particle.png" id="11_d2t1y"]
 [ext_resource type="Texture2D" uid="uid://caubnil2iehm" path="res://src/ui/sprites/game_overlay.png" id="11_ok6jj"]
 [ext_resource type="FontFile" uid="uid://bvlhnv4ultuef" path="res://assets/fonts/Pixeled.ttf" id="12_facbu"]
 [ext_resource type="Script" uid="uid://bf5l0047mdwhq" path="res://src/systems/shop/shop_manager.gd" id="12_jq2sk"]
@@ -98,7 +107,25 @@ _data = {
 &"intro": SubResource("Animation_qsp4k")
 }
 
-[node name="Main" type="Node2D" unique_id=1190470146 node_paths=PackedStringArray("world", "campaign_manager", "location_manager", "progression_manager", "spawner", "ui_manager", "shop_ui", "shop_manager", "deck_overview_ui", "player", "camera_frame", "wave_cooldown_timer")]
+[sub_resource type="Gradient" id="Gradient_gngh3"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_d4sqy"]
+gradient = SubResource("Gradient_gngh3")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_j2ttm"]
+particle_flag_disable_z = true
+angle_min = 1.0728835e-05
+angle_max = 180.00002
+direction = Vector3(0, 1, 0)
+spread = 149.393
+initial_velocity_min = 5.0
+initial_velocity_max = 50.0
+gravity = Vector3(0, 98, 0)
+scale_max = 3.0
+color_ramp = SubResource("GradientTexture1D_d4sqy")
+
+[node name="Main" type="Node2D" unique_id=1190470146 node_paths=PackedStringArray("world", "campaign_manager", "location_manager", "progression_manager", "spawner", "ui_manager", "shop_ui", "shop_manager", "deck_overview_ui", "player", "camera_frame", "wave_cooldown_timer", "intro_sequence")]
 script = ExtResource("1_lswn8")
 world = NodePath("World")
 campaign_manager = NodePath("CampaignManager")
@@ -112,6 +139,7 @@ deck_overview_ui = NodePath("UILayer/DeckOverviewUI")
 player = NodePath("World/Player")
 camera_frame = NodePath("World/CameraFrame")
 wave_cooldown_timer = NodePath("Timers/WaveCooldownTimer")
+intro_sequence = NodePath("World/IntroSequence")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1614480862]
 libraries/ = SubResource("AnimationLibrary_seu75")
@@ -137,6 +165,72 @@ offset = Vector2(120, 67)
 [node name="EnemiesContainer" type="Node2D" parent="World" unique_id=329553276 groups=["enemies_container"]]
 
 [node name="ProjectilesContainer" type="Node2D" parent="World" unique_id=1948110360 groups=["projectiles_container"]]
+
+[node name="IntroSequence" type="Node2D" parent="World" unique_id=859607302 node_paths=PackedStringArray("earth_sprite", "asteroid_sprite", "debris_container", "impact_particles")]
+script = ExtResource("5_gngh3")
+earth_sprite = NodePath("EarthSprite")
+asteroid_sprite = NodePath("IncomingAsteroid")
+debris_container = NodePath("DebrisContainer")
+explosion_scene = ExtResource("6_0n3wm")
+impact_particles = NodePath("GPUParticles2D")
+
+[node name="EarthSprite" type="Sprite2D" parent="World/IntroSequence" unique_id=1940075726]
+z_index = 10
+position = Vector2(-174, 66)
+texture = ExtResource("5_facbu")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="World/IntroSequence" unique_id=1157507675]
+position = Vector2(-174, 66)
+emitting = false
+amount = 100
+texture = ExtResource("11_d2t1y")
+lifetime = 2.4899999999999998
+one_shot = true
+explosiveness = 0.74
+process_material = SubResource("ParticleProcessMaterial_j2ttm")
+
+[node name="IncomingAsteroid" type="Sprite2D" parent="World/IntroSequence" unique_id=934037538]
+position = Vector2(-66, -18)
+texture = ExtResource("6_b1qrp")
+
+[node name="RotatorComponent" type="Node" parent="World/IntroSequence/IncomingAsteroid" unique_id=2121366903 node_paths=PackedStringArray("target_sprite")]
+script = ExtResource("7_come4")
+target_sprite = NodePath("..")
+rotation_speed = 5.0
+metadata/_custom_type_script = "uid://dsmssivreocgf"
+
+[node name="DebrisContainer" type="Node2D" parent="World/IntroSequence" unique_id=1467978132]
+position = Vector2(-174, 66)
+
+[node name="EarthDebris1" type="Sprite2D" parent="World/IntroSequence/DebrisContainer" unique_id=1714187059]
+visible = false
+texture = ExtResource("8_0cp0l")
+
+[node name="RotatorComponent" type="Node" parent="World/IntroSequence/DebrisContainer/EarthDebris1" unique_id=1183320208 node_paths=PackedStringArray("target_sprite")]
+script = ExtResource("7_come4")
+target_sprite = NodePath("..")
+rotation_speed = 1.0
+metadata/_custom_type_script = "uid://dsmssivreocgf"
+
+[node name="EarthDebris2" type="Sprite2D" parent="World/IntroSequence/DebrisContainer" unique_id=1786179037]
+visible = false
+texture = ExtResource("9_d2t1y")
+
+[node name="RotatorComponent" type="Node" parent="World/IntroSequence/DebrisContainer/EarthDebris2" unique_id=2060005407 node_paths=PackedStringArray("target_sprite")]
+script = ExtResource("7_come4")
+target_sprite = NodePath("..")
+rotation_speed = 1.0
+metadata/_custom_type_script = "uid://dsmssivreocgf"
+
+[node name="EarthDebris3" type="Sprite2D" parent="World/IntroSequence/DebrisContainer" unique_id=1137379318]
+visible = false
+texture = ExtResource("10_gngh3")
+
+[node name="RotatorComponent" type="Node" parent="World/IntroSequence/DebrisContainer/EarthDebris3" unique_id=1319261175 node_paths=PackedStringArray("target_sprite")]
+script = ExtResource("7_come4")
+target_sprite = NodePath("..")
+rotation_speed = 1.0
+metadata/_custom_type_script = "uid://dsmssivreocgf"
 
 [node name="CampaignManager" type="Node" parent="." unique_id=1740540753]
 script = ExtResource("7_kq58d")
@@ -230,6 +324,7 @@ fit_content = true
 
 [node name="EnemiesLeftLabel" type="RichTextLabel" parent="UILayer/HUD" unique_id=313892285]
 process_mode = 3
+visible = false
 layout_mode = 0
 offset_left = 142.0
 offset_right = 235.0
@@ -243,6 +338,7 @@ fit_content = true
 
 [node name="ShopControlLabel" type="RichTextLabel" parent="UILayer/HUD" unique_id=639265128]
 process_mode = 3
+visible = false
 layout_mode = 0
 offset_left = 5.0
 offset_right = 98.0
@@ -257,6 +353,7 @@ fit_content = true
 
 [node name="DeckControlLabel" type="RichTextLabel" parent="UILayer/HUD" unique_id=1028778068]
 process_mode = 3
+visible = false
 layout_mode = 0
 offset_left = 5.0
 offset_top = 7.0
@@ -323,6 +420,7 @@ text = "[center]LVL: X    Y / Z"
 fit_content = true
 
 [node name="BossBarContainer" type="VBoxContainer" parent="UILayer/HUD" unique_id=1414766718]
+visible = false
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 1
 anchors_preset = 10

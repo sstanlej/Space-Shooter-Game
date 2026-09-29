@@ -3,65 +3,62 @@
 [ext_resource type="Script" uid="uid://ctmfxhq2ljo8h" path="res://src/systems/campaign/locations/location_manager.gd" id="1_31bry"]
 [ext_resource type="Texture2D" uid="uid://dawx5nuq4rbc0" path="res://src/systems/campaign/locations/sprites/earth_orbit/earth_orbit_back.png" id="2_wi8rc"]
 [ext_resource type="Texture2D" uid="uid://bf36s01t617ns" path="res://src/systems/campaign/locations/sprites/earth_orbit/earth_orbit_middle.png" id="3_lthnb"]
-[ext_resource type="Texture2D" uid="uid://ctrexm0ep7uup" path="res://src/systems/campaign/locations/sprites/earth_orbit/earth_orbit_front.png" id="4_upvud"]
 
-
-[node name="LocationManager" type="Node2D"]
+[node name="LocationManager" type="Node2D" unique_id=1882111413]
 script = ExtResource("1_31bry")
 
-[node name="CurrentLocation" type="Node2D" parent="."]
+[node name="CurrentLocation" type="Node2D" parent="." unique_id=1769395926]
 
-[node name="BackParallax" type="Parallax2D" parent="CurrentLocation"]
+[node name="BackParallax" type="Parallax2D" parent="CurrentLocation" unique_id=1820622635]
 repeat_size = Vector2(480, 135)
 autoscroll = Vector2(-5, 0)
 repeat_times = 2
 
-[node name="Sprite2D" type="Sprite2D" parent="CurrentLocation/BackParallax"]
+[node name="Sprite2D" type="Sprite2D" parent="CurrentLocation/BackParallax" unique_id=917142769]
 texture = ExtResource("2_wi8rc")
 centered = false
 
-[node name="MiddleParallax" type="Parallax2D" parent="CurrentLocation"]
+[node name="MiddleParallax" type="Parallax2D" parent="CurrentLocation" unique_id=1615298585]
 scroll_scale = Vector2(0.5, 0.5)
 repeat_size = Vector2(480, 135)
 autoscroll = Vector2(-10, 0)
 repeat_times = 2
 
-[node name="Sprite2D" type="Sprite2D" parent="CurrentLocation/MiddleParallax"]
+[node name="Sprite2D" type="Sprite2D" parent="CurrentLocation/MiddleParallax" unique_id=128234689]
 texture = ExtResource("3_lthnb")
 centered = false
 
-[node name="FrontParallax" type="Parallax2D" parent="CurrentLocation"]
+[node name="FrontParallax" type="Parallax2D" parent="CurrentLocation" unique_id=738727177]
 repeat_size = Vector2(480, 0)
 autoscroll = Vector2(-30, 0)
 repeat_times = 2
 
-[node name="Sprite2D" type="Sprite2D" parent="CurrentLocation/FrontParallax"]
-texture = ExtResource("4_upvud")
+[node name="Sprite2D" type="Sprite2D" parent="CurrentLocation/FrontParallax" unique_id=838707163]
 centered = false
 
-[node name="NextLocation" type="Node2D" parent="."]
+[node name="NextLocation" type="Node2D" parent="." unique_id=1518656812]
 
-[node name="BackParallax" type="Parallax2D" parent="NextLocation"]
+[node name="BackParallax" type="Parallax2D" parent="NextLocation" unique_id=1819593758]
 repeat_size = Vector2(480, 135)
 autoscroll = Vector2(-5, 0)
 repeat_times = 2
 
-[node name="Sprite2D" type="Sprite2D" parent="NextLocation/BackParallax"]
+[node name="Sprite2D" type="Sprite2D" parent="NextLocation/BackParallax" unique_id=334659296]
 centered = false
 
-[node name="MiddleParallax" type="Parallax2D" parent="NextLocation"]
+[node name="MiddleParallax" type="Parallax2D" parent="NextLocation" unique_id=46497333]
 scroll_scale = Vector2(0.5, 0.5)
 repeat_size = Vector2(480, 135)
 autoscroll = Vector2(-10, 0)
 repeat_times = 2
 
-[node name="Sprite2D" type="Sprite2D" parent="NextLocation/MiddleParallax"]
+[node name="Sprite2D" type="Sprite2D" parent="NextLocation/MiddleParallax" unique_id=1904488692]
 centered = false
 
-[node name="FrontParallax" type="Parallax2D" parent="NextLocation"]
+[node name="FrontParallax" type="Parallax2D" parent="NextLocation" unique_id=1084594767]
 repeat_size = Vector2(480, 0)
 autoscroll = Vector2(-30, 0)
 repeat_times = 2
 
-[node name="Sprite2D" type="Sprite2D" parent="NextLocation/FrontParallax"]
+[node name="Sprite2D" type="Sprite2D" parent="NextLocation/FrontParallax" unique_id=145578251]
 centered = false

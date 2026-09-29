@@ -21,6 +21,7 @@
 [ext_resource type="Script" uid="uid://xdkqsuuhyggv" path="res://src/entities/player/PlayerMovementComponent.gd" id="18_a31ob"]
 [ext_resource type="Script" uid="uid://c0svh84qgdobm" path="res://src/entities/enemies/components/HurtboxComponent.gd" id="20_fjj3i"]
 [ext_resource type="Texture2D" uid="uid://fi17tnm6ct3k" path="res://src/entities/player/sprites/bubble_full.png" id="21_5qgjf"]
+[ext_resource type="PackedScene" uid="uid://07svr0utlcdv" path="res://src/vfx/particles/liftoff_trail.tscn" id="22_fjj3i"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_p2qdy"]
 shader = ExtResource("2_3c4mh")
@@ -88,10 +89,11 @@ script = ExtResource("17_ogtao")
 [node name="PlayerMovementComponent" type="Node" parent="." unique_id=744517177]
 script = ExtResource("18_a31ob")
 
-[node name="PlayerVisualsComponent" type="Node" parent="." unique_id=1508534075]
+[node name="PlayerVisualsComponent" type="Node" parent="." unique_id=1508534075 node_paths=PackedStringArray("liftoff_trail")]
 script = ExtResource("17_5qgjf")
 shield_texture_full = ExtResource("21_5qgjf")
 shield_texture_cracked = ExtResource("3_fjj3i")
+liftoff_trail = NodePath("../LiftoffTrail")
 
 [node name="HurtboxComponent" type="Area2D" parent="." unique_id=337507574 node_paths=PackedStringArray("health_component")]
 collision_mask = 10
@@ -104,6 +106,7 @@ shape = SubResource("RectangleShape2D_x3vf3")
 
 [node name="GPUParticles2D" parent="." unique_id=1319085228 instance=ExtResource("10_x3vf3")]
 position = Vector2(-5, 0)
+emitting = true
 
 [node name="ShieldSprite" type="Sprite2D" parent="." unique_id=1001504283]
 visible = false
@@ -113,6 +116,9 @@ texture = ExtResource("21_5qgjf")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1136705051]
 position = Vector2(-1, 0)
 shape = SubResource("RectangleShape2D_0tyfe")
+
+[node name="LiftoffTrail" parent="." unique_id=145849048 instance=ExtResource("22_fjj3i")]
+position = Vector2(-7, 1)
 
 [connection signal="tree_exiting" from="." to="." method="_on_tree_exiting"]
 [connection signal="damage_taken" from="HealthComponent" to="." method="_on_health_component_damage_taken"]

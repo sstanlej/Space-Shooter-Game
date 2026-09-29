@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cdfbi3flgf8ko"]
+[gd_scene format=3 uid="uid://cdfbi3flgf8ko"]
 
 [ext_resource type="Texture2D" uid="uid://bh4kdwlmjdg6u" path="res://src/vfx/explosion/explosion_animation.png" id="1_20lyq"]
 [ext_resource type="Script" uid="uid://b8iync6ox3fan" path="res://src/vfx/explosion/explosion.gd" id="2_6g07s"]
@@ -41,11 +41,12 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ct83m")
 }],
-"loop": false,
+"loop": 0,
 "name": &"default",
 "speed": 9.0
 }]
 
-[node name="Explosion" type="AnimatedSprite2D"]
+[node name="Explosion" type="AnimatedSprite2D" unique_id=1507302182]
+z_index = 100
 sprite_frames = SubResource("SpriteFrames_sxyg7")
 script = ExtResource("2_6g07s")

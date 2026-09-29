@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://07svr0utlcdv"]
+
+[ext_resource type="Texture2D" uid="uid://clpj4lsnwgc5u" path="res://src/vfx/particles/smoke_particle.png" id="1_q2c7w"]
+
+[sub_resource type="Gradient" id="Gradient_ql8tn"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_jciaa"]
+gradient = SubResource("Gradient_ql8tn")
+
+[sub_resource type="Curve" id="Curve_r0g16"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.46710527), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_i1pol"]
+curve = SubResource("Curve_r0g16")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_3nsug"]
+particle_flag_disable_z = true
+direction = Vector3(-1, 0, 0)
+spread = 3.0
+initial_velocity_min = 20.0
+initial_velocity_max = 50.0
+gravity = Vector3(0, 0, 0)
+scale_min = 2.0
+scale_max = 3.0
+scale_curve = SubResource("CurveTexture_i1pol")
+color_ramp = SubResource("GradientTexture1D_jciaa")
+
+[node name="LiftoffTrail" type="GPUParticles2D" unique_id=90591508]
+emitting = false
+amount = 50
+texture = ExtResource("1_q2c7w")
+lifetime = 3.0
+one_shot = true
+process_material = SubResource("ParticleProcessMaterial_3nsug")

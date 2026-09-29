@@ -37,6 +37,8 @@ var is_player_alive: bool = true
 @export var camera_frame: CameraFrame
 @export var wave_cooldown_timer: Timer
 
+@export_group("Intro Scene References")
+@export var intro_sequence: IntroSequence
 @onready var anim_player: AnimationPlayer = $AnimationPlayer
 
 func _ready() -> void:
@@ -137,51 +139,97 @@ func set_world_paused(paused: bool) -> void:
 
 func wait_to_start() -> void:
 	change_state(GameState.WAIT_TO_START)
+	
+	# if location_manager:
+	# 	location_manager.set_parallax_active(false)
+
 	if camera_frame:
 		camera_frame.move_to_menu_view()
-	if ui_manager and ui_manager.has_method("show_notification"):
-		ui_manager.show_notification("[color=red]SPACE SHOOTER[/color]", "[color=gray]PRESS [/color][color=gold][SPACE][/color][color=gray] TO START[/color]", 0.0)
 
-# --- GAME RUN & WAVE FLOW ---
+	if intro_sequence:
+		intro_sequence.reset_intro()
 
-func start_game() -> void:
-	print("\n=================== NEW GAME RUN STARTED ===================")
-	is_player_alive = true
-	change_state(GameState.TRANSITIONING)
-
-	if campaign_manager:
-		campaign_manager.reset_campaign()
-
-	if shop_manager and shop_manager.deck_manager:
-		shop_manager.deck_manager.reset_deck()
-
-	if ui_manager and ui_manager.has_method("hide_notification"):
-		ui_manager.hide_notification(0.4)
-
-	if progression_manager and progression_manager.has_method("reset_progress"):
-		progression_manager.reset_progress()
-
-	if player and player.get_deck_component():
-		player.get_deck_component().initialize_starting_deck()
+	if player:
+		# Gracz schowany za Ziemią lub wyłączony
+		player.visible = false
+		player.is_in_game = false
 
 	if campaign_manager and location_manager:
 		var initial_loc = campaign_manager.get_current_location()
 		if initial_loc:
 			location_manager.set_initial_location(initial_loc)
 
-	if ui_manager:
-		if ui_manager.has_method("show_hud"):
-			ui_manager.show_hud()
-		if player and player.health_component:
-			var player_hc = player.health_component
-			var max_hp = int(player_hc.get_max_health()) if player_hc.has_method("get_max_health") else 100
-			var current_hp = int(player_hc.get_health()) if player_hc.has_method("get_health") else 100
-			ui_manager.setup_health_bar(max_hp, current_hp)
+	if ui_manager and ui_manager.has_method("show_notification"):
+		ui_manager.show_notification("[color=crimson]SPACE SHOOTER[/color]", "[color=gray]PRESS [/color][color=gold][SPACE][/color][color=gray] TO ESCAPE[/color]", 0.0)
+# --- GAME RUN & WAVE FLOW ---
 
-	anim_player.play("intro")
-	await anim_player.animation_finished
+func start_game() -> void:
+	is_player_alive = true
+	change_state(GameState.TRANSITIONING)
+
+	if ui_manager and ui_manager.has_method("hide_notification"):
+		ui_manager.hide_notification(0.2)
+
+	# --- KROK 1: ZAPOWIEDŹ KATASTROFY ---
+	# Lekkie drżenie ekranu przed uderzeniem
+	if camera_frame and camera_frame.has_method("shake"):
+		camera_frame.shake(1.5, 2) # mały wstrząs ostrzegawczy
+
+	# Asteroida rusza z góry
+	if intro_sequence:
+		intro_sequence.launch_asteroid()
+
+	# --- KROK 2: WYJŚCIE RAKIETY TUŻ PRZED KOLIZJĄ ---
+	# Czekamy np. 0.7s, gdy asteroida jest już blisko Ziemi
+	await get_tree().create_timer(0.7).timeout
+	
+	if player and intro_sequence:
+		player.global_position = intro_sequence.earth_sprite.global_position
+		player.visible = true
+		
+		# Włączenie efektu silnika startowego
+
+		if player.get_node_or_null("PlayerVisualsComponent").has_method("activate_liftoff_trail"): 
+			player.get_node_or_null("PlayerVisualsComponent").activate_liftoff_trail()
+
+		# Rakieta wystrzeliwuje w prawo z lekkim przyspieszeniem
+		var target_player_x = camera_frame.get_game_view_player_x() # lub stała pozycja, np. 140.0
+		var player_tween = create_tween()
+		player_tween.tween_property(player, "global_position:x", target_player_x, 1.1)\
+			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+
+	# --- KROK 3: UDERZENIE I WYBUCH ---
+	# Czekamy na sygnał uderzenia z IntroSequence
+	if intro_sequence:
+		await intro_sequence.asteroid_impacted
+
+	# Potężny screen shake
+	if camera_frame and camera_frame.has_method("shake"):
+		camera_frame.shake(12.0, 1.5) # silny wstrząs
+
+	# Dajemy graczowi 0.5s na nacieszenie oka eksplozją Ziemi
+	await get_tree().create_timer(1.5).timeout
+
+	# --- KROK 4: KAMERA DOGANIA GRACZA I PRZEJŚCIE DO GRY ---
+	if camera_frame:
+		camera_frame.move_to_game_view() # płynny ruch kamery w prawo
+
+	# Wyłączamy dym startowy gracza
 	if player:
+		var trail = player.get_node_or_null("LaunchThrusterTrail") as CPUParticles2D
+		if trail: trail.emitting = false
 		player.is_in_game = true
+
+	# Start paralaksy i HUD
+	# if location_manager:
+	# 	location_manager.set_parallax_active(true)
+
+	if ui_manager and ui_manager.has_method("show_hud"):
+		ui_manager.show_hud()
+
+	if progression_manager and progression_manager.has_method("reset_progress"):
+		progression_manager.reset_progress()
+
 	start_wave()
 
 func start_wave() -> void:

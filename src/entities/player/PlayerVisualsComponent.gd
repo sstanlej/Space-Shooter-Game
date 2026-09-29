@@ -8,6 +8,9 @@ class_name PlayerVisualsComponent extends Node
 @export var shield_texture_full: Texture2D
 @export var shield_texture_cracked: Texture2D
 
+@export_group("Particles")
+@export var liftoff_trail: GPUParticles2D
+
 var player: Player
 var health_component: PlayerHealthComponent
 
@@ -43,6 +46,10 @@ func _exit_tree() -> void:
 	cleanup_all_tweens()
 
 # --- HIT FLASH (BŁYSK PO TRAFIENIU) ---
+
+func activate_liftoff_trail() -> void:
+	liftoff_trail.restart()
+	liftoff_trail.emitting = true
 
 func _on_damage_taken(_amount: int) -> void:
 	if not target_sprite or (player and player.is_spectator):
