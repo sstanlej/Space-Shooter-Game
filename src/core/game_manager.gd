@@ -207,25 +207,24 @@ func start_game() -> void:
 	if camera_frame and camera_frame.has_method("shake"):
 		camera_frame.shake(12.0, 1.5) # silny wstrząs
 
-	# Dajemy graczowi 0.5s na nacieszenie oka eksplozją Ziemi
 	await get_tree().create_timer(1.5).timeout
 
-	# --- KROK 4: KAMERA DOGANIA GRACZA I PRZEJŚCIE DO GRY ---
+	# KAMERA DOGANIA GRACZA I PRZEJŚCIE DO GRY 
 	if camera_frame:
-		camera_frame.move_to_game_view() # płynny ruch kamery w prawo
-
-	# Wyłączamy dym startowy gracza
-	if player:
-		var trail = player.get_node_or_null("LaunchThrusterTrail") as CPUParticles2D
-		if trail: trail.emitting = false
-		player.is_in_game = true
+		camera_frame.move_to_game_view()
 
 	# Start paralaksy i HUD
 	# if location_manager:
 	# 	location_manager.set_parallax_active(true)
 
-	if ui_manager and ui_manager.has_method("show_hud"):
-		ui_manager.show_hud()
+	if ui_manager:
+		if ui_manager.has_method("show_hud"):
+			ui_manager.show_hud()
+		if player and player.health_component:
+			var player_hc = player.health_component
+			var max_hp = int(player_hc.get_max_health()) if player_hc.has_method("get_max_health") else 3
+			var current_hp = int(player_hc.get_health()) if player_hc.has_method("get_health") else 3
+			ui_manager.setup_health_bar(max_hp, current_hp)
 
 	if progression_manager and progression_manager.has_method("reset_progress"):
 		progression_manager.reset_progress()

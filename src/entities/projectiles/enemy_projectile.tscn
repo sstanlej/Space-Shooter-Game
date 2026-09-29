@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://wikdcl5aogg5"]
+[gd_scene format=3 uid="uid://wikdcl5aogg5"]
 
 [ext_resource type="Script" uid="uid://dgdo8ljw7oen" path="res://src/entities/projectiles/enemy_projectile.gd" id="1_aploj"]
 [ext_resource type="Texture2D" uid="uid://corblfjtu3565" path="res://src/entities/projectiles/sprites/zoot_projectile.png" id="2_aploj"]
-[ext_resource type="AudioStream" uid="uid://tkgndh2r3xbw" path="res://assets/audio/laser-312360.mp3" id="3_h4nqt"]
+[ext_resource type="AudioStream" uid="uid://tkgndh2r3xbw" path="res://assets/audio/laser_shot.mp3" id="3_h4nqt"]
+
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_m8u5f"]
 size = Vector2(12, 2)

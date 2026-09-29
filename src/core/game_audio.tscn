@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://cnand14y6nkig" path="res://src/core/game_audio.gd" id="1_ykmpt"]
 [ext_resource type="AudioStream" uid="uid://mg346e4fn5wy" path="res://assets/audio/background_music.mp3" id="2_fhic6"]
-[ext_resource type="AudioStream" uid="uid://bjyudhyqdmrbb" path="res://assets/audio/Explosion 2.wav" id="2_nm0vt"]
-[ext_resource type="AudioStream" uid="uid://tkgndh2r3xbw" path="res://assets/audio/laser-312360.mp3" id="3_jv0w2"]
+[ext_resource type="AudioStream" uid="uid://bjyudhyqdmrbb" path="res://assets/audio/short_explosion.wav" id="2_nm0vt"]
+[ext_resource type="AudioStream" uid="uid://tkgndh2r3xbw" path="res://assets/audio/laser_shot.mp3" id="3_jv0w2"]
 [ext_resource type="AudioStream" uid="uid://b5wl73jdtdbgr" path="res://assets/audio/upgrade_sound.wav" id="4_55iip"]
 [ext_resource type="AudioStream" uid="uid://b1h35urqshquu" path="res://assets/audio/error_sound.wav" id="5_pbdd3"]
 [ext_resource type="AudioStream" uid="uid://dgunf61fga6xw" path="res://assets/audio/enemy_hit.wav" id="6_6djvg"]
@@ -11,6 +11,7 @@
 [ext_resource type="AudioStream" uid="uid://dr5gnjyjfnk12" path="res://assets/audio/level_up.wav" id="8_q2sf7"]
 [ext_resource type="AudioStream" uid="uid://dloeuvc3528io" path="res://assets/audio/warning_sound.wav" id="10_ncn27"]
 [ext_resource type="AudioStream" uid="uid://furya24y7siw" path="res://assets/audio/beam_sound.wav" id="11_dkyhg"]
+
 
 [node name="GameAudio" type="Node2D" unique_id=28932176]
 script = ExtResource("1_ykmpt")
