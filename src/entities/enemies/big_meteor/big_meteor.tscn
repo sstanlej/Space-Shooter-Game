@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://cet664o2kh2vh"]
+[gd_scene format=3 uid="uid://cet664o2kh2vh"]
 
 [ext_resource type="Script" uid="uid://vwa6kpj4j3xy" path="res://src/entities/enemies/components/Enemy.gd" id="1_juhrt"]
 [ext_resource type="Texture2D" uid="uid://cgdu5drmhm7dd" path="res://src/entities/enemies/big_meteor/big_meteor.png" id="2_ced25"]
@@ -11,6 +11,7 @@
 [ext_resource type="Script" uid="uid://wp4r0eq4n6vp" path="res://src/entities/enemies/components/EnemyMovementComponent.gd" id="8_jew18"]
 [ext_resource type="Script" uid="uid://cg7lkvn1vocg5" path="res://src/entities/enemies/components/SplitOnDeathComponent.gd" id="9_fad10"]
 [ext_resource type="Resource" uid="uid://4abkmc58w7d" path="res://src/entities/enemies/meteor/MeteorEnemy.tres" id="10_ghlj2"]
+[ext_resource type="PackedScene" uid="uid://p24e8j1foa4p" path="res://src/ui/floating_health_bar.tscn" id="12_vhb5e"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3ivwt"]
 shader = ExtResource("3_juhrt")
@@ -20,46 +21,49 @@ shader_parameter/flash_color = Color(1, 1, 1, 1)
 [sub_resource type="CircleShape2D" id="CircleShape2D_qhs2c"]
 radius = 13.0
 
-[node name="Big Meteor" type="CharacterBody2D"]
+[node name="Big Meteor" type="CharacterBody2D" unique_id=547570093]
 collision_layer = 2
 collision_mask = 0
 script = ExtResource("1_juhrt")
 death_scene = ExtResource("2_ghlj2")
 
-[node name="SmokeParticles" parent="." instance=ExtResource("2_nohey")]
+[node name="SmokeParticles" parent="." unique_id=324559394 instance=ExtResource("2_nohey")]
 position = Vector2(10, 0)
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=566274001]
 material = SubResource("ShaderMaterial_3ivwt")
 texture = ExtResource("2_ced25")
 
-[node name="HealthComponent" type="Node2D" parent="."]
+[node name="HealthComponent" type="Node2D" parent="." unique_id=781210452]
 script = ExtResource("3_4wt2a")
 max_health = 6
 
-[node name="HurtboxComponent" type="Area2D" parent="." node_paths=PackedStringArray("health_component")]
+[node name="HurtboxComponent" type="Area2D" parent="." unique_id=168894460 node_paths=PackedStringArray("health_component")]
 collision_layer = 2
 collision_mask = 5
 script = ExtResource("6_3ivwt")
 health_component = NodePath("../HealthComponent")
 contact_damage = 2.0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent" unique_id=59508150]
 position = Vector2(-1, 0)
 shape = SubResource("CircleShape2D_qhs2c")
 
-[node name="RotatorComponent" type="Node" parent="." node_paths=PackedStringArray("target_sprite")]
+[node name="RotatorComponent" type="Node" parent="." unique_id=1383869081 node_paths=PackedStringArray("target_sprite")]
 script = ExtResource("7_3ivwt")
 target_sprite = NodePath("../Sprite2D")
 
-[node name="EnemyMovementComponent" type="Node" parent="."]
+[node name="EnemyMovementComponent" type="Node" parent="." unique_id=1871088675]
 script = ExtResource("8_jew18")
 
-[node name="SplitOnDeathComponent" type="Node" parent="."]
+[node name="SplitOnDeathComponent" type="Node" parent="." unique_id=2092207760]
 script = ExtResource("9_fad10")
 split_enemy_data = ExtResource("10_ghlj2")
 min_radius = 6.0
 max_radius = 12.0
+
+[node name="FloatingHealthBar" parent="." unique_id=1643866179 instance=ExtResource("12_vhb5e")]
+position = Vector2(0, -16)
 
 [connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
 [connection signal="died" from="HealthComponent" to="." method="_on_health_component_died"]

@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://d2608o6gxf224" path="res://src/vfx/particles/fire_trail.tscn" id="5_irrii"]
 [ext_resource type="Script" uid="uid://c0svh84qgdobm" path="res://src/entities/enemies/components/HurtboxComponent.gd" id="5_u43h8"]
 [ext_resource type="Script" uid="uid://wp4r0eq4n6vp" path="res://src/entities/enemies/components/EnemyMovementComponent.gd" id="6_byw5w"]
+[ext_resource type="PackedScene" uid="uid://p24e8j1foa4p" path="res://src/ui/floating_health_bar.tscn" id="8_tygxf"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ft8ul"]
 radius = 6.0
@@ -47,6 +48,9 @@ move_speed = 35.0
 sine_frequency = 2.0
 sine_amplitude = 15.0
 screen_margin = 15.0
+
+[node name="FloatingHealthBar" parent="." unique_id=1643866179 instance=ExtResource("8_tygxf")]
+position = Vector2(0, -8)
 
 [connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
 [connection signal="area_entered" from="HurtboxComponent" to="." method="_on_area_2d_area_entered"]

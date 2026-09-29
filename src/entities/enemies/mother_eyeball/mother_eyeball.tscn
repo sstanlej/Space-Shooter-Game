@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://7my7tjtqvb3p"]
+[gd_scene format=3 uid="uid://7my7tjtqvb3p"]
 
 [ext_resource type="Script" uid="uid://vwa6kpj4j3xy" path="res://src/entities/enemies/components/Enemy.gd" id="1_x84at"]
 [ext_resource type="PackedScene" uid="uid://cdfbi3flgf8ko" path="res://src/vfx/explosion/explosion.tscn" id="2_r1shl"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://cg7lkvn1vocg5" path="res://src/entities/enemies/components/SplitOnDeathComponent.gd" id="9_ehkie"]
 [ext_resource type="Resource" uid="uid://cengj6o63lep3" path="res://src/entities/enemies/tiny_eyeball/TinyEyeballEnemy.tres" id="10_k3ymd"]
 [ext_resource type="Script" uid="uid://b0wo26d3dinat" path="res://src/entities/enemies/components/PeriodicBoostComponent.gd" id="10_wmdpa"]
+[ext_resource type="PackedScene" uid="uid://p24e8j1foa4p" path="res://src/ui/floating_health_bar.tscn" id="11_k3ymd"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_coeow"]
 radius = 12.0415945
@@ -38,59 +39,62 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_k3ymd")
 }],
-"loop": true,
+"loop": 1,
 "name": &"default",
 "speed": 4.0
 }]
 
-[node name="MotherEyeball" type="CharacterBody2D"]
+[node name="MotherEyeball" type="CharacterBody2D" unique_id=66986675]
 collision_layer = 2
 collision_mask = 0
 script = ExtResource("1_x84at")
 death_scene = ExtResource("2_r1shl")
 
-[node name="BloodParticles" parent="." instance=ExtResource("3_bc3mw")]
+[node name="BloodParticles" parent="." unique_id=684991091 instance=ExtResource("3_bc3mw")]
 position = Vector2(4, 0)
 emitting = false
 
-[node name="HurtboxComponent" type="Area2D" parent="."]
+[node name="HurtboxComponent" type="Area2D" parent="." unique_id=2082477254]
 collision_layer = 2
 collision_mask = 5
 script = ExtResource("4_3qdcc")
 contact_damage = 4.0
 metadata/_custom_type_script = "uid://c0svh84qgdobm"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent" unique_id=2062676451]
 shape = SubResource("CircleShape2D_coeow")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1548682127]
 position = Vector2(11, 0)
 sprite_frames = SubResource("SpriteFrames_s0aew")
 autoplay = "default"
 frame_progress = 0.3636767
 
-[node name="HealthComponent" type="Node" parent="."]
+[node name="HealthComponent" type="Node" parent="." unique_id=1985313590]
 script = ExtResource("6_xnf2p")
 max_health = 50
 metadata/_custom_type_script = "uid://cmxkc1l3uevq1"
 
-[node name="EnemyMovementComponent" type="Node" parent="."]
+[node name="EnemyMovementComponent" type="Node" parent="." unique_id=1346866451]
 script = ExtResource("7_3gfao")
 move_speed = 15.0
 sine_frequency = 1.0
 sine_amplitude = 5.0
 metadata/_custom_type_script = "uid://wp4r0eq4n6vp"
 
-[node name="PeriodicBoostComponent" type="Node" parent="."]
+[node name="PeriodicBoostComponent" type="Node" parent="." unique_id=1122475412]
 script = ExtResource("10_wmdpa")
 boost_speed_mult = 2.5
 min_boost_interval = 3.0
 boost_duration = 0.5
 metadata/_custom_type_script = "uid://b0wo26d3dinat"
 
-[node name="SplitOnDeathComponent" type="Node" parent="."]
+[node name="SplitOnDeathComponent" type="Node" parent="." unique_id=1116201101]
 script = ExtResource("9_ehkie")
 split_enemy_data = ExtResource("10_k3ymd")
 split_count = 10
 max_radius = 50.0
 metadata/_custom_type_script = "uid://cg7lkvn1vocg5"
+
+[node name="FloatingHealthBar" parent="." unique_id=1643866179 instance=ExtResource("11_k3ymd")]
+position = Vector2(0, -14)

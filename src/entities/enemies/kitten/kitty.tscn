@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://cpdw2oawl2xk3"]
+[gd_scene format=3 uid="uid://cpdw2oawl2xk3"]
 
 [ext_resource type="Script" uid="uid://vwa6kpj4j3xy" path="res://src/entities/enemies/components/Enemy.gd" id="1_5llr8"]
 [ext_resource type="Texture2D" uid="uid://dn1o3kmc3drxn" path="res://src/entities/enemies/kitten/kitty.png" id="2_j6oyg"]
@@ -8,38 +8,39 @@
 [ext_resource type="Script" uid="uid://cnbwlgjmc0w46" path="res://src/entities/enemies/components/ShootingComponent.gd" id="6_o2k17"]
 [ext_resource type="PackedScene" uid="uid://wikdcl5aogg5" path="res://src/entities/projectiles/enemy_projectile.tscn" id="7_emw57"]
 [ext_resource type="Script" uid="uid://wp4r0eq4n6vp" path="res://src/entities/enemies/components/EnemyMovementComponent.gd" id="7_j6oyg"]
+[ext_resource type="PackedScene" uid="uid://p24e8j1foa4p" path="res://src/ui/floating_health_bar.tscn" id="9_gyhyp"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_w2akj"]
 radius = 9.0
 height = 18.0
 
-[node name="Kitty" type="CharacterBody2D"]
+[node name="Kitty" type="CharacterBody2D" unique_id=139192628]
 collision_layer = 2
 collision_mask = 0
 script = ExtResource("1_5llr8")
 death_scene = ExtResource("2_q2cwq")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=639332369]
 z_index = 1
 texture = ExtResource("2_j6oyg")
 
-[node name="HealthComponent" type="Node2D" parent="."]
+[node name="HealthComponent" type="Node2D" parent="." unique_id=619810294]
 script = ExtResource("4_ji5u0")
 max_health = 20
 
-[node name="HurtboxComponent" type="Area2D" parent="." node_paths=PackedStringArray("health_component")]
+[node name="HurtboxComponent" type="Area2D" parent="." unique_id=1244390704 node_paths=PackedStringArray("health_component")]
 collision_layer = 2
 collision_mask = 5
 script = ExtResource("4_5llr8")
 health_component = NodePath("../HealthComponent")
 contact_damage = 2.0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent" unique_id=1866375635]
 position = Vector2(2, 0)
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_w2akj")
 
-[node name="ShootingComponent" type="Node2D" parent="."]
+[node name="ShootingComponent" type="Node2D" parent="." unique_id=2121111997]
 position = Vector2(-12, 0)
 script = ExtResource("6_o2k17")
 bullet_scene = ExtResource("7_emw57")
@@ -48,11 +49,14 @@ burst_count = 5
 burst_delay = 0.3
 shot_directions = Array[Vector2]([Vector2(-1, 0)])
 
-[node name="EnemyMovementComponent" type="Node" parent="."]
+[node name="EnemyMovementComponent" type="Node" parent="." unique_id=237383454]
 script = ExtResource("7_j6oyg")
 mode = 1
 sine_frequency = 2.0
 sine_amplitude = 35.0
+
+[node name="FloatingHealthBar" parent="." unique_id=1643866179 instance=ExtResource("9_gyhyp")]
+position = Vector2(0, -12)
 
 [connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
 [connection signal="died" from="HealthComponent" to="." method="_on_health_component_died"]

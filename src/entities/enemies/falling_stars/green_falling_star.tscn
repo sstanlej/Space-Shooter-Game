@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://c0svh84qgdobm" path="res://src/entities/enemies/components/HurtboxComponent.gd" id="7_pf1dx"]
 [ext_resource type="Script" uid="uid://dsmssivreocgf" path="res://src/entities/enemies/components/RotatorComponent.gd" id="8_2uuug"]
 [ext_resource type="Script" uid="uid://wp4r0eq4n6vp" path="res://src/entities/enemies/components/EnemyMovementComponent.gd" id="9_3xq47"]
+[ext_resource type="PackedScene" uid="uid://p24e8j1foa4p" path="res://src/ui/floating_health_bar.tscn" id="10_fa57r"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_elnbm"]
 shader = ExtResource("4_w5b31")
@@ -53,6 +54,9 @@ rotation_speed = 1.0
 script = ExtResource("9_3xq47")
 move_speed = 120.0
 direction = Vector2(-0.5, 1)
+
+[node name="FloatingHealthBar" parent="." unique_id=1643866179 instance=ExtResource("10_fa57r")]
+position = Vector2(0, -8)
 
 [connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
 [connection signal="died" from="HealthComponent" to="." method="_on_health_component_died"]

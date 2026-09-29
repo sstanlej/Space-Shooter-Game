@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://p24e8j1foa4p"]
+
+[ext_resource type="Script" uid="uid://lnoh5vys7ygw" path="res://src/ui/floating_health_bar.gd" id="1_c8uos"]
+[ext_resource type="Texture2D" uid="uid://wpwhmb7syi5i" path="res://src/ui/sprites/health_bar/small_health_bar_under.png" id="1_l5v6m"]
+[ext_resource type="Texture2D" uid="uid://gwlvtcxpk226" path="res://src/ui/sprites/health_bar/small_health_bar_progress.png" id="2_20srd"]
+[ext_resource type="FontFile" uid="uid://cmhoggvsfswfn" path="res://assets/fonts/Tiny5-Regular.ttf" id="3_20srd"]
+
+[node name="FloatingHealthBar" type="Node2D" unique_id=1643866179]
+script = ExtResource("1_c8uos")
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="." unique_id=8895054]
+custom_maximum_size = Vector2(8, 1)
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -4.0
+offset_right = 4.0
+offset_bottom = 1.0
+grow_horizontal = 2
+step = 0.1
+value = 33.0
+texture_under = ExtResource("1_l5v6m")
+texture_progress = ExtResource("2_20srd")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=1943954023]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -22.0
+offset_right = 20.0
+offset_bottom = 18.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0.75686276, 0.9019608, 0.7294118, 1)
+theme_override_fonts/normal_font = ExtResource("3_20srd")
+theme_override_font_sizes/normal_font_size = 4
+bbcode_enabled = true
+text = "99 / 99"
+horizontal_alignment = 1
+vertical_alignment = 1

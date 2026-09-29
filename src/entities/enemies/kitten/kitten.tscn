@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://cibqa0xgq4v3f"]
+[gd_scene format=3 uid="uid://cibqa0xgq4v3f"]
 
 [ext_resource type="Script" uid="uid://vwa6kpj4j3xy" path="res://src/entities/enemies/components/Enemy.gd" id="1_piyax"]
 [ext_resource type="Shader" uid="uid://wr7raxdl2m7y" path="res://src/vfx/shaders/hit_flash.gdshader" id="2_um8jn"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://wp4r0eq4n6vp" path="res://src/entities/enemies/components/EnemyMovementComponent.gd" id="6_ec7db"]
 [ext_resource type="Script" uid="uid://cg7lkvn1vocg5" path="res://src/entities/enemies/components/SplitOnDeathComponent.gd" id="7_fe4t0"]
 [ext_resource type="Resource" uid="uid://cvosf5m658nc1" path="res://src/entities/enemies/kitten/KittyEnemy.tres" id="8_w6l75"]
+[ext_resource type="PackedScene" uid="uid://p24e8j1foa4p" path="res://src/ui/floating_health_bar.tscn" id="9_w6l75"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_rrooj"]
 shader = ExtResource("2_um8jn")
@@ -45,7 +46,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_w34fu")
 }],
-"loop": true,
+"loop": 1,
 "name": &"default",
 "speed": 9.0
 }]
@@ -54,43 +55,46 @@ animations = [{
 radius = 5.0
 height = 14.0
 
-[node name="Kitten" type="CharacterBody2D"]
+[node name="Kitten" type="CharacterBody2D" unique_id=1833476753]
 collision_layer = 2
 collision_mask = 0
 script = ExtResource("1_piyax")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1882083151]
 material = SubResource("ShaderMaterial_rrooj")
 sprite_frames = SubResource("SpriteFrames_l70hh")
 autoplay = "default"
 frame_progress = 0.18604802
 
-[node name="HealthComponent" type="Node2D" parent="."]
+[node name="HealthComponent" type="Node2D" parent="." unique_id=1776723509]
 script = ExtResource("4_6iak6")
 max_health = 1
 
-[node name="HurtboxComponent" type="Area2D" parent="." node_paths=PackedStringArray("health_component")]
+[node name="HurtboxComponent" type="Area2D" parent="." unique_id=1855234104 node_paths=PackedStringArray("health_component")]
 collision_layer = 2
 collision_mask = 5
 script = ExtResource("5_piyax")
 health_component = NodePath("../HealthComponent")
 contact_damage = 1.0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent" unique_id=279060778]
 position = Vector2(0, 3)
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_w2akj")
 
-[node name="EnemyMovementComponent" type="Node" parent="."]
+[node name="EnemyMovementComponent" type="Node" parent="." unique_id=648601731]
 script = ExtResource("6_ec7db")
 
-[node name="SplitOnDeathComponent" type="Node" parent="."]
+[node name="SplitOnDeathComponent" type="Node" parent="." unique_id=642403436]
 script = ExtResource("7_fe4t0")
 split_enemy_data = ExtResource("8_w6l75")
 split_count = 1
 min_radius = 0.0
 max_radius = 0.0
 suppress_death_effect = true
+
+[node name="FloatingHealthBar" parent="." unique_id=1643866179 instance=ExtResource("9_w6l75")]
+position = Vector2(0, -10)
 
 [connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
 [connection signal="died" from="HealthComponent" to="." method="_on_health_component_died"]

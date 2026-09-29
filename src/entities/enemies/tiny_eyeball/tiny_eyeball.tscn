@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://bq47ag5rb2pdm"]
+[gd_scene format=3 uid="uid://bq47ag5rb2pdm"]
 
 [ext_resource type="Script" uid="uid://vwa6kpj4j3xy" path="res://src/entities/enemies/components/Enemy.gd" id="1_pc3mq"]
 [ext_resource type="PackedScene" uid="uid://cdfbi3flgf8ko" path="res://src/vfx/explosion/explosion.tscn" id="2_awglt"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://cmxkc1l3uevq1" path="res://src/entities/enemies/components/HealthComponent.gd" id="6_ikc4m"]
 [ext_resource type="Script" uid="uid://wp4r0eq4n6vp" path="res://src/entities/enemies/components/EnemyMovementComponent.gd" id="7_y2uq4"]
 [ext_resource type="Script" uid="uid://di82j5c51373p" path="res://src/entities/enemies/components/RandomYDriftComponent.gd" id="8_kmg5k"]
+[ext_resource type="PackedScene" uid="uid://p24e8j1foa4p" path="res://src/ui/floating_health_bar.tscn" id="9_l0o6m"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_coeow"]
 radius = 5.0
@@ -36,43 +37,43 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_pu8ip")
 }],
-"loop": true,
+"loop": 1,
 "name": &"default",
 "speed": 4.0
 }]
 
-[node name="TinyEyeball" type="CharacterBody2D"]
+[node name="TinyEyeball" type="CharacterBody2D" unique_id=679611087]
 collision_layer = 2
 collision_mask = 0
 script = ExtResource("1_pc3mq")
 death_scene = ExtResource("2_awglt")
 
-[node name="BloodParticles" parent="." instance=ExtResource("3_qyreg")]
+[node name="BloodParticles" parent="." unique_id=866856700 instance=ExtResource("3_qyreg")]
 position = Vector2(4, 0)
 amount = 12
 
-[node name="HurtboxComponent" type="Area2D" parent="."]
+[node name="HurtboxComponent" type="Area2D" parent="." unique_id=1251828604]
 collision_layer = 2
 collision_mask = 5
 script = ExtResource("4_kgnrx")
 contact_damage = 1.0
 metadata/_custom_type_script = "uid://c0svh84qgdobm"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent" unique_id=1085891761]
 shape = SubResource("CircleShape2D_coeow")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=2105744618]
 position = Vector2(3, 0)
 sprite_frames = SubResource("SpriteFrames_s0aew")
 autoplay = "default"
 frame_progress = 0.31007063
 
-[node name="HealthComponent" type="Node" parent="."]
+[node name="HealthComponent" type="Node" parent="." unique_id=1084234299]
 script = ExtResource("6_ikc4m")
 max_health = 5
 metadata/_custom_type_script = "uid://cmxkc1l3uevq1"
 
-[node name="EnemyMovementComponent" type="Node" parent="."]
+[node name="EnemyMovementComponent" type="Node" parent="." unique_id=1642013539]
 script = ExtResource("7_y2uq4")
 mode = 1
 move_speed = 25.0
@@ -80,9 +81,11 @@ sine_frequency = 1.0
 sine_amplitude = 25.0
 metadata/_custom_type_script = "uid://wp4r0eq4n6vp"
 
-[node name="RandomYDriftComponent" type="Node" parent="."]
+[node name="RandomYDriftComponent" type="Node" parent="." unique_id=988511385]
 script = ExtResource("8_kmg5k")
 min_interval = 1.0
 max_interval = 5.0
-lerp_speed = 2.0
 metadata/_custom_type_script = "uid://di82j5c51373p"
+
+[node name="FloatingHealthBar" parent="." unique_id=1643866179 instance=ExtResource("9_l0o6m")]
+position = Vector2(0, -7)
