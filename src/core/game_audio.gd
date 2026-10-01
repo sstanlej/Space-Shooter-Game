@@ -24,10 +24,10 @@ func setup_music_player() -> void:
 	music_player.process_mode = Node.PROCESS_MODE_ALWAYS 
 	add_child(music_player)
 
-	# if background_music:
-	# 	play_music(background_music)
+	if background_music:
+		play_music(background_music)
 
-func play_music(stream: AudioStream, volume_db: float = -15.0) -> void:
+func play_music(stream: AudioStream, volume_db: float = -25.0) -> void:
 	if not stream or not music_player:
 		return
 	music_player.stream = stream
