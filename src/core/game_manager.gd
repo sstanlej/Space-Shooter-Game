@@ -400,6 +400,9 @@ func _on_wave_cooldown_timer_timeout() -> void:
 		start_next_wave()
 
 func _on_player_died() -> void:
+	if camera_frame:
+		camera_frame.shake(5, 2)
+	GlobalAudio.play_long_explosion()
 	game_over()
 
 func _on_player_health_changed(current_hp: int, _max_hp: int) -> void:
@@ -407,7 +410,8 @@ func _on_player_health_changed(current_hp: int, _max_hp: int) -> void:
 		ui_manager.update_health_bar(current_hp)
 
 func _on_player_damage_taken() -> void:
-	pass
+	if camera_frame:
+		camera_frame.shake(5.0, 0.3)
 
 func _on_deck_overview_closed() -> void:
 	change_state(GameState.BETWEEN_WAVES)
