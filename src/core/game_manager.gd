@@ -126,13 +126,16 @@ func wait_to_start() -> void:
 
 	_setup_player_for_menu()
 	_setup_initial_location()
-	_show_start_prompt()
+
+	if ui_manager:
+		ui_manager.show_start_prompt()
 
 func start_game() -> void:
 	is_player_alive = true
 	change_state(GameState.TRANSITIONING)
 
-	_prepare_ui_for_start()
+	if ui_manager:
+		ui_manager.prepare_for_game_start()
 
 	if intro_sequence:
 		intro_sequence.play_sequence()
@@ -146,7 +149,9 @@ func start_wave() -> void:
 	var current_loc = campaign_manager.get_current_location() if campaign_manager else null
 	var current_wave = campaign_manager.current_wave if campaign_manager else 1
 
-	_setup_wave_ui(wave_def, current_loc, current_wave)
+	if ui_manager:
+		ui_manager.show_wave_start(current_wave, wave_def, current_loc)
+
 	change_state(GameState.IN_WAVE)
 	wave_started.emit(current_wave)
 
@@ -165,7 +170,11 @@ func finish_wave() -> void:
 	wave_ended.emit(current_wave)
 	change_state(GameState.BETWEEN_WAVES)
 
-	_update_wave_finished_ui(is_act_final, act_name)
+	var points = progression_manager.get_upgrade_points() if progression_manager else 0
+	var is_maxed = not shop_manager.has_available_upgrades(player) if (shop_manager and player) else false
+
+	if ui_manager:
+		ui_manager.show_wave_finished(is_act_final, act_name, points, is_maxed)
 
 	if spawner and spawner.has_method("stop_spawning"):
 		spawner.stop_spawning()
@@ -183,7 +192,7 @@ func start_next_wave() -> void:
 func open_shop() -> void:
 	if current_state == GameState.BETWEEN_WAVES:
 		change_state(GameState.IN_SHOP)
-		if ui_manager and ui_manager.has_method("hide_controls_prompt"):
+		if ui_manager:
 			ui_manager.hide_controls_prompt()
 		if shop_ui and shop_ui.has_method("show_shop"):
 			shop_ui.show_shop()
@@ -214,8 +223,8 @@ func toggle_pause() -> void:
 			spawner.pause_timers(true)
 
 		change_state(GameState.PAUSED)
-		if ui_manager and ui_manager.has_method("show_notification"):
-			ui_manager.show_notification("[color=gold]PAUSED[/color]", "[color=gray]Press [/color][color=gold][ESC][/color][color=gray] to Resume[/color]", 0.0)
+		if ui_manager:
+			ui_manager.show_pause_state(true)
 
 	elif current_state == GameState.PAUSED:
 		change_state(state_before_pause)
@@ -223,8 +232,8 @@ func toggle_pause() -> void:
 			_resume_cooldown_timer()
 		if spawner and spawner.has_method("pause_timers"):
 			spawner.pause_timers(false)
-		if ui_manager and ui_manager.has_method("hide_notification"):
-			ui_manager.hide_notification(0.4)
+		if ui_manager:
+			ui_manager.show_pause_state(false)
 
 func game_over() -> void:
 	is_player_alive = false
@@ -232,12 +241,14 @@ func game_over() -> void:
 	print("\n[GameManager] GAME OVER! Player eliminated at Wave %d.\n" % current_wave)
 
 	change_state(GameState.GAME_OVER)
-	if ui_manager and ui_manager.has_method("hide_enemies_left_label"):
-		ui_manager.hide_enemies_left_label(0.3)
 	if spawner and spawner.has_method("pause_timers"):
 		spawner.pause_timers(true)
-	
-	_show_game_over_ui(current_wave)
+
+	var score = progression_manager.get_score() if progression_manager else 0.0
+	var distance = progression_manager.get_distance() if progression_manager else 0.0
+
+	if ui_manager:
+		ui_manager.show_game_over(current_wave, score, distance)
 
 func reload_scene() -> void:
 	get_tree().reload_current_scene()
@@ -261,22 +272,9 @@ func _setup_initial_location() -> void:
 		if initial_loc:
 			location_manager.set_initial_location(initial_loc)
 
-func _show_start_prompt() -> void:
-	if ui_manager and ui_manager.has_method("show_notification"):
-		ui_manager.show_notification(
-			"[color=crimson]SPACE SHOOTER[/color]", 
-			"[color=gray]PRESS [/color][color=gold][SPACE][/color][color=gray] TO ESCAPE[/color]", 
-			0.0
-		)
-
-func _prepare_ui_for_start() -> void:
-	if ui_manager and ui_manager.has_method("hide_notification"):
-		ui_manager.hide_notification(0.2)
-
 func _initialize_game_run() -> void:
 	if ui_manager:
-		if ui_manager.has_method("show_hud"):
-			ui_manager.show_hud()
+		ui_manager.show_hud()
 		if player and player.health_component:
 			var player_hc = player.health_component
 			var max_hp = int(player_hc.get_max_health()) if player_hc.has_method("get_max_health") else 3
@@ -286,62 +284,13 @@ func _initialize_game_run() -> void:
 	if progression_manager and progression_manager.has_method("reset_progress"):
 		progression_manager.reset_progress()
 
-func _setup_wave_ui(wave_def: WaveDefinition, current_loc: LocationData, current_wave: int) -> void:
-	if not ui_manager:
-		return
-
-	if ui_manager.has_method("fade_in_label"):
-		ui_manager.fade_in_label(ui_manager.enemies_left_label, ui_manager.enemies_label_tween, 0.5)
-
-	if ui_manager.has_method("hide_controls_prompt"):
-		ui_manager.hide_controls_prompt()
-
-	if ui_manager.has_method("show_hud"):
-		ui_manager.show_hud()
-
-	if not wave_def or not ui_manager.has_method("show_notification"):
-		return
-
-	if wave_def.banner_title != "":
-		ui_manager.show_notification(wave_def.banner_title, wave_def.banner_subtitle, 2.2)
-	elif wave_def.boss_scene != null and wave_def.enemy_count <= 0:
-		var boss_name = wave_def.boss_enemy_data.enemy_name if wave_def.boss_enemy_data else "BOSS"
-		ui_manager.show_notification("[color=red]BOSS BATTLE[/color]", "[color=gold]" + boss_name + "[/color]", 2.0)
-	else:
-		var loc_name = current_loc.location_name if current_loc else "Sector"
-		ui_manager.show_notification("[color=gold]WAVE " + str(current_wave) + "[/color]", "[color=gray]" + loc_name + "[/color]", 1.2)
-
-func _update_wave_finished_ui(is_act_final: bool, act_name: String) -> void:
-	_refresh_shop_controls()
-
-	if not ui_manager:
-		return
-
-	var points = progression_manager.get_upgrade_points() if progression_manager else 0
-	if ui_manager.has_method("show_notification"):
-		var subtitle = "Press [color=gold][B][/color] to open the SHOP!" if points > 0 else ""
-		if is_act_final:
-			ui_manager.show_notification("[color=gold]" + act_name.to_upper() + " CLEARED![/color]", subtitle, 2.5)
-		else:
-			ui_manager.show_notification("[color=gold]WAVE FINISHED![/color]", subtitle, 1.5)
-
-	if ui_manager.has_method("fade_out_label"):
-		ui_manager.fade_out_label(ui_manager.enemies_left_label, ui_manager.enemies_label_tween, 0.5)
-
-	if ui_manager.has_method("show_controls_prompt"):
-		ui_manager.show_controls_prompt()
-
 func _refresh_shop_controls() -> void:
 	var points = progression_manager.get_upgrade_points() if progression_manager else 0
-	var is_fully_maxed = false
-	if shop_manager and player:
-		is_fully_maxed = not shop_manager.has_available_upgrades(player)
+	var is_maxed = not shop_manager.has_available_upgrades(player) if (shop_manager and player) else false
 
 	if ui_manager:
-		if ui_manager.has_method("update_shop_controls_display"):
-			ui_manager.update_shop_controls_display(points, is_fully_maxed)
-		if ui_manager.has_method("show_controls_prompt"):
-			ui_manager.show_controls_prompt()
+		ui_manager.update_shop_controls_display(points, is_maxed)
+		ui_manager.show_controls_prompt()
 
 func _check_upcoming_location_transition() -> void:
 	if campaign_manager and location_manager:
@@ -349,19 +298,6 @@ func _check_upcoming_location_transition() -> void:
 		var current_loc = campaign_manager.get_current_location()
 		if upcoming_loc and upcoming_loc != current_loc:
 			location_manager.transition_to_location(upcoming_loc)
-
-func _show_game_over_ui(current_wave: int) -> void:
-	if not ui_manager:
-		return
-	var score: float = progression_manager.get_score() if progression_manager else 0.0
-	var distance: float = progression_manager.get_distance() if progression_manager else 0.0
-	ui_manager.hide_hud()
-	if ui_manager.has_method("update_game_over_stats"):
-		ui_manager.update_game_over_stats(current_wave, score, distance)
-	if ui_manager.has_method("show_game_over_screen"):
-		ui_manager.show_game_over_screen()
-	if ui_manager.has_method("show_notification"):
-		ui_manager.show_notification("[color=red]GAME OVER[/color]", "[color=gray]Press [/color][color=gold][R][/color][color=gray] to Restart[/color]", 0.0)
 
 func _pause_cooldown_timer() -> void:
 	if wave_cooldown_timer and not wave_cooldown_timer.is_stopped():
@@ -404,10 +340,6 @@ func _on_player_died() -> void:
 		camera_frame.shake(5, 2)
 	GlobalAudio.play_long_explosion()
 	game_over()
-
-func _on_player_health_changed(current_hp: int, _max_hp: int) -> void:
-	if ui_manager:
-		ui_manager.update_health_bar(current_hp)
 
 func _on_player_damage_taken() -> void:
 	if camera_frame:

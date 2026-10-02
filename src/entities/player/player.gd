@@ -65,6 +65,13 @@ func _physics_process(delta: float) -> void:
 	if movement_component:
 		movement_component.process_movement(delta)
 
+func set_active_in_game(active: bool) -> void:
+	is_in_game = active
+	set_process(active)
+	set_physics_process(active)
+	if attack_controller:
+		attack_controller.set_process(active)
+
 func apply_knockback(knockback_vector: Vector2, duration: float = 0.2) -> void:
 	if not is_in_game:
 		return
@@ -87,8 +94,6 @@ func apply_knockback(knockback_vector: Vector2, duration: float = 0.2) -> void:
 		is_being_knocked_back = false
 	)
 
-# --- PRZEJŚCIA KAMERY / EKRANU ---
-
 func move_to_game_view() -> Tween:
 	var tw = create_tween()
 	tw.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
@@ -97,11 +102,9 @@ func move_to_game_view() -> Tween:
 	return tw
 
 func move_to_menu_view() -> void:
-	is_in_game = false
+	set_active_in_game(false)
 	velocity = Vector2.ZERO
 	position = Vector2(menu_pos_x, 60.0)
-
-# --- TRYB SPECTATORA ---
 
 func toggle_spectator_mode() -> bool:
 	set_spectator_mode(!is_spectator)
@@ -137,8 +140,6 @@ func set_hurtboxes_enabled(enabled: bool) -> void:
 		if child is Area2D:
 			child.set_deferred("monitoring", enabled)
 			child.set_deferred("monitorable", enabled)
-
-# --- SYGNAŁY I GETTERY ---
 
 func _on_player_died() -> void:
 	if is_spectator:

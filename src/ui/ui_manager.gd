@@ -62,6 +62,63 @@ func _ready() -> void:
 		boss_bar_container.visible = false
 	show_start_screen()
 
+# --- HIGH-LEVEL FLOW METHODS ---
+
+func show_start_prompt() -> void:
+	show_notification(
+		"[color=crimson]SPACE SHOOTER[/color]", 
+		"[color=gray]PRESS [/color][color=gold][SPACE][/color][color=gray] TO ESCAPE[/color]", 
+		0.0
+	)
+
+func prepare_for_game_start() -> void:
+	hide_notification(0.2)
+
+func show_wave_start(wave_number: int, wave_def: WaveDefinition, location: LocationData) -> void:
+	fade_in_label(enemies_left_label, enemies_label_tween, 0.5)
+	hide_controls_prompt()
+	show_hud()
+	_display_wave_notification(wave_number, wave_def, location)
+
+func show_wave_finished(is_act_final: bool, act_name: String, points: int, is_shop_maxed: bool) -> void:
+	update_shop_controls_display(points, is_shop_maxed)
+	show_controls_prompt()
+	fade_out_label(enemies_left_label, enemies_label_tween, 0.5)
+
+	var subtitle = "Press [color=gold][B][/color] to open the SHOP!" if points > 0 else ""
+	if is_act_final:
+		show_notification("[color=gold]" + act_name.to_upper() + " CLEARED![/color]", subtitle, 2.5)
+	else:
+		show_notification("[color=gold]WAVE FINISHED![/color]", subtitle, 1.5)
+
+func show_game_over(wave: int, score: float, distance: float) -> void:
+	fade_out_label(enemies_left_label, enemies_label_tween, 0.3)
+	hide_hud()
+	update_game_over_stats(wave, score, distance)
+	show_game_over_screen()
+	show_notification("[color=red]GAME OVER[/color]", "[color=gray]Press [/color][color=gold][R][/color][color=gray] to Restart[/color]", 0.0)
+
+func show_pause_state(is_paused: bool) -> void:
+	if is_paused:
+		show_notification("[color=gold]PAUSED[/color]", "[color=gray]Press [/color][color=gold][ESC][/color][color=gray] to Resume[/color]", 0.0)
+	else:
+		hide_notification(0.4)
+
+func _display_wave_notification(wave_number: int, wave_def: WaveDefinition, location: LocationData) -> void:
+	if not wave_def:
+		return
+
+	if wave_def.banner_title != "":
+		show_notification(wave_def.banner_title, wave_def.banner_subtitle, 2.2)
+	elif wave_def.boss_scene != null and wave_def.enemy_count <= 0:
+		var boss_name = wave_def.boss_enemy_data.enemy_name if wave_def.boss_enemy_data else "BOSS"
+		show_notification("[color=red]BOSS BATTLE[/color]", "[color=gold]" + boss_name + "[/color]", 2.0)
+	else:
+		var loc_name = location.location_name if location else "Sector"
+		show_notification("[color=gold]WAVE " + str(wave_number) + "[/color]", "[color=gray]" + loc_name + "[/color]", 1.2)
+
+# --- PANEL CONTROLS ---
+
 func show_start_screen() -> void:
 	if hud_panel: hud_panel.hide()
 	if intermission_panel: intermission_panel.hide()
@@ -101,6 +158,8 @@ func show_pause_menu() -> void:
 func hide_pause_menu() -> void:
 	if pause_panel: pause_panel.hide()
 
+# --- HEALTH SYSTEM ---
+
 func setup_health_bar(max_hp: int, current_hp: int) -> void:
 	if health_bar:
 		health_bar.max_value = max_hp
@@ -113,7 +172,6 @@ func update_health_bar(current_hp: int, max_hp: int = -1) -> void:
 	if not health_bar:
 		return
 
-	# Jeśli podano max_hp, aktualizujemy limit paska
 	if max_hp > 0:
 		health_bar.max_value = max_hp
 		if damage_bar:
@@ -178,10 +236,10 @@ func shake_health_bar() -> void:
 	shake_tween.tween_property(health_bar, "position", health_bar_base_pos + Vector2(-1, 0), 0.06)
 	shake_tween.tween_property(health_bar, "position", health_bar_base_pos, 0.04)
 
+# --- EXPERIENCE SYSTEM ---
+
 func update_experience_bar(current_xp: float, animate: bool = true) -> void:
-	if not experience_bar:
-		return
-	if is_leveling_up:
+	if not experience_bar or is_leveling_up:
 		return
 
 	if xp_tween and xp_tween.is_running():
@@ -203,10 +261,8 @@ func animate_level_up(old_max_xp: int, new_level: int, new_max_xp: int, current_
 	if xp_tween and xp_tween.is_running():
 		xp_tween.kill()
 
-	# Cząsteczki i dźwięk
 	play_level_up_effect()
 
-	# Odpalenie kaskady unoszących się napisów LEVEL UP!
 	for i in range(levels_gained):
 		var delay = i * 0.12
 		var offset_x = (i - (levels_gained - 1) / 2.0) * 10.0 if levels_gained > 1 else 0.0
@@ -215,12 +271,10 @@ func animate_level_up(old_max_xp: int, new_level: int, new_max_xp: int, current_
 	xp_tween = create_tween()
 	experience_bar.max_value = old_max_xp
 
-	# FAZA 1: Dobicie do końca
 	xp_tween.tween_property(experience_bar, "value", float(old_max_xp), 0.12)\
 		.set_trans(Tween.TRANS_QUAD)\
 		.set_ease(Tween.EASE_OUT)
 
-	# FAZA 2: Kulminacja (Flash paska + Pop etykiety)
 	xp_tween.tween_callback(func():
 		experience_bar.modulate = Color(2.5, 2.5, 2.5, 1.0)
 		experience_bar.pivot_offset = experience_bar.size / 2.0
@@ -244,19 +298,17 @@ func animate_level_up(old_max_xp: int, new_level: int, new_max_xp: int, current_
 		experience_bar.value = 0
 	)
 
-	# FAZA 3: Powrót koloru do normy
 	xp_tween.tween_property(experience_bar, "modulate", Color.WHITE, 0.1)
 
-	# FAZA 4: Wlanie nadmiarowego EXP
 	xp_tween.tween_property(experience_bar, "value", float(current_xp), 0.35)\
 		.set_trans(Tween.TRANS_CUBIC)\
 		.set_ease(Tween.EASE_OUT)
 
-	# FAZA 5: Odblokowanie flagi i aktualizacja etykiety
 	xp_tween.tween_callback(func():
 		update_experience_label(new_level, current_xp, new_max_xp)
 		is_leveling_up = false
 	)
+
 func spawn_floating_level_up(delay: float = 0.0, offset_x: float = 0.0) -> void:
 	if not experience_bar or not hud_panel:
 		return
@@ -296,21 +348,16 @@ func spawn_floating_level_up(delay: float = 0.0, offset_x: float = 0.0) -> void:
 		float_tween.tween_interval(delay)
 		float_tween.tween_callback(func(): label.modulate.a = 1.0)
 
-	# Wymuszamy pełny tryb równoległy dla wszystkich kolejnych właściwości:
 	float_tween.set_parallel(true)
-
-	# 1. Agresywny wystrzał i wyhamowanie
 	float_tween.tween_property(label, "position:y", start_pos.y - 24.0, 0.75)\
 		.set_trans(Tween.TRANS_EXPO)\
 		.set_ease(Tween.EASE_OUT)
 
-	# 2. Zanikanie dokładnie w trakcie lotu (znika całkowicie w 0.38s)
 	float_tween.tween_property(label, "modulate:a", 0.0, 0.5)\
 		.set_delay(0.2)\
 		.set_trans(Tween.TRANS_SINE)\
 		.set_ease(Tween.EASE_IN)
 
-	# 3. chain() czeka na zakończenie dłuższego z nich (0.48s) i bezpiecznie usuwa obiekt
 	float_tween.chain().tween_callback(label.queue_free)
 
 func play_level_up_effect() -> void:
@@ -329,6 +376,8 @@ func update_experience_label(level: int, current_xp: float, max_xp: float) -> vo
 	if experience_label:
 		experience_label.text = "[center]LVL [color=#e4f1f8]%d[/color]    %d / %d[/center]" % [level, int(current_xp), int(max_xp)]
 
+# --- STATS LABELS ---
+
 func update_distance_label(distance: float) -> void:
 	if distance_label:
 		distance_label.text = "[center]" + str("%.0f" % distance) + " km"
@@ -341,6 +390,20 @@ func update_upgrade_points_label(points: int) -> void:
 	if upgrade_points_label:
 		upgrade_points_label.text = "Points: " + str(points)
 	update_shop_controls_display(points)
+
+func update_game_over_stats(wave: int, score: float, distance: float) -> void:
+	if final_wave_label:
+		final_wave_label.text = "[center][color=gray]Reached Wave: [/color][color=gold]" + str(wave) + "[/color][/center]"
+	if final_score_label:
+		final_score_label.text = "[center][color=gray]Final Score: [/color][color=gold]" + str(int(score)) + "[/color][/center]"
+	if final_distance_label:
+		final_distance_label.text = "[center][color=gray]Distance: [/color][color=gold]" + str(int(distance)) + " km[/color][/center]"
+
+func update_enemies_left_label(count: int) -> void:
+	if enemies_left_label:
+		enemies_left_label.text = "[right]ENEMIES LEFT: [color=gold]" + str(count) + "[/color][/right]"
+
+# --- NOTIFICATIONS & TRANSITIONS ---
 
 func show_notification(title_text: String, subtitle_text: String = "", duration: float = 2.5) -> void:
 	if not notifications_container or not title_label:
@@ -379,18 +442,6 @@ func hide_notification(fade_duration: float = 0.5) -> void:
 	title_tween.tween_property(notifications_container, "modulate:a", 0.0, fade_duration)
 	title_tween.tween_callback(notifications_container.hide)
 
-func update_game_over_stats(wave: int, score: float, distance: float) -> void:
-	if final_wave_label:
-		final_wave_label.text = "[center][color=gray]Reached Wave: [/color][color=gold]" + str(wave) + "[/color][/center]"
-	if final_score_label:
-		final_score_label.text = "[center][color=gray]Final Score: [/color][color=gold]" + str(int(score)) + "[/color][/center]"
-	if final_distance_label:
-		final_distance_label.text = "[center][color=gray]Distance: [/color][color=gold]" + str(int(distance)) + " km[/color][/center]"
-
-func update_enemies_left_label(count: int) -> void:
-	if enemies_left_label:
-		enemies_left_label.text = "[right]ENEMIES LEFT: [color=gold]" + str(count) + "[/color][/right]"
-
 func fade_in_label(label: RichTextLabel, label_tween: Tween, duration: float = 0.5) -> void:
 	if not label:
 		return
@@ -411,7 +462,7 @@ func fade_out_label(label: RichTextLabel, label_tween: Tween, duration: float = 
 		.set_ease(Tween.EASE_IN)
 	label_tween.tween_callback(label.hide)
 
-# --- KONTROLA I ANIMACJA ETYKIET STEROWANIA (SHOP / DECK) ---
+# --- CONTROLS PROMPT (SHOP / DECK) ---
 
 func update_shop_controls_display(points: int, is_maxed_out: bool = false) -> void:
 	if not shop_controls_label:
@@ -419,7 +470,6 @@ func update_shop_controls_display(points: int, is_maxed_out: bool = false) -> vo
 
 	if points > 0:
 		shop_controls_label.text = "[left][color=gold][B][/color] SHOP [color=gold](%d)[/color][/left]" % points
-		# Jeśli gracz jest wymaksowany, nie pozwalamy na pulsowanie nawet przy posiadanych punktach
 		if is_maxed_out:
 			stop_shop_pulse()
 		else:
@@ -433,7 +483,6 @@ func start_shop_pulse() -> void:
 		return
 
 	shop_pulse_tween = create_tween().set_loops()
-	# Płynne pulsowanie przezroczystości tekstu (1.0 -> 0.25 -> 1.0)
 	shop_pulse_tween.tween_property(shop_controls_label, "self_modulate:a", 0.25, 0.35)\
 		.set_trans(Tween.TRANS_SINE)\
 		.set_ease(Tween.EASE_IN_OUT)
@@ -480,24 +529,23 @@ func fade_in_hud(duration: float = 0.25) -> void:
 	hud_fade_tween.tween_property(hud_panel, "modulate:a", 1.0, duration)\
 		.set_trans(Tween.TRANS_SINE)\
 		.set_ease(Tween.EASE_OUT)
-	
+
+# --- BOSS BAR ---
+
 func register_boss(boss_name: String, health_comp: HealthComponent) -> void:
 	if not boss_bar_container or not boss_progress_bar or not health_comp:
 		return
 
 	_tracked_boss_health = health_comp
 
-	# Ustawienie nazwy bossa
 	if boss_name_label:
 		boss_name_label.text = "[center][color=crimson]" + boss_name
 
-	# Podpięcie pod sygnały komponentu zdrowia
 	if not health_comp.health_changed.is_connected(_on_boss_health_changed):
 		health_comp.health_changed.connect(_on_boss_health_changed)
 	if not health_comp.died.is_connected(_on_boss_defeated):
 		health_comp.died.connect(_on_boss_defeated)
 
-	# Zabezpieczenie na wypadek ucieczki bossa ze sceny
 	var boss_owner = health_comp.owner
 	if boss_owner and not boss_owner.tree_exiting.is_connected(_on_boss_exited):
 		boss_owner.tree_exiting.connect(_on_boss_exited)
@@ -515,15 +563,13 @@ func _play_boss_intro_animation(max_hp: int, current_hp: int) -> void:
 
 	boss_bar_container.visible = true
 
-	# Fade-in całego kontenera
 	_boss_fade_tween = create_tween()
 	_boss_fade_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	_boss_fade_tween.tween_property(boss_bar_container, "modulate:a", 1.0, 0.4)
 
-	# Efekt dramatycznego napełniania paska HP od 0 do aktualnego poziomu
 	_boss_hp_tween = create_tween()
 	_boss_hp_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	_boss_hp_tween.tween_property(boss_progress_bar, "value", float(current_hp), 2)
+	_boss_hp_tween.tween_property(boss_progress_bar, "value", float(current_hp), 2.0)
 
 func _on_boss_health_changed(current_hp: int, max_hp: int) -> void:
 	if not boss_progress_bar:
@@ -531,7 +577,6 @@ func _on_boss_health_changed(current_hp: int, max_hp: int) -> void:
 
 	boss_progress_bar.max_value = max_hp
 
-	# Płynny spadek wartości paska przy uderzeniach
 	if _boss_hp_tween and _boss_hp_tween.is_valid():
 		_boss_hp_tween.kill()
 
@@ -549,7 +594,6 @@ func hide_boss_bar() -> void:
 	if not boss_bar_container or not boss_bar_container.visible:
 		return
 
-	# Odpinamy sygnały, aby uniknąć wycieków lub błędów po zniszczeniu bossa
 	if is_instance_valid(_tracked_boss_health):
 		if _tracked_boss_health.health_changed.is_connected(_on_boss_health_changed):
 			_tracked_boss_health.health_changed.disconnect(_on_boss_health_changed)
@@ -561,7 +605,6 @@ func hide_boss_bar() -> void:
 	if _boss_fade_tween and _boss_fade_tween.is_valid():
 		_boss_fade_tween.kill()
 
-	# Płynne zniknięcie paska z ekranu
 	_boss_fade_tween = create_tween()
 	_boss_fade_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 	_boss_fade_tween.tween_property(boss_bar_container, "modulate:a", 0.0, 0.5)
