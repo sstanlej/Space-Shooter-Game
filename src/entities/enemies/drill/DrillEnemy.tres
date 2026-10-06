@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://bnajudnesf1l1"]
+
+[ext_resource type="PackedScene" uid="uid://4d220crxnyi4" path="res://src/entities/enemies/drill/drill.tscn" id="1_scene"]
+[ext_resource type="Script" uid="uid://c1jvipah3wjg0" path="res://src/entities/enemies/components/EnemyData.gd" id="2_script"]
+
+[resource]
+script = ExtResource("2_script")
+enemy_name = "Drill"
+enemy_scene = ExtResource("1_scene")
+spawn_origin = 2
+spawn_weight = 50.0
+enemy_score_reward = 60
+enemy_xp_reward = 50

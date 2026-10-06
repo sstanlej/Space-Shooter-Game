@@ -4,10 +4,11 @@
 [ext_resource type="Resource" uid="uid://do65qwi3adxlo" path="res://src/entities/enemies/courier/CourierEnemy.tres" id="2_emm63"]
 [ext_resource type="Resource" uid="uid://b0rbftdnqtvl4" path="res://src/entities/enemies/spacebus/SpacebusEnemy.tres" id="3_emm63"]
 [ext_resource type="Script" uid="uid://cua0jrqdom70c" path="res://src/systems/campaign/WaveDefinition.gd" id="3_y1d1a"]
-[ext_resource type="Resource" path="res://src/entities/enemies/siphon/SiphonEnemy.tres" id="4_siphon"]
+[ext_resource type="Resource" uid="uid://dc5u6iau6nwsa" path="res://src/entities/enemies/siphon/SiphonEnemy.tres" id="4_siphon"]
+[ext_resource type="Resource" uid="uid://bnajudnesf1l1" path="res://src/entities/enemies/drill/DrillEnemy.tres" id="5_woark"]
 
 [resource]
 script = ExtResource("3_y1d1a")
-available_enemies = Array[ExtResource("1_ppv2l")]([ExtResource("2_emm63"), ExtResource("3_emm63"), ExtResource("4_siphon")])
+available_enemies = Array[ExtResource("1_ppv2l")]([ExtResource("2_emm63"), ExtResource("3_emm63"), ExtResource("4_siphon"), ExtResource("5_woark")])
 custom_spawn_delay = 0.0
 metadata/_custom_type_script = "uid://cua0jrqdom70c"
