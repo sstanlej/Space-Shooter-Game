@@ -7,6 +7,6 @@
 script = ExtResource("2_script")
 enemy_name = "Siphon"
 enemy_scene = ExtResource("1_scene")
-spawn_weight = 10.0
+spawn_weight = 55.0
 enemy_score_reward = 40
 enemy_xp_reward = 40

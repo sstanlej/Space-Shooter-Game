@@ -1,6 +1,6 @@
 class_name SiphonEnemy extends Enemy
 
-enum State { PATROL, CHARGING, RECOVERING }
+enum State { PATROL, WARNING, CHARGING, RECOVERING }
 
 @export_group("Patrol")
 @export var patrol_y: float = 16.0
@@ -14,8 +14,18 @@ enum State { PATROL, CHARGING, RECOVERING }
 @export var charge_cooldown: float = 1.4
 @export var min_player_depth: float = 18.0
 
+@export_group("Charge Warning")
+## Scena wskaźnika ostrzegawczego pokazywanego pod przeciwnikiem przed szarżą
+@export var charge_warning_scene: PackedScene
+## Jak długo ostrzeżenie jest widoczne (i jak długo trwa przerwa przed szarżą)
+@export var charge_warning_duration: float = 0.5
+## Przesunięcie ostrzeżenia pod przeciwnika (w pikselach)
+@export var charge_warning_offset_y: float = 16.0
+
 var state: State = State.PATROL
 var patrol_direction: float = -1.0
+var has_entered_lane: bool = false
+var warning_left: float = 0.0
 var cooldown_left: float = 0.4
 var player_ref: Node2D
 
@@ -36,6 +46,8 @@ func setup(enemy_data: EnemyData) -> void:
 	super.setup(enemy_data)
 	_snap_to_patrol_lane()
 	has_entered_screen = true
+	has_entered_lane = false
+	patrol_direction = -1.0
 	state = State.PATROL
 	player_ref = get_tree().get_first_node_in_group("player") as Node2D
 
@@ -51,6 +63,8 @@ func _physics_process(delta: float) -> void:
 	match state:
 		State.PATROL:
 			_process_patrol(delta)
+		State.WARNING:
+			_process_warning(delta)
 		State.CHARGING:
 			_process_charge(delta)
 		State.RECOVERING:
@@ -62,6 +76,14 @@ func _process_patrol(delta: float) -> void:
 	global_position.y = patrol_y
 	global_position.x += patrol_direction * patrol_speed * delta
 
+	if not has_entered_lane:
+		# Fly in from off-screen right; skip edge clamping and charging until fully on-screen
+		if global_position.x <= vp.x - edge_margin:
+			global_position.x = vp.x - edge_margin
+			has_entered_lane = true
+			patrol_direction = -1.0
+		return
+
 	if global_position.x <= edge_margin:
 		global_position.x = edge_margin
 		patrol_direction = 1.0
@@ -72,8 +94,33 @@ func _process_patrol(delta: float) -> void:
 	_set_sprite_charging(false)
 
 	if cooldown_left <= 0.0 and _is_aligned_over_player():
+		_begin_charge_warning()
+
+
+func _begin_charge_warning() -> void:
+	state = State.WARNING
+	warning_left = charge_warning_duration
+	_spawn_charge_indicator()
+
+
+func _process_warning(delta: float) -> void:
+	# Trzymamy pozycję w patrolowym pasie, żeby ostrzeżenie pozostało pod przeciwnikiem
+	global_position.y = patrol_y
+	warning_left -= delta
+	if warning_left <= 0.0:
 		state = State.CHARGING
 		_set_sprite_charging(true)
+
+
+func _spawn_charge_indicator() -> void:
+	if not charge_warning_scene or not get_parent():
+		return
+	var indicator = charge_warning_scene.instantiate()
+	get_parent().add_child(indicator)
+	var indicator_pos = global_position + Vector2(0.0, charge_warning_offset_y)
+	indicator.global_position = indicator_pos
+	if indicator.has_method("setup"):
+		indicator.setup(charge_warning_duration, indicator_pos)
 
 
 func _process_charge(delta: float) -> void:
