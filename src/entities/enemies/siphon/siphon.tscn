@@ -1,0 +1,54 @@
+[gd_scene format=3 uid="uid://0a2nmvtiikqp"]
+
+[ext_resource type="Script" uid="uid://cvii3u4ttajo0" path="res://src/entities/enemies/siphon/siphon.gd" id="1_siphon"]
+[ext_resource type="PackedScene" uid="uid://cdfbi3flgf8ko" path="res://src/vfx/explosion/explosion.tscn" id="2_boom"]
+[ext_resource type="Shader" uid="uid://wr7raxdl2m7y" path="res://src/vfx/shaders/hit_flash.gdshader" id="3_flash"]
+[ext_resource type="Texture2D" uid="uid://ikgpsgquqk5y" path="res://src/entities/enemies/satelite/satellite.png" id="4_sprite"]
+[ext_resource type="Script" uid="uid://cmxkc1l3uevq1" path="res://src/entities/enemies/components/HealthComponent.gd" id="5_hp"]
+[ext_resource type="Script" uid="uid://c0svh84qgdobm" path="res://src/entities/enemies/components/HurtboxComponent.gd" id="6_hurt"]
+[ext_resource type="PackedScene" uid="uid://p24e8j1foa4p" path="res://src/ui/floating_health_bar.tscn" id="7_bar"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_siphon"]
+shader = ExtResource("3_flash")
+shader_parameter/active = false
+shader_parameter/flash_color = Color(1, 1, 1, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_siphon"]
+size = Vector2(16, 18)
+
+[node name="Siphon" type="CharacterBody2D" unique_id=334929881]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1_siphon")
+patrol_speed = 15.0
+death_scene = ExtResource("2_boom")
+exit_margin = 80.0
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1333182204]
+modulate = Color(0.72, 1, 0.78, 1)
+material = SubResource("ShaderMaterial_siphon")
+texture = ExtResource("4_sprite")
+
+[node name="HealthComponent" type="Node2D" parent="." unique_id=152181381]
+script = ExtResource("5_hp")
+max_health = 8
+
+[node name="HurtboxComponent" type="Area2D" parent="." unique_id=1860970985 node_paths=PackedStringArray("health_component")]
+collision_layer = 2
+collision_mask = 5
+script = ExtResource("6_hurt")
+health_component = NodePath("../HealthComponent")
+contact_damage = 1.0
+destroy_on_contact = false
+applies_knockback = true
+knockback_direction = Vector2(0, 1)
+knockback_force = 10.0
+knockback_duration = 0.1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent" unique_id=714592536]
+shape = SubResource("RectangleShape2D_siphon")
+
+[node name="FloatingHealthBar" parent="." unique_id=1331074943 instance=ExtResource("7_bar")]
+position = Vector2(0, -14)
+
+[connection signal="died" from="HealthComponent" to="." method="_on_health_component_died"]

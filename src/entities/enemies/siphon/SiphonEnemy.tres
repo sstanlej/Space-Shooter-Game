@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3 uid="uid://dc5u6iau6nwsa"]
+
+[ext_resource type="PackedScene" uid="uid://0a2nmvtiikqp" path="res://src/entities/enemies/siphon/siphon.tscn" id="1_scene"]
+[ext_resource type="Script" uid="uid://c1jvipah3wjg0" path="res://src/entities/enemies/components/EnemyData.gd" id="2_script"]
+
+[resource]
+script = ExtResource("2_script")
+enemy_name = "Siphon"
+enemy_scene = ExtResource("1_scene")
+spawn_weight = 10.0
+enemy_score_reward = 40
+enemy_xp_reward = 40
