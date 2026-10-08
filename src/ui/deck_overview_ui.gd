@@ -115,7 +115,7 @@ func format_card_overview_text(instance: PlayerDeckComponent.CardInstance) -> St
 		UpgradeCardData.CardType.STAT:
 			match card.stat_type:
 				UpgradeCardData.StatType.DAMAGE:
-					var current_dmg = deck.get_final_damage(deck.equipped_weapon.base_damage if deck.equipped_weapon else 1.0)
+					var current_dmg = deck.get_final_damage(deck.equipped_weapon.base_damage if deck.equipped_weapon else 0.0)
 					return "[color=gold]LVL %d[/color]  (DMG: %d)" % [instance.level, int(current_dmg)]
 				UpgradeCardData.StatType.SPEED:
 					return "[color=gold]LVL %d[/color]  (%.0f px/s)" % [instance.level, deck.get_final_movement_speed()]

@@ -7,6 +7,6 @@
 script = ExtResource("1_gb64c")
 weapon_id = "default_gun"
 bullet_scene = ExtResource("1_d7545")
-base_damage = 1.0
+base_damage = 10.0
 base_bullet_speed = 300.0
 metadata/_custom_type_script = "uid://b4pj3fdnorw4e"

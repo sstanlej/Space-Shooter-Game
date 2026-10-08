@@ -8,11 +8,12 @@
 script = ExtResource("1_or6yx")
 card_id = "stat_damage"
 title = "Damage Boost"
-description = "+1 ATK"
+description = "+2 ATK"
 icon = ExtResource("1_5vdxb")
 rarity = 1
 base_cost = 2
 cost_increase_per_level = 1
 stat_type = 1
+stat_value_per_level = 2.0
 max_level = 6
 metadata/_custom_type_script = "uid://dvnm2k8uup30q"

@@ -60,7 +60,7 @@ func update_from_deck(active_deck: Array) -> void:
 func get_movement_speed() -> float:
 	return maxf(1.0, base_speed + bonus_speed)
 
-func get_final_damage(base_weapon_damage: float = 1.0) -> float:
+func get_final_damage(base_weapon_damage: float) -> float:
 	return maxf(0.1, base_weapon_damage + bonus_damage)
 
 func get_final_attack_speed(base_weapon_attack_speed: float = 1.0) -> float:

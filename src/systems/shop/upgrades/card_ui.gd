@@ -27,7 +27,7 @@ func setup(data: UpgradeCardData) -> void:
 	if title_label:
 		title_label.text = "[center][color=" + color_hex + "]" + card_data.title + "[/color][/center]"
 	if description_label:
-		description_label.text = "[center]" + card_data.description + "[/center]"
+		description_label.text = "[center]" + card_data.get_display_description() + "[/center]"
 	if icon_rect and card_data.icon:
 		icon_rect.texture = card_data.icon
 

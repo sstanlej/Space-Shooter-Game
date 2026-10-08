@@ -2,7 +2,23 @@ class_name UpgradeCardData extends Resource
 
 enum Rarity { COMMON, RARE, EPIC, LEGENDARY }
 enum CardType { STAT, WEAPON, USABLE, INSTANT }
-enum StatType { NONE, DAMAGE, SPEED, ATTACK_SPEED, PROJECTILES, MAX_HEALTH, AGILITY }
+## Typ statystyki ulepszanej przez kartę STAT.
+## Jednostki `stat_value_per_level` (zmiana na 1 poziom powyżej `base_level`):
+enum StatType {
+	NONE,
+	## Płaska wartość obrażeń – np. 2.0 = +2 ATK
+	DAMAGE,
+	## Płaska prędkość ruchu w px/s – np. 10.0 = +10 px/s
+	SPEED,
+	## Mnożnik szybkości ostrzału – np. 0.15 = +15% (broń × (1 + suma))
+	ATTACK_SPEED,
+	## Liczba dodatkowych pocisków – np. 1.0 = +1 pocisk
+	PROJECTILES,
+	## Dodatkowe punkty życia – np. 1.0 = +1 HP
+	MAX_HEALTH,
+	## Mnożnik uniku – np. 0.1 = +10% (1.0 + suma)
+	AGILITY
+}
 enum UsableType { NONE, SHIELD }
 
 @export_group("Card Metadata")
@@ -20,6 +36,7 @@ enum UsableType { NONE, SHIELD }
 
 @export_group("Stat Settings")
 @export var stat_type: StatType = StatType.NONE
+## Wartość dodawana do statystyki za każdy poziom powyżej base_level (jednostki wg StatType)
 @export var stat_value_per_level: float = 1.0
 @export var base_level: int = 1
 @export var max_level: int = 5
@@ -90,3 +107,35 @@ func apply_to_player(player: Player) -> void:
 	for effect in effects:
 		if effect:
 			effect.execute(player)
+
+## Opis karty do wyświetlenia w UI.
+## Dla kart STAT tekst jest generowany z stat_value_per_level,
+## dzięki czemu nie rozjeżdża się z faktycznymi wartościami ulepszeń.
+func get_display_description() -> String:
+	if card_type == CardType.STAT and stat_type != StatType.NONE:
+		return _get_stat_description()
+	return description
+
+
+func _get_stat_description() -> String:
+	match stat_type:
+		StatType.DAMAGE:
+			return "+" + _fmt_value(stat_value_per_level) + " ATK"
+		StatType.SPEED:
+			return "+" + _fmt_value(stat_value_per_level) + " MV SPD"
+		StatType.ATTACK_SPEED:
+			return "+" + _fmt_value(stat_value_per_level * 100.0) + "% ATK SPD"
+		StatType.PROJECTILES:
+			return "+" + _fmt_value(stat_value_per_level) + " PROJECTILE"
+		StatType.MAX_HEALTH:
+			return "+" + _fmt_value(stat_value_per_level) + " MAX HP"
+		StatType.AGILITY:
+			return "+" + _fmt_value(stat_value_per_level * 100.0) + "% AGILITY"
+	return description
+
+
+## Formatuje liczbę bez zera po przecinku dla wartości całkowitych: 2.0 -> "2", 0.5 -> "0.5"
+func _fmt_value(value: float) -> String:
+	if is_equal_approx(value, round(value)):
+		return str(int(round(value)))
+	return str(value)

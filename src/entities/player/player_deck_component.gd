@@ -48,6 +48,28 @@ func apply_card(card: UpgradeCardData) -> void:
 
 	_sync_stats()
 
+## Podnosi poziom karty STAT o zadanym typie o `levels` poziomów (max_level respektowane).
+## Zwraca true, jeśli poziom jakiejś karty się zmienił.
+func upgrade_stat_by_type(stat_type: UpgradeCardData.StatType, levels: int = 1) -> bool:
+	if levels <= 0 or stat_type == UpgradeCardData.StatType.NONE:
+		return false
+
+	for inst in active_deck:
+		if inst.data.card_type != UpgradeCardData.CardType.STAT or inst.data.stat_type != stat_type:
+			continue
+
+		var new_level: int = inst.level + levels
+		if inst.data.max_level > 0:
+			new_level = mini(new_level, inst.data.max_level)
+		if new_level == inst.level:
+			return false
+
+		inst.level = new_level
+		_sync_stats()
+		return true
+
+	return false
+
 func _upgrade_or_add_stat_card(card: UpgradeCardData) -> void:
 	var existing = get_card_instance(card)
 	if existing:
@@ -123,7 +145,7 @@ func get_card_level(card_data: UpgradeCardData) -> int:
 func get_active_deck() -> Array[CardInstance]:
 	return active_deck
 
-func get_final_damage(base_weapon_damage: float = 1.0) -> float:
+func get_final_damage(base_weapon_damage: float) -> float:
 	var player = get_parent() as Player
 	if player and player.stats_component:
 		return player.stats_component.get_final_damage(base_weapon_damage)

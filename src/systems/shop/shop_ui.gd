@@ -129,7 +129,7 @@ func _on_shop_offer_ready(cards: Array[UpgradeCardData]) -> void:
 		var card_instance = card_ui_scene.instantiate() as CardUI
 		if card_instance:
 			cards_container.add_child(card_instance)
-			card_instance.setup_for_shop(card_data, card_data.description, player, points)
+			card_instance.setup_for_shop(card_data, card_data.get_display_description(), player, points)
 			active_cards_ui.append(card_instance)
 
 	update_upgrades_available_display()
