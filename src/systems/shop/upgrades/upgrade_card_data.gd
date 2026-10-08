@@ -17,7 +17,9 @@ enum StatType {
 	## Dodatkowe punkty życia – np. 1.0 = +1 HP
 	MAX_HEALTH,
 	## Mnożnik uniku – np. 0.1 = +10% (1.0 + suma)
-	AGILITY
+	AGILITY,
+	## Przebicia pocisku – np. 1.0 = pocisk przebija jednego wroga więcej
+	PIERCING
 }
 enum UsableType { NONE, SHIELD }
 
@@ -131,6 +133,8 @@ func _get_stat_description() -> String:
 			return "+" + _fmt_value(stat_value_per_level) + " MAX HP"
 		StatType.AGILITY:
 			return "+" + _fmt_value(stat_value_per_level * 100.0) + "% AGILITY"
+		StatType.PIERCING:
+			return "+" + _fmt_value(stat_value_per_level) + " PIERCE"
 	return description
 
 

@@ -1,6 +1,9 @@
 class_name PlayerProjectile extends Projectile
 
-var piercing_amount: int = 1
+## Bazowe przebicie pocisku – zmień tutaj, żeby zmienić domyślną wartość (strzały i UI czytają z tego miejsca)
+const BASE_PIERCING: int = 0
+
+var piercing_amount: int = BASE_PIERCING
 var number_of_pierces: int = 0
 
 func on_hit() -> void:

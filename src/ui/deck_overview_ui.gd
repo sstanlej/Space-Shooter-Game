@@ -133,6 +133,10 @@ func format_card_overview_text(instance: PlayerDeckComponent.CardInstance) -> St
 					var base_count = deck.equipped_weapon.projectiles_per_shot if deck and deck.equipped_weapon else 1
 					var total_count = deck.get_final_projectiles_count(base_count) if deck else 1
 					return "[color=gold]LVL %d[/color]  (%d bullets)" % [instance.level, total_count]
+				UpgradeCardData.StatType.PIERCING:
+					var base_pierce: int = PlayerProjectile.BASE_PIERCING
+					var pierce = player.stats_component.get_final_piercing(base_pierce) if player and player.stats_component else base_pierce
+					return "[color=gold]LVL %d[/color]  (PIERCE: %d)" % [instance.level, pierce]
 				_:
 					return "[color=gold]LVL %d[/color]" % instance.level
 

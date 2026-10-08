@@ -37,6 +37,7 @@
 [ext_resource type="Resource" uid="uid://1ikeutmmsl0l" path="res://src/systems/shop/upgrades/resources/card_shield.tres" id="28_qsp4k"]
 [ext_resource type="Resource" uid="uid://qjbuoy5m0jjw" path="res://src/systems/shop/upgrades/resources/card_extra_projectiles.tres" id="29_kq58d"]
 [ext_resource type="PackedScene" uid="uid://dnamryfkme6fe" path="res://src/ui/DeckOverviewUI.tscn" id="32_htxhm"]
+[ext_resource type="Resource" path="res://src/systems/shop/upgrades/resources/card_piercing.tres" id="30_prcng"]
 
 [sub_resource type="Animation" id="Animation_kq58d"]
 length = 0.001
@@ -407,7 +408,7 @@ alignment = 1
 
 [node name="CardDeckManager" type="Node" parent="UILayer/ShopUI" unique_id=1066533258]
 script = ExtResource("27_a6jrf")
-available_cards = Array[ExtResource("21_htxhm")]([ExtResource("22_jq2sk"), ExtResource("23_4k2k6"), ExtResource("24_0rl1p"), ExtResource("25_0odxb"), ExtResource("28_qsp4k"), ExtResource("29_kq58d")])
+available_cards = Array[ExtResource("21_htxhm")]([ExtResource("22_jq2sk"), ExtResource("23_4k2k6"), ExtResource("24_0rl1p"), ExtResource("25_0odxb"), ExtResource("28_qsp4k"), ExtResource("29_kq58d"), ExtResource("30_prcng")])
 
 [node name="ChooseUpgradeLabel" type="RichTextLabel" parent="UILayer/ShopUI" unique_id=471469660]
 layout_mode = 1

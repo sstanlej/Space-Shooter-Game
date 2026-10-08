@@ -11,6 +11,7 @@ var bonus_attack_speed: float = 0.0
 var bonus_projectiles: int = 0
 var bonus_health: int = 0
 var bonus_agility: float = 0.0
+var bonus_piercing: int = 0
 
 func _reset_bonus_values() -> void:
 	bonus_damage = 0.0
@@ -19,6 +20,7 @@ func _reset_bonus_values() -> void:
 	bonus_projectiles = 0
 	bonus_health = 0
 	bonus_agility = 0.0
+	bonus_piercing = 0
 
 func reset_stats() -> void:
 	_reset_bonus_values()
@@ -47,6 +49,8 @@ func update_from_deck(active_deck: Array) -> void:
 				bonus_health += int(bonus)
 			UpgradeCardData.StatType.AGILITY:
 				bonus_agility += bonus
+			UpgradeCardData.StatType.PIERCING:
+				bonus_piercing += int(bonus)
 
 	var player = get_parent() as Player
 	if player and player.health_component:
@@ -68,6 +72,9 @@ func get_final_attack_speed(base_weapon_attack_speed: float = 1.0) -> float:
 
 func get_final_projectiles_count(base_count: int = 1) -> int:
 	return max(1, base_count + bonus_projectiles)
+
+func get_final_piercing(base_piercing: int) -> int:
+	return maxi(0, base_piercing + bonus_piercing)
 
 func get_agility_multiplier() -> float:
 	return 1.0 + bonus_agility

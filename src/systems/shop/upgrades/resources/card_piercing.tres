@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="UpgradeCardData" format=3]
+
+[ext_resource type="Texture2D" uid="uid://b6fcfdodq4qdw" path="res://src/systems/shop/upgrades/sprites/projectile_upgrade.png" id="1_icon"]
+[ext_resource type="Script" uid="uid://dvnm2k8uup30q" path="res://src/systems/shop/upgrades/upgrade_card_data.gd" id="2_script"]
+
+[resource]
+script = ExtResource("2_script")
+card_id = "stat_piercing"
+title = "Piercing Rounds"
+description = "+1 PIERCE"
+icon = ExtResource("1_icon")
+rarity = 1
+required_act = 1
+base_cost = 2
+cost_increase_per_level = 1
+stat_type = 7
+stat_value_per_level = 1.0
+base_level = 0
+max_level = 5
+metadata/_custom_type_script = "uid://dvnm2k8uup30q"

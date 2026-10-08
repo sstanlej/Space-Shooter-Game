@@ -117,6 +117,13 @@ func spawn_single_bullet(container: Node, pos: Vector2, dir: Vector2, dmg: float
 	bullet.setup(dmg, speed, dir)
 	bullet.rotation = dir.angle()
 
+	# Przebicie: bazowa wartość z pocisku + bonus z kart
+	if bullet is PlayerProjectile:
+		var stats = player.get_stats_component() if player else null
+		if stats:
+			var player_bullet = bullet as PlayerProjectile
+			player_bullet.piercing_amount = stats.get_final_piercing(player_bullet.piercing_amount)
+
 	if is_ghost_mode:
 		configure_as_ghost_bullet(bullet)
 
