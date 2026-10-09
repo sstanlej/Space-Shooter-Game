@@ -9,6 +9,7 @@ enemy_name = "Falling Star"
 enemy_scene = ExtResource("1_7c14q")
 spawn_origin = 1
 spawn_weight = 10.0
+max_health = 25
 enemy_score_reward = 30
 enemy_xp_reward = 30
 metadata/_custom_type_script = "uid://c1jvipah3wjg0"

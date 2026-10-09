@@ -7,6 +7,7 @@
 script = ExtResource("2_srf66")
 enemy_name = "Mothership"
 enemy_scene = ExtResource("1_4crck")
+max_health = 500
 enemy_score_reward = 200
 enemy_xp_reward = 200
 metadata/_custom_type_script = "uid://c1jvipah3wjg0"

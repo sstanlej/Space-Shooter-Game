@@ -8,6 +8,7 @@ script = ExtResource("1_tdvr6")
 enemy_name = "Mother Eyeball"
 enemy_scene = ExtResource("1_ojmjd")
 spawn_weight = 10.0
+max_health = 50
 enemy_score_reward = 225
 enemy_xp_reward = 225
 metadata/_custom_type_script = "uid://c1jvipah3wjg0"

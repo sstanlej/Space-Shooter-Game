@@ -7,5 +7,6 @@
 script = ExtResource("1_kfwgw")
 enemy_name = "Kitten"
 enemy_scene = ExtResource("1_65l84")
+max_health = 1
 spawn_weight = 8.0
 metadata/_custom_type_script = "uid://c1jvipah3wjg0"

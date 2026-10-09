@@ -8,6 +8,7 @@ script = ExtResource("2_aj3me")
 enemy_name = "Satellite"
 enemy_scene = ExtResource("1_65atj")
 spawn_weight = 80.0
+max_health = 48
 enemy_score_reward = 5
 enemy_xp_reward = 5
 metadata/_custom_type_script = "uid://c1jvipah3wjg0"

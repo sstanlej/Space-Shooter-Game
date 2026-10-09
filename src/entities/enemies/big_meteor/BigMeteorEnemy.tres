@@ -8,6 +8,7 @@ script = ExtResource("1_qdbpn")
 enemy_name = "Big Meteor"
 enemy_scene = ExtResource("1_421jr")
 spawn_weight = 33.0
+max_health = 48
 enemy_score_reward = 20
 enemy_xp_reward = 20
 metadata/_custom_type_script = "uid://c1jvipah3wjg0"

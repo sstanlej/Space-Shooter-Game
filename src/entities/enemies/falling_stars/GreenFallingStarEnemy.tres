@@ -9,6 +9,7 @@ enemy_name = "Green Falling Star"
 enemy_scene = ExtResource("1_kmhof")
 spawn_origin = 1
 spawn_weight = 5.0
+max_health = 14
 enemy_score_reward = 50
 enemy_xp_reward = 50
 metadata/_custom_type_script = "uid://c1jvipah3wjg0"

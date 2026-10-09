@@ -8,6 +8,7 @@ script = ExtResource("1_87tmy")
 enemy_name = "Tiny Eyeball"
 enemy_scene = ExtResource("1_nok58")
 spawn_weight = 70.0
+max_health = 5
 enemy_score_reward = 40
 enemy_xp_reward = 40
 metadata/_custom_type_script = "uid://c1jvipah3wjg0"

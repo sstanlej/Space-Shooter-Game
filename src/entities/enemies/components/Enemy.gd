@@ -51,6 +51,11 @@ func setup(enemy_data: EnemyData) -> void:
 	data = enemy_data
 	has_entered_screen = false
 
+	# HP z danych EnemyData – nadpisuje wartość ze sceny i ustawia pełne HP (0 = zostaw wartość sceny)
+	var data_health: int = data.get_final_max_health()
+	if health_component and data_health > 0:
+		health_component.set_health(data_health)
+
 	# Jeśli wróg nie posiada HealthComponent (np. Spectator), staje się nietykalny
 	is_intangible = (health_component == null)
 

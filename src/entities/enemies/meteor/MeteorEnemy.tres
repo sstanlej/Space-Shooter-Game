@@ -7,6 +7,7 @@
 script = ExtResource("2_20uy5")
 enemy_name = "Meteor"
 enemy_scene = ExtResource("1_r27r0")
+max_health = 24
 enemy_score_reward = 10
 enemy_xp_reward = 10
 metadata/_custom_type_script = "uid://c1jvipah3wjg0"
